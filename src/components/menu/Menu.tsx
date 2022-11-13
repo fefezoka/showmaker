@@ -41,7 +41,11 @@ export const Menu = () => {
             </a>
           </Row>
         </ul>
-        <CreatePost />
+        <Row>
+          <Line>
+            <CreatePost />
+          </Line>
+        </Row>
       </div>
     </StyledMenu>
   );
