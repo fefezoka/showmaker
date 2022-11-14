@@ -51,9 +51,9 @@ export default function Home() {
       </Head>
 
       <Main>
-        <div>
+        <section>
           <h3>Últimos posts</h3>
-        </div>
+        </section>
         {posts.map((post) => (
           <FeedPost post={post} key={post.id} />
         ))}

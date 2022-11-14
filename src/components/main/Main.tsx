@@ -9,12 +9,12 @@ interface Props {
 
 export const Main = ({ children }: Props) => {
   return (
-    <StyledMain>
+    <Container>
       <Menu />
-      <Container>
+      <StyledMain>
         <Header />
         {children}
-      </Container>
-    </StyledMain>
+      </StyledMain>
+    </Container>
   );
 };

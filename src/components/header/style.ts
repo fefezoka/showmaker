@@ -5,7 +5,7 @@ export const Header = styled('header', {
   top: 0,
   display: 'flex',
   justifyContent: 'center',
-  padding: '14px',
+  padding: '16px 24px',
   background: '$bg',
   zIndex: '$header',
 });

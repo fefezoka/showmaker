@@ -12,7 +12,7 @@ const Post = ({ post }: Props) => {
   const diffInMinutes = diffBetweenDatesInMinutes(new Date(), new Date(post.createdAt));
 
   return (
-    <div>
+    <section>
       <Link href={`/post/${post.id}`}>
         <Flex>
           <ProfileIcon src={post.user.avatar_url} />
@@ -35,7 +35,7 @@ const Post = ({ post }: Props) => {
       <VideoWrapper>
         <video controls width="100%" src={post.video_url} />
       </VideoWrapper>
-    </div>
+    </section>
   );
 };
 
