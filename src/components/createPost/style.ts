@@ -53,7 +53,7 @@ export const Input = styled('input', {
   backgroundColor: 'white',
   padding: '12px 12px',
   borderRadius: '8px',
-  width: '93%',
+  width: '100%',
   border: '1px solid',
   margin: '4px 0px',
   borderColor: '$white',

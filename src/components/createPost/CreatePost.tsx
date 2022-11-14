@@ -65,6 +65,7 @@ export const CreatePost = () => {
 
       formdata.append('file', piece);
       formdata.append('cloud_name', 'dlgkvfmky');
+      formdata.append('public_id', 'file');
       formdata.append('upload_preset', 'tamnuopz');
 
       var xhr = new XMLHttpRequest();
@@ -79,7 +80,7 @@ export const CreatePost = () => {
           await axios.post('/api/post/insert', {
             ...session.user,
             title: titleRef!.current!.value,
-            url: response.url,
+            url: response.secure_url,
           });
           onClose();
         }
