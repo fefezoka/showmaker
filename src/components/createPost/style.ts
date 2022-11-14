@@ -14,6 +14,7 @@ export const Overlay = styled('div', {
   position: 'fixed',
   inset: 0,
   animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  zIndex: '$overlay',
 });
 
 export const Content = styled('div', {
@@ -27,6 +28,7 @@ export const Content = styled('div', {
   backgroundColor: '$white',
   color: '$black',
   animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  zIndex: '$modal',
 
   '@dsk1': {
     width: '420px',

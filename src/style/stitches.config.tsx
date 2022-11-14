@@ -28,6 +28,11 @@ export const {
       7: '1.5rem',
       8: '1.75rem',
     },
+    zIndices: {
+      modal: 999,
+      overlay: 99,
+      header: 9,
+    },
   },
   media: {
     dsk1: '(min-width: 560px)',

@@ -1,12 +1,5 @@
 import { styled } from '../../style/stitches.config';
 
-export const Container = styled('div', {
-  padding: '1.5rem',
-  borderBottom: '2px solid',
-  borderRight: '2px solid',
-  borderColor: '$bgalt',
-});
-
 export const VideoWrapper = styled('div', {
   overflow: 'hidden',
   width: '100%',

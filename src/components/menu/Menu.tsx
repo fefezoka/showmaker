@@ -1,6 +1,6 @@
 import React from 'react';
 import { CreatePost } from '../createPost/CreatePost';
-import { Line, Menu as StyledMenu, Row } from './style';
+import { Line, Menu as StyledMenu } from './style';
 import { IoHome, IoBookmark, IoPerson } from 'react-icons/io5';
 import Link from 'next/link';
 
@@ -9,43 +9,43 @@ export const Menu = () => {
     <StyledMenu>
       <div style={{ position: 'fixed' }}>
         <ul>
-          <Row>
+          <li>
             <Link href={'/'}>
-              <Line>
+              <Line active>
                 <h3>Show Maker</h3>
               </Line>
             </Link>
-          </Row>
-          <Row>
+          </li>
+          <li>
             <Link href={'/'}>
               <Line>
                 <IoHome />
                 <h3>Página inicial</h3>
               </Line>
             </Link>
-          </Row>
-          <Row>
+          </li>
+          <li>
             <a>
               <Line>
                 <IoBookmark />
                 <h3>Posts salvos</h3>
               </Line>
             </a>
-          </Row>
-          <Row>
+          </li>
+          <li>
             <a>
               <Line>
                 <IoPerson />
                 <h3>Perfil</h3>
               </Line>
             </a>
-          </Row>
+          </li>
+          <li>
+            <Line>
+              <CreatePost />
+            </Line>
+          </li>
         </ul>
-        <Row>
-          <Line>
-            <CreatePost />
-          </Line>
-        </Row>
       </div>
     </StyledMenu>
   );

@@ -34,6 +34,7 @@ export const global = globalCss({
     backgroundColor: 'unset',
     border: 'none',
     color: '$white',
+    cursor: 'pointer',
     fontSize: '1rem',
   },
 

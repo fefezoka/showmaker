@@ -7,9 +7,7 @@ export const Header = styled('header', {
   justifyContent: 'center',
   padding: '14px',
   background: '$bg',
-  borderRight: '2px solid',
-  borderColor: '$bgalt',
-  zIndex: 99,
+  zIndex: '$header',
 });
 
 export const Container = styled('div', {

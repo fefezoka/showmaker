@@ -4,16 +4,17 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/Button';
 import { Overlay, Content, DropContainer, Input } from './style';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 
 export const CreatePost = () => {
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const { data: session, status } = useSession();
   const titleRef = useRef<HTMLInputElement>(null);
+  const { data: session, status } = useSession();
 
-  const resetForm = () => {
+  const onClose = () => {
+    setOpen(false);
     setFile(undefined);
     setLoading(false);
   };
@@ -80,9 +81,7 @@ export const CreatePost = () => {
             title: titleRef!.current!.value,
             url: response.url,
           });
-          setLoading(false);
-          setOpen(false);
-          resetForm();
+          onClose();
         }
       };
 
@@ -97,9 +96,9 @@ export const CreatePost = () => {
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Root open={session && open ? true : false} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button disabled={!session} value="Postar vídeo" />
+        <Button onClick={() => !session && signIn('discord')} value="Postar vídeo" />
       </Dialog.Trigger>
       <Dialog.Portal>
         <Overlay />
@@ -108,7 +107,7 @@ export const CreatePost = () => {
           <Dialog.Description>
             Compartilhe suas jogadas favoritas com a comunidade!
           </Dialog.Description>
-          <div style={{ margin: '12px 0px' }}>
+          <div style={{ margin: '24px 0px 12px 0px' }}>
             <label htmlFor="name">Título</label>
             <Input id="name" ref={titleRef} />
           </div>
@@ -138,7 +137,7 @@ export const CreatePost = () => {
           <div
             style={{
               display: 'flex',
-              marginTop: 25,
+              marginTop: 24,
               justifyContent: 'space-between',
               alignItems: 'center',
             }}
@@ -146,9 +145,8 @@ export const CreatePost = () => {
             <Dialog.Close asChild>
               <Button
                 disabled={loading}
-                onClick={resetForm}
+                onClick={onClose}
                 variant={'exit'}
-                aria-label="Close"
                 value="Sair"
               />
             </Dialog.Close>

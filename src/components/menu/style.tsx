@@ -10,32 +10,17 @@ export const Menu = styled('aside', {
   },
 });
 
-export const Row = styled('li', {
-  color: '$gray',
-
-  '&:first-of-type': {
-    color: '$white',
-  },
-
-  '&:hover': {
-    color: '$white',
-  },
-
-  variants: {
-    active: {
-      true: {
-        color: '$white',
-      },
-    },
-  },
-});
-
 export const Line = styled('div', {
   display: 'flex',
   gap: '16px',
   alignItems: 'center',
   minHeight: '68px',
   padding: '16px 20px',
+  color: '$gray',
+
+  '&:hover': {
+    color: '$white',
+  },
 
   h3: {
     display: 'none',
@@ -44,6 +29,14 @@ export const Line = styled('div', {
   '@dsk2': {
     h3: {
       display: 'block',
+    },
+  },
+
+  variants: {
+    active: {
+      true: {
+        color: '$white',
+      },
     },
   },
 });
