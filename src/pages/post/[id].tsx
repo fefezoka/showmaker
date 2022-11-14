@@ -9,12 +9,9 @@ interface Props {
   post: Post;
 }
 
-// const BASE_URL = 'http://localhost:3000';
-const BASE_URL = 'http://show-maker.vercel.app';
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
-  const { data: post } = await axios.get(`${BASE_URL}/api/post/${id}`);
+  const { data: post } = await axios.get(`${process.env.SITE_URL}/api/post/${id}`);
 
   return {
     props: {

@@ -14,7 +14,7 @@ interface Props {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
 
-  const { data: user } = await axios.get(`http://localhost:3000/api/user/${id}`);
+  const { data: user } = await axios.get(`${process.env.SITE_URL}/api/user/${id}`);
 
   return {
     props: {
