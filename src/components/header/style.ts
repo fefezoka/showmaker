@@ -5,7 +5,7 @@ export const Header = styled('header', {
   top: 0,
   display: 'flex',
   justifyContent: 'center',
-  padding: '16px 24px',
+  padding: '18px 24px',
   background: '$bg',
   zIndex: '$header',
 });
@@ -27,7 +27,4 @@ export const UserSettings = styled('div', {
   justifyContent: 'center',
   gap: '12px',
   alignItems: 'center',
-  div: {
-    padding: '8px 0px',
-  },
 });

@@ -5,4 +5,5 @@ interface User {
   avatar_url: string;
   createdAt: Date;
   updatedAt: Date;
+  posts: Post[];
 }

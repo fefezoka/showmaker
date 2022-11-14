@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { useRouter } from 'next/router';
 import { prisma } from '../../../lib/prisma';
 
 export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -1,12 +1,9 @@
 import React from 'react';
 import { Main } from '../../components/main/Main';
-import dynamic from 'next/dynamic';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import Head from 'next/head';
-const FeedPost = dynamic(() => import('../../components/feedPost/FeedPost'), {
-  ssr: false,
-});
+import { FeedPost } from '../../components/feedPost/FeedPost';
 
 interface Props {
   post: Post;
@@ -27,7 +24,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Post = ({ post }: Props) => {
-  console.log(post);
   return (
     <>
       <Head>

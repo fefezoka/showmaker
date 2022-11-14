@@ -3,8 +3,10 @@ import { CreatePost } from '../createPost/CreatePost';
 import { Line, Menu as StyledMenu } from './style';
 import { IoHome, IoBookmark, IoPerson } from 'react-icons/io5';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 export const Menu = () => {
+  const { data: session } = useSession();
   return (
     <StyledMenu>
       <div style={{ position: 'fixed' }}>
@@ -33,12 +35,12 @@ export const Menu = () => {
             </a>
           </li>
           <li>
-            <a>
+            <Link href={`/${session?.user?.name}`}>
               <Line>
                 <IoPerson />
                 <h3>Perfil</h3>
               </Line>
-            </a>
+            </Link>
           </li>
           <li>
             <Line>

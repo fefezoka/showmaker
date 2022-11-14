@@ -5,8 +5,7 @@ import { GetServerSideProps } from 'next/types';
 import { getSession } from 'next-auth/react';
 import { prisma } from '../lib/prisma';
 import axios from 'axios';
-import dynamic from 'next/dynamic';
-const FeedPost = dynamic(() => import('../components/feedPost/FeedPost'), { ssr: false });
+import { FeedPost } from '../components/feedPost/FeedPost';
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
