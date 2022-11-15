@@ -3,7 +3,7 @@ import { Main } from '../../components/main/Main';
 import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import Head from 'next/head';
-import { FeedPost } from '../../components/feedPost/FeedPost';
+import { FeedPage } from '../../components/feedPage/FeedPage';
 
 interface Props {
   post: Post;
@@ -25,11 +25,11 @@ const Post = ({ post }: Props) => {
     <>
       <Head>
         <title>
-          {post.user.name} - {post.title}
+          {post.user?.name} - {post.title}
         </title>
       </Head>
       <Main>
-        <FeedPost post={post} />
+        <FeedPage posts={post} />
       </Main>
     </>
   );

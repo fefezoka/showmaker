@@ -1,29 +1,55 @@
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { diffBetweenDatesInMinutes } from '../../utils/diffBetweenDatesInMinutes';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import { Flex, VideoWrapper, PostInfo } from './style';
-// import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import axios from 'axios';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   post: Post;
+  userLikes: LikedPost[];
 }
 
-export const FeedPost = ({ post }: Props) => {
+export const FeedPost = ({ post, userLikes }: Props) => {
+  const { data: session } = useSession();
+  const [postLikes, setPostLikes] = useState<number>(post.likes);
+  const [isLiked, setIsLiked] = useState<boolean>(
+    userLikes.some((like) => like.postId === post.id)
+  );
+
+  const likePost = async () => {
+    setIsLiked(true);
+    setPostLikes((l) => l + 1);
+    await axios.post('/api/post/like', {
+      userId: session?.user.id,
+      postId: post.id,
+    });
+  };
+
+  const dislikePost = async () => {
+    setIsLiked(false);
+    setPostLikes((l) => l - 1);
+    await axios.post('/api/post/dislike', {
+      postId: post.id,
+    });
+  };
   const diffInMinutes = diffBetweenDatesInMinutes(new Date(), new Date(post.createdAt));
 
   return (
     <section>
-      <div>
-        <Link href={`/${post.user.name}`}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Link href={`/${post.user!.name}`}>
           <Flex>
-            <ProfileIcon src={post.user.avatar_url} />
-            <span>{post.user.name}</span>
-            {/* <div>
-            <IoHeartOutline />
-          </div> */}
+            <ProfileIcon src={post.user!.image} />
+            <span>{post.user!.name}</span>
           </Flex>
         </Link>
+        <div onClick={isLiked ? dislikePost : likePost} style={{ textAlign: 'center' }}>
+          {isLiked ? <IoHeart color="red" size={28} /> : <IoHeartOutline size={28} />}
+          <p>{postLikes}</p>
+        </div>
       </div>
 
       <PostInfo>

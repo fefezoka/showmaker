@@ -1,33 +1,8 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
 import { Main } from '../components/main/Main';
-import { GetServerSideProps } from 'next/types';
-import { getSession } from 'next-auth/react';
-import { prisma } from '../lib/prisma';
 import axios from 'axios';
-import { FeedPost } from '../components/feedPost/FeedPost';
-
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
-
-  if (session?.user?.email && session?.user.name && session?.user.image) {
-    await prisma.user.upsert({
-      create: {
-        email: session.user.email,
-        name: session.user.name,
-        avatar_url: session.user.image,
-      },
-      update: {},
-      where: { email: session.user.email },
-    });
-  }
-
-  return {
-    props: {
-      session,
-    },
-  };
-};
+import { FeedPage } from '../components/feedPage/FeedPage';
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>();
@@ -53,9 +28,7 @@ export default function Home() {
         <section>
           <h3>Últimos posts</h3>
         </section>
-        {posts.map((post) => (
-          <FeedPost post={post} key={post.id} />
-        ))}
+        <FeedPage posts={posts} />
       </Main>
     </>
   );

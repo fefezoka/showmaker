@@ -1,35 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Head from 'next/head';
-
-import { GetServerSideProps } from 'next';
-import axios from 'axios';
 import { Main } from '../components/main/Main';
 import { FeedPost } from '../components/feedPost/FeedPost';
+import { useSession } from 'next-auth/react';
+import { FeedPage } from '../components/feedPage/FeedPage';
 
-interface Props {
-  user: User;
-}
+const Profile = () => {
+  const { data: session } = useSession();
+  const [filteredData, setFilteredData] = useState<Post[]>();
+  const [createdAt, setCreatedAt] = useState<Date>();
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
+  useEffect(() => {
+    if (!session) {
+      return;
+    }
+    const { posts, ...user }: User = session.user;
+    const data = posts.map((post) => {
+      return {
+        ...post,
+        user: user,
+      };
+    });
+    setFilteredData(data as Post[]);
+    setCreatedAt(new Date(session.user.createdAt));
+  }, [session]);
 
-  const { data: user } = await axios.get(`${process.env.SITE_URL}/api/user/${id}`);
+  if (!session || !createdAt) {
+    return;
+  }
 
-  return {
-    props: {
-      user,
-    },
-  };
-};
-
-const Profile = ({ user }: Props) => {
-  const createdAt = new Date(user.createdAt);
-  console.log(user);
   return (
     <>
       <Head>
-        <title>Perfil do {user.name}</title>
+        <title>Perfil do {session.user.name}</title>
       </Head>
       <Main>
         <section>
@@ -42,9 +46,9 @@ const Profile = ({ user }: Props) => {
             }}
           >
             <div style={{ borderRadius: '50%', overflow: 'hidden', height: '72px' }}>
-              <Image src={user.avatar_url} height={72} width={72} alt="" />
+              <Image src={session.user.image} height={72} width={72} alt="" />
             </div>
-            <h2>{user.name}</h2>
+            <h2>{session.user.name}</h2>
           </div>
           <span>
             Usuário desde {createdAt.getUTCDate()}/{createdAt.getUTCMonth() + 1}/
@@ -54,9 +58,7 @@ const Profile = ({ user }: Props) => {
         <section>
           <h3>Últimos posts</h3>
         </section>
-        {user.posts.map((post) => (
-          <FeedPost post={post} key={post.id} />
-        ))}
+        {filteredData && <FeedPage posts={filteredData} />}
       </Main>
     </>
   );
