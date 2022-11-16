@@ -6,7 +6,7 @@ import { Overlay, Content, DropContainer, Input } from './style';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 
-export const CreatePost = () => {
+const CreatePost = () => {
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -163,3 +163,5 @@ export const CreatePost = () => {
     </Dialog.Root>
   );
 };
+
+export default CreatePost;
