@@ -7,17 +7,24 @@ export const Container = styled('div', {
 });
 
 export const Main = styled('main', {
-  minWidth: '910px',
   borderRight: '2px solid',
   borderColor: '$bgalt',
 
   '& > section': {
-    padding: '1.5rem',
+    padding: '1rem',
     borderBottom: '2px solid',
     borderColor: '$bgalt',
   },
 
   '& section:first-of-type': {
     paddingTop: '1rem',
+  },
+
+  '@dsk2': {
+    minWidth: '910px',
+
+    '& > section': {
+      padding: '1.5rem',
+    },
   },
 });

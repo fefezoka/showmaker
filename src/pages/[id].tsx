@@ -23,7 +23,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 const Profile = ({ user }: Props) => {
-  console.log(user);
   return (
     <>
       <Head>

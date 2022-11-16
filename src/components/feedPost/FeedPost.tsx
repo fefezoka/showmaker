@@ -10,14 +10,14 @@ import { useQuery } from 'react-query';
 
 interface Props {
   post: Post;
-  userLikes: LikedPost[];
+  userLikes?: LikedPost[];
 }
 
 export const FeedPost = memo(({ post, userLikes }: Props) => {
   const { data: session } = useSession();
   const [postLikes, setPostLikes] = useState<number>(post.likes);
   const [isLiked, setIsLiked] = useState<boolean>(
-    userLikes.some((like) => like.postId === post.id)
+    userLikes?.some((like) => like.postId === post.id) || false
   );
 
   const likePost = async () => {

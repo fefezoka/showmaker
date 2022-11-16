@@ -10,7 +10,7 @@ interface Props {
 
 export const FeedPage = ({ posts }: Props) => {
   const [userLikes, setUserLikes] = useState<LikedPost[]>();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const { isLoading } = useQuery(
     ['userLikes', session],
@@ -23,7 +23,7 @@ export const FeedPage = ({ posts }: Props) => {
     }
   );
 
-  if (isLoading || !userLikes) {
+  if (isLoading || (status === 'authenticated' && !userLikes)) {
     return <div />;
   }
 

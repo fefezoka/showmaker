@@ -14,7 +14,6 @@ export const Line = styled('div', {
   display: 'flex',
   gap: '16px',
   alignItems: 'center',
-  minHeight: '68px',
   padding: '16px 20px',
   color: '$gray',
 
@@ -27,6 +26,8 @@ export const Line = styled('div', {
   },
 
   '@dsk2': {
+    minHeight: '68px',
+
     h3: {
       display: 'block',
     },
