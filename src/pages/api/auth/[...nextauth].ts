@@ -17,23 +17,9 @@ export default NextAuth({
       return true;
     },
     async session({ session, user }) {
-      console.log(new Date());
-
-      const posts = (await prisma.post.findMany({
-        orderBy: {
-          createdAt: 'desc',
-        },
-        where: {
-          userId: user.id,
-        },
-        include: {
-          likedBy: true,
-        },
-      })) as Post[];
-
       return {
         ...session,
-        user: { posts: posts, ...user } as User,
+        user: { ...user } as User,
       };
     },
   },

@@ -14,8 +14,6 @@ export const likes = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  console.log(id);
-
   return res.status(200).json(response);
 };
 

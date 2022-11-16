@@ -35,7 +35,7 @@ export const Menu = () => {
             </a>
           </li>
           <li>
-            <Link href={`/${session?.user?.name}`}>
+            <Link href={session ? `/${session.user.name}` : '#'}>
               <Line>
                 <IoPerson />
                 <h3>Perfil</h3>

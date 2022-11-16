@@ -1,18 +1,19 @@
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { diffBetweenDatesInMinutes } from '../../utils/diffBetweenDatesInMinutes';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import { Flex, VideoWrapper, PostInfo } from './style';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import { useQuery } from 'react-query';
 
 interface Props {
   post: Post;
   userLikes: LikedPost[];
 }
 
-export const FeedPost = ({ post, userLikes }: Props) => {
+export const FeedPost = memo(({ post, userLikes }: Props) => {
   const { data: session } = useSession();
   const [postLikes, setPostLikes] = useState<number>(post.likes);
   const [isLiked, setIsLiked] = useState<boolean>(
@@ -72,4 +73,6 @@ export const FeedPost = ({ post, userLikes }: Props) => {
       </VideoWrapper>
     </section>
   );
-};
+});
+
+FeedPost.displayName = 'FeedPost';

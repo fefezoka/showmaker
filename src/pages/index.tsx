@@ -1,20 +1,24 @@
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Main } from '../components/main/Main';
 import axios from 'axios';
 import { FeedPage } from '../components/feedPage/FeedPage';
+import { useQuery } from 'react-query';
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>();
 
-  useEffect(() => {
-    axios
-      .get('/api/post/get')
-      .then((response) => setPosts(response.data))
-      .catch((e) => console.log(e));
-  }, []);
+  const { isLoading } = useQuery(
+    'posts',
+    async () => {
+      return await axios.get(`/api/post/get`);
+    },
+    {
+      onSuccess: (data) => setPosts(data.data),
+    }
+  );
 
-  if (!posts) {
+  if (!posts || isLoading) {
     return;
   }
 
