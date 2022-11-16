@@ -19,6 +19,9 @@ export const getUserById = async (req: NextApiRequest, res: NextApiResponse) => 
         include: {
           likedBy: true,
         },
+        orderBy: {
+          createdAt: 'desc',
+        },
       },
     },
   })) as User;

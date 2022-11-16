@@ -7,6 +7,7 @@ export const Container = styled('div', {
 });
 
 export const Main = styled('main', {
+  minWidth: '910px',
   borderRight: '2px solid',
   borderColor: '$bgalt',
 
