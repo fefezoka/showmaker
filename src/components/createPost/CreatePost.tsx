@@ -117,17 +117,22 @@ const CreatePost = () => {
               onDrop={(files) => {
                 setFile(files[0]);
               }}
+              maxSize={104857600}
             >
-              {({ getRootProps, getInputProps }) => (
+              {({ getRootProps, getInputProps, fileRejections }) => (
                 <section>
                   <DropContainer {...getRootProps()}>
                     <input {...getInputProps()} />
+                    {fileRejections.length !== 0 && <p>Arquivo muito grande</p>}
                     {file ? (
                       <p>
-                        {file?.name} - {(file?.size / 1000000).toFixed(2)} MB{' '}
+                        {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
                       </p>
                     ) : (
-                      <p>Arraste um vídeo ou clique para procurar</p>
+                      <>
+                        <p>Arraste um vídeo ou clique para procurar</p>
+                        <p>Limite de 100MB</p>
+                      </>
                     )}
                   </DropContainer>
                 </section>

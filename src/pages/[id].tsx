@@ -1,28 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
-import { FeedPage } from '../components/feedPage/FeedPage';
 import axios from 'axios';
-import { GetServerSideProps } from 'next';
+import { useQuery } from 'react-query';
+import { FeedPost } from '../components/feedPost/FeedPost';
 
-interface Props {
-  user: User;
-}
+const Profile = () => {
+  const router = useRouter();
+  const { id } = router.query;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
-
-  const { data: user } = await axios.get(`${process.env.SITE_URL}/api/user/${id}`);
-
-  return {
-    props: {
-      user,
+  const { data: user, isLoading } = useQuery<User>(
+    ['user', id],
+    async () => {
+      const { data } = await axios.get(`/api/user/${id}`);
+      return data;
     },
-  };
-};
+    {
+      enabled: !!id,
+      staleTime: Infinity,
+    }
+  );
 
-const Profile = ({ user }: Props) => {
+  if (!user || isLoading) {
+    return <Main />;
+  }
+
   return (
     <>
       <Head>
@@ -51,7 +55,9 @@ const Profile = ({ user }: Props) => {
         <section>
           <h3>Últimos posts</h3>
         </section>
-        {user.posts && <FeedPage posts={user.posts} />}
+        {user.posts.map((post) => (
+          <FeedPost post={post} key={post.id} />
+        ))}
       </Main>
     </>
   );

@@ -1,24 +1,34 @@
 import Link from 'next/link';
-import React, { useState, memo } from 'react';
-import { diffBetweenDatesInMinutes } from '../../utils/diffBetweenDatesInMinutes';
+import React, { useState, memo, useEffect } from 'react';
+import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import { Flex, VideoWrapper, PostInfo } from './style';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import { useQuery } from 'react-query';
+import { signIn, useSession } from 'next-auth/react';
+import { useQueryClient } from 'react-query';
 
 interface Props {
   post: Post;
-  userLikes?: LikedPost[];
 }
 
-export const FeedPost = memo(({ post, userLikes }: Props) => {
+export const FeedPost = memo(({ post }: Props) => {
   const { data: session } = useSession();
-  const [postLikes, setPostLikes] = useState<number>(post.likes);
-  const [isLiked, setIsLiked] = useState<boolean>(
-    userLikes?.some((like) => like.postId === post.id) || false
-  );
+  const [postLikes, setPostLikes] = useState<number>(post.likedBy.length);
+  const [isLiked, setIsLiked] = useState<boolean>();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    setIsLiked(post.likedBy.some((likes) => likes.userId === session?.user.id));
+  }, [session, post.likedBy]);
+
+  const handleLikeClick = () => {
+    if (!session) {
+      return signIn('discord');
+    }
+
+    isLiked ? dislikePost() : likePost();
+  };
 
   const likePost = async () => {
     setIsLiked(true);
@@ -27,6 +37,7 @@ export const FeedPost = memo(({ post, userLikes }: Props) => {
       userId: session?.user.id,
       postId: post.id,
     });
+    await queryClient.clear();
   };
 
   const dislikePost = async () => {
@@ -35,8 +46,8 @@ export const FeedPost = memo(({ post, userLikes }: Props) => {
     await axios.post('/api/post/dislike', {
       postId: post.id,
     });
+    await queryClient.clear();
   };
-  const diffInMinutes = diffBetweenDatesInMinutes(new Date(), new Date(post.createdAt));
 
   return (
     <section>
@@ -47,7 +58,7 @@ export const FeedPost = memo(({ post, userLikes }: Props) => {
             <span>{post.user!.name}</span>
           </Flex>
         </Link>
-        <div onClick={isLiked ? dislikePost : likePost} style={{ textAlign: 'center' }}>
+        <div onClick={handleLikeClick} style={{ textAlign: 'center', cursor: 'pointer' }}>
           {isLiked ? <IoHeart color="red" size={28} /> : <IoHeartOutline size={28} />}
           <p>{postLikes}</p>
         </div>
@@ -59,11 +70,7 @@ export const FeedPost = memo(({ post, userLikes }: Props) => {
         </Link>
 
         <div>
-          {diffInMinutes < 60 ? (
-            <span>{diffInMinutes}m atrás</span>
-          ) : (
-            <span>{Math.floor(diffInMinutes / 60)}h atrás</span>
-          )}
+          <span>{diffBetweenDates(new Date(), new Date(post.createdAt))}</span>
         </div>
       </PostInfo>
       <VideoWrapper>

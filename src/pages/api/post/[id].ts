@@ -14,6 +14,7 @@ export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => 
     },
     include: {
       user: true,
+      likedBy: true,
     },
   });
 

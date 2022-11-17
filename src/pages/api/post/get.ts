@@ -8,6 +8,7 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
     },
     include: {
       user: true,
+      likedBy: true,
     },
   });
 

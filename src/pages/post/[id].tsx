@@ -1,26 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Main } from '../../components/main/Main';
-import { GetServerSideProps } from 'next';
 import axios from 'axios';
 import Head from 'next/head';
-import { FeedPage } from '../../components/feedPage/FeedPage';
+import { useRouter } from 'next/router';
+import { useQuery } from 'react-query';
+import { FeedPost } from '../../components/feedPost/FeedPost';
 
-interface Props {
-  post: Post;
-}
+const Post = () => {
+  const router = useRouter();
+  const { id } = router.query;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { id } = context.query;
-  const { data: post } = await axios.get(`${process.env.SITE_URL}/api/post/${id}`);
-
-  return {
-    props: {
-      post: post,
+  const { data: post, isLoading } = useQuery<Post>(
+    ['post', id],
+    async () => {
+      const { data } = await axios.get(`/api/post/${id}`);
+      return data;
     },
-  };
-};
+    {
+      enabled: !!id,
+      staleTime: Infinity,
+    }
+  );
 
-const Post = ({ post }: Props) => {
+  if (!post || isLoading) {
+    return <Main />;
+  }
+
   return (
     <>
       <Head>
@@ -29,7 +34,7 @@ const Post = ({ post }: Props) => {
         </title>
       </Head>
       <Main>
-        <FeedPage posts={post} />
+        <FeedPost post={post} />
       </Main>
     </>
   );

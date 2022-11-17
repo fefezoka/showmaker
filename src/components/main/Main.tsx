@@ -4,7 +4,7 @@ import { Menu } from '../menu/Menu';
 import { Container, Main as StyledMain } from './style';
 
 interface Props {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export const Main = memo(({ children }: Props) => {

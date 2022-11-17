@@ -40,6 +40,7 @@ export const DropContainer = styled('section', {
   height: '120px',
   display: 'flex',
   justifyContent: 'center',
+  flexDirection: 'column',
   alignItems: 'center',
   border: '2px dashed',
   borderColor: '$bg',
