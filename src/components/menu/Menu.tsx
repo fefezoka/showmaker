@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 const CreatePost = dynamic(() => import('../createPost/CreatePost'));
 
 interface Props {
-  routes: routes;
+  routes?: routes;
 }
 
 export const Menu = ({ routes }: Props) => {

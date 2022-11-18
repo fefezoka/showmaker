@@ -5,7 +5,7 @@ import { Container, Main as StyledMain } from './style';
 
 interface Props {
   children?: ReactNode;
-  routes: routes;
+  routes?: routes;
 }
 
 export const Main = memo(({ children, routes }: Props) => {
