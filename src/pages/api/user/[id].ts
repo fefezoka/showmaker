@@ -10,32 +10,36 @@ export const getUserById = async (req: NextApiRequest, res: NextApiResponse) => 
     return res.status(404).send({ message: 'error' });
   }
 
-  const user = (await prisma.user.findUnique({
-    where: {
-      name: name as string,
-    },
-    include: {
-      posts: {
-        include: {
-          likedBy: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
+  try {
+    const user = (await prisma.user.findUnique({
+      where: {
+        name: name as string,
+      },
+      include: {
+        posts: {
+          include: {
+            likedBy: true,
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
       },
-    },
-  })) as User;
+    })) as User;
 
-  const { posts, ...rest } = user;
+    const { posts, ...rest } = user;
 
-  const filter = posts.map((post) => {
-    return {
-      ...post,
-      user: rest,
-    };
-  });
+    const filter = posts.map((post) => {
+      return {
+        ...post,
+        user: rest,
+      };
+    });
 
-  return res.status(200).json({ ...rest, posts: filter });
+    return res.status(200).json({ ...rest, posts: filter });
+  } catch (error) {
+    return res.status(404).json({ message: `User ${name} doesn't exist` });
+  }
 };
 
 export default getUserById;

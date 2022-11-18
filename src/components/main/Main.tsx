@@ -5,12 +5,13 @@ import { Container, Main as StyledMain } from './style';
 
 interface Props {
   children?: ReactNode;
+  routes: routes;
 }
 
-export const Main = memo(({ children }: Props) => {
+export const Main = memo(({ children, routes }: Props) => {
   return (
     <Container>
-      <Menu />
+      <Menu routes={routes} />
       <StyledMain>
         <Header />
         {children}

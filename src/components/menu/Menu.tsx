@@ -6,8 +6,13 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 const CreatePost = dynamic(() => import('../createPost/CreatePost'));
 
-export const Menu = () => {
+interface Props {
+  routes: routes;
+}
+
+export const Menu = ({ routes }: Props) => {
   const { data: session } = useSession();
+
   return (
     <StyledMenu>
       <div style={{ position: 'fixed' }}>
@@ -21,7 +26,7 @@ export const Menu = () => {
           </li>
           <li>
             <Link href={'/'} prefetch={false}>
-              <Line>
+              <Line active={routes === 'home'}>
                 <IoHome />
                 <h3>Página inicial</h3>
               </Line>
@@ -37,7 +42,7 @@ export const Menu = () => {
           </li>
           <li>
             <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
-              <Line>
+              <Line active={routes === 'profile'}>
                 <IoPerson />
                 <h3>Perfil</h3>
               </Line>

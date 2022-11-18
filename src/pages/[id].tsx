@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -19,12 +19,24 @@ const Profile = () => {
     },
     {
       enabled: !!id,
+      retry: false,
       staleTime: Infinity,
+      refetchOnWindowFocus: false,
     }
   );
 
-  if (!user || isLoading) {
-    return <Main />;
+  if (isLoading) {
+    return <Main routes="profile" />;
+  }
+
+  if (!user) {
+    return (
+      <Main routes="profile">
+        <section>
+          <h2>Usuário {id} não encontrado</h2>
+        </section>
+      </Main>
+    );
   }
 
   return (
@@ -32,7 +44,7 @@ const Profile = () => {
       <Head>
         <title>Perfil do {user.name}</title>
       </Head>
-      <Main>
+      <Main routes="profile">
         <section>
           <div
             style={{
@@ -47,10 +59,11 @@ const Profile = () => {
             </div>
             <h2>{user.name}</h2>
           </div>
-          {/* <span>
-            Usuário desde {createdAt.getUTCDate()}/{createdAt.getUTCMonth() + 1}/
-            {createdAt.getFullYear()}
-          </span> */}
+          <span>
+            Usuário desde {new Date(user.createdAt).getUTCDate()}/
+            {new Date(user.createdAt).getUTCMonth() + 1}/
+            {new Date(user.createdAt).getFullYear()}
+          </span>
         </section>
         <section>
           <h3>Últimos posts</h3>

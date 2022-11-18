@@ -16,10 +16,8 @@ export default function Home() {
     }
   );
 
-  console.log(posts);
-
   if (!posts || isLoading) {
-    return <Main />;
+    return <Main routes="home" />;
   }
 
   return (
@@ -28,7 +26,7 @@ export default function Home() {
         <title>Show Maker</title>
       </Head>
 
-      <Main>
+      <Main routes="home">
         <section>
           <h3>Últimos posts</h3>
         </section>

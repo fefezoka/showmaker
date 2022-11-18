@@ -22,8 +22,18 @@ const Post = () => {
     }
   );
 
-  if (!post || isLoading) {
+  if (isLoading) {
     return <Main />;
+  }
+
+  if (!post) {
+    return (
+      <Main>
+        <section>
+          <h2>Post não encontrado</h2>
+        </section>
+      </Main>
+    );
   }
 
   return (
