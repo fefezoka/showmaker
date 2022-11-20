@@ -13,7 +13,7 @@ interface Props {
   children: ReactNode;
 }
 
-function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
+const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   global();
 
   return (
@@ -25,9 +25,9 @@ function MyApp({ Component, pageProps }: AppProps<{ session: Session }>) {
       </SessionProvider>
     </QueryClientProvider>
   );
-}
+};
 
-function Layout({ children }: Props) {
+const Layout = ({ children }: Props) => {
   const session = useSession();
 
   if (session.status === 'loading') {
@@ -47,6 +47,6 @@ function Layout({ children }: Props) {
     );
   }
   return <>{children}</>;
-}
+};
 
 export default MyApp;

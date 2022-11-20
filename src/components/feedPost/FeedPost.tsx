@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useState, memo, useEffect } from 'react';
+import React, { useState, memo, useEffect, useCallback } from 'react';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import { Flex, VideoWrapper, PostInfo } from './style';
@@ -17,6 +17,12 @@ export const FeedPost = memo(({ post }: Props) => {
   const [postLikes, setPostLikes] = useState<number>(post.likedBy.length);
   const [isLiked, setIsLiked] = useState<boolean>();
   const queryClient = useQueryClient();
+
+  const volume = useCallback((video: HTMLVideoElement) => {
+    if (video) {
+      video.volume = 0.5;
+    }
+  }, []);
 
   useEffect(() => {
     setIsLiked(post.likedBy.some((likes) => likes.userId === session?.user.id));
@@ -74,7 +80,7 @@ export const FeedPost = memo(({ post }: Props) => {
         </div>
       </PostInfo>
       <VideoWrapper>
-        <video controls preload="metadata" width="100%">
+        <video controls ref={volume} preload="metadata" width="100%">
           <source src={post.video_url} />
         </video>
       </VideoWrapper>

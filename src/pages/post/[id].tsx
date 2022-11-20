@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Main } from '../../components/main/Main';
 import axios from 'axios';
 import Head from 'next/head';
@@ -23,7 +23,7 @@ const Post = () => {
   );
 
   if (isLoading) {
-    return <Main />;
+    return <Main loading />;
   }
 
   if (!post) {

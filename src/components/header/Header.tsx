@@ -1,21 +1,40 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
-import React from 'react';
+import React, { FormEvent, useRef } from 'react';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
-import { Header as StyledHeader, Container, UserSettings } from './style';
+import { IoSearchSharp } from 'react-icons/io5';
+import { Header as StyledHeader, Container, UserSettings, Input } from './style';
+import { useRouter } from 'next/router';
 
 export const Header = () => {
   const { data: session, status } = useSession();
+  const findRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+
+  const handleFindClick = (e: FormEvent) => {
+    e.preventDefault();
+    if (findRef?.current?.value) {
+      router.push(`/search/${findRef.current.value}`);
+    }
+  };
 
   return (
     <StyledHeader>
       <Container>
+        <div style={{ maxWidth: '420px', width: '100%', position: 'relative' }}>
+          <form onSubmit={(e) => handleFindClick(e)}>
+            <Input ref={findRef} placeholder="Procurar" />
+            <div style={{ position: 'absolute', right: 18, top: 10 }}>
+              <button type="submit">
+                <IoSearchSharp />
+              </button>
+            </div>
+          </form>
+        </div>
         <UserSettings>
           {status === 'authenticated' ? (
             <>
               <ProfileIcon src={session?.user?.image as string} />
-              <div>
-                <span>{session?.user?.name}</span>
-              </div>
+              <p>{session?.user?.name}</p>
               <div>
                 <button onClick={() => signOut()}>Sair</button>
               </div>

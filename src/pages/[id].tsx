@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Head from 'next/head';
@@ -26,7 +26,7 @@ const Profile = () => {
   );
 
   if (isLoading) {
-    return <Main routes="profile" />;
+    return <Main routes="profile" loading />;
   }
 
   if (!user) {

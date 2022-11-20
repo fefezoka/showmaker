@@ -9,6 +9,7 @@ export const Container = styled('div', {
 export const Main = styled('main', {
   borderRight: '2px solid',
   borderColor: '$bgalt',
+  width: '100%',
 
   '& > section': {
     padding: '1rem',
@@ -21,8 +22,6 @@ export const Main = styled('main', {
   },
 
   '@dsk2': {
-    minWidth: '910px',
-
     '& > section': {
       padding: '1.5rem',
     },

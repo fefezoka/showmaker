@@ -10,7 +10,7 @@ const fade = keyframes({
 });
 
 export const Overlay = styled('div', {
-  backgroundColor: 'rgb(0, 0, 0, .4)',
+  backgroundColor: '$overlay',
   position: 'fixed',
   inset: 0,
   animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
@@ -25,7 +25,7 @@ export const Content = styled('div', {
   width: 'calc(100% - 20px)',
   transform: 'translate(-50%, -50%)',
   position: 'fixed',
-  backgroundColor: '$white',
+  backgroundColor: '$modal',
   color: '$black',
   animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
   zIndex: '$modal',
@@ -48,6 +48,14 @@ export const DropContainer = styled('section', {
   borderRadius: '8px',
   padding: '.875rem',
   cursor: 'pointer',
+
+  variants: {
+    active: {
+      true: {
+        borderColor: '$blue',
+      },
+    },
+  },
 });
 
 export const Input = styled('input', {
@@ -57,5 +65,5 @@ export const Input = styled('input', {
   width: '100%',
   border: '1px solid',
   margin: '4px 0px',
-  borderColor: '$white',
+  borderColor: '$input-gray',
 });

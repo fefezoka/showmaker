@@ -49,4 +49,13 @@ export const global = globalCss({
   h3: {
     fontSize: '20px',
   },
+
+  input: {
+    border: 'none',
+  },
+
+  'input:focus': {
+    outline: 'none',
+    border: 'none',
+  },
 });

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Dropzone from 'react-dropzone';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/Button';
@@ -119,9 +119,18 @@ const CreatePost = () => {
               }}
               maxSize={104857600}
             >
-              {({ getRootProps, getInputProps, fileRejections }) => (
+              {({
+                getRootProps,
+                getInputProps,
+                fileRejections,
+                isDragActive,
+                acceptedFiles,
+              }) => (
                 <section>
-                  <DropContainer {...getRootProps()}>
+                  <DropContainer
+                    {...getRootProps()}
+                    active={isDragActive || acceptedFiles.length !== 0}
+                  >
                     <input {...getInputProps()} />
                     {fileRejections.length !== 0 && <p>Arquivo muito grande</p>}
                     {file ? (
@@ -155,7 +164,6 @@ const CreatePost = () => {
                 value="Sair"
               />
             </Dialog.Close>
-
             <Button
               loading={loading}
               disabled={!file}

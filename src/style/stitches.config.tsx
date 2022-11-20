@@ -13,10 +13,16 @@ export const {
   theme: {
     colors: {
       bg: 'rgb(30, 42, 56)',
-      bgalt: 'rgb(48, 66, 76)',
+      bgalt: 'rgb(52, 60, 72)',
       black: 'rgb(20, 25, 32)',
       gray: 'rgb(169, 172, 182)',
+      'input-gray': 'rgb(192, 196, 199)',
       white: 'rgb(232, 240, 249)',
+      red: '#ff5050',
+      blue: '#5892fc',
+      bluealt: '#3c6ec9',
+      modal: 'rgb(250, 251, 253)',
+      overlay: 'rgb(0, 0, 0, .4)',
     },
     fontSizes: {
       1: '0.625rem',

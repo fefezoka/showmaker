@@ -5,8 +5,9 @@ export const Button = styled('button', {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '12px 20px',
-  backgroundColor: '#5892fc',
-  border: '1px solid #3c6ec9',
+  backgroundColor: '$blue',
+  border: '1px solid',
+  borderColor: '$bluealt',
   minWidth: '84px',
   color: 'white',
   fontSize: '.875rem',
@@ -16,12 +17,13 @@ export const Button = styled('button', {
   variants: {
     variant: {
       exit: {
-        backgroundColor: 'unset',
-        border: '2px solid #5892fc',
-        color: '#5892fc',
+        backgroundColor: '$red',
+        color: '$white',
+        borderColor: '$white',
+        fontWeight: 700,
       },
       disabled: {
-        backgroundColor: '#3c6ec9',
+        backgroundColor: '$bgalt',
       },
     },
   },
