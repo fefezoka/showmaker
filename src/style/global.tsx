@@ -56,6 +56,5 @@ export const global = globalCss({
 
   'input:focus': {
     outline: 'none',
-    border: 'none',
   },
 });

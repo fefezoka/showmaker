@@ -26,12 +26,12 @@ const Profile = () => {
   );
 
   if (isLoading) {
-    return <Main routes="profile" loading />;
+    return <Main loading />;
   }
 
   if (!user) {
     return (
-      <Main routes="profile">
+      <Main>
         <section>
           <h2>Usuário {id} não encontrado</h2>
         </section>
@@ -44,7 +44,7 @@ const Profile = () => {
       <Head>
         <title>Perfil do {user.name}</title>
       </Head>
-      <Main routes="profile">
+      <Main>
         <section>
           <div
             style={{

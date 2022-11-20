@@ -26,12 +26,12 @@ const Profile = () => {
   );
 
   if (isLoading) {
-    return <Main routes="profile" loading />;
+    return <Main loading />;
   }
 
   if (!posts) {
     return (
-      <Main routes="profile">
+      <Main>
         <section>
           <h2>Post não encontrado</h2>
         </section>
@@ -44,7 +44,7 @@ const Profile = () => {
       <Head>
         <title>Procurando por {title}</title>
       </Head>
-      <Main routes="profile">
+      <Main>
         <section>
           <h3>Procurando por {title}</h3>
         </section>

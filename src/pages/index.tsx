@@ -24,7 +24,7 @@ export default function Home() {
   );
 
   if (!posts || isLoading) {
-    return <Main routes="home" loading />;
+    return <Main loading />;
   }
 
   return (
@@ -33,7 +33,7 @@ export default function Home() {
         <title>Show Maker</title>
       </Head>
 
-      <Main routes="home">
+      <Main>
         <section>
           <h3>Últimos posts</h3>
         </section>

@@ -5,6 +5,8 @@ import { Button } from '../button/Button';
 import { Overlay, Content, DropContainer, Input } from './style';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
+import { IoAdd } from 'react-icons/io5';
+import { useIsDesktop } from '../../hooks/useIsDesktop';
 
 const CreatePost = () => {
   const [file, setFile] = useState<File>();
@@ -12,6 +14,7 @@ const CreatePost = () => {
   const [open, setOpen] = useState<boolean>(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession();
+  const isDesktop = useIsDesktop();
 
   const onClose = () => {
     setOpen(false);
@@ -98,7 +101,15 @@ const CreatePost = () => {
   return (
     <Dialog.Root open={session && open ? true : false} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button onClick={() => !session && signIn('discord')} value="Postar vídeo" />
+        {isDesktop ? (
+          <Button onClick={() => !session && signIn('discord')} value="Postar vídeo" />
+        ) : (
+          <Button
+            Icon={IoAdd}
+            radius="full"
+            onClick={() => !session && signIn('discord')}
+          />
+        )}
       </Dialog.Trigger>
       <Dialog.Portal>
         <Overlay />

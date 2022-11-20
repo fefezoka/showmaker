@@ -1,60 +1,46 @@
 import React from 'react';
-import { Line, Menu as StyledMenu } from './style';
+import { ButtonWrapper, Line, Menu as StyledMenu, Nav } from './style';
 import { IoHome, IoBookmark, IoPerson } from 'react-icons/io5';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { useIsDesktop } from '../../hooks/useIsDesktop';
 const CreatePost = dynamic(() => import('../createPost/CreatePost'));
 
-interface Props {
-  routes?: routes;
-}
-
-export const Menu = ({ routes }: Props) => {
+export const Menu = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+  const isDesktop = useIsDesktop();
 
   return (
     <StyledMenu>
-      <div style={{ position: 'fixed' }}>
-        <ul>
-          <li>
-            <Link href={'/'} prefetch={false}>
-              <Line active>
-                <h3>Show Maker</h3>
-              </Line>
-            </Link>
-          </li>
-          <li>
-            <Link href={'/'} prefetch={false}>
-              <Line active={routes === 'home'}>
-                <IoHome />
-                <h3>Página inicial</h3>
-              </Line>
-            </Link>
-          </li>
-          <li>
-            <a>
-              <Line>
-                <IoBookmark />
-                <h3>Posts salvos</h3>
-              </Line>
-            </a>
-          </li>
-          <li>
-            <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
-              <Line active={routes === 'profile'}>
-                <IoPerson />
-                <h3>Perfil</h3>
-              </Line>
-            </Link>
-          </li>
-          <li>
-            <Line>
-              <CreatePost />
-            </Line>
-          </li>
-        </ul>
-      </div>
+      <Nav>
+        <Link href={'/'} prefetch={false}>
+          <Line active>{isDesktop ? <h3>Show Maker</h3> : <h4>SM</h4>}</Line>
+        </Link>
+        <Link href={'/'} prefetch={false}>
+          <Line active={router.pathname === '/'}>
+            <IoHome />
+            {isDesktop && <h3>Página inicial</h3>}
+          </Line>
+        </Link>
+        <a>
+          <Line>
+            <IoBookmark />
+            {isDesktop && <h3>Posts salvos</h3>}
+          </Line>
+        </a>
+        <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
+          <Line active={router.asPath === `/${session?.user.name}`.replace(' ', '%20')}>
+            <IoPerson />
+            {isDesktop && <h3>Perfil</h3>}
+          </Line>
+        </Link>
+        <ButtonWrapper>
+          <CreatePost />
+        </ButtonWrapper>
+      </Nav>
     </StyledMenu>
   );
 };

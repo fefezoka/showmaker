@@ -7,14 +7,13 @@ import { Container, Main as StyledMain } from './style';
 
 interface Props {
   children?: ReactNode;
-  routes?: routes;
   loading?: boolean;
 }
 
-export const Main = memo(({ children, routes, loading }: Props) => {
+export const Main = memo(({ children, loading }: Props) => {
   return (
     <Container>
-      <Menu routes={routes} />
+      <Menu />
       <StyledMain>
         <Header />
         <>

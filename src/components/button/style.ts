@@ -4,7 +4,7 @@ export const Button = styled('button', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '12px 20px',
+  padding: '12px',
   backgroundColor: '$blue',
   border: '1px solid',
   borderColor: '$bluealt',
@@ -24,6 +24,12 @@ export const Button = styled('button', {
       },
       disabled: {
         backgroundColor: '$bgalt',
+      },
+    },
+    radius: {
+      full: {
+        borderRadius: '50%',
+        minWidth: 'unset',
       },
     },
   },
