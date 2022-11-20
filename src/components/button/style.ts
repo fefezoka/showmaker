@@ -1,4 +1,4 @@
-import { css, styled } from '../../style/stitches.config';
+import { styled } from '../../style/stitches.config';
 
 export const Button = styled('button', {
   display: 'flex',

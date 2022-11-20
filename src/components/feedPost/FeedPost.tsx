@@ -51,6 +51,7 @@ export const FeedPost = memo(({ post }: Props) => {
     setPostLikes((l) => l - 1);
     await axios.post('/api/post/dislike', {
       postId: post.id,
+      userId: session?.user.id,
     });
     await queryClient.clear();
   };

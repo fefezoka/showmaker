@@ -11,9 +11,9 @@ interface Props extends React.ComponentProps<typeof StyledButton> {
 }
 
 export const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ value, Icon, loading, ...props }: Props, ref) => {
+  ({ value, Icon, loading, ...props }: Props, forwardedRef) => {
     return (
-      <StyledButton {...props} ref={ref}>
+      <StyledButton {...props} ref={forwardedRef}>
         {loading && <Image src={Spinner} height={18} width={18} alt="" />}
         {Icon && <Icon size={18} />}
         {!loading && !Icon && value}

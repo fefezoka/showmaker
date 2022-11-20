@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Dropzone from 'react-dropzone';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/Button';
-import { Overlay, Content, DropContainer, Input } from './style';
+import { StyledOverlay, StyledContent, DropContainer, Input } from './style';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
@@ -112,8 +112,8 @@ const CreatePost = () => {
         )}
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Overlay />
-        <Content>
+        <StyledOverlay />
+        <StyledContent>
           <Dialog.Title>Postar vídeo</Dialog.Title>
           <Dialog.Description>
             Compartilhe suas jogadas favoritas com a comunidade!
@@ -182,7 +182,7 @@ const CreatePost = () => {
               value="Enviar"
             />
           </div>
-        </Content>
+        </StyledContent>
       </Dialog.Portal>
     </Dialog.Root>
   );

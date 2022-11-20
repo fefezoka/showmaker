@@ -35,9 +35,10 @@ export const {
       8: '1.75rem',
     },
     zIndices: {
-      modal: 999,
-      overlay: 99,
       header: 9,
+      menu: 99,
+      overlay: 999,
+      modal: 9999,
     },
   },
   media: {

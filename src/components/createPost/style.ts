@@ -1,4 +1,5 @@
 import { keyframes, styled } from '../../style/stitches.config';
+import { Overlay, Content } from '@radix-ui/react-dialog';
 
 const fade = keyframes({
   from: {
@@ -9,7 +10,7 @@ const fade = keyframes({
   },
 });
 
-export const Overlay = styled('div', {
+export const StyledOverlay = styled(Overlay, {
   backgroundColor: '$overlay',
   position: 'fixed',
   inset: 0,
@@ -17,7 +18,7 @@ export const Overlay = styled('div', {
   zIndex: '$overlay',
 });
 
-export const Content = styled('div', {
+export const StyledContent = styled(Content, {
   padding: '2rem 1.5rem',
   top: '50%',
   left: '50%',

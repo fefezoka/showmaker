@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import React, { FormEvent, useRef } from 'react';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import { IoSearchSharp } from 'react-icons/io5';
-import { Header as StyledHeader, Container, UserSettings, Input } from './style';
+import { Header as StyledHeader, Container, UserContainer, Input } from './style';
 import { useRouter } from 'next/router';
 
 export const Header = () => {
@@ -30,21 +30,29 @@ export const Header = () => {
             </div>
           </form>
         </div>
-        <UserSettings>
+        <UserContainer>
           {status === 'authenticated' ? (
             <>
-              <ProfileIcon src={session?.user?.image as string} />
-              <p>{session?.user?.name}</p>
-              <div>
-                <button onClick={() => signOut()}>Sair</button>
+              <div
+                onClick={() => router.push(`/${session.user.name}`)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  cursor: 'pointer',
+                }}
+              >
+                <ProfileIcon src={session?.user?.image as string} />
+                <p>{session?.user?.name}</p>
               </div>
+              <button onClick={() => signOut()}>Sair</button>
             </>
           ) : (
             <div>
               <button onClick={() => signIn('discord')}>Logar com Discord</button>
             </div>
           )}
-        </UserSettings>
+        </UserContainer>
       </Container>
     </StyledHeader>
   );

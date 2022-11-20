@@ -5,7 +5,7 @@ export const Menu = styled('aside', {
   borderColor: '$bgalt',
   minWidth: '42px',
   position: 'relative',
-  zIndex: '$modal',
+  zIndex: '$menu',
 
   '@dsk2': {
     minWidth: '240px',

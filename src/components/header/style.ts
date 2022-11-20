@@ -19,14 +19,9 @@ export const Container = styled('div', {
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
-
-  ul: {
-    display: 'flex',
-    gap: '16px',
-  },
 });
 
-export const UserSettings = styled('div', {
+export const UserContainer = styled('div', {
   display: 'flex',
   justifyContent: 'center',
   gap: '12px',
