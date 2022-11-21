@@ -14,13 +14,14 @@ interface Props {
 
 export const FeedPost = memo(({ post }: Props) => {
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
   const [postLikes, setPostLikes] = useState<number>(post.likedBy.length);
   const [isLiked, setIsLiked] = useState<boolean>();
-  const queryClient = useQueryClient();
 
   const volume = useCallback((video: HTMLVideoElement) => {
+    const lastVolume = window.localStorage.getItem('volume');
     if (video) {
-      video.volume = 0.5;
+      video.volume = Number(lastVolume) || 0.4;
     }
   }, []);
 
@@ -81,7 +82,18 @@ export const FeedPost = memo(({ post }: Props) => {
         </div>
       </PostInfo>
       <VideoWrapper>
-        <video controls ref={volume} preload="metadata" width="100%">
+        <video
+          controls
+          ref={volume}
+          onVolumeChange={(e) => {
+            window.localStorage.setItem(
+              'volume',
+              (e.target as HTMLVideoElement).volume.toFixed(2).toString()
+            );
+          }}
+          preload="metadata"
+          width="100%"
+        >
           <source src={post.video_url} />
         </video>
       </VideoWrapper>
