@@ -25,6 +25,7 @@ const CreatePost = () => {
     setOpen(false);
     setFile(undefined);
     setLoading(false);
+    setThumbnail(undefined);
   };
 
   const processFile = async () => {
@@ -131,7 +132,7 @@ const CreatePost = () => {
       </Dialog.Trigger>
       <Dialog.Portal>
         <StyledOverlay />
-        <StyledContent>
+        <StyledContent onInteractOutside={onClose}>
           <Dialog.Title>Postar vídeo</Dialog.Title>
           <Dialog.Description>
             Compartilhe suas jogadas favoritas com a comunidade!
