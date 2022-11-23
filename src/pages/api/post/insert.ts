@@ -4,17 +4,23 @@ import { prisma } from '../../../lib/prisma';
 export const insert = async (req: NextApiRequest, res: NextApiResponse) => {
   const email = req.body.email;
   const title = req.body.title;
-  const url = req.body.url;
+  const videoUrl = req.body.videoUrl;
+  const thumbnailUrl = req.body.thumbnailUrl;
 
   const response = await prisma.post.create({
     data: {
       title: title,
-      video_url: url,
+      videoUrl: videoUrl,
+      thumbnailUrl: thumbnailUrl,
       user: {
         connect: {
           email: email,
         },
       },
+    },
+    include: {
+      likedBy: true,
+      user: true,
     },
   });
 

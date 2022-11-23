@@ -45,26 +45,27 @@ model User {
   posts         Post[]
   accounts      Account[]
   sessions      Session[]
-  likedPosts     LikedPost[]
+  likedPosts    LikedPost[]
 }
 
 model Post {
-  id        String      @id @default(uuid()) @map("_id")
-  title     String
-  video_url String
-  likes     Int      @default(0)
-  user      User        @relation(fields: [userId], references: [id])
-  userId    String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  likedBy LikedPost[]
+  id           String      @id @default(uuid()) @map("_id")
+  title        String
+  videoUrl     String
+  thumbnailUrl String
+  likes        Int         @default(0)
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  likedBy      LikedPost[]
 }
 
 model LikedPost {
   id     String @id @default(uuid()) @map("_id")
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
-  post   Post   @relation(fields: [postId], references: [id])
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String @unique
 }
 

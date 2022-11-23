@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import * as Dialog from '@radix-ui/react-dialog';
 import { Button } from '../button/Button';
@@ -7,13 +8,17 @@ import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
 import { useIsDesktop } from '../../hooks/useIsDesktop';
+import { getVideoFrame } from '../../utils/getVideoFrame';
+import { useQueryClient } from 'react-query';
 
 const CreatePost = () => {
+  const queryClient = useQueryClient();
+  const titleRef = useRef<HTMLInputElement>(null);
+  const { data: session, status } = useSession();
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
-  const titleRef = useRef<HTMLInputElement>(null);
-  const { data: session, status } = useSession();
+  const [thumbnail, setThumbnail] = useState<string>();
   const isDesktop = useIsDesktop();
 
   const onClose = () => {
@@ -23,79 +28,92 @@ const CreatePost = () => {
   };
 
   const processFile = async () => {
-    if (loading) {
+    if (loading || !file || !thumbnail || !titleRef.current?.value) {
       return;
     }
     setLoading(true);
 
-    const YOUR_CLOUD_NAME = 'dlgkvfmky';
-    const POST_URL = 'https://api.cloudinary.com/v1_1/' + YOUR_CLOUD_NAME + '/upload';
     const XUniqueUploadId = +new Date();
 
-    processFile();
+    const processThumbnail = async () => {
+      const formdata = new FormData();
+      formdata.append('cloud_name', 'dlgkvfmky');
+      formdata.append('file', thumbnail);
+      formdata.append('upload_preset', 'gjfsvh53');
 
-    function processFile() {
-      if (!file) {
-        return;
-      }
+      const { data } = await axios.post(
+        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
+        formdata
+      );
+      return data;
+    };
+
+    const processVideo = async () => {
       const size = file.size;
       const sliceSize = 20000000;
       var start = 0;
 
-      setTimeout(loop, 3);
+      const thumbData = await processThumbnail();
 
-      function loop() {
-        if (!file) {
-          return;
-        }
-
+      const loop = async () => {
         var end = start + sliceSize;
 
         if (end > size) {
           end = size;
         }
-        var s = slice(file, start, end);
-        send(s, start, end - 1, size);
+
+        const piece = file.slice.bind(file)(start, end) as File;
+        const videoData = await sendVideoPiece(piece, start, end - 1, size);
         if (end < size) {
           start += sliceSize;
           setTimeout(loop, 3);
-        }
-      }
-    }
-
-    function send(piece: File, start: number, end: number, size: number) {
-      var formdata = new FormData();
-
-      formdata.append('file', piece);
-      formdata.append('cloud_name', 'dlgkvfmky');
-      formdata.append('upload_preset', 'tamnuopz');
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', POST_URL, true);
-      xhr.setRequestHeader('X-Unique-Upload-Id', `${XUniqueUploadId}`);
-      xhr.setRequestHeader('Content-Range', 'bytes ' + start + '-' + end + '/' + size);
-
-      xhr.onload = async function () {
-        const response = JSON.parse(xhr.response);
-        console.log(response);
-        if (response.done !== false && status === 'authenticated') {
-          await axios.post('/api/post/insert', {
-            ...session.user,
-            title: titleRef!.current!.value,
-            url: response.secure_url,
-          });
-          onClose();
+        } else {
+          await processPostOnDb(thumbData.secure_url, videoData.secure_url);
         }
       };
 
-      xhr.send(formdata);
-    }
+      setTimeout(loop, 3);
+    };
 
-    function slice(file: File, start: number, end: number) {
-      var slice = file.slice;
+    const sendVideoPiece = async (
+      piece: File,
+      start: number,
+      end: number,
+      size: number
+    ) => {
+      const formdata = new FormData();
+      formdata.append('cloud_name', 'dlgkvfmky');
+      formdata.append('file', piece);
+      formdata.append('upload_preset', 'tamnuopz');
 
-      return slice.bind(file)(start, end) as File;
-    }
+      const { data } = await axios.post(
+        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
+        formdata,
+        {
+          headers: {
+            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
+          },
+        }
+      );
+      return data;
+    };
+
+    const processPostOnDb = async (thumbnailUrl: string, videoUrl: string) => {
+      if (status === 'authenticated') {
+        const { data } = await axios.post('/api/post/insert', {
+          ...session.user,
+          title: titleRef.current?.value,
+          thumbnailUrl: thumbnailUrl,
+          videoUrl: videoUrl,
+        });
+        queryClient.setQueryData(['post', data.id], data);
+        queryClient.refetchQueries();
+        onClose();
+      }
+    };
+
+    processVideo();
   };
 
   return (
@@ -125,29 +143,32 @@ const CreatePost = () => {
           <div>
             <Dropzone
               accept={{ 'video/mp4': [] }}
-              onDrop={(files) => {
+              onDropAccepted={async (files) => {
                 setFile(files[0]);
+                setThumbnail(await getVideoFrame(files[0]));
+              }}
+              onDropRejected={() => {
+                setFile(undefined);
+                setThumbnail(undefined);
               }}
               maxSize={104857600}
             >
-              {({
-                getRootProps,
-                getInputProps,
-                fileRejections,
-                isDragActive,
-                acceptedFiles,
-              }) => (
+              {({ getRootProps, fileRejections, isDragActive, acceptedFiles }) => (
                 <section>
                   <DropContainer
                     {...getRootProps()}
                     active={isDragActive || acceptedFiles.length !== 0}
                   >
-                    <input {...getInputProps()} />
                     {fileRejections.length !== 0 && <p>Arquivo muito grande</p>}
                     {file ? (
-                      <p>
-                        {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
-                      </p>
+                      <div style={{ display: 'flex', gap: '16px' }}>
+                        {thumbnail && (
+                          <Image src={thumbnail} alt="" width={160} height={90} />
+                        )}
+                        <p style={{ lineBreak: 'anywhere' }}>
+                          {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
+                        </p>
+                      </div>
                     ) : (
                       <>
                         <p>Arraste um vídeo ou clique para procurar</p>

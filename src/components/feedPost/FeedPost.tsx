@@ -91,10 +91,11 @@ export const FeedPost = memo(({ post }: Props) => {
               (e.target as HTMLVideoElement).volume.toFixed(2).toString()
             );
           }}
-          preload="metadata"
+          preload="none"
+          poster={post.thumbnailUrl}
           width="100%"
         >
-          <source src={post.video_url} />
+          <source src={post.videoUrl} />
         </video>
       </VideoWrapper>
     </section>

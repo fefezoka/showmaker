@@ -44,7 +44,7 @@ export const DropContainer = styled('section', {
   flexDirection: 'column',
   alignItems: 'center',
   border: '2px dashed',
-  borderColor: '$bg',
+  borderColor: '$input-gray',
   margin: '12px 0px',
   borderRadius: '8px',
   padding: '.875rem',

@@ -4,6 +4,7 @@ export const VideoWrapper = styled('div', {
   overflow: 'hidden',
   width: '100%',
   borderRadius: '32px',
+  cursor: 'pointer',
 });
 
 export const Flex = styled('div', {

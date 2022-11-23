@@ -1,7 +1,8 @@
 interface Post {
   id: string;
   title: string;
-  video_url: string;
+  videoUrl: string;
+  thumbnailUrl: string;
   likes: int;
   createdAt: date;
   updatedAt: date;
