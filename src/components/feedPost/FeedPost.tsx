@@ -21,7 +21,7 @@ export const FeedPost = memo(({ post }: Props) => {
   const volume = useCallback((video: HTMLVideoElement) => {
     const lastVolume = window.localStorage.getItem('volume');
     if (video) {
-      video.volume = Number(lastVolume) || 0.4;
+      video.volume = Number(lastVolume) || 0.33;
     }
   }, []);
 
@@ -86,6 +86,7 @@ export const FeedPost = memo(({ post }: Props) => {
           controls
           ref={volume}
           onVolumeChange={(e) => {
+            e.preventDefault();
             window.localStorage.setItem(
               'volume',
               (e.target as HTMLVideoElement).volume.toFixed(2).toString()
@@ -94,6 +95,11 @@ export const FeedPost = memo(({ post }: Props) => {
           preload="none"
           poster={post.thumbnailUrl}
           width="100%"
+          onClick={(e) => {
+            e.preventDefault();
+            const video = e.target as HTMLVideoElement;
+            video.paused ? video.play() : video.pause();
+          }}
         >
           <source src={post.videoUrl} />
         </video>
