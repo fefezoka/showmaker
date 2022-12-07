@@ -4,12 +4,13 @@ import { Wrapper } from './style';
 
 interface Props {
   src: string;
+  size?: number;
 }
 
-export const ProfileIcon = ({ src }: Props) => {
+export const ProfileIcon = ({ src, size = 32 }: Props) => {
   return (
-    <Wrapper>
-      <Image alt="" src={src} width={32} height={32} />
+    <Wrapper style={{ width: size, height: size }}>
+      <Image alt="" src={src} width={size} height={size} />
     </Wrapper>
   );
 };

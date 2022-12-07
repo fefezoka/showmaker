@@ -6,6 +6,7 @@ import { Main } from '../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
+import { ProfileIcon } from '../components/profileIcon/ProfileIcon';
 
 const Profile = () => {
   const router = useRouter();
@@ -54,9 +55,7 @@ const Profile = () => {
               marginBottom: '16px',
             }}
           >
-            <div style={{ borderRadius: '50%', overflow: 'hidden', height: '72px' }}>
-              <Image src={user.image} height={72} width={72} alt="" />
-            </div>
+            <ProfileIcon src={user.image} size={92} />
             <h2>{user.name}</h2>
           </div>
           <span>

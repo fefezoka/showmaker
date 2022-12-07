@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 
 export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;

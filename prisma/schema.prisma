@@ -35,30 +35,33 @@ model Session {
 }
 
 model User {
-  id            String      @id @default(uuid()) @map("_id")
-  name          String      @unique
-  email         String      @unique
+  id            String        @id @default(uuid()) @map("_id")
+  name          String        @unique
+  email         String        @unique
   image         String
   emailVerified DateTime?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   posts         Post[]
   accounts      Account[]
+  comments      PostComment[]
   sessions      Session[]
   likedPosts    LikedPost[]
 }
 
 model Post {
-  id           String      @id @default(uuid()) @map("_id")
+  id           String        @id @default(uuid()) @map("_id")
   title        String
   videoUrl     String
   thumbnailUrl String
-  likes        Int         @default(0)
-  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes        Int           @default(0)
+  commentsAmount Int? @default(0)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   likedBy      LikedPost[]
+  postComments PostComment[]
 }
 
 model LikedPost {
@@ -67,6 +70,16 @@ model LikedPost {
   userId String @unique
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String @unique
+}
+
+model PostComment {
+  id      String @id @default(uuid()) @map("_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String @unique
+  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId  String @unique
+  message String
+  createdAt DateTime @default(now())
 }
 
 model VerificationToken {

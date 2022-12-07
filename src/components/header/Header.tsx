@@ -43,9 +43,11 @@ export const Header = () => {
                 }}
               >
                 <ProfileIcon src={session?.user?.image as string} />
-                <p>{session?.user?.name}</p>
+                <h4>{session?.user?.name}</h4>
               </div>
-              <button onClick={() => signOut()}>Sair</button>
+              <button onClick={() => signOut()}>
+                <h4> Sair</h4>
+              </button>
             </>
           ) : (
             <div>

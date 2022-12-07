@@ -44,7 +44,7 @@ const Post = () => {
         </title>
       </Head>
       <Main>
-        <FeedPost post={post} />
+        <FeedPost post={post} full />
       </Main>
     </>
   );

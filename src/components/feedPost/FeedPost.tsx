@@ -1,18 +1,28 @@
 import Link from 'next/link';
-import React, { useState, memo, useEffect, useCallback } from 'react';
+import React, { useState, memo, useEffect, useCallback, FormEvent } from 'react';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
-import { Flex, VideoWrapper, PostInfo } from './style';
+import {
+  Flex,
+  VideoWrapper,
+  PostInfo,
+  NewCommentContainer,
+  CommentContainer,
+} from './style';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
-import { useQueryClient } from 'react-query';
+import { useQueryClient, useQuery } from 'react-query';
+import { Button } from '../button/Button';
+import Spinner from '../../assets/Spinner.svg';
+import Image from 'next/image';
 
 interface Props {
   post: Post;
+  full?: boolean;
 }
 
-export const FeedPost = memo(({ post }: Props) => {
+export const FeedPost = memo(({ post, full }: Props) => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
   const [postLikes, setPostLikes] = useState<number>(post.likedBy.length);
@@ -57,13 +67,42 @@ export const FeedPost = memo(({ post }: Props) => {
     await queryClient.clear();
   };
 
+  const { data: comments, isLoading } = useQuery<PostComment[]>(
+    ['comments', post.id],
+    async () => {
+      const { data } = await axios.get(`/api/post/${post.id}/comments`);
+      return data;
+    },
+    {
+      enabled: !!full,
+      staleTime: Infinity,
+    }
+  );
+
+  const commentSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const message = (e.currentTarget[0] as HTMLInputElement).value;
+
+    if (!message) {
+      return;
+    }
+
+    await axios.post('/api/post/newComment', {
+      postId: post.id,
+      userId: session?.user.id,
+      message: message,
+    });
+  };
+
+  console.log(comments);
+
   return (
     <section>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Link href={`/${post.user!.name}`}>
           <Flex>
             <ProfileIcon src={post.user!.image} />
-            <span>{post.user!.name}</span>
+            <h4>{post.user!.name}</h4>
           </Flex>
         </Link>
         <div onClick={handleLikeClick} style={{ textAlign: 'center', cursor: 'pointer' }}>
@@ -104,6 +143,44 @@ export const FeedPost = memo(({ post }: Props) => {
           <source src={post.videoUrl} />
         </video>
       </VideoWrapper>
+
+      {full ? (
+        <>
+          {session && (
+            <form onSubmit={commentSubmit}>
+              <NewCommentContainer>
+                <ProfileIcon src={session.user.image} size={42} />
+                <input type="text" placeholder="Faça um comentário" />
+                <Button value="Enviar" />
+              </NewCommentContainer>
+            </form>
+          )}
+          {comments && !isLoading ? (
+            comments.map((comment) => (
+              <CommentContainer key={comment.id}>
+                <div style={{ display: 'flex', gap: '.75rem', alignItems: 'center' }}>
+                  <Link href={`/${comment.user.name}`}>
+                    <ProfileIcon src={comment.user.image} />
+                  </Link>
+                  <h4>{comment.user.name}</h4>
+                  <span>{comment.message}</span>
+                </div>
+                <span>{diffBetweenDates(new Date(), new Date(comment.createdAt))}</span>
+              </CommentContainer>
+            ))
+          ) : (
+            <div style={{ textAlign: 'center' }}>
+              <Image src={Spinner} alt="" height={42} width={42} />
+            </div>
+          )}
+        </>
+      ) : (
+        <div style={{ marginTop: '1rem' }}>
+          <Link href={`post/${post.id}`}>
+            {post.commentsAmount ? `Ver ${post.commentsAmount} comentários` : 'Comentar'}
+          </Link>
+        </div>
+      )}
     </section>
   );
 });
