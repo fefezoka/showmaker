@@ -4,8 +4,8 @@ interface Post {
   videoUrl: string;
   thumbnailUrl: string;
   likes: number;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Date;
+  updatedAt: Date;
   likedBy: LikedPost[];
   commentsAmount: number;
   postComments?: PostComment[];
