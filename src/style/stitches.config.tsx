@@ -14,6 +14,7 @@ export const {
     colors: {
       bg: 'rgb(30, 42, 56)',
       bgalt: 'rgb(52, 60, 72)',
+      scrollthumb: 'rgb(72, 84, 102)',
       black: 'rgb(20, 25, 32)',
       gray: 'rgb(169, 172, 182)',
       'input-gray': 'rgb(192, 196, 199)',

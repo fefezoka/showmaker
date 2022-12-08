@@ -5,6 +5,8 @@ export const VideoWrapper = styled('div', {
   width: '100%',
   borderRadius: '2rem',
   cursor: 'pointer',
+  paddingBottom: '56.25%',
+  position: 'relative',
 });
 
 export const Flex = styled('div', {

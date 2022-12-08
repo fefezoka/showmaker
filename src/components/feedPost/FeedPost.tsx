@@ -131,9 +131,14 @@ export const FeedPost = memo(({ post, full }: Props) => {
               (e.target as HTMLVideoElement).volume.toFixed(2).toString()
             );
           }}
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            objectFit: 'fill',
+          }}
           preload="none"
           poster={post.thumbnailUrl}
-          width="100%"
           onClick={(e) => {
             e.preventDefault();
             const video = e.target as HTMLVideoElement;
