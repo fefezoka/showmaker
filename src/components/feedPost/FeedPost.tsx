@@ -71,10 +71,11 @@ export const FeedPost = memo(({ post, full }: Props) => {
     ['comments', post.id],
     async () => {
       const { data } = await axios.get(`/api/post/${post.id}/comments`);
+      console.log('fetch');
       return data;
     },
     {
-      enabled: !!full,
+      enabled: !!full && post.commentsAmount > 0,
       staleTime: Infinity,
     }
   );
@@ -93,8 +94,6 @@ export const FeedPost = memo(({ post, full }: Props) => {
       message: message,
     });
   };
-
-  console.log(comments);
 
   return (
     <section>
@@ -160,7 +159,8 @@ export const FeedPost = memo(({ post, full }: Props) => {
               </NewCommentContainer>
             </form>
           )}
-          {comments && !isLoading ? (
+          {!isLoading ? (
+            comments &&
             comments.map((comment) => (
               <CommentContainer key={comment.id}>
                 <div style={{ display: 'flex', gap: '.75rem', alignItems: 'center' }}>
@@ -175,7 +175,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
             ))
           ) : (
             <div style={{ textAlign: 'center' }}>
-              <Image src={Spinner} alt="" height={42} width={42} />
+              <Image src={Spinner} alt="" priority height={42} width={42} />
             </div>
           )}
         </>
