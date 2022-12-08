@@ -54,7 +54,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
       userId: session?.user.id,
       postId: post.id,
     });
-    await queryClient.clear();
+    queryClient.clear();
   };
 
   const dislikePost = async () => {
@@ -64,7 +64,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
       postId: post.id,
       userId: session?.user.id,
     });
-    await queryClient.clear();
+    queryClient.clear();
   };
 
   const { data: comments, isLoading } = useQuery<PostComment[]>(
@@ -88,11 +88,14 @@ export const FeedPost = memo(({ post, full }: Props) => {
       return;
     }
 
-    await axios.post('/api/post/newComment', {
+    const { data } = await axios.post('/api/post/newComment', {
       postId: post.id,
       userId: session?.user.id,
       message: message,
     });
+
+    const comments = queryClient.getQueryData<PostComment[]>(['comments', post.id]);
+    comments && queryClient.setQueryData(['comments', post.id], [data, ...comments]);
   };
 
   return (

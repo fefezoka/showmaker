@@ -10,6 +10,9 @@ export const newComment = async (req: NextApiRequest, res: NextApiResponse) => {
       postId: postId,
       userId: userId,
     },
+    include: {
+      user: true,
+    },
   });
 
   await prisma.post.update({
