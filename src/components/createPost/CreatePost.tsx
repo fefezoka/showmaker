@@ -108,8 +108,8 @@ const CreatePost = () => {
           thumbnailUrl: thumbnailUrl,
           videoUrl: videoUrl,
         });
-        const homePosts = queryClient.getQueryData<Post[]>('posts');
-        homePosts && queryClient.setQueryData('posts', [data, ...homePosts]);
+
+        queryClient.setQueryData<Post[]>('posts', (old) => [data, ...(old ? old : [])]);
         onClose();
       }
     };

@@ -31,7 +31,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
   const volume = useCallback((video: HTMLVideoElement) => {
     const lastVolume = window.localStorage.getItem('volume');
     if (video) {
-      video.volume = Number(lastVolume) || 0.33;
+      video.volume = Number(lastVolume) || 0.25;
     }
   }, []);
 
@@ -94,8 +94,10 @@ export const FeedPost = memo(({ post, full }: Props) => {
       message: message,
     });
 
-    const comments = queryClient.getQueryData<PostComment[]>(['comments', post.id]);
-    comments && queryClient.setQueryData(['comments', post.id], [data, ...comments]);
+    queryClient.setQueryData<PostComment[]>(['comments', post.id], (old) => [
+      data,
+      ...(old ? old : []),
+    ]);
   };
 
   return (
@@ -133,12 +135,6 @@ export const FeedPost = memo(({ post, full }: Props) => {
               (e.target as HTMLVideoElement).volume.toFixed(2).toString()
             );
           }}
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            objectFit: 'fill',
-          }}
           preload="none"
           poster={post.thumbnailUrl}
           onClick={(e) => {
@@ -156,7 +152,9 @@ export const FeedPost = memo(({ post, full }: Props) => {
           {session && (
             <form onSubmit={commentSubmit}>
               <NewCommentContainer>
-                <ProfileIcon src={session.user.image} size={42} />
+                <Link href={`/${session.user.name}`}>
+                  <ProfileIcon src={session.user.image} size={42} />
+                </Link>
                 <input type="text" placeholder="Faça um comentário" />
                 <Button value="Enviar" />
               </NewCommentContainer>
@@ -184,7 +182,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
         </>
       ) : (
         <div style={{ marginTop: '1rem' }}>
-          <Link href={`post/${post.id}`}>
+          <Link href={`/post/${post.id}`}>
             {post.commentsAmount ? `Ver ${post.commentsAmount} comentários` : 'Comentar'}
           </Link>
         </div>

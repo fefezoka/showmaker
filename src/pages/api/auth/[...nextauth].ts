@@ -5,7 +5,6 @@ import { prisma } from '../../../lib/prisma';
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
-
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_ID!,

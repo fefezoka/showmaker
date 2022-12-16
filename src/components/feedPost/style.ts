@@ -7,6 +7,13 @@ export const VideoWrapper = styled('div', {
   cursor: 'pointer',
   paddingBottom: '56.25%',
   position: 'relative',
+
+  video: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    objectFit: 'fill',
+  },
 });
 
 export const Flex = styled('div', {

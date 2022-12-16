@@ -25,12 +25,6 @@ export const Menu = () => {
             {isDesktop && <h3>Página inicial</h3>}
           </Line>
         </Link>
-        <a>
-          <Line>
-            <IoBookmark />
-            {isDesktop && <h3>Posts salvos</h3>}
-          </Line>
-        </a>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
           <Line active={router.asPath === `/${session?.user.name}`.replace(' ', '%20')}>
             <IoPerson />
