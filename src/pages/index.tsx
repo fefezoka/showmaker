@@ -21,7 +21,7 @@ export default function Home() {
 
   const posts = useGetPost(ids);
 
-  if (!ids || !posts) {
+  if (!ids || !posts || posts.some((post) => post.isLoading === true)) {
     return <Main loading />;
   }
 
