@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { useState, memo, useEffect, useCallback, FormEvent } from 'react';
+import React, { useState, memo, forwardRef, useCallback, FormEvent } from 'react';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import {
@@ -17,12 +17,12 @@ import { Button } from '../button/Button';
 import Spinner from '../../assets/Spinner.svg';
 import Image from 'next/image';
 
-interface Props {
+interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;
   full?: boolean;
 }
 
-export const FeedPost = memo(({ post, full }: Props) => {
+export const FeedPost = forwardRef(({ post, full, ...props }: Props, forwardRef) => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
   const [isLiked, setIsLiked] = useState<boolean>(
@@ -114,7 +114,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
   };
 
   return (
-    <section>
+    <section {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Link href={`/${post.user!.name}`}>
           <Flex>

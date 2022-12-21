@@ -20,6 +20,9 @@ export const getUserById = async (req: NextApiRequest, res: NextApiResponse) => 
           select: {
             id: true,
           },
+          orderBy: {
+            createdAt: 'desc',
+          },
         },
       },
     })) as User;

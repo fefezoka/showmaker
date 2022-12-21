@@ -1,27 +1,44 @@
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useInfiniteQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
+import { useInView } from 'react-intersection-observer';
 import { useGetPost } from '../hooks/useGetPost';
+import { useEffect } from 'react';
 
 export default function Home() {
-  const { data: ids } = useQuery<{ id: string }[]>(
-    'ids',
-    async () => {
-      const { data } = await axios.get(`/api/post/get`);
+  const { ref, inView } = useInView();
+
+  const {
+    data: ids,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery(
+    ['ids'],
+    async ({ pageParam = 1 }) => {
+      const { data } = await axios.get(`/api/post/page/${pageParam}`);
       return data;
     },
     {
-      staleTime: Infinity,
+      getNextPageParam: (currentPage, pages) => {
+        return currentPage.length == 6 && pages.length + 1;
+      },
       refetchOnWindowFocus: false,
-      cacheTime: Infinity,
     }
   );
 
-  const posts = useGetPost(ids);
+  const posts = useGetPost(
+    ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
+  );
 
-  if (!ids || !posts || posts.some((post) => post.isLoading === true)) {
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
+
+  if (!ids || !posts || posts.slice(0, 6).some((post) => post.isLoading === true)) {
     return <Main loading />;
   }
 
@@ -36,7 +53,14 @@ export default function Home() {
           <h3>Últimos posts</h3>
         </section>
         {posts.map(
-          (post) => post.data && <FeedPost post={post.data} key={post.data.id} />
+          (post, index) =>
+            post.data && (
+              <FeedPost
+                ref={posts.length - 1 === index ? ref : null}
+                post={post.data}
+                key={post.data.id}
+              />
+            )
         )}
       </Main>
     </>
