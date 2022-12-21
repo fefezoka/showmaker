@@ -5,5 +5,5 @@ interface User {
   image: string;
   createdAt: Date;
   updatedAt: Date;
-  posts: Post[];
+  posts: { id: string }[];
 }

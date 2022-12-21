@@ -5,12 +5,13 @@ import { Main } from '../../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../../components/feedPost/FeedPost';
+import { useGetPost } from '../../hooks/useGetPost';
 
 const Profile = () => {
   const router = useRouter();
   const { title } = router.query;
 
-  const { data: posts, isLoading } = useQuery<Post[]>(
+  const { data: ids, isLoading } = useQuery<{ id: string }[]>(
     ['search', title],
     async () => {
       const { data } = await axios.get(`/api/post/search/${title}`);
@@ -23,6 +24,8 @@ const Profile = () => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const posts = useGetPost(ids);
 
   if (isLoading) {
     return <Main loading />;
@@ -47,9 +50,9 @@ const Profile = () => {
         <section>
           <h3>Procurando por {title}</h3>
         </section>
-        {posts.map((post) => (
-          <FeedPost post={post} key={post.id} />
-        ))}
+        {posts.map(
+          (post) => post.data && <FeedPost post={post.data} key={post.data.id} />
+        )}
       </Main>
     </>
   );

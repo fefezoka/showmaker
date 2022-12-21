@@ -17,26 +17,14 @@ export const getUserById = async (req: NextApiRequest, res: NextApiResponse) => 
       },
       include: {
         posts: {
-          include: {
-            likedBy: true,
-          },
-          orderBy: {
-            createdAt: 'desc',
+          select: {
+            id: true,
           },
         },
       },
     })) as User;
 
-    const { posts, ...rest } = user;
-
-    const filter = posts.map((post) => {
-      return {
-        ...post,
-        user: rest,
-      };
-    });
-
-    return res.status(200).json({ ...rest, posts: filter });
+    return res.status(200).json(user);
   } catch (error) {
     return res.status(404).json({ message: `User ${name} doesn't exist` });
   }

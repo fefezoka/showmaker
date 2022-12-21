@@ -25,8 +25,9 @@ interface Props {
 export const FeedPost = memo(({ post, full }: Props) => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
-  const [postLikes, setPostLikes] = useState<number>(post.likedBy.length);
-  const [isLiked, setIsLiked] = useState<boolean>();
+  const [isLiked, setIsLiked] = useState<boolean>(
+    post.likedBy.some((likes) => likes.userId === session?.user.id)
+  );
 
   const volume = useCallback((video: HTMLVideoElement) => {
     const lastVolume = window.localStorage.getItem('volume');
@@ -34,10 +35,6 @@ export const FeedPost = memo(({ post, full }: Props) => {
       video.volume = Number(lastVolume) || 0.25;
     }
   }, []);
-
-  useEffect(() => {
-    setIsLiked(post.likedBy.some((likes) => likes.userId === session?.user.id));
-  }, [session, post.likedBy]);
 
   const handleLikeClick = () => {
     if (!session) {
@@ -49,22 +46,38 @@ export const FeedPost = memo(({ post, full }: Props) => {
 
   const likePost = async () => {
     setIsLiked(true);
-    setPostLikes((l) => l + 1);
+    queryClient.setQueryData<Post>(['post', post.id], (old) =>
+      old
+        ? {
+            ...old,
+            likes: old.likes + 1,
+            likedBy: [...old.likedBy, { userId: session?.user.id, postId: post.id }],
+          }
+        : post
+    );
+
     await axios.post('/api/post/like', {
       userId: session?.user.id,
       postId: post.id,
     });
-    queryClient.clear();
   };
 
   const dislikePost = async () => {
     setIsLiked(false);
-    setPostLikes((l) => l - 1);
+    queryClient.setQueryData<Post>(['post', post.id], (old) =>
+      old
+        ? {
+            ...old,
+            likes: old.likes - 1,
+            likedBy: old.likedBy.filter((like) => like.userId !== session?.user.id),
+          }
+        : post
+    );
+
     await axios.post('/api/post/dislike', {
       postId: post.id,
       userId: session?.user.id,
     });
-    queryClient.clear();
   };
 
   const { data: comments, isLoading } = useQuery<PostComment[]>(
@@ -111,7 +124,7 @@ export const FeedPost = memo(({ post, full }: Props) => {
         </Link>
         <div onClick={handleLikeClick} style={{ textAlign: 'center', cursor: 'pointer' }}>
           {isLiked ? <IoHeart color="red" size={28} /> : <IoHeartOutline size={28} />}
-          <p>{postLikes}</p>
+          <p>{post.likes}</p>
         </div>
       </div>
 

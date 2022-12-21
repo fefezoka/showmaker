@@ -21,19 +21,8 @@ export const searchPost = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
       {
-        $lookup: {
-          from: 'LikedPost',
-          localField: '_id',
-          foreignField: 'postId',
-          as: 'likedBy',
-        },
-      },
-      {
-        $lookup: {
-          from: 'User',
-          localField: 'userId',
-          foreignField: '_id',
-          as: 'user',
+        $project: {
+          id: true,
         },
       },
     ],
@@ -43,15 +32,11 @@ export const searchPost = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).json({ message: 'no results' });
   }
 
-  const format = response.map((post: any) => ({
-    ...post,
-    id: post._id,
-    createdAt: post.createdAt.$date,
-    updatedAt: post.updatedAt.$date,
-    user: post.user[0],
-  }));
+  const filter = response.map((r: { _id: string }) => ({ id: r._id }));
 
-  return res.status(200).json(format);
+  console.log(filter);
+
+  return res.status(200).json(filter);
 };
 
 export default searchPost;

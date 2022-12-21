@@ -1,12 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
 import { ProfileIcon } from '../components/profileIcon/ProfileIcon';
+import { useGetPost } from '../hooks/useGetPost';
 
 const Profile = () => {
   const router = useRouter();
@@ -25,6 +25,8 @@ const Profile = () => {
       refetchOnWindowFocus: false,
     }
   );
+
+  const posts = useGetPost(user?.posts);
 
   if (isLoading) {
     return <Main loading />;
@@ -67,9 +69,9 @@ const Profile = () => {
         <section>
           <h3>Últimos posts</h3>
         </section>
-        {user.posts.map((post) => (
-          <FeedPost post={post} key={post.id} />
-        ))}
+        {posts.map(
+          (post) => post.data && <FeedPost post={post.data} key={post.data.id} />
+        )}
       </Main>
     </>
   );

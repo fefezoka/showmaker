@@ -7,5 +7,8 @@ export const diffBetweenDates = (date1: Date, date2: Date) => {
   if (diff < 1440) {
     return `${(diff / 60).toFixed(0)}h atrás`;
   }
-  return `${Math.floor(diff / 1440)} dia${diff / 1440 > 2 ? 's' : ''} atrás`;
+  if (diff < 43200) {
+    return `${Math.floor(diff / 1440)} dia${diff / 1440 > 2 ? 's' : ''} atrás`;
+  }
+  return `${Math.floor(diff / 43200)} ${diff / 43200 > 2 ? 'meses' : 'mês'} atrás`;
 };
