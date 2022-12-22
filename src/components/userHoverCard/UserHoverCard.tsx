@@ -35,7 +35,7 @@ export const UserHoverCard = ({ user }: Props) => {
       <HoverCard.Trigger asChild>
         <Link href={`/${user.name}`}>
           <Flex>
-            <ProfileIcon src={user.image} />
+            <ProfileIcon src={user.image} alt="" />
             <h4>{user.name}</h4>
           </Flex>
         </Link>
@@ -45,7 +45,7 @@ export const UserHoverCard = ({ user }: Props) => {
           <div style={{ padding: '20px' }}>
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <div>
-                <ProfileIcon src={user.image} size={96} />
+                <ProfileIcon src={user.image} size={96} alt="" />
                 <h2 style={{ marginTop: '8px' }}>{user.name}</h2>
               </div>
             </Link>
