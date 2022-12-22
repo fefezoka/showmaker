@@ -9,7 +9,7 @@ interface Post {
   likedBy: LikedPost[];
   commentsAmount: number;
   postComments?: PostComment[];
-  user?: User;
+  user: User;
 }
 
 interface LikedPost {

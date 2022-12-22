@@ -16,6 +16,7 @@ import { useQueryClient, useQuery } from 'react-query';
 import { Button } from '../button/Button';
 import Spinner from '../../assets/Spinner.svg';
 import Image from 'next/image';
+import { UserHoverCard } from '../userHoverCard/UserHoverCard';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;
@@ -116,12 +117,7 @@ export const FeedPost = forwardRef(({ post, full, ...props }: Props, forwardRef)
   return (
     <section {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Link href={`/${post.user!.name}`}>
-          <Flex>
-            <ProfileIcon src={post.user!.image} />
-            <h4>{post.user!.name}</h4>
-          </Flex>
-        </Link>
+        <UserHoverCard user={post.user} />
         <div onClick={handleLikeClick} style={{ textAlign: 'center', cursor: 'pointer' }}>
           {isLiked ? <IoHeart color="red" size={28} /> : <IoHeartOutline size={28} />}
           <p>{post.likes}</p>
