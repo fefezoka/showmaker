@@ -42,22 +42,28 @@ export const UserHoverCard = ({ user }: Props) => {
       </HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
-          <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
-            <div>
-              <ProfileIcon src={user.image} size={80} />
-              <h2 style={{ paddingTop: '8px' }}>{user.name}</h2>
-            </div>
-          </Link>
+          <div style={{ padding: '20px' }}>
+            <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
+              <div>
+                <ProfileIcon src={user.image} size={96} />
+                <h2 style={{ marginTop: '8px' }}>{user.name}</h2>
+              </div>
+            </Link>
 
-          {data && (
-            <p style={{ fontSize: '14px' }}>
-              Última postagem {diffBetweenDates(new Date(), new Date(data[0].createdAt))}
-            </p>
-          )}
-          <div style={{ display: 'flex', gap: '4px', marginTop: '20px' }}>
+            {data && (
+              <p style={{ fontSize: '14px' }}>
+                Última postagem{' '}
+                {diffBetweenDates(new Date(), new Date(data[0].createdAt))}
+              </p>
+            )}
+          </div>
+          <div style={{ display: 'flex' }}>
             {data ? (
               data.map((post) => (
-                <section key={post.id} style={{ width: '33%', overflow: 'hidden' }}>
+                <section
+                  key={post.id}
+                  style={{ width: '33%', overflow: 'hidden', textAlign: 'center' }}
+                >
                   <Link href={`/post/${post.id}`}>
                     <p style={{ fontSize: '14px', lineHeight: '1.5rem' }}>
                       {post.title.slice(0, 16)}
@@ -65,11 +71,12 @@ export const UserHoverCard = ({ user }: Props) => {
                     <div
                       style={{
                         width: '100%',
-                        height: '70px',
+                        height: '125px',
                         position: 'relative',
                         overflow: 'hidden',
                         borderRadius: '4px',
                         cursor: 'pointer',
+                        objectFit: 'cover',
                       }}
                     >
                       <Image src={post.thumbnailUrl} alt="" fill sizes="" />

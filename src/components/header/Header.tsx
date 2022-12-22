@@ -42,7 +42,7 @@ export const Header = () => {
                   cursor: 'pointer',
                 }}
               >
-                <ProfileIcon src={session?.user?.image as string} />
+                <ProfileIcon src={session?.user?.image as string} alt="" />
                 <h4>{session?.user?.name}</h4>
               </div>
               <button onClick={() => signOut()}>

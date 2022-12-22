@@ -26,7 +26,7 @@ export const Menu = () => {
           </Line>
         </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
-          <Line active={router.asPath === `/${session?.user.name}`.replace(' ', '%20')}>
+          <Line active={router.asPath === `/${session?.user.name}`}>
             <IoPerson />
             {isDesktop && <h3>Perfil</h3>}
           </Line>

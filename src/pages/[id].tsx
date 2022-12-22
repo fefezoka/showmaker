@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
 import { ProfileIcon } from '../components/profileIcon/ProfileIcon';
 import { useGetPost } from '../hooks/useGetPost';
+import { FullProfileIcon } from '../components/fullProfileIcon/FullProfileIcon';
 
 const Profile = () => {
   const router = useRouter();
@@ -57,7 +58,7 @@ const Profile = () => {
               marginBottom: '16px',
             }}
           >
-            <ProfileIcon src={user.image} size={92} />
+            <FullProfileIcon src={user.image} size={96} />
             <h2>{user.name}</h2>
           </div>
           <span>

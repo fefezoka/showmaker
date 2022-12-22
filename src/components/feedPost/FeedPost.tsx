@@ -2,13 +2,7 @@ import Link from 'next/link';
 import React, { useState, memo, forwardRef, useCallback, FormEvent } from 'react';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
-import {
-  Flex,
-  VideoWrapper,
-  PostInfo,
-  NewCommentContainer,
-  CommentContainer,
-} from './style';
+import { VideoWrapper, NewCommentContainer, CommentContainer } from './style';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
@@ -124,15 +118,23 @@ export const FeedPost = forwardRef(({ post, full, ...props }: Props, forwardRef)
         </div>
       </div>
 
-      <PostInfo>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          marginBottom: '12px',
+          justifyContent: 'space-between',
+        }}
+      >
         <Link href={`/post/${post.id}`}>
           <h3>{post.title}</h3>
         </Link>
-
         <div>
           <span>{diffBetweenDates(new Date(), new Date(post.createdAt))}</span>
         </div>
-      </PostInfo>
+      </div>
+
       <VideoWrapper>
         <video
           controls
@@ -162,7 +164,7 @@ export const FeedPost = forwardRef(({ post, full, ...props }: Props, forwardRef)
             <form onSubmit={commentSubmit}>
               <NewCommentContainer>
                 <Link href={`/${session.user.name}`}>
-                  <ProfileIcon src={session.user.image} size={42} />
+                  <ProfileIcon src={session.user.image} size={42} alt="" />
                 </Link>
                 <input type="text" placeholder="Faça um comentário" />
                 <Button value="Enviar" />
@@ -175,7 +177,7 @@ export const FeedPost = forwardRef(({ post, full, ...props }: Props, forwardRef)
               <CommentContainer key={comment.id}>
                 <div style={{ display: 'flex', gap: '.75rem', alignItems: 'center' }}>
                   <Link href={`/${comment.user.name}`}>
-                    <ProfileIcon src={comment.user.image} />
+                    <ProfileIcon src={comment.user.image} alt="" />
                   </Link>
                   <h4>{comment.user.name}</h4>
                   <span>{comment.message}</span>

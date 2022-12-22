@@ -16,21 +16,6 @@ export const VideoWrapper = styled('div', {
   },
 });
 
-export const Flex = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  gap: '1rem',
-  marginBottom: '12px',
-});
-
-export const PostInfo = styled('div', {
-  display: 'flex',
-  alignItems: 'center',
-  width: '100%',
-  marginBottom: '12px',
-  justifyContent: 'space-between',
-});
-
 export const NewCommentContainer = styled('div', {
   margin: '1rem 0rem 2rem 0rem',
   display: 'flex',

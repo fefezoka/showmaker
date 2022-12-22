@@ -9,7 +9,6 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
     take: 6,
     select: {
       id: true,
-      title: true,
     },
     orderBy: {
       createdAt: 'desc',
