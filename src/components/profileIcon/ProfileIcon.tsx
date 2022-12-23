@@ -7,7 +7,7 @@ interface Props extends React.ComponentProps<typeof Image> {
   size?: number;
 }
 
-export const ProfileIcon = ({ src, size = 32, ...props }: Props) => {
+export const ProfileIcon = ({ src, size = 36, ...props }: Props) => {
   return (
     <Wrapper style={{ width: size, height: size }}>
       <Image src={src} {...props} width={size} height={size} alt="" />

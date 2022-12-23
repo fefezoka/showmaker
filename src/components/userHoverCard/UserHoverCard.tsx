@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import Link from 'next/link';
-import { Content, Flex } from './style';
+import { Content, Header, StyledImage } from './style';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import Image from 'next/image';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 
 interface Props {
   user: User;
+  children: ReactNode;
 }
 
-export const UserHoverCard = ({ user }: Props) => {
+export const UserHoverCard = ({ user, children }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const { data } = useQuery<
@@ -32,17 +32,10 @@ export const UserHoverCard = ({ user }: Props) => {
 
   return (
     <HoverCard.Root open={open ? true : false} onOpenChange={setOpen}>
-      <HoverCard.Trigger asChild>
-        <Link href={`/${user.name}`}>
-          <Flex>
-            <ProfileIcon src={user.image} alt="" />
-            <h4>{user.name}</h4>
-          </Flex>
-        </Link>
-      </HoverCard.Trigger>
+      <HoverCard.Trigger asChild>{children}</HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
-          <div style={{ padding: '20px' }}>
+          <Header>
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <div>
                 <ProfileIcon src={user.image} size={96} alt="" />
@@ -56,8 +49,8 @@ export const UserHoverCard = ({ user }: Props) => {
                 {diffBetweenDates(new Date(), new Date(data[0].createdAt))}
               </p>
             )}
-          </div>
-          <div style={{ display: 'flex' }}>
+          </Header>
+          <div style={{ display: 'flex', paddingTop: '8px' }}>
             {data ? (
               data.map((post) => (
                 <section
@@ -65,9 +58,9 @@ export const UserHoverCard = ({ user }: Props) => {
                   style={{ width: '33%', overflow: 'hidden', textAlign: 'center' }}
                 >
                   <Link href={`/post/${post.id}`}>
-                    <p style={{ fontSize: '14px', lineHeight: '1.5rem' }}>
+                    <b style={{ fontSize: '14px', lineHeight: '1.5rem' }}>
                       {post.title.slice(0, 16)}
-                    </p>
+                    </b>
                     <div
                       style={{
                         width: '100%',
@@ -79,7 +72,7 @@ export const UserHoverCard = ({ user }: Props) => {
                         objectFit: 'cover',
                       }}
                     >
-                      <Image src={post.thumbnailUrl} alt="" fill sizes="" />
+                      <StyledImage src={post.thumbnailUrl} alt="" fill sizes="" />
                     </div>
                   </Link>
                 </section>

@@ -19,7 +19,7 @@ export const StyledOverlay = styled(Overlay, {
 });
 
 export const StyledContent = styled(Content, {
-  padding: '2rem 1.5rem',
+  padding: '1.5rem',
   top: '50%',
   left: '50%',
   borderRadius: '8px',
@@ -32,7 +32,7 @@ export const StyledContent = styled(Content, {
   zIndex: '$modal',
 
   '@dsk1': {
-    width: '420px',
+    width: '400px',
   },
 });
 

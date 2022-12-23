@@ -109,7 +109,15 @@ const CreatePost = () => {
           videoUrl: videoUrl,
         });
 
-        queryClient.setQueryData<Post[]>('posts', (old) => [data, ...(old ? old : [])]);
+        queryClient.setQueryData<{ pages: [{ id: string }][] }>('homepageIds', (old) =>
+          old?.pages[0].unshift({ id: data.id })
+            ? {
+                ...old,
+              }
+            : { pages: [...(new Array<{ id: string }>(1)[0].id = data.id)] }
+        );
+
+        queryClient.setQueryData(['post', data.id], data);
         onClose();
       }
     };

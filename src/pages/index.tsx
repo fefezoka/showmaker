@@ -15,7 +15,7 @@ export default function Home() {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    ['ids'],
+    ['homepageIds'],
     async ({ pageParam = 1 }) => {
       const { data } = await axios.get(`/api/post/page/${pageParam}`);
       return data;
@@ -25,6 +25,7 @@ export default function Home() {
         return currentPage.length == 6 && pages.length + 1;
       },
       refetchOnWindowFocus: false,
+      staleTime: Infinity,
     }
   );
 
