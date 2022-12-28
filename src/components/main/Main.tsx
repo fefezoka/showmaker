@@ -10,7 +10,7 @@ interface Props {
   loading?: boolean;
 }
 
-export const Main = memo(({ children, loading, ...props }: Props) => {
+export const Main = memo(({ children, loading }: Props) => {
   return (
     <Container>
       <Menu />

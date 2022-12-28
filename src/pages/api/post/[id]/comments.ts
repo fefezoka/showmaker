@@ -14,7 +14,13 @@ export const commentByPostId = async (req: NextApiRequest, res: NextApiResponse)
     },
     orderBy: { createdAt: 'desc' },
     include: {
-      user: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
     },
   });
 

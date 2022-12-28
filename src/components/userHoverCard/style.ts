@@ -1,6 +1,5 @@
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { styled, keyframes } from '../../style/stitches.config';
-import Image from 'next/image';
 
 const Fade = keyframes({
   from: {
@@ -27,8 +26,33 @@ export const Header = styled('div', {
   borderBottom: '2px solid $bgalt',
 });
 
-export const StyledImage = styled(Image, {
+export const Post = styled('section', {
+  width: 'calc(100%/3)',
+  textAlign: 'center',
+  overflow: 'hidden',
+
+  '&:nth-of-type(1)': {
+    borderBottomLeftRadius: '8px',
+  },
+
+  '&:nth-of-type(3)': {
+    borderBottomRightRadius: '8px',
+  },
+});
+
+export const ImageWrapper = styled('div', {
+  marginTop: '4px',
   transition: 'all 100ms',
+  overflow: 'hidden',
+  paddingTop: '75%',
+  width: '100%',
+  position: 'relative',
+  cursor: 'pointer',
+
+  img: {
+    objectFit: 'cover',
+  },
+
   '&:hover': {
     opacity: '.7',
   },

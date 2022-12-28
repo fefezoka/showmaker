@@ -22,6 +22,10 @@ const CreatePost = () => {
   const isDesktop = useIsDesktop();
 
   const onClose = () => {
+    if (loading) {
+      return;
+    }
+
     setOpen(false);
     setFile(undefined);
     setLoading(false);

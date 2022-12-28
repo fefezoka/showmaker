@@ -11,8 +11,8 @@ const Fade = keyframes({
 });
 
 export const Content = styled(Dialog.Content, {
-  width: '400px',
-  height: '400px',
+  width: '460px',
+  height: '460px',
   position: 'fixed',
   top: '50%',
   left: '50%',

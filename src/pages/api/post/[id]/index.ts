@@ -13,7 +13,13 @@ export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => 
       id: id as string,
     },
     include: {
-      user: true,
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
       likedBy: true,
     },
   });

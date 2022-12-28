@@ -2,10 +2,11 @@ import React, { ReactNode, useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import Link from 'next/link';
-import { Content, Header, StyledImage } from './style';
+import { Content, Header, ImageWrapper, Post } from './style';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
+import Image from 'next/image';
 
 interface Props {
   user: User;
@@ -50,32 +51,19 @@ export const UserHoverCard = ({ user, children }: Props) => {
               </p>
             )}
           </Header>
-          <div style={{ display: 'flex', paddingTop: '8px' }}>
+          <div style={{ display: 'flex', paddingTop: '8px', gap: '2px' }}>
             {data ? (
               data.map((post) => (
-                <section
-                  key={post.id}
-                  style={{ width: '33%', overflow: 'hidden', textAlign: 'center' }}
-                >
+                <Post key={post.id}>
                   <Link href={`/post/${post.id}`}>
                     <b style={{ fontSize: '14px', lineHeight: '1.5rem' }}>
-                      {post.title.slice(0, 16)}
+                      {post.title.slice(0, 17)}
                     </b>
-                    <div
-                      style={{
-                        width: '100%',
-                        height: '125px',
-                        position: 'relative',
-                        overflow: 'hidden',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                        objectFit: 'cover',
-                      }}
-                    >
-                      <StyledImage src={post.thumbnailUrl} alt="" fill sizes="" />
-                    </div>
+                    <ImageWrapper>
+                      <Image src={post.thumbnailUrl} alt="" fill sizes="" />
+                    </ImageWrapper>
                   </Link>
-                </section>
+                </Post>
               ))
             ) : (
               <div>Sem posts</div>

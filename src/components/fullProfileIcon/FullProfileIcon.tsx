@@ -6,10 +6,10 @@ import { ProfileIcon } from '../profileIcon/ProfileIcon';
 
 interface Props {
   src: string;
-  size: number;
+  size?: number;
 }
 
-export const FullProfileIcon = ({ src, size }: Props) => {
+export const FullProfileIcon = ({ src, size = 32 }: Props) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
@@ -20,7 +20,7 @@ export const FullProfileIcon = ({ src, size }: Props) => {
       <Dialog.Portal>
         <Overlay />
         <Content>
-          <Image src={src} alt="" fill sizes="" />
+          <Image src={src + '?size=512'} alt="" fill sizes="" />
         </Content>
       </Dialog.Portal>
     </Dialog.Root>
