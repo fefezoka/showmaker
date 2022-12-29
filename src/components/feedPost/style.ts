@@ -3,7 +3,7 @@ import { styled } from '../../style/stitches.config';
 export const VideoWrapper = styled('div', {
   overflow: 'hidden',
   width: '100%',
-  borderRadius: '2rem',
+  borderRadius: '1.5rem',
   cursor: 'pointer',
   paddingBottom: '56.25%',
   position: 'relative',

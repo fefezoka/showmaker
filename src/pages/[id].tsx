@@ -5,7 +5,6 @@ import { Main } from '../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
-import { ProfileIcon } from '../components/profileIcon/ProfileIcon';
 import { useGetPost } from '../hooks/useGetPost';
 import { FullProfileIcon } from '../components/fullProfileIcon/FullProfileIcon';
 
@@ -46,7 +45,7 @@ const Profile = () => {
   return (
     <>
       <Head>
-        <title>Perfil do {user.name}</title>
+        <title>Perfil de {user.name}</title>
       </Head>
       <Main>
         <section>

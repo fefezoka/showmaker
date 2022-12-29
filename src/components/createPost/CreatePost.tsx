@@ -22,10 +22,6 @@ const CreatePost = () => {
   const isDesktop = useIsDesktop();
 
   const onClose = () => {
-    if (loading) {
-      return;
-    }
-
     setOpen(false);
     setFile(undefined);
     setLoading(false);
@@ -144,7 +140,9 @@ const CreatePost = () => {
       </Dialog.Trigger>
       <Dialog.Portal>
         <StyledOverlay />
-        <StyledContent onInteractOutside={onClose}>
+        <StyledContent
+          onInteractOutside={(e) => (loading ? e.preventDefault() : onClose())}
+        >
           <Dialog.Title>Postar vídeo</Dialog.Title>
           <Dialog.Description>
             Compartilhe suas jogadas favoritas com a comunidade!
