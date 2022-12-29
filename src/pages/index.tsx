@@ -1,33 +1,18 @@
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
-import axios from 'axios';
-import { useInfiniteQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
 import { useInView } from 'react-intersection-observer';
 import { useGetPost } from '../hooks/useGetPost';
 import { useEffect } from 'react';
+import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 
 export default function Home() {
   const { ref, inView } = useInView();
 
-  const {
-    data: ids,
-    fetchNextPage,
-    hasNextPage,
-  } = useInfiniteQuery(
-    ['homepageIds'],
-    async ({ pageParam = 1 }) => {
-      const { data } = await axios.get(`/api/post/page/${pageParam}`);
-      return data;
-    },
-    {
-      getNextPageParam: (currentPage, pages) => {
-        return currentPage.length == 6 && pages.length + 1;
-      },
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-    }
-  );
+  const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
+    api: '/api/post/page',
+    query: ['homepageids'],
+  });
 
   const posts = useGetPost(
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))

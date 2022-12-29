@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
@@ -7,10 +7,15 @@ import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
 import { useGetPost } from '../hooks/useGetPost';
 import { FullProfileIcon } from '../components/fullProfileIcon/FullProfileIcon';
+import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
+import { useInView } from 'react-intersection-observer';
+import Image from 'next/image';
+import Spinner from '../assets/Spinner.svg';
 
 const Profile = () => {
   const router = useRouter();
   const { id } = router.query;
+  const { inView, ref } = useInView();
 
   const { data: user, isLoading } = useQuery<User>(
     ['user', id],
@@ -26,7 +31,20 @@ const Profile = () => {
     }
   );
 
-  const posts = useGetPost(user?.posts);
+  const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
+    api: `api/user/${id}/posts/page`,
+    query: ['user', id as string],
+  });
+
+  const posts = useGetPost(
+    ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
+  );
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, fetchNextPage, hasNextPage]);
 
   if (isLoading) {
     return <Main loading />;
@@ -69,8 +87,21 @@ const Profile = () => {
         <section>
           <h3>Últimos posts</h3>
         </section>
-        {posts.map(
-          (post) => post.data && <FeedPost post={post.data} key={post.data.id} />
+        {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <Image src={Spinner} alt="" width={72} height={72} />
+          </div>
+        ) : (
+          posts.map(
+            (post, index) =>
+              post.data && (
+                <FeedPost
+                  post={post.data}
+                  key={post.data.id}
+                  ref={posts.length - 1 === index ? ref : null}
+                />
+              )
+          )
         )}
       </Main>
     </>
