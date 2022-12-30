@@ -33,7 +33,7 @@ const Profile = () => {
 
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
     api: `api/user/byid/${user?.id}/posts/page`,
-    query: ['user', name as string],
+    query: ['userposts', name as string],
     enabled: !!user,
   });
 

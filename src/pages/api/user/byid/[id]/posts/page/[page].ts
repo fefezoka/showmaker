@@ -14,7 +14,7 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
       createdAt: 'desc',
     },
     where: {
-      userId: id as string
+      userId: id as string,
     },
   });
 
