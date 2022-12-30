@@ -4,9 +4,10 @@ import axios from 'axios';
 interface Props {
   api: string;
   query: string[];
+  enabled?: boolean;
 }
 
-export const useInfinitePostIdByScroll = ({ api, query }: Props) => {
+export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props) => {
   const {
     data: ids,
     fetchNextPage,
@@ -23,6 +24,7 @@ export const useInfinitePostIdByScroll = ({ api, query }: Props) => {
       },
       refetchOnWindowFocus: false,
       staleTime: Infinity,
+      enabled: enabled,
     }
   );
 

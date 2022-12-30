@@ -5,7 +5,7 @@ import { Main } from '../../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../../components/feedPost/FeedPost';
-import { useGetPost } from '../../hooks/useGetPost';
+import { useGetPosts } from '../../hooks/useGetPosts';
 
 const Profile = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const Profile = () => {
     }
   );
 
-  const posts = useGetPost(ids);
+  const posts = useGetPosts(ids);
 
   if (isLoading) {
     return <Main loading />;

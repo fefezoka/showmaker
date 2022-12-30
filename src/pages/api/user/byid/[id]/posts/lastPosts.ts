@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../../lib/prisma';
+import { prisma } from '../../../../../../lib/prisma';
 
 const lastPosts = async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
@@ -11,9 +11,6 @@ const lastPosts = async (req: NextApiRequest, res: NextApiResponse) => {
     take: 3,
     select: {
       id: true,
-      thumbnailUrl: true,
-      title: true,
-      createdAt: true,
     },
     orderBy: {
       createdAt: 'desc',

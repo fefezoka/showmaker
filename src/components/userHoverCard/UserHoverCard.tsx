@@ -7,6 +7,7 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import Image from 'next/image';
+import { useGetPosts } from '../../hooks/useGetPosts';
 
 interface Props {
   user: User;
@@ -16,12 +17,10 @@ interface Props {
 export const UserHoverCard = ({ user, children }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const { data } = useQuery<
-    { id: string; thumbnailUrl: string; title: string; createdAt: Date }[]
-  >(
+  const { data } = useQuery<Post[]>(
     ['lastPosts', user.id],
     async () => {
-      const { data } = await axios.get(`/api/user/${user.id}/lastPosts`);
+      const { data } = await axios.get(`/api/user/byid/${user.id}/posts/lastPosts`);
       return data;
     },
     {
@@ -30,6 +29,8 @@ export const UserHoverCard = ({ user, children }: Props) => {
       enabled: !!open,
     }
   );
+
+  const posts = useGetPosts(data);
 
   return (
     <HoverCard.Root open={open ? true : false} onOpenChange={setOpen}>
@@ -44,27 +45,30 @@ export const UserHoverCard = ({ user, children }: Props) => {
               </div>
             </Link>
 
-            {data && (
+            {posts[0] && posts[0].data && (
               <p style={{ fontSize: '14px' }}>
                 Última postagem{' '}
-                {diffBetweenDates(new Date(), new Date(data[0].createdAt))}
+                {diffBetweenDates(new Date(), new Date(posts[0].data.createdAt))}
               </p>
             )}
           </Header>
           <div style={{ display: 'flex', paddingTop: '8px', gap: '2px' }}>
-            {data ? (
-              data.map((post) => (
-                <Post key={post.id}>
-                  <Link href={`/post/${post.id}`}>
-                    <b style={{ fontSize: '14px', lineHeight: '1.5rem' }}>
-                      {post.title.slice(0, 17)}
-                    </b>
-                    <ImageWrapper>
-                      <Image src={post.thumbnailUrl} alt="" fill sizes="" />
-                    </ImageWrapper>
-                  </Link>
-                </Post>
-              ))
+            {posts ? (
+              posts.map(
+                (post) =>
+                  post.data && (
+                    <Post key={post.data.id}>
+                      <Link href={`/post/${post.data.id}`}>
+                        <b style={{ fontSize: '14px', lineHeight: '1.5rem' }}>
+                          {post.data.title.slice(0, 17)}
+                        </b>
+                        <ImageWrapper>
+                          <Image src={post.data.thumbnailUrl} alt="" fill sizes="" />
+                        </ImageWrapper>
+                      </Link>
+                    </Post>
+                  )
+              )
             ) : (
               <div>Sem posts</div>
             )}

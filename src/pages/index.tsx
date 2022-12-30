@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Main } from '../components/main/Main';
 import { FeedPost } from '../components/feedPost/FeedPost';
 import { useInView } from 'react-intersection-observer';
-import { useGetPost } from '../hooks/useGetPost';
+import { useGetPosts } from '../hooks/useGetPosts';
 import { useEffect } from 'react';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 
@@ -14,7 +14,7 @@ export default function Home() {
     query: ['homepageids'],
   });
 
-  const posts = useGetPost(
+  const posts = useGetPosts(
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
   );
 

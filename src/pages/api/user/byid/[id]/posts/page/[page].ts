@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../../../../lib/prisma';
+import { prisma } from '../../../../../../../lib/prisma';
 
 export const get = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { name, page } = req.query;
+  const { id, page } = req.query;
 
   const response = await prisma.post.findMany({
     skip: Number(page) === 1 ? 0 : (Number(page) - 1) * 6,
@@ -14,9 +14,7 @@ export const get = async (req: NextApiRequest, res: NextApiResponse) => {
       createdAt: 'desc',
     },
     where: {
-      user: {
-        name: name as string,
-      },
+      userId: id as string
     },
   });
 

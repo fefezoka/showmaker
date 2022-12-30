@@ -5,7 +5,7 @@ import { Main } from '../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feedPost/FeedPost';
-import { useGetPost } from '../hooks/useGetPost';
+import { useGetPosts } from '../hooks/useGetPosts';
 import { FullProfileIcon } from '../components/fullProfileIcon/FullProfileIcon';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { useInView } from 'react-intersection-observer';
@@ -14,17 +14,17 @@ import Spinner from '../assets/Spinner.svg';
 
 const Profile = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { name } = router.query;
   const { inView, ref } = useInView();
 
   const { data: user, isLoading } = useQuery<User>(
-    ['user', id],
+    ['user', name],
     async () => {
-      const { data } = await axios.get(`/api/user/${id}`);
+      const { data } = await axios.get(`/api/user/byname/${name}`);
       return data;
     },
     {
-      enabled: !!id,
+      enabled: !!name,
       retry: false,
       staleTime: Infinity,
       refetchOnWindowFocus: false,
@@ -32,11 +32,12 @@ const Profile = () => {
   );
 
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
-    api: `api/user/${id}/posts/page`,
-    query: ['user', id as string],
+    api: `api/user/byid/${user?.id}/posts/page`,
+    query: ['user', name as string],
+    enabled: !!user,
   });
 
-  const posts = useGetPost(
+  const posts = useGetPosts(
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
   );
 
@@ -54,7 +55,7 @@ const Profile = () => {
     return (
       <Main>
         <section>
-          <h2>Usuário {id} não encontrado</h2>
+          <h2>Usuário {name} não encontrado</h2>
         </section>
       </Main>
     );
