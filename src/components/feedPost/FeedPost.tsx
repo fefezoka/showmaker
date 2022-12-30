@@ -107,6 +107,8 @@ export const FeedPost = memo(
         data,
         ...(old ? old : []),
       ]);
+
+      e.currentTarget.reset();
     };
 
     return (

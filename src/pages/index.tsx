@@ -11,7 +11,7 @@ export default function Home() {
 
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
     api: '/api/post/page',
-    query: ['homepageids'],
+    query: 'homepageIds',
   });
 
   const posts = useGetPosts(

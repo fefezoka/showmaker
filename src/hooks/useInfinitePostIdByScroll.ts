@@ -3,7 +3,7 @@ import axios from 'axios';
 
 interface Props {
   api: string;
-  query: string[];
+  query: string | string[];
   enabled?: boolean;
 }
 
@@ -13,7 +13,7 @@ export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props)
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery(
-    [query],
+    query,
     async ({ pageParam = 1 }) => {
       const { data } = await axios.get(api + (api.endsWith('/') ? '' : '/') + pageParam);
       return data;

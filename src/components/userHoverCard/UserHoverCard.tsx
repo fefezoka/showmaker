@@ -1,13 +1,13 @@
 import React, { ReactNode, useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
-import Link from 'next/link';
 import { Content, Header, ImageWrapper, Post } from './style';
 import { useQuery } from 'react-query';
-import axios from 'axios';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
-import Image from 'next/image';
 import { useGetPosts } from '../../hooks/useGetPosts';
+import Link from 'next/link';
+import axios from 'axios';
+import Image from 'next/image';
 
 interface Props {
   user: User;
