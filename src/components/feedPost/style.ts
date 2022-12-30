@@ -17,7 +17,7 @@ export const VideoWrapper = styled('div', {
 });
 
 export const NewCommentContainer = styled('div', {
-  margin: '1rem 0rem 2rem 0rem',
+  marginTop: '1rem',
   display: 'flex',
   gap: '1rem',
 
@@ -40,4 +40,8 @@ export const CommentContainer = styled('div', {
   alignItems: 'center',
   justifyContent: 'space-between',
   marginTop: '.75rem',
+
+  '&:nth-of-type(1)': {
+    marginTop: '1.5rem',
+  },
 });

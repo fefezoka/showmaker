@@ -172,7 +172,7 @@ export const FeedPost = memo(
         </VideoWrapper>
 
         {full ? (
-          <>
+          <div>
             {session && (
               <form onSubmit={commentSubmit}>
                 <NewCommentContainer>
@@ -189,10 +189,20 @@ export const FeedPost = memo(
               comments.map((comment) => (
                 <CommentContainer key={comment.id}>
                   <div style={{ display: 'flex', gap: '.75rem', alignItems: 'center' }}>
-                    <Link href={`/${comment.user.name}`}>
-                      <ProfileIcon src={comment.user.image} alt="" />
-                    </Link>
-                    <h4>{comment.user.name}</h4>
+                    <UserHoverCard user={comment.user}>
+                      <Link href={`/${comment.user.name}`}>
+                        <div
+                          style={{
+                            display: 'flex',
+                            gap: '.75rem',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <ProfileIcon src={comment.user.image} alt="" />
+                          <h4>{comment.user.name}</h4>
+                        </div>
+                      </Link>
+                    </UserHoverCard>
                     <span>{comment.message}</span>
                   </div>
                   <span>{diffBetweenDates(new Date(), new Date(comment.createdAt))}</span>
@@ -203,7 +213,7 @@ export const FeedPost = memo(
                 <Image src={Spinner} alt="" priority height={42} width={42} />
               </div>
             )}
-          </>
+          </div>
         ) : (
           <div style={{ marginTop: '1rem' }}>
             <Link href={`/post/${post.id}`}>

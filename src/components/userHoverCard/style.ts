@@ -19,6 +19,7 @@ export const Content = styled(HoverCard.Content, {
   border: '2px solid $bgalt',
   transition: 'all 200ms ease-out',
   animation: `250ms ${Fade}`,
+  boxShadow: '0px 0px 8px black',
 });
 
 export const Header = styled('div', {
