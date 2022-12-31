@@ -10,12 +10,12 @@ export const like = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await prisma.likedPost.create({
     data: {
-      postId: postId as string,
-      userId: userId as string,
+      postId: postId,
+      userId: userId,
     },
   });
 
-  const response = await prisma.post.update({
+  await prisma.post.update({
     where: {
       id: postId,
     },
@@ -26,7 +26,7 @@ export const like = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  return res.status(200).json(response);
+  return res.status(200).json({ message: 'ok' });
 };
 
 export default like;

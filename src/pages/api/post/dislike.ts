@@ -4,8 +4,8 @@ import { prisma } from '../../../lib/prisma';
 export const dislike = async (req: NextApiRequest, res: NextApiResponse) => {
   const { postId, userId } = req.body;
 
-  if (!postId) {
-    return res.status(404).json('Error');
+  if (!postId || !userId) {
+    return res.status(404).json({ message: 'error' });
   }
 
   await prisma.likedPost.deleteMany({
@@ -15,7 +15,7 @@ export const dislike = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  const response = await prisma.post.update({
+  await prisma.post.update({
     where: {
       id: postId,
     },
@@ -26,7 +26,7 @@ export const dislike = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  return res.status(200).json(response);
+  return res.status(200).json({ message: 'ok' });
 };
 
 export default dislike;

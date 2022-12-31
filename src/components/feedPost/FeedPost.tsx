@@ -38,6 +38,11 @@ export const FeedPost = memo(
     };
 
     const likePost = async () => {
+      await axios.post('/api/post/like', {
+        userId: session?.user.id,
+        postId: post.id,
+      });
+
       queryClient.setQueryData<Post>(['post', post.id], (old) =>
         old
           ? {
@@ -47,14 +52,14 @@ export const FeedPost = memo(
             }
           : post
       );
-
-      await axios.post('/api/post/like', {
-        userId: session?.user.id,
-        postId: post.id,
-      });
     };
 
     const dislikePost = async () => {
+      await axios.post('/api/post/dislike', {
+        postId: post.id,
+        userId: session?.user.id,
+      });
+
       queryClient.setQueryData<Post>(['post', post.id], (old) =>
         old
           ? {
@@ -64,11 +69,6 @@ export const FeedPost = memo(
             }
           : post
       );
-
-      await axios.post('/api/post/dislike', {
-        postId: post.id,
-        userId: session?.user.id,
-      });
     };
 
     const { data: comments, isLoading } = useQuery<PostComment[]>(
