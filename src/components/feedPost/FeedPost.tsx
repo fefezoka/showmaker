@@ -1,16 +1,16 @@
 import Link from 'next/link';
-import React, { useState, memo, forwardRef, useCallback, FormEvent } from 'react';
+import React, { memo, forwardRef, useCallback, FormEvent } from 'react';
 import { diffBetweenDates } from '../../utils/diffBetweenDates';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
 import { VideoWrapper, NewCommentContainer, CommentContainer } from './style';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
-import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient, useQuery } from 'react-query';
 import { Button } from '../button/Button';
+import { UserHoverCard } from '../userHoverCard/UserHoverCard';
+import axios from 'axios';
 import Spinner from '../../assets/Spinner.svg';
 import Image from 'next/image';
-import { UserHoverCard } from '../userHoverCard/UserHoverCard';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;
@@ -21,9 +21,6 @@ export const FeedPost = memo(
   forwardRef(({ post, full, ...props }: Props, forwardRef) => {
     const { data: session } = useSession();
     const queryClient = useQueryClient();
-    const [isLiked, setIsLiked] = useState<boolean>(
-      post.likedBy.some((likes) => likes.userId === session?.user.id)
-    );
 
     const volume = useCallback((video: HTMLVideoElement) => {
       const lastVolume = window.localStorage.getItem('volume');
@@ -37,17 +34,16 @@ export const FeedPost = memo(
         return signIn('discord');
       }
 
-      isLiked ? dislikePost() : likePost();
+      post.isLiked ? dislikePost() : likePost();
     };
 
     const likePost = async () => {
-      setIsLiked(true);
       queryClient.setQueryData<Post>(['post', post.id], (old) =>
         old
           ? {
               ...old,
               likes: old.likes + 1,
-              likedBy: [...old.likedBy, { userId: session?.user.id, postId: post.id }],
+              isLiked: true,
             }
           : post
       );
@@ -59,13 +55,12 @@ export const FeedPost = memo(
     };
 
     const dislikePost = async () => {
-      setIsLiked(false);
       queryClient.setQueryData<Post>(['post', post.id], (old) =>
         old
           ? {
               ...old,
               likes: old.likes - 1,
-              likedBy: old.likedBy.filter((like) => like.userId !== session?.user.id),
+              isLiked: false,
             }
           : post
       );
@@ -93,6 +88,8 @@ export const FeedPost = memo(
       e.preventDefault();
       const message = (e.currentTarget[0] as HTMLInputElement).value;
 
+      e.currentTarget.reset();
+
       if (!message) {
         return;
       }
@@ -108,7 +105,17 @@ export const FeedPost = memo(
         ...(old ? old : []),
       ]);
 
-      e.currentTarget.reset();
+      queryClient.setQueryData<Post>(['post', post.id], (old) =>
+        old
+          ? {
+              ...old,
+              commentsAmount: old.commentsAmount + 1,
+            }
+          : {
+              ...post,
+              commentsAmount: post.commentsAmount + 1,
+            }
+      );
     };
 
     return (
@@ -126,7 +133,11 @@ export const FeedPost = memo(
             onClick={handleLikeClick}
             style={{ textAlign: 'center', cursor: 'pointer' }}
           >
-            {isLiked ? <IoHeart color="red" size={28} /> : <IoHeartOutline size={28} />}
+            {post.isLiked ? (
+              <IoHeart color="red" size={28} />
+            ) : (
+              <IoHeartOutline size={28} />
+            )}
             <p>{post.likes}</p>
           </div>
         </div>

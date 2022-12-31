@@ -1,7 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../lib/prisma';
+import { getSession } from 'next-auth/react';
 
 export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getSession({ req: req });
   const { id } = req.query;
 
   if (!id) {
@@ -24,7 +26,16 @@ export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => 
     },
   });
 
-  return res.status(200).json(response);
+  if (!response) {
+    return res.status(404).json({ message: 'error' });
+  }
+
+  const { likedBy, ...rest } = response;
+
+  return res.status(200).json({
+    ...rest,
+    isLiked: response?.likedBy.some((like) => like.userId === session?.user.id) ?? false,
+  });
 };
 
 export default getPostById;

@@ -6,16 +6,10 @@ interface Post {
   likes: number;
   createdAt: Date;
   updatedAt: Date;
-  likedBy: LikedPost[];
   commentsAmount: number;
+  isLiked: boolean;
   postComments?: PostComment[];
   user: User;
-}
-
-interface LikedPost {
-  id?: string;
-  userId?: string;
-  postId: string;
 }
 
 interface PostComment {
