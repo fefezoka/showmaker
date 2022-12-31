@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonWrapper, Line, Menu as StyledMenu, Nav } from './style';
-import { IoHome, IoBookmark, IoPerson } from 'react-icons/io5';
+import { ButtonWrapper, Line, Menu as StyledMenu } from './style';
+import { IoHome, IoPerson } from 'react-icons/io5';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
@@ -15,7 +15,7 @@ export const Menu = () => {
 
   return (
     <StyledMenu>
-      <Nav>
+      <nav>
         <Link href={'/'} prefetch={false}>
           <Line active>{isDesktop ? <h3>Show Maker</h3> : <h4>SM</h4>}</Line>
         </Link>
@@ -26,7 +26,7 @@ export const Menu = () => {
           </Line>
         </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
-          <Line active={router.asPath === `/${session?.user.name}`}>
+          <Line active={router.asPath === `/${session?.user.name.replace(' ', '%20')}`}>
             <IoPerson />
             {isDesktop && <h3>Perfil</h3>}
           </Line>
@@ -34,7 +34,7 @@ export const Menu = () => {
         <ButtonWrapper>
           <CreatePost />
         </ButtonWrapper>
-      </Nav>
+      </nav>
     </StyledMenu>
   );
 };

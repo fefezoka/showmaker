@@ -11,8 +11,8 @@ const Fade = keyframes({
 });
 
 export const Content = styled(Dialog.Content, {
-  width: '460px',
-  height: '460px',
+  width: 'calc(100vw - 60px)',
+  height: 'calc(100vw - 60px)',
   position: 'fixed',
   top: '50%',
   left: '50%',
@@ -20,6 +20,11 @@ export const Content = styled(Dialog.Content, {
   zIndex: '$modal',
   overflow: 'hidden',
   animation: `200ms ${Fade}`,
+
+  '@dsk2': {
+    width: '460px',
+    height: '460px',
+  },
 });
 
 export const Overlay = styled(Dialog.Overlay, {

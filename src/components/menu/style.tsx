@@ -4,21 +4,13 @@ export const Menu = styled('aside', {
   borderRight: '2px solid',
   borderColor: '$bgalt',
   minWidth: '42px',
-  position: 'relative',
+  position: 'sticky',
+  top: 0,
+  height: '100vh',
   zIndex: '$menu',
 
   '@dsk2': {
     minWidth: '240px',
-  },
-});
-
-export const Nav = styled('nav', {
-  position: 'fixed',
-  display: 'flex',
-  flexDirection: 'column',
-
-  a: {
-    width: '100%',
   },
 });
 

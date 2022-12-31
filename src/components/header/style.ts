@@ -3,8 +3,6 @@ import { styled } from '../../style/stitches.config';
 export const Header = styled('header', {
   position: 'sticky',
   top: 0,
-  display: 'flex',
-  justifyContent: 'center',
   padding: '18px 16px',
   background: '$bg',
   zIndex: '$header',

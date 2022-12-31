@@ -29,6 +29,7 @@ export const Header = styled('div', {
 
 export const Post = styled('section', {
   width: 'calc(100%/3)',
+  overflow: 'hidden',
   textAlign: 'center',
 
   '&:nth-of-type(1)': {
