@@ -6,7 +6,7 @@ import { useGetPosts } from '../hooks/useGetPosts';
 import { useEffect } from 'react';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 
-export default function timeline() {
+export default function Timeline() {
   const { ref, inView } = useInView();
 
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
