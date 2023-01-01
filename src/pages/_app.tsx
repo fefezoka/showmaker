@@ -13,7 +13,7 @@ interface Props {
   children: ReactNode;
 }
 
-const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
+export default ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   global();
 
   return (
@@ -48,5 +48,3 @@ const Layout = ({ children }: Props) => {
   }
   return <>{children}</>;
 };
-
-export default MyApp;

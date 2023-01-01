@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
-export const dislike = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { postId, userId } = req.body;
 
   if (!postId || !userId) {
@@ -28,5 +28,3 @@ export const dislike = async (req: NextApiRequest, res: NextApiResponse) => {
 
   return res.status(200).json({ message: 'ok' });
 };
-
-export default dislike;

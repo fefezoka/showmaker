@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../../../lib/prisma';
 
-const lastPosts = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   const response = await prisma.post.findMany({
@@ -23,5 +23,3 @@ const lastPosts = async (req: NextApiRequest, res: NextApiResponse) => {
 
   return res.status(200).json(response);
 };
-
-export default lastPosts;

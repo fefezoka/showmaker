@@ -11,11 +11,16 @@ import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
+import { Button } from '../components/button/Button';
+import { signIn, useSession } from 'next-auth/react';
+import { useQueryClient } from 'react-query';
 
-const Profile = () => {
+export default () => {
+  const { data: session } = useSession();
   const router = useRouter();
   const { name } = router.query;
   const { inView, ref } = useInView();
+  const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery<User>(
     ['user', name],
@@ -61,6 +66,40 @@ const Profile = () => {
     );
   }
 
+  const handleFollowClick = async () => {
+    if (!session) {
+      return signIn('discord');
+    }
+
+    await axios.post(`/api/user/${user.isFollowing ? 'unfollow' : 'follow'}`, {
+      followerId: session.user.id,
+      followingId: user.id,
+    });
+
+    queryClient.setQueryData<User>(['user', name], (old) =>
+      old
+        ? {
+            ...old,
+            followersAmount: old.isFollowing
+              ? old.followersAmount - 1
+              : old.followersAmount + 1,
+            isFollowing: !old.isFollowing,
+          }
+        : { ...user, isFollowing: !user.isFollowing }
+    );
+
+    queryClient.setQueryData<User>(['user', session.user.name], (old) =>
+      old
+        ? {
+            ...old,
+            followingAmount: user.isFollowing
+              ? old.followingAmount - 1
+              : old.followingAmount + 1,
+          }
+        : session.user
+    );
+  };
+
   return (
     <>
       <Head>
@@ -71,19 +110,43 @@ const Profile = () => {
           <div
             style={{
               display: 'flex',
-              gap: '16px',
-              alignItems: 'center',
+              justifyContent: 'space-between',
               marginBottom: '16px',
+              alignItems: 'center',
             }}
           >
-            <FullProfileIcon src={user.image} size={96} />
-            <h2>{user.name}</h2>
+            <div
+              style={{
+                display: 'flex',
+                gap: '16px',
+                alignItems: 'center',
+              }}
+            >
+              <FullProfileIcon src={user.image} size={96} />
+              <h2>{user.name}</h2>
+            </div>
+
+            {!(session?.user.id === user.id) && (
+              <Button
+                value={user.isFollowing ? 'Parar de seguir' : 'Seguir'}
+                onClick={handleFollowClick}
+              />
+            )}
           </div>
+
           <span>
-            Usuário desde {new Date(user.createdAt).getUTCDate()}/
-            {new Date(user.createdAt).getUTCMonth() + 1}/
+            Usuário desde {new Date(user.createdAt).getDate()}/
+            {new Date(user.createdAt).getMonth() + 1}/
             {new Date(user.createdAt).getFullYear()}
           </span>
+          <div style={{ display: 'flex', gap: '16px' }}>
+            <span>
+              Seguindo <b>{user.followingAmount}</b>
+            </span>
+            <span>
+              Seguidores <b>{user.followersAmount}</b>
+            </span>
+          </div>
         </section>
         <section>
           <h3>Últimos posts</h3>
@@ -108,5 +171,3 @@ const Profile = () => {
     </>
   );
 };
-
-export default Profile;

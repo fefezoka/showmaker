@@ -13,6 +13,7 @@ export const Button = styled('button', {
   fontSize: '.875rem',
   cursor: 'pointer',
   borderRadius: '8px',
+  maxHeight: '42px',
 
   variants: {
     variant: {

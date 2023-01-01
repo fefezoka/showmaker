@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { FeedPost } from '../../components/feedPost/FeedPost';
 import { useGetPosts } from '../../hooks/useGetPosts';
 
-const Profile = () => {
+export default () => {
   const router = useRouter();
   const { title } = router.query;
 
@@ -57,5 +57,3 @@ const Profile = () => {
     </>
   );
 };
-
-export default Profile;

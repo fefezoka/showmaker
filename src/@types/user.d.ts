@@ -5,4 +5,8 @@ interface User {
   posts: { id: string }[];
   createdAt: Date;
   updatedAt: Date;
+  followYou: boolean;
+  isFollowing: boolean;
+  followersAmount: number;
+  followingAmount: number;
 }

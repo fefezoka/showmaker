@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../../components/feedPost/FeedPost';
 
-const Post = () => {
+export default () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -49,5 +49,3 @@ const Post = () => {
     </>
   );
 };
-
-export default Post;

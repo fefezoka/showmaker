@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../lib/prisma';
 
-export const commentByPostId = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const { id } = req.query;
 
   if (!id) {
@@ -26,5 +26,3 @@ export const commentByPostId = async (req: NextApiRequest, res: NextApiResponse)
 
   return res.status(200).json(response);
 };
-
-export default commentByPostId;

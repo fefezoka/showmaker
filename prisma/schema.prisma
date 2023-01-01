@@ -42,11 +42,23 @@ model User {
   emailVerified DateTime?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
+  followersAmount Int @default(0)
+  followingAmount Int @default(0)
   posts         Post[]
   accounts      Account[]
   comments      PostComment[]
   sessions      Session[]
   likedPosts    LikedPost[]
+  followers Follows[] @relation("following")
+  following Follows[] @relation("follower")
+}
+
+model Follows {
+  id String @id @default(uuid()) @map("_id")
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  String
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId String
 }
 
 model Post {

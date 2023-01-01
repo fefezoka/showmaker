@@ -6,7 +6,7 @@ import { useGetPosts } from '../hooks/useGetPosts';
 import { useEffect } from 'react';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 
-export default function Home() {
+export default () => {
   const { ref, inView } = useInView();
 
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
@@ -51,4 +51,4 @@ export default function Home() {
       </Main>
     </>
   );
-}
+};

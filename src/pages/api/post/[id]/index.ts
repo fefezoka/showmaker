@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../lib/prisma';
 import { getSession } from 'next-auth/react';
 
-export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req: req });
   const { id } = req.query;
 
@@ -20,6 +20,8 @@ export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => 
           id: true,
           name: true,
           image: true,
+          followersAmount: true,
+          followingAmount: true,
         },
       },
       likedBy: true,
@@ -37,5 +39,3 @@ export const getPostById = async (req: NextApiRequest, res: NextApiResponse) => 
     isLiked: response?.likedBy.some((like) => like.userId === session?.user.id) ?? false,
   });
 };
-
-export default getPostById;

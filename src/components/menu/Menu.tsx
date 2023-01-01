@@ -25,6 +25,12 @@ export const Menu = () => {
             {isDesktop && <h3>Página inicial</h3>}
           </Line>
         </Link>
+        <Link href={session ? `/favorites` : '#'} prefetch={false}>
+          <Line active={router.asPath === `/favorites`}>
+            <IoPerson />
+            {isDesktop && <h3>Favoritos</h3>}
+          </Line>
+        </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
           <Line active={router.asPath === `/${session?.user.name.replace(' ', '%20')}`}>
             <IoPerson />

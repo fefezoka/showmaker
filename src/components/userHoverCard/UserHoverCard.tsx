@@ -45,12 +45,23 @@ export const UserHoverCard = ({ user, children }: Props) => {
               </div>
             </Link>
 
-            {posts[0] && posts[0].data && (
-              <p style={{ fontSize: '14px' }}>
-                Última postagem{' '}
-                {diffBetweenDates(new Date(), new Date(posts[0].data.createdAt))}
-              </p>
-            )}
+            <div style={{ fontSize: '14px' }}>
+              {posts[0] && posts[0].data && (
+                <p>
+                  Última postagem{' '}
+                  {diffBetweenDates(new Date(), new Date(posts[0].data.createdAt))}
+                </p>
+              )}
+
+              <div style={{ display: 'flex', gap: '16px' }}>
+                <span>
+                  Seguindo <b>{user.followingAmount}</b>
+                </span>
+                <span>
+                  Seguidores <b>{user.followersAmount}</b>
+                </span>
+              </div>
+            </div>
           </Header>
           <div style={{ display: 'flex', paddingTop: '8px', gap: '2px' }}>
             {posts ? (
