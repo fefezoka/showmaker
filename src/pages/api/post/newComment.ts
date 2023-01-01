@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function newComment(req: NextApiRequest, res: NextApiResponse) {
   const { message, postId, userId } = req.body;
 
   const response = await prisma.postComment.create({
@@ -27,4 +27,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   return res.status(200).json(response);
-};
+}

@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
 import { FeedPost } from '../../components/feedPost/FeedPost';
 import { useGetPosts } from '../../hooks/useGetPosts';
 
-export default () => {
+export default function search() {
   const router = useRouter();
   const { title } = router.query;
 
@@ -56,4 +56,4 @@ export default () => {
       </Main>
     </>
   );
-};
+}

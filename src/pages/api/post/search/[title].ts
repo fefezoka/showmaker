@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../../lib/prisma';
 
-export const searchPost = async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function search(req: NextApiRequest, res: NextApiResponse) {
   const { title } = req.query;
 
   if (!title) {
@@ -37,6 +37,4 @@ export const searchPost = async (req: NextApiRequest, res: NextApiResponse) => {
   console.log(filter);
 
   return res.status(200).json(filter);
-};
-
-export default searchPost;
+}

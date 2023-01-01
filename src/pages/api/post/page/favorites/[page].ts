@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { prisma } from '../../../../../lib/prisma';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function favorites(req: NextApiRequest, res: NextApiResponse) {
   const { page } = req.query;
   const session = await getSession({ req: req });
 
@@ -25,4 +25,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   return res.status(200).json(response);
-};
+}

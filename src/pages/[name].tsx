@@ -15,7 +15,7 @@ import { Button } from '../components/button/Button';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 
-export default () => {
+export default function profile() {
   const { data: session } = useSession();
   const router = useRouter();
   const { name } = router.query;
@@ -170,4 +170,4 @@ export default () => {
       </Main>
     </>
   );
-};
+}

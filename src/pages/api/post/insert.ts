@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function insert(req: NextApiRequest, res: NextApiResponse) {
   const email = req.body.email;
   const title = req.body.title;
   const videoUrl = req.body.videoUrl;
@@ -25,4 +25,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   res.status(200).json(response);
-};
+}

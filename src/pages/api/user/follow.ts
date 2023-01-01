@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function follow(req: NextApiRequest, res: NextApiResponse) {
   const { followingId, followerId } = req.body;
 
   if (followingId === followerId) {
@@ -38,4 +38,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   res.status(200).json({ message: 'ok' });
-};
+}

@@ -13,7 +13,7 @@ interface Props {
   children: ReactNode;
 }
 
-export default ({ Component, pageProps }: AppProps<{ session: Session }>) => {
+export default function myApp({ Component, pageProps }: AppProps<{ session: Session }>) {
   global();
 
   return (
@@ -25,7 +25,7 @@ export default ({ Component, pageProps }: AppProps<{ session: Session }>) => {
       </SessionProvider>
     </QueryClientProvider>
   );
-};
+}
 
 const Layout = ({ children }: Props) => {
   const session = useSession();

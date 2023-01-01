@@ -5,7 +5,7 @@ import { FeedPost } from '../components/feedPost/FeedPost';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { useInView } from 'react-intersection-observer';
 
-export default () => {
+export default function favorites() {
   const { ref, inView } = useInView();
 
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
@@ -40,4 +40,4 @@ export default () => {
       )}
     </Main>
   );
-};
+}

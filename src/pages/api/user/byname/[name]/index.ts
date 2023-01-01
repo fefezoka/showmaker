@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { prisma } from '../../../../../lib/prisma';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+export default async function profile(req: NextApiRequest, res: NextApiResponse) {
   const session = await getSession({ req: req });
   const { name } = req.query;
 
@@ -33,4 +33,4 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {
     return res.status(404).json({ message: `User ${name} doesn't exist` });
   }
-};
+}
