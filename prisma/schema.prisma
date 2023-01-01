@@ -35,45 +35,45 @@ model Session {
 }
 
 model User {
-  id            String        @id @default(uuid()) @map("_id")
-  name          String        @unique
-  email         String        @unique
-  image         String
-  emailVerified DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  followersAmount Int @default(0)
-  followingAmount Int @default(0)
-  posts         Post[]
-  accounts      Account[]
-  comments      PostComment[]
-  sessions      Session[]
-  likedPosts    LikedPost[]
-  followers Follows[] @relation("following")
-  following Follows[] @relation("follower")
+  id              String        @id @default(uuid()) @map("_id")
+  name            String        @unique
+  email           String        @unique
+  image           String
+  emailVerified   DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  followersAmount Int           @default(0)
+  followingAmount Int           @default(0)
+  posts           Post[]
+  accounts        Account[]
+  comments        PostComment[]
+  sessions        Session[]
+  likedPosts      LikedPost[]
+  followers       Follows[]     @relation("following")
+  following       Follows[]     @relation("follower")
 }
 
 model Follows {
-  id String @id @default(uuid()) @map("_id")
-  follower    User @relation("follower", fields: [followerId], references: [id])
+  id          String @id @default(uuid()) @map("_id")
+  follower    User   @relation("follower", fields: [followerId], references: [id])
   followerId  String
-  following   User @relation("following", fields: [followingId], references: [id])
+  following   User   @relation("following", fields: [followingId], references: [id])
   followingId String
 }
 
 model Post {
-  id           String        @id @default(uuid()) @map("_id")
-  title        String
-  videoUrl     String
-  thumbnailUrl String
-  likes        Int           @default(0)
-  commentsAmount Int? @default(0)
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  likedBy      LikedPost[]
-  postComments PostComment[]
+  id             String        @id @default(uuid()) @map("_id")
+  title          String
+  videoUrl       String
+  thumbnailUrl   String
+  likes          Int           @default(0)
+  commentsAmount Int?          @default(0)
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  likedBy        LikedPost[]
+  postComments   PostComment[]
 }
 
 model LikedPost {
@@ -85,12 +85,12 @@ model LikedPost {
 }
 
 model PostComment {
-  id      String @id @default(uuid()) @map("_id")
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId  String @unique
-  post    Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId  String @unique
-  message String
+  id        String   @id @default(uuid()) @map("_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @unique
+  message   String
   createdAt DateTime @default(now())
 }
 

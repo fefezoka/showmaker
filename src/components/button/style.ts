@@ -23,6 +23,21 @@ export const Button = styled('button', {
         borderColor: '$white',
         fontWeight: 700,
       },
+      profile: {
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        fontSize: '1rem',
+        padding: '16px',
+        transition: 'all 200ms',
+
+        '&:hover': {
+          backgroundColor: '$bgalt',
+        },
+
+        '@dsk2': {
+          fontSize: '1.125rem',
+        },
+      },
       disabled: {
         backgroundColor: '$bgalt',
       },
@@ -31,6 +46,12 @@ export const Button = styled('button', {
       full: {
         borderRadius: '50%',
         minWidth: 'unset',
+      },
+    },
+    active: {
+      true: {
+        fontWeight: 'bold',
+        backgroundColor: '$bgalt',
       },
     },
   },

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
@@ -15,7 +15,10 @@ import { Button } from '../components/button/Button';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 
+type Feed = 'posts' | 'favorites';
+
 export default function Profile() {
+  const [feed, setFeed] = useState<Feed>('posts');
   const { data: session } = useSession();
   const router = useRouter();
   const { name } = router.query;
@@ -36,11 +39,22 @@ export default function Profile() {
     }
   );
 
-  const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
-    api: `api/user/byid/${user?.id}/posts/page`,
-    query: ['userposts', name as string],
-    enabled: !!user,
-  });
+  const feedOptions = [
+    {
+      api: `api/user/byid/${user?.id}/posts/page`,
+      query: ['userposts', name as string],
+      enabled: !!user,
+    },
+    {
+      api: `api/user/byid/${user?.id}/posts/page/favorites`,
+      query: ['favorites', name as string],
+      enabled: !!user,
+    },
+  ];
+
+  const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll(
+    feedOptions[feed === 'posts' ? 0 : 1]
+  );
 
   const posts = useGetPosts(
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
@@ -118,11 +132,11 @@ export default function Profile() {
             <div
               style={{
                 display: 'flex',
-                gap: '16px',
+                gap: '24px',
                 alignItems: 'center',
               }}
             >
-              <FullProfileIcon src={user.image} size={96} />
+              <FullProfileIcon src={user.image} size={128} />
               <h2>{user.name}</h2>
             </div>
 
@@ -134,11 +148,14 @@ export default function Profile() {
             )}
           </div>
 
-          <span>
-            Usuário desde {new Date(user.createdAt).getDate()}/
-            {new Date(user.createdAt).getMonth() + 1}/
-            {new Date(user.createdAt).getFullYear()}
-          </span>
+          <div>
+            Usuário desde{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              {new Date(user.createdAt).getDate()}/
+              {new Date(user.createdAt).getMonth() + 1}/
+              {new Date(user.createdAt).getFullYear()}
+            </span>
+          </div>
           <div style={{ display: 'flex', gap: '16px' }}>
             <span>
               Seguindo <b>{user.followingAmount}</b>
@@ -148,8 +165,19 @@ export default function Profile() {
             </span>
           </div>
         </section>
-        <section>
-          <h3>Últimos posts</h3>
+        <section style={{ display: 'flex', gap: '16px' }}>
+          <Button
+            onClick={() => setFeed('posts')}
+            value={'Últimos posts'}
+            variant={'profile'}
+            active={feed === 'posts'}
+          />
+          <Button
+            onClick={() => setFeed('favorites')}
+            value={'Posts curtidos'}
+            variant={'profile'}
+            active={feed === 'favorites'}
+          />
         </section>
         {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
