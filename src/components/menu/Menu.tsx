@@ -21,19 +21,19 @@ export const Menu = () => {
         </Link>
         <Link href={'/'} prefetch={false}>
           <Line active={router.pathname === '/'}>
-            <IoHome />
+            <IoHome size={20} />
             {isDesktop && <h3>Página inicial</h3>}
           </Line>
         </Link>
         <Link href={session ? `/following` : '#'} prefetch={false}>
           <Line active={router.asPath === `/following`}>
-            <IoPeople />
+            <IoPeople size={20} />
             {isDesktop && <h3>Seguindo</h3>}
           </Line>
         </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
           <Line active={router.asPath === `/${session?.user.name.replace(' ', '%20')}`}>
-            <IoPerson />
+            <IoPerson size={20} />
             {isDesktop && <h3>Perfil</h3>}
           </Line>
         </Link>

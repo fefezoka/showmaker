@@ -1,7 +1,7 @@
 import { styled } from '../../style/stitches.config';
 
 export const Container = styled('div', {
-  maxWidth: '1152px',
+  maxWidth: '1024px',
   margin: '0 auto',
   display: 'flex',
 });

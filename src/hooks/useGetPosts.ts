@@ -3,14 +3,14 @@ import { useQueries, UseQueryOptions } from 'react-query';
 
 export const useGetPosts = (T: { id: string }[] | undefined) => {
   const posts = useQueries(
-    T?.map<UseQueryOptions<Post>>((id) => {
+    T?.map<UseQueryOptions<Post>>((post) => {
       return {
-        queryKey: ['post', id.id],
+        queryKey: ['post', post.id],
         queryFn: async () => {
-          const { data } = await axios.get(`/api/post/${id.id}`);
+          const { data } = await axios.get(`/api/post/${post.id}`);
           return data;
         },
-        enabled: !!id,
+        enabled: !!post,
         refetchOnWindowFocus: false,
         staleTime: Infinity,
       };

@@ -41,12 +41,12 @@ export default function Profile() {
 
   const feedOptions = [
     {
-      api: `api/user/byid/${user?.id}/posts/page`,
+      api: `/api/user/byid/${user?.id}/posts/page`,
       query: ['userposts', name as string],
       enabled: !!user,
     },
     {
-      api: `api/user/byid/${user?.id}/posts/page/favorites`,
+      api: `/api/user/byid/${user?.id}/posts/page/favorites`,
       query: ['favorites', name as string],
       enabled: !!user,
     },
@@ -148,24 +148,26 @@ export default function Profile() {
             )}
           </div>
 
-          <div>
-            Usuário desde{' '}
-            <span style={{ fontWeight: 'bold' }}>
-              {new Date(user.createdAt).getDate()}/
-              {new Date(user.createdAt).getMonth() + 1}/
-              {new Date(user.createdAt).getFullYear()}
-            </span>
-          </div>
-          <div style={{ display: 'flex', gap: '16px' }}>
-            <span>
-              Seguindo <b>{user.followingAmount}</b>
-            </span>
-            <span>
-              Seguidores <b>{user.followersAmount}</b>
-            </span>
+          <div style={{ fontSize: '15px' }}>
+            <div>
+              Usuário desde{' '}
+              <span style={{ fontWeight: 'bold' }}>
+                {new Date(user.createdAt).getDate()}/
+                {new Date(user.createdAt).getMonth() + 1}/
+                {new Date(user.createdAt).getFullYear()}
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '16px' }}>
+              <span>
+                Seguindo <b>{user.followingAmount}</b>
+              </span>
+              <span>
+                Seguidores <b>{user.followersAmount}</b>
+              </span>
+            </div>
           </div>
         </section>
-        <section style={{ display: 'flex', gap: '16px' }}>
+        <section style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
           <Button
             onClick={() => setFeed('posts')}
             value={'Últimos posts'}

@@ -26,7 +26,7 @@ export const Button = styled('button', {
       profile: {
         backgroundColor: 'transparent',
         borderColor: 'transparent',
-        fontSize: '1rem',
+        fontSize: '.875rem',
         padding: '16px',
         transition: 'all 200ms',
 
@@ -35,7 +35,7 @@ export const Button = styled('button', {
         },
 
         '@dsk2': {
-          fontSize: '1.125rem',
+          fontSize: '1rem',
         },
       },
       disabled: {

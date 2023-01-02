@@ -20,7 +20,7 @@ export const Header = () => {
   return (
     <StyledHeader>
       <Container>
-        <div style={{ maxWidth: '420px', width: '100%', position: 'relative' }}>
+        <div style={{ maxWidth: '360px', width: '100%', position: 'relative' }}>
           <form onSubmit={(e) => handleFindClick(e)}>
             <Input ref={findRef} placeholder="Procurar" />
             <div style={{ position: 'absolute', right: 18, top: 10 }}>
