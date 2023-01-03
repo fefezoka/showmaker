@@ -52,6 +52,18 @@ export const FeedPost = memo(
             }
           : post
       );
+
+      queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
+        ['favorites', session?.user.name],
+        (old) =>
+          old
+            ? !old?.pages[0].some((cachepost) => cachepost.id === post.id)
+              ? old?.pages[0].unshift({ id: post.id })
+                ? old
+                : old
+              : old
+            : undefined
+      );
     };
 
     const dislikePost = async () => {

@@ -19,7 +19,7 @@ export const Main = memo(({ children, loading }: Props) => {
         <>
           {loading && (
             <div style={{ textAlign: 'center', width: '100%' }}>
-              <Image priority src={Spinner} width={72} height={72} alt="" />
+              <Image priority src={Spinner} width={54} height={54} alt="" />
             </div>
           )}
           {children}

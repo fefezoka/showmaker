@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonWrapper, Line, Menu as StyledMenu } from './style';
-import { IoHome, IoPerson, IoHeart, IoPeople } from 'react-icons/io5';
+import { IoHome, IoPerson } from 'react-icons/io5';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
@@ -23,12 +23,6 @@ export const Menu = () => {
           <Line active={router.pathname === '/'}>
             <IoHome size={20} />
             {isDesktop && <h3>Página inicial</h3>}
-          </Line>
-        </Link>
-        <Link href={session ? `/following` : '#'} prefetch={false}>
-          <Line active={router.asPath === `/following`}>
-            <IoPeople size={20} />
-            {isDesktop && <h3>Seguindo</h3>}
           </Line>
         </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>

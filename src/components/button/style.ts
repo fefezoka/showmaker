@@ -13,7 +13,11 @@ export const Button = styled('button', {
   fontSize: '.875rem',
   cursor: 'pointer',
   borderRadius: '8px',
-  maxHeight: '42px',
+  transition: 'all 200ms',
+
+  '&:hover': {
+    backgroundColor: '$bluealt',
+  },
 
   variants: {
     variant: {
@@ -22,6 +26,10 @@ export const Button = styled('button', {
         color: '$white',
         borderColor: '$white',
         fontWeight: 700,
+
+        '&:hover': {
+          backgroundColor: '$redalt',
+        },
       },
       profile: {
         backgroundColor: 'transparent',
@@ -29,6 +37,7 @@ export const Button = styled('button', {
         fontSize: '.875rem',
         padding: '16px',
         transition: 'all 200ms',
+        maxHeight: '42px',
 
         '&:hover': {
           backgroundColor: '$bgalt',
@@ -51,7 +60,6 @@ export const Button = styled('button', {
     active: {
       true: {
         fontWeight: 'bold',
-        backgroundColor: '$bgalt',
       },
     },
   },

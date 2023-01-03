@@ -82,6 +82,7 @@ model LikedPost {
   userId String @unique
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String @unique
+  createdAt DateTime? @default(now())
 }
 
 model PostComment {

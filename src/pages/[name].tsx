@@ -72,11 +72,16 @@ export default function Profile() {
 
   if (!user) {
     return (
-      <Main>
-        <section>
-          <h2>Usuário {name} não encontrado</h2>
-        </section>
-      </Main>
+      <>
+        <Head>
+          <title>Perfil não encontrado</title>
+        </Head>
+        <Main>
+          <section>
+            <h2>Usuário {name} não encontrado</h2>
+          </section>
+        </Main>
+      </>
     );
   }
 
@@ -183,7 +188,7 @@ export default function Profile() {
         </section>
         {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <Image src={Spinner} alt="" width={72} height={72} />
+            <Image src={Spinner} alt="" width={54} height={54} />
           </div>
         ) : (
           posts.map(

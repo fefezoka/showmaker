@@ -102,22 +102,24 @@ const CreatePost = () => {
 
     const processPostOnDb = async (thumbnailUrl: string, videoUrl: string) => {
       if (status === 'authenticated') {
-        const { data } = await axios.post('/api/post/insert', {
+        const { data } = await axios.post<Post>('/api/post/insert', {
           ...session.user,
           title: titleRef.current?.value,
           thumbnailUrl: thumbnailUrl,
           videoUrl: videoUrl,
         });
 
-        queryClient.setQueryData<{ pages: [{ id: string }][] }>('homepageIds', (old) =>
-          old?.pages[0].unshift({ id: data.id })
-            ? {
-                ...old,
-              }
-            : { pages: [...(new Array<{ id: string }>(1)[0].id = data.id)] }
+        queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
+          'homepageIds',
+          (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
         );
 
-        queryClient.setQueryData(['post', data.id], data);
+        queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
+          ['userposts', session.user.name],
+          (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
+        );
+
+        queryClient.setQueryData<Post>(['post', data.id], data);
         onClose();
       }
     };

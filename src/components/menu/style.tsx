@@ -33,6 +33,7 @@ export const Line = styled('div', {
   color: '$gray',
   padding: '16px 8px',
   minHeight: '70px',
+  transition: 'all 200ms',
 
   '&:hover': {
     color: '$white',

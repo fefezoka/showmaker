@@ -10,17 +10,17 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
     return res.status(404).send({ message: 'error' });
   }
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: {
-        name: name as string,
-      },
-      include: {
-        followers: true,
-        following: true,
-      },
-    });
+  const user = await prisma.user.findUnique({
+    where: {
+      name: name as string,
+    },
+    include: {
+      followers: true,
+      following: true,
+    },
+  });
 
+  if (user) {
     return res.status(200).json({
       ...user,
       followYou: user?.following.some(
@@ -30,7 +30,6 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
         (follower) => follower.followerId === session?.user.id
       ),
     });
-  } catch (error) {
-    return res.status(404).json({ message: `User ${name} doesn't exist` });
   }
+  return res.status(404).json({ message: 'user not found' });
 }
