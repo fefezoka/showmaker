@@ -1,4 +1,4 @@
-import { styled } from '../../style/stitches.config';
+import { styled } from '../../styles/stitches.config';
 
 export const Header = styled('header', {
   position: 'sticky',

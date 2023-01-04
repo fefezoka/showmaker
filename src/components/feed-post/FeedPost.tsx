@@ -7,7 +7,7 @@ import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient, useQuery } from 'react-query';
 import { Button } from '../button/Button';
-import { UserHoverCard } from '../userHoverCard/UserHoverCard';
+import { UserHoverCard } from '../user-hover-card/UserHoverCard';
 import axios from 'axios';
 import Spinner from '../../assets/Spinner.svg';
 import Image from 'next/image';
@@ -87,7 +87,6 @@ export const FeedPost = memo(
       ['comments', post.id],
       async () => {
         const { data } = await axios.get(`/api/post/${post.id}/comments`);
-        console.log('fetch');
         return data;
       },
       {

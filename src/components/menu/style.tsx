@@ -1,4 +1,4 @@
-import { styled } from '../../style/stitches.config';
+import { styled } from '../../styles/stitches.config';
 
 export const Menu = styled('aside', {
   borderRight: '2px solid',

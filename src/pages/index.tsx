@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Main } from '../components/main/Main';
-import { FeedPost } from '../components/feedPost/FeedPost';
+import { FeedPost } from '../components/feed-post/FeedPost';
 import { useInView } from 'react-intersection-observer';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useEffect } from 'react';

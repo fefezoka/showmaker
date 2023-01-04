@@ -1,5 +1,5 @@
 import type { AppProps } from 'next/app';
-import { global } from '../style/global';
+import { global } from '../styles/global';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider, useSession } from 'next-auth/react';
 import { QueryClientProvider, QueryClient } from 'react-query';

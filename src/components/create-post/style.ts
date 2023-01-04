@@ -1,4 +1,4 @@
-import { keyframes, styled } from '../../style/stitches.config';
+import { keyframes, styled } from '../../styles/stitches.config';
 import { Overlay, Content } from '@radix-ui/react-dialog';
 
 const fade = keyframes({

@@ -4,9 +4,9 @@ import Head from 'next/head';
 import { Main } from '../components/main/Main';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { FeedPost } from '../components/feedPost/FeedPost';
+import { FeedPost } from '../components/feed-post/FeedPost';
 import { useGetPosts } from '../hooks/useGetPosts';
-import { FullProfileIcon } from '../components/fullProfileIcon/FullProfileIcon';
+import { FullProfileIcon } from '../components/full-profile-icon/FullProfileIcon';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
@@ -142,12 +142,22 @@ export default function Profile() {
               }}
             >
               <FullProfileIcon src={user.image} size={128} />
-              <h2>{user.name}</h2>
+              <div>
+                <h2>{user.name}</h2>
+                {(user.followYou && user.isFollowing && <span>Segue um ao outro</span>) ||
+                  (user.followYou && <span>Segue você</span>)}
+              </div>
             </div>
 
             {!(session?.user.id === user.id) && (
               <Button
-                value={user.isFollowing ? 'Parar de seguir' : 'Seguir'}
+                value={
+                  user.isFollowing
+                    ? 'Parar de seguir'
+                    : user.followYou
+                    ? 'Seguir de volta'
+                    : 'Seguir'
+                }
                 onClick={handleFollowClick}
               />
             )}
@@ -162,7 +172,7 @@ export default function Profile() {
                 {new Date(user.createdAt).getFullYear()}
               </span>
             </div>
-            <div style={{ display: 'flex', gap: '16px' }}>
+            <div style={{ display: 'flex', gap: '20px' }}>
               <span>
                 Seguindo <b>{user.followingAmount}</b>
               </span>
@@ -172,7 +182,7 @@ export default function Profile() {
             </div>
           </div>
         </section>
-        <section style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+        <section style={{ display: 'flex', justifyContent: 'center', padding: '0' }}>
           <Button
             onClick={() => setFeed('posts')}
             value={'Últimos posts'}
@@ -187,7 +197,7 @@ export default function Profile() {
           />
         </section>
         {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
             <Image src={Spinner} alt="" width={54} height={54} />
           </div>
         ) : (

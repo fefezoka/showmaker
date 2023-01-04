@@ -4,7 +4,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import { FeedPost } from '../../components/feedPost/FeedPost';
+import { FeedPost } from '../../components/feed-post/FeedPost';
 
 export default function Post() {
   const router = useRouter();

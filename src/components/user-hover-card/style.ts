@@ -1,5 +1,5 @@
 import * as HoverCard from '@radix-ui/react-hover-card';
-import { styled, keyframes } from '../../style/stitches.config';
+import { styled, keyframes } from '../../styles/stitches.config';
 
 const Fade = keyframes({
   from: {

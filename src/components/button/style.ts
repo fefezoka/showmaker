@@ -1,4 +1,4 @@
-import { styled } from '../../style/stitches.config';
+import { styled } from '../../styles/stitches.config';
 
 export const Button = styled('button', {
   display: 'flex',
@@ -46,9 +46,6 @@ export const Button = styled('button', {
         '@dsk2': {
           fontSize: '1rem',
         },
-      },
-      disabled: {
-        backgroundColor: '$bgalt',
       },
     },
     radius: {

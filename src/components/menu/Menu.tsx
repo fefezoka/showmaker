@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../../hooks/useIsDesktop';
-const CreatePost = dynamic(() => import('../createPost/CreatePost'));
+const CreatePost = dynamic(() => import('../create-post/CreatePost'));
 
 export const Menu = () => {
   const { data: session } = useSession();
