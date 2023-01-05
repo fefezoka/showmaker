@@ -21,9 +21,8 @@ export const global = globalCss({
   },
 
   a: {
+    all: 'unset',
     cursor: 'pointer',
-    textDecoration: 'none',
-    color: '$white',
   },
 
   fieldset: {
@@ -31,11 +30,8 @@ export const global = globalCss({
   },
 
   button: {
-    backgroundColor: 'unset',
-    border: 'none',
-    color: '$white',
+    all: 'unset',
     cursor: 'pointer',
-    fontSize: '1rem',
   },
 
   li: {

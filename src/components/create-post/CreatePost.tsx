@@ -14,7 +14,7 @@ import { useQueryClient } from 'react-query';
 const CreatePost = () => {
   const queryClient = useQueryClient();
   const titleRef = useRef<HTMLInputElement>(null);
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -101,27 +101,25 @@ const CreatePost = () => {
     };
 
     const processPostOnDb = async (thumbnailUrl: string, videoUrl: string) => {
-      if (status === 'authenticated') {
-        const { data } = await axios.post<Post>('/api/post/insert', {
-          ...session.user,
-          title: titleRef.current?.value,
-          thumbnailUrl: thumbnailUrl,
-          videoUrl: videoUrl,
-        });
+      const { data } = await axios.post<Post>('/api/post/insert', {
+        ...session?.user,
+        title: titleRef.current?.value,
+        thumbnailUrl: thumbnailUrl,
+        videoUrl: videoUrl,
+      });
 
-        queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
-          'homepageIds',
-          (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
-        );
+      queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
+        'homepageIds',
+        (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
+      );
 
-        queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
-          ['userposts', session.user.name],
-          (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
-        );
+      queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
+        ['userposts', session?.user.name],
+        (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
+      );
 
-        queryClient.setQueryData<Post>(['post', data.id], data);
-        onClose();
-      }
+      queryClient.setQueryData<Post>(['post', data.id], data);
+      onClose();
     };
 
     processVideo();

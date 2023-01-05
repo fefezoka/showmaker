@@ -8,7 +8,7 @@ export const Button = styled('button', {
   backgroundColor: '$blue',
   border: '1px solid',
   borderColor: '$bluealt',
-  minWidth: '84px',
+  minWidth: '64px',
   color: 'white',
   fontSize: '.875rem',
   cursor: 'pointer',
@@ -31,32 +31,11 @@ export const Button = styled('button', {
           backgroundColor: '$redalt',
         },
       },
-      profile: {
-        backgroundColor: 'transparent',
-        borderColor: 'transparent',
-        fontSize: '.875rem',
-        padding: '16px',
-        transition: 'all 200ms',
-        maxHeight: '42px',
-
-        '&:hover': {
-          backgroundColor: '$bgalt',
-        },
-
-        '@dsk2': {
-          fontSize: '1rem',
-        },
-      },
     },
     radius: {
       full: {
         borderRadius: '50%',
         minWidth: 'unset',
-      },
-    },
-    active: {
-      true: {
-        fontWeight: 'bold',
       },
     },
   },

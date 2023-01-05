@@ -19,11 +19,11 @@ export const VideoWrapper = styled('div', {
 export const NewCommentContainer = styled('div', {
   marginTop: '1rem',
   display: 'flex',
-  gap: '1rem',
+  gap: '.5rem',
 
   input: {
     color: 'white',
-    borderRadius: '1rem',
+    borderRadius: '.5rem',
     width: '100%',
     padding: '0px 16px',
     backgroundColor: '$bgalt',
@@ -32,6 +32,10 @@ export const NewCommentContainer = styled('div', {
 
   'input::placeholder': {
     color: '$gray',
+  },
+
+  '@dsk2': {
+    gap: '1rem',
   },
 });
 

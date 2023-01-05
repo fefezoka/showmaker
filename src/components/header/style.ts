@@ -1,14 +1,15 @@
 import { styled } from '../../styles/stitches.config';
+import { Content, Item, Separator, Arrow } from '@radix-ui/react-dropdown-menu';
 
 export const Header = styled('header', {
   position: 'sticky',
   top: 0,
-  padding: '18px 16px',
+  padding: '12px 16px',
   background: '$bg',
   zIndex: '$header',
 
   '@dsk2': {
-    padding: '18px 24px',
+    padding: '12px 24px',
   },
 });
 
@@ -21,11 +22,15 @@ export const Container = styled('div', {
 
 export const UserContainer = styled('div', {
   display: 'flex',
-  justifyContent: 'center',
   gap: '12px',
   alignItems: 'center',
-  marginLeft: '12px',
-  flexShrink: '0',
+  borderRadius: '24px',
+  padding: '6px 12px',
+  transition: 'all 200ms',
+
+  '&:hover': {
+    backgroundColor: '$bgalt',
+  },
 });
 
 export const Input = styled('input', {
@@ -41,4 +46,39 @@ export const Input = styled('input', {
     color: '$gray',
     fontWeight: 700,
   },
+});
+
+export const UserSettingsModal = styled(Content, {
+  zIndex: '$modal',
+  backgroundColor: '$white',
+  minWidth: '130px',
+  padding: '6px',
+  borderRadius: '8px',
+});
+
+export const StyledItem = styled(Item, {
+  display: 'flex',
+  justifyContent: 'center',
+  color: '$black',
+  fontSize: '.875rem',
+  borderRadius: '4px',
+  padding: '6px',
+  fontWeight: 400,
+  cursor: 'pointer',
+
+  '&:hover': {
+    outline: 'none',
+    backgroundColor: '$bgalt',
+    color: '$white',
+  },
+});
+
+export const StyledSeparator = styled(Separator, {
+  height: '1px',
+  backgroundColor: '$gray',
+  margin: '4px',
+});
+
+export const StyledArrow = styled(Arrow, {
+  fill: '$white',
 });

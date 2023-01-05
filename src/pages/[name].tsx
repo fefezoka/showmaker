@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Main } from '../components/main/Main';
 import axios from 'axios';
+import { useRouter } from 'next/router';
+import { Main } from '../components/main/Main';
 import { useQuery } from 'react-query';
 import { FeedPost } from '../components/feed-post/FeedPost';
 import { useGetPosts } from '../hooks/useGetPosts';
@@ -14,6 +14,12 @@ import Spinner from '../assets/Spinner.svg';
 import { Button } from '../components/button/Button';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
+import {
+  FeedButton,
+  FeedButtonWrapper,
+  FollowSpan,
+  ProfileContainer,
+} from '../page-styles/profile';
 
 type Feed = 'posts' | 'favorites';
 
@@ -125,15 +131,8 @@ export default function Profile() {
         <title>Perfil de {user.name}</title>
       </Head>
       <Main>
-        <section>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              marginBottom: '16px',
-              alignItems: 'center',
-            }}
-          >
+        <section style={{ paddingBottom: 0 }}>
+          <ProfileContainer>
             <div
               style={{
                 display: 'flex',
@@ -144,8 +143,10 @@ export default function Profile() {
               <FullProfileIcon src={user.image} size={128} />
               <div>
                 <h2>{user.name}</h2>
-                {(user.followYou && user.isFollowing && <span>Segue um ao outro</span>) ||
-                  (user.followYou && <span>Segue você</span>)}
+                {(user.followYou && user.isFollowing && (
+                  <FollowSpan>Segue um ao outro</FollowSpan>
+                )) ||
+                  (user.followYou && <FollowSpan>Segue você</FollowSpan>)}
               </div>
             </div>
 
@@ -161,7 +162,7 @@ export default function Profile() {
                 onClick={handleFollowClick}
               />
             )}
-          </div>
+          </ProfileContainer>
 
           <div style={{ fontSize: '15px' }}>
             <div>
@@ -181,21 +182,20 @@ export default function Profile() {
               </span>
             </div>
           </div>
+
+          <FeedButtonWrapper>
+            <FeedButton onClick={() => setFeed('posts')} active={feed === 'posts'}>
+              Últimos posts
+            </FeedButton>
+            <FeedButton
+              onClick={() => setFeed('favorites')}
+              active={feed === 'favorites'}
+            >
+              Posts curtidos
+            </FeedButton>
+          </FeedButtonWrapper>
         </section>
-        <section style={{ display: 'flex', justifyContent: 'center', padding: '0' }}>
-          <Button
-            onClick={() => setFeed('posts')}
-            value={'Últimos posts'}
-            variant={'profile'}
-            active={feed === 'posts'}
-          />
-          <Button
-            onClick={() => setFeed('favorites')}
-            value={'Posts curtidos'}
-            variant={'profile'}
-            active={feed === 'favorites'}
-          />
-        </section>
+
         {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
             <Image src={Spinner} alt="" width={54} height={54} />

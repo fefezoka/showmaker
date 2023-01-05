@@ -7,8 +7,7 @@ export const Container = styled('div', {
 });
 
 export const Main = styled('main', {
-  borderRight: '2px solid',
-  borderColor: '$bgalt',
+  borderRight: '2px solid $bgalt',
   width: '100%',
 
   '& > section': {

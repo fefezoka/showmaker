@@ -9,7 +9,7 @@ export default async function insert(req: NextApiRequest, res: NextApiResponse) 
 
   const response = await prisma.post.create({
     data: {
-      title: title,
+      title: title ?? 'callback',
       videoUrl: videoUrl,
       thumbnailUrl: thumbnailUrl,
       user: {
