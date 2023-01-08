@@ -1,7 +1,7 @@
+import React, { FormEvent, useRef, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import React, { FormEvent, useRef } from 'react';
 import { ProfileIcon } from '../profileIcon/ProfileIcon';
-import { IoSearchSharp } from 'react-icons/io5';
+import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import {
   Header as StyledHeader,
   Container,
@@ -18,6 +18,7 @@ import { useIsDesktop } from '../../hooks/useIsDesktop';
 
 export const Header = () => {
   const { data: session, status } = useSession();
+  const [open, setOpen] = useState<boolean>(false);
   const findRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const isDesktop = useIsDesktop();
@@ -32,10 +33,17 @@ export const Header = () => {
   return (
     <StyledHeader>
       <Container>
-        <div style={{ maxWidth: '360px', width: '100%', position: 'relative' }}>
+        <div
+          style={{
+            maxWidth: '360px',
+            width: '100%',
+            height: '100%',
+            position: 'relative',
+          }}
+        >
           <form onSubmit={(e) => handleFindClick(e)}>
             <Input ref={findRef} placeholder="Procurar" />
-            <div style={{ position: 'absolute', right: 18, top: 10 }}>
+            <div style={{ position: 'absolute', right: 18, top: 14 }}>
               <button type="submit">
                 <IoSearchSharp color="white" />
               </button>
@@ -44,11 +52,12 @@ export const Header = () => {
         </div>
 
         {status === 'authenticated' ? (
-          <DropdownMenu.Root>
+          <DropdownMenu.Root open={open ? true : false} onOpenChange={setOpen}>
             <DropdownMenu.Trigger asChild>
               <UserContainer onClick={() => router.push(`/${session.user.name}`)}>
                 <ProfileIcon src={session?.user?.image as string} alt="" />
                 {isDesktop && <h4>{session?.user?.name}</h4>}
+                {open ? <IoCaretUp /> : <IoCaretDown />}
               </UserContainer>
             </DropdownMenu.Trigger>
 

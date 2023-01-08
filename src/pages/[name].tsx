@@ -12,7 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
 import { Button } from '../components/button/Button';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 import {
   FeedButton,
@@ -20,6 +20,7 @@ import {
   FollowSpan,
   ProfileContainer,
 } from '../page-styles/profile';
+import OsuHoverCard from '../components/osu-hover-card/OsuHoverCard';
 
 type Feed = 'posts' | 'favorites';
 
@@ -71,6 +72,15 @@ export default function Profile() {
       fetchNextPage();
     }
   }, [inView, fetchNextPage, hasNextPage]);
+
+  // const data = useQuery(
+  //   ['osu'],
+  //   async () => {
+  //     const { data } = await axios.get('https://osu.ppy.sh/oauth/token');
+  //     return data;
+  //   },
+  //   { retry: false, refetchOnWindowFocus: false }
+  // );
 
   if (isLoading) {
     return <Main loading />;
@@ -180,6 +190,11 @@ export default function Profile() {
               <span>
                 Seguidores <b>{user.followersAmount}</b>
               </span>
+            </div>
+            <div>
+              <button onClick={() => signIn('osu')}>logar</button>
+              <button onClick={() => signOut()}>deslogar</button>
+              <OsuHoverCard userId={user.id} />
             </div>
           </div>
 

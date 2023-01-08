@@ -77,11 +77,11 @@ model Post {
 }
 
 model LikedPost {
-  id     String @id @default(uuid()) @map("_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @unique
-  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId String @unique
+  id        String    @id @default(uuid()) @map("_id")
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String    @unique
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String    @unique
   createdAt DateTime? @default(now())
 }
 

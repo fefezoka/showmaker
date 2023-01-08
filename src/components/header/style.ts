@@ -4,12 +4,12 @@ import { Content, Item, Separator, Arrow } from '@radix-ui/react-dropdown-menu';
 export const Header = styled('header', {
   position: 'sticky',
   top: 0,
-  padding: '12px 16px',
+  padding: '14px 16px',
   background: '$bg',
   zIndex: '$header',
 
   '@dsk2': {
-    padding: '12px 24px',
+    padding: '14px 24px',
   },
 });
 
@@ -25,8 +25,10 @@ export const UserContainer = styled('div', {
   gap: '12px',
   alignItems: 'center',
   borderRadius: '24px',
-  padding: '6px 12px',
+  marginLeft: '12px',
+  padding: '4px 6px',
   transition: 'all 200ms',
+  cursor: 'pointer',
 
   '&:hover': {
     backgroundColor: '$bgalt',
@@ -35,9 +37,9 @@ export const UserContainer = styled('div', {
 
 export const Input = styled('input', {
   width: '100%',
-  padding: '10px 18px',
+  padding: '14px 18px',
   border: 'none',
-  borderRadius: '8px',
+  borderRadius: '2rem',
   fontSize: '.875rem',
   backgroundColor: '$bgalt',
   color: '$white',
