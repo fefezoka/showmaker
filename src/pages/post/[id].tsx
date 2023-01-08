@@ -1,10 +1,10 @@
 import React from 'react';
-import { Main } from '../../components/main/Main';
+import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import { FeedPost } from '../../components/feed-post/FeedPost';
+import { Box } from '../../styles';
 
 export default function Post() {
   const router = useRouter();
@@ -29,9 +29,9 @@ export default function Post() {
   if (!post) {
     return (
       <Main>
-        <section>
+        <Box as={'section'}>
           <h2>Post não encontrado</h2>
-        </section>
+        </Box>
       </Main>
     );
   }

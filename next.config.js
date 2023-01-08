@@ -8,6 +8,7 @@ const nextConfig = {
       'cdn.discordapp.com',
       'res.cloudinary.com',
       'osu.ppy.sh',
+      'a.ppy.sh',
     ],
   },
 };

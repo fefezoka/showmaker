@@ -2,27 +2,48 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Main } from '../components/main/Main';
+import { Main, FeedPost, FullProfileIcon, Button, OsuHoverCard } from '../components';
 import { useQuery } from 'react-query';
-import { FeedPost } from '../components/feed-post/FeedPost';
 import { useGetPosts } from '../hooks/useGetPosts';
-import { FullProfileIcon } from '../components/full-profile-icon/FullProfileIcon';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
-import { Button } from '../components/button/Button';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
-import {
-  FeedButton,
-  FeedButtonWrapper,
-  FollowSpan,
-  ProfileContainer,
-} from '../page-styles/profile';
-import OsuHoverCard from '../components/osu-hover-card/OsuHoverCard';
+import { Box, Flex, Text } from '../styles';
+import { styled } from '../../stitches.config';
 
 type Feed = 'posts' | 'favorites';
+
+export const FeedButton = styled('button', {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'transparent',
+  borderColor: 'transparent',
+  fontSize: '.875rem',
+  padding: '14px 20px',
+  borderRadius: '8px',
+  transition: 'all 200ms',
+  color: '$white',
+
+  '&:hover': {
+    backgroundColor: '$bgalt',
+  },
+
+  '@dsk2': {
+    fontSize: '1rem',
+  },
+
+  variants: {
+    active: {
+      true: {
+        fontWeight: 'bold',
+      },
+    },
+  },
+});
 
 export default function Profile() {
   const [feed, setFeed] = useState<Feed>('posts');
@@ -73,15 +94,6 @@ export default function Profile() {
     }
   }, [inView, fetchNextPage, hasNextPage]);
 
-  // const data = useQuery(
-  //   ['osu'],
-  //   async () => {
-  //     const { data } = await axios.get('https://osu.ppy.sh/oauth/token');
-  //     return data;
-  //   },
-  //   { retry: false, refetchOnWindowFocus: false }
-  // );
-
   if (isLoading) {
     return <Main loading />;
   }
@@ -93,9 +105,9 @@ export default function Profile() {
           <title>Perfil não encontrado</title>
         </Head>
         <Main>
-          <section>
+          <Box as={'section'}>
             <h2>Usuário {name} não encontrado</h2>
-          </section>
+          </Box>
         </Main>
       </>
     );
@@ -141,24 +153,16 @@ export default function Profile() {
         <title>Perfil de {user.name}</title>
       </Head>
       <Main>
-        <section style={{ paddingBottom: 0 }}>
-          <ProfileContainer>
-            <div
-              style={{
-                display: 'flex',
-                gap: '24px',
-                alignItems: 'center',
-              }}
-            >
+        <Box as={'section'} css={{ pb: '0 !important' }}>
+          <Flex justify={'between'} align={'center'} css={{ mb: '$4 ' }}>
+            <Flex gap="6" align="center">
               <FullProfileIcon src={user.image} size={128} />
-              <div>
+              <Box>
                 <h2>{user.name}</h2>
-                {(user.followYou && user.isFollowing && (
-                  <FollowSpan>Segue um ao outro</FollowSpan>
-                )) ||
-                  (user.followYou && <FollowSpan>Segue você</FollowSpan>)}
-              </div>
-            </div>
+                {(user.followYou && user.isFollowing && <Text>Segue um ao outro</Text>) ||
+                  (user.followYou && <Text>Segue você</Text>)}
+              </Box>
+            </Flex>
 
             {!(session?.user.id === user.id) && (
               <Button
@@ -172,33 +176,31 @@ export default function Profile() {
                 onClick={handleFollowClick}
               />
             )}
-          </ProfileContainer>
+          </Flex>
 
-          <div style={{ fontSize: '15px' }}>
-            <div>
+          <Box css={{ fontSize: '15px' }}>
+            <Box>
               Usuário desde{' '}
-              <span style={{ fontWeight: 'bold' }}>
+              <Text weight={'bold'}>
                 {new Date(user.createdAt).getDate()}/
                 {new Date(user.createdAt).getMonth() + 1}/
                 {new Date(user.createdAt).getFullYear()}
-              </span>
-            </div>
-            <div style={{ display: 'flex', gap: '20px' }}>
-              <span>
-                Seguindo <b>{user.followingAmount}</b>
-              </span>
-              <span>
-                Seguidores <b>{user.followersAmount}</b>
-              </span>
-            </div>
-            <div>
-              <button onClick={() => signIn('osu')}>logar</button>
-              <button onClick={() => signOut()}>deslogar</button>
+              </Text>
+            </Box>
+            <Flex justify="between" align="center">
+              <Flex gap={'5'}>
+                <Text>
+                  Seguindo <Text weight={'bold'}>{user.followingAmount}</Text>
+                </Text>
+                <Text>
+                  Seguidores <Text weight={'bold'}>{user.followersAmount}</Text>
+                </Text>
+              </Flex>
               <OsuHoverCard userId={user.id} />
-            </div>
-          </div>
+            </Flex>
+          </Box>
 
-          <FeedButtonWrapper>
+          <Flex justify={'center'} css={{ pt: '$4' }}>
             <FeedButton onClick={() => setFeed('posts')} active={feed === 'posts'}>
               Últimos posts
             </FeedButton>
@@ -208,13 +210,13 @@ export default function Profile() {
             >
               Posts curtidos
             </FeedButton>
-          </FeedButtonWrapper>
-        </section>
+          </Flex>
+        </Box>
 
         {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '16px' }}>
+          <Flex justify={'center'} css={{ mt: '$4' }}>
             <Image src={Spinner} alt="" width={54} height={54} />
-          </div>
+          </Flex>
         ) : (
           posts.map(
             (post, index) =>

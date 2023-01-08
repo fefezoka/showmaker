@@ -2,14 +2,83 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Button } from '../button/Button';
-import { StyledOverlay, StyledContent, DropContainer, Input } from './style';
+import { Button } from './Button';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
-import { useIsDesktop } from '../../hooks/useIsDesktop';
-import { getVideoFrame } from '../../utils/getVideoFrame';
+import { useIsDesktop } from '../hooks/useIsDesktop';
+import { getVideoFrame } from '../utils/getVideoFrame';
 import { useQueryClient } from 'react-query';
+import { Box, Flex, Text } from '../styles';
+import { keyframes, styled } from '../../stitches.config';
+
+const fade = keyframes({
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  },
+});
+
+const StyledOverlay = styled(Dialog.Overlay, {
+  backgroundColor: '$overlay',
+  position: 'fixed',
+  inset: 0,
+  animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  zIndex: '$overlay',
+});
+
+const StyledContent = styled(Dialog.Content, {
+  padding: '1.5rem',
+  top: '50%',
+  left: '50%',
+  borderRadius: '8px',
+  width: 'calc(100% - 20px)',
+  transform: 'translate(-50%, -50%)',
+  position: 'fixed',
+  backgroundColor: '$modal',
+  color: '$black',
+  animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
+  zIndex: '$modal',
+
+  '@dsk1': {
+    width: '400px',
+  },
+});
+
+const DropContainer = styled('section', {
+  width: '100%',
+  height: '120px',
+  display: 'flex',
+  justifyContent: 'center',
+  flexDirection: 'column',
+  alignItems: 'center',
+  border: '2px dashed',
+  borderColor: '$input-gray',
+  margin: '12px 0px',
+  borderRadius: '8px',
+  padding: '.875rem',
+  cursor: 'pointer',
+
+  variants: {
+    active: {
+      true: {
+        borderColor: '$blue',
+      },
+    },
+  },
+});
+
+const Input = styled('input', {
+  backgroundColor: 'white',
+  padding: '12px 12px',
+  borderRadius: '8px',
+  width: '100%',
+  border: '1px solid',
+  margin: '4px 0px',
+  borderColor: '$input-gray',
+});
 
 const CreatePost = () => {
   const queryClient = useQueryClient();
@@ -147,11 +216,13 @@ const CreatePost = () => {
           <Dialog.Description>
             Compartilhe suas jogadas favoritas com a comunidade!
           </Dialog.Description>
-          <div style={{ margin: '24px 0px 12px 0px' }}>
-            <label htmlFor="name">Título</label>
+          <Box css={{ margin: '24px 0px 12px 0px' }}>
+            <Text as={'label'} htmlFor="name">
+              Título
+            </Text>
             <Input id="name" ref={titleRef} />
-          </div>
-          <div>
+          </Box>
+          <Box>
             <Dropzone
               accept={{ 'video/mp4': [] }}
               onDropAccepted={async (files) => {
@@ -165,40 +236,33 @@ const CreatePost = () => {
               maxSize={104857600}
             >
               {({ getRootProps, fileRejections, isDragActive, acceptedFiles }) => (
-                <section>
+                <Box as={'section'}>
                   <DropContainer
                     {...getRootProps()}
                     active={isDragActive || acceptedFiles.length !== 0}
                   >
                     {fileRejections.length !== 0 && <p>Arquivo muito grande</p>}
                     {file ? (
-                      <div style={{ display: 'flex', gap: '16px' }}>
+                      <Flex gap={'4'}>
                         {thumbnail && (
                           <Image src={thumbnail} alt="" width={160} height={90} />
                         )}
-                        <p style={{ lineBreak: 'anywhere' }}>
+                        <Text as={'p'} css={{ lineBreak: 'anywhere' }}>
                           {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
-                        </p>
-                      </div>
+                        </Text>
+                      </Flex>
                     ) : (
                       <>
-                        <p>Arraste um vídeo ou clique para procurar</p>
-                        <p>Limite de 100MB</p>
+                        <Text as={'p'}>Arraste um vídeo ou clique para procurar</Text>
+                        <Text as={'p'}>Limite de 100MB</Text>
                       </>
                     )}
                   </DropContainer>
-                </section>
+                </Box>
               )}
             </Dropzone>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              marginTop: 24,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
+          </Box>
+          <Flex justify={'between'} align={'center'} css={{ mt: '24px' }}>
             <Dialog.Close asChild>
               <Button
                 disabled={loading}
@@ -213,7 +277,7 @@ const CreatePost = () => {
               onClick={processFile}
               value="Enviar"
             />
-          </div>
+          </Flex>
         </StyledContent>
       </Dialog.Portal>
     </Dialog.Root>

@@ -1,10 +1,10 @@
 import Head from 'next/head';
-import { Main } from '../components/main/Main';
-import { FeedPost } from '../components/feed-post/FeedPost';
+import { Main, FeedPost } from '../components';
 import { useInView } from 'react-intersection-observer';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useEffect } from 'react';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
+import { Box } from '../styles';
 
 export default function Timeline() {
   const { ref, inView } = useInView();
@@ -35,9 +35,9 @@ export default function Timeline() {
       </Head>
 
       <Main>
-        <section>
+        <Box as={'section'}>
           <h3>Últimos posts</h3>
-        </section>
+        </Box>
         {posts.map(
           (post, index) =>
             post.data && (

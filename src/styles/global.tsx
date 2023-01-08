@@ -1,4 +1,4 @@
-import { globalCss } from './stitches.config';
+import { globalCss } from '../../stitches.config';
 
 import { Raleway } from '@next/font/google';
 

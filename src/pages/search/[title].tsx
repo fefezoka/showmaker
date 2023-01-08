@@ -1,11 +1,11 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { Main } from '../../components/main/Main';
+import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { FeedPost } from '../../components/feed-post/FeedPost';
 import { useGetPosts } from '../../hooks/useGetPosts';
+import { Box } from '../../styles';
 
 export default function Search() {
   const router = useRouter();
@@ -34,9 +34,9 @@ export default function Search() {
   if (!posts) {
     return (
       <Main>
-        <section>
+        <Box as={'section'}>
           <h2>Post não encontrado</h2>
-        </section>
+        </Box>
       </Main>
     );
   }
@@ -47,9 +47,9 @@ export default function Search() {
         <title>Procurando por {title}</title>
       </Head>
       <Main>
-        <section>
+        <Box as={'section'}>
           <h3>Procurando por {title}</h3>
-        </section>
+        </Box>
         {posts.map(
           (post) => post.data && <FeedPost post={post.data} key={post.data.id} />
         )}

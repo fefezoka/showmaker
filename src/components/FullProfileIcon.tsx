@@ -1,5 +1,13 @@
+import React from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { keyframes, styled } from '../../styles/stitches.config';
+import Image from 'next/image';
+import { ProfileIcon } from './';
+import { keyframes, styled } from '../../stitches.config';
+
+interface Props {
+  src: string;
+  size?: number;
+}
 
 const Fade = keyframes({
   from: {
@@ -34,3 +42,21 @@ export const Overlay = styled(Dialog.Overlay, {
   inset: 0,
   animation: `200ms ${Fade}`,
 });
+
+export const FullProfileIcon = ({ src, size = 32 }: Props) => {
+  return (
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <button>
+          <ProfileIcon src={src} size={size} alt="" />
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Overlay />
+        <Content>
+          <Image src={src + '?size=512'} alt="" fill sizes="" />
+        </Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
