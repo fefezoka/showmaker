@@ -20,6 +20,17 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
+  const linkedToOsu = await prisma.account.findMany({
+    where: {
+      provider: 'osu',
+      AND: {
+        user: {
+          name: name as string,
+        },
+      },
+    },
+  });
+
   if (user) {
     return res.status(200).json({
       ...user,
@@ -29,6 +40,7 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
       isFollowing: user?.followers.some(
         (follower) => follower.followerId === session?.user.id
       ),
+      linkedToOsu: linkedToOsu.length !== 0,
     });
   }
   return res.status(404).json({ message: 'user not found' });

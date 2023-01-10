@@ -19,7 +19,7 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      if (profile && user && account!.provider === 'discord') {
+      if (account!.provider === 'discord' && profile && user) {
         if (profile.image_url !== user.image || profile.username !== user.name) {
           await prisma.user.update({
             where: {

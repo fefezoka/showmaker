@@ -5,7 +5,7 @@ import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';
-import { Box, Flex } from '../styles';
+import { Box, Flex, Text } from '../styles';
 import { styled } from '../../stitches.config';
 
 export const Input = styled('input', {
@@ -131,6 +131,7 @@ export const Header = () => {
                 <StyledItem onClick={() => router.push('/' + session.user.name)}>
                   Perfil
                 </StyledItem>
+                <StyledItem onClick={() => signIn('osu')}>Entrar com osu</StyledItem>
                 <StyledSeparator />
                 <StyledItem onClick={() => signOut()}>Sair</StyledItem>
                 <StyledArrow />
@@ -138,8 +139,10 @@ export const Header = () => {
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
         ) : (
-          <Box>
-            <button onClick={() => signIn('discord')}>Logar com Discord</button>
+          <Box css={{ ta: 'right' }}>
+            <button onClick={() => signIn('discord')}>
+              <Text weight={'bold'}>Logar com Discord</Text>
+            </button>
           </Box>
         )}
       </Flex>

@@ -5,18 +5,18 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';
-import { Box } from '../styles';
+import { Box, Flex } from '../styles';
 import { styled } from '../../stitches.config';
 const CreatePost = dynamic(() => import('./CreatePost'));
 
 export const Line = styled('div', {
   display: 'flex',
   gap: '16px',
-  ai: 'center',
-  jc: 'center',
-  p: '16px 8px',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '16px 8px',
   color: '$gray',
-  minHeight: '70px',
+  minHeight: '40px',
   transition: 'all 200ms',
 
   '&:hover': {
@@ -24,8 +24,9 @@ export const Line = styled('div', {
   },
 
   '@dsk2': {
-    jc: 'left',
-    p: '16px',
+    minHeight: '70px',
+    justifyContent: 'left',
+    padding: '16px',
   },
 
   variants: {
@@ -46,19 +47,28 @@ export const Menu = () => {
     <Box
       as={'aside'}
       css={{
-        borderRight: '2px solid $bgalt',
-        minWidth: '42px',
-        position: 'sticky',
-        top: 0,
-        height: '100vh',
+        position: 'fixed',
+        backgroundColor: '$bg',
+        bottom: 0,
+        minWidth: '100vw',
         zIndex: '$menu',
+        padding: '0px 20px',
 
         '@dsk2': {
+          borderRight: '2px solid $bgalt',
+          position: 'sticky',
+          top: 0,
+          height: '100vh',
           minWidth: '240px',
+          padding: 0,
         },
       }}
     >
-      <Box as={'nav'}>
+      <Flex
+        as={'nav'}
+        direction={{ '@initial': 'row', '@dsk2': 'column' }}
+        justify={{ '@initial': 'between' }}
+      >
         <Link href={'/'} prefetch={false}>
           <Line active>{isDesktop ? <h3>Show Maker</h3> : <h4>SM</h4>}</Line>
         </Link>
@@ -77,8 +87,8 @@ export const Menu = () => {
         <Box
           css={{
             position: 'fixed',
-            right: 36,
-            bottom: 36,
+            right: 16,
+            bottom: 84,
 
             '@dsk2': {
               position: 'unset',
@@ -88,7 +98,7 @@ export const Menu = () => {
         >
           <CreatePost />
         </Box>
-      </Box>
+      </Flex>
     </Box>
   );
 };

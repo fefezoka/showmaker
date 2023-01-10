@@ -219,7 +219,7 @@ export const FeedPost = memo(
                   }}
                 >
                   <Link href={`/${session.user.name}`}>
-                    <ProfileIcon src={session.user.image} size={42} alt="" />
+                    <ProfileIcon src={session.user.image} css={{ size: '36px' }} alt="" />
                   </Link>
                   <input type="text" placeholder="Faça um comentário" />
                   <Button value="Enviar" />
@@ -263,9 +263,11 @@ export const FeedPost = memo(
         ) : (
           <Box css={{ mt: '$4' }}>
             <Link href={`/post/${post.id}`}>
-              {post.commentsAmount
-                ? `Ver ${post.commentsAmount} comentários`
-                : 'Comentar'}
+              <Text>
+                {post.commentsAmount
+                  ? `Ver ${post.commentsAmount} comentários`
+                  : 'Comentar'}
+              </Text>
             </Link>
           </Box>
         )}

@@ -23,13 +23,13 @@ export const Content = styled(HoverCard.Content, {
   color: '$white',
   borderRadius: '8px',
   fontSize: '$3',
-  padding: '12px 10px',
+  padding: '14px 10px',
   overflow: 'hidden',
   fontWeight: 'bold',
 });
 
 export const OsuHoverCard = ({ userId }: Props) => {
-  const [open, setOpen] = useState<boolean>();
+  const [open, setOpen] = useState<boolean>(false);
   const { data } = useQuery(
     ['osu-card', userId],
     async () => {
@@ -38,8 +38,6 @@ export const OsuHoverCard = ({ userId }: Props) => {
     },
     { staleTime: Infinity, refetchOnWindowFocus: false, retry: false, enabled: !!open }
   );
-
-  console.log(data);
 
   return (
     <HoverCard.Root open={open ? true : false} onOpenChange={setOpen}>
@@ -67,10 +65,10 @@ export const OsuHoverCard = ({ userId }: Props) => {
               <Box css={{ zIndex: 999, position: 'inherit', height: '100%' }}>
                 <Flex justify={'between'} css={{ height: '100%' }}>
                   <Flex gap={'2'}>
-                    <Link href={`https://osu.ppy.sh/users/${data.id}`}>
+                    <Link href={`https://osu.ppy.sh/users/${data.id}`} target="_blank">
                       <ProfileIcon
                         src={data.avatar_url}
-                        size={64}
+                        css={{ size: '64px' }}
                         rounded={'half'}
                         alt=""
                       />
@@ -82,15 +80,25 @@ export const OsuHoverCard = ({ userId }: Props) => {
                           <Image
                             src={`https://flagicons.lipis.dev/flags/4x3/${data.country_code.toLowerCase()}.svg`}
                             alt=""
-                            width={48}
+                            width={36}
                             height={27}
                           />
                         </Box>
-                        <Link href={`https://osu.ppy.sh/users/${data.id}`}>
+                        <Link
+                          href={`https://osu.ppy.sh/users/${data.id}`}
+                          target="_blank"
+                        >
                           <Text size={'4'} weight={'bold'}>
                             {data.username}
                           </Text>
                         </Link>
+                        <Box>
+                          <Text size={'2'}>
+                            Desde {new Date(data.join_date).getDate()}/
+                            {new Date(data.join_date).getMonth()}/
+                            {new Date(data.join_date).getFullYear()}
+                          </Text>
+                        </Box>
                       </Box>
                       {
                         <Text weight={'bold'}>

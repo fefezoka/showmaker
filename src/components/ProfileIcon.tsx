@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import React from 'react';
-import { styled } from '../../stitches.config';
+import { CSS, styled } from '../../stitches.config';
 
 interface Props extends React.ComponentProps<typeof Image> {
   src: string;
-  size?: number;
+  css?: CSS;
   rounded?: 'half' | 'full';
 }
 
@@ -25,10 +25,15 @@ export const Wrapper = styled('div', {
   },
 });
 
-export const ProfileIcon = ({ src, size = 36, rounded = 'full', ...props }: Props) => {
+export const ProfileIcon = ({
+  src,
+  css = { size: '36px' },
+  rounded = 'full',
+  ...props
+}: Props) => {
   return (
-    <Wrapper rounded={rounded} css={{ size: size }}>
-      <Image src={src} {...props} width={size} height={size} alt="" />
+    <Wrapper rounded={rounded} css={css}>
+      <Image src={src} {...props} fill alt="" />
     </Wrapper>
   );
 };

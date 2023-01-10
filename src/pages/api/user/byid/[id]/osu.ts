@@ -18,6 +18,34 @@ export default async function osu(req: NextApiRequest, res: NextApiResponse) {
     return res.status(404).json({ message: 'error' });
   }
 
+  if (response[0].expires_at && Math.floor(Date.now() / 1000) > response[0].expires_at) {
+    const { data } = await axios.post('https://osu.ppy.sh/oauth/token', {
+      client_id: process.env.OSU_ID,
+      client_secret: process.env.OSU_SECRET,
+      refresh_token: response[0].refresh_token,
+      grant_type: 'refresh_token',
+      access_token: response[0].access_token,
+    });
+
+    await prisma.account.updateMany({
+      where: {
+        provider: 'osu',
+        AND: {
+          user: {
+            id: id as string,
+          },
+        },
+      },
+      data: {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_in + Math.floor(Date.now() / 1000),
+      },
+    });
+
+    response[0].access_token = data.access_token;
+  }
+
   const { data } = await axios.get('https://osu.ppy.sh/api/v2/me', {
     headers: {
       Authorization: `Bearer ${response[0].access_token}`,

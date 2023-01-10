@@ -9,7 +9,7 @@ import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 import { Box, Flex, Text } from '../styles';
 import { styled } from '../../stitches.config';
@@ -154,9 +154,12 @@ export default function Profile() {
       </Head>
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
-          <Flex justify={'between'} align={'center'} css={{ mb: '$4 ' }}>
-            <Flex gap="6" align="center">
-              <FullProfileIcon src={user.image} size={128} />
+          <Flex justify={'between'} align={'center'} css={{ mb: '$4' }}>
+            <Flex gap={{ '@initial': '3', '@dsk2': '6' }} align="center">
+              <FullProfileIcon
+                src={user.image}
+                css={{ size: '72px', '@dsk2': { size: '128px' } }}
+              />
               <Box>
                 <h2>{user.name}</h2>
                 {(user.followYou && user.isFollowing && <Text>Segue um ao outro</Text>) ||
@@ -196,7 +199,7 @@ export default function Profile() {
                   Seguidores <Text weight={'bold'}>{user.followersAmount}</Text>
                 </Text>
               </Flex>
-              <OsuHoverCard userId={user.id} />
+              {<OsuHoverCard userId={user.id} />}
             </Flex>
           </Box>
 

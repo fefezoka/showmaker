@@ -9,4 +9,5 @@ interface User {
   isFollowing: boolean;
   followersAmount: number;
   followingAmount: number;
+  linkedToOsu: boolean;
 }
