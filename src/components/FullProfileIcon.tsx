@@ -43,12 +43,12 @@ export const Overlay = styled(Dialog.Overlay, {
   animation: `200ms ${Fade}`,
 });
 
-export const FullProfileIcon = ({ src, css = { size: '36px' } }: Props) => {
+export const FullProfileIcon = ({ src, css }: Props) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <button>
-          <ProfileIcon src={src} css={css} alt="" />
+          <ProfileIcon src={src} css={{ size: '36px', ...css }} alt="" />
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>

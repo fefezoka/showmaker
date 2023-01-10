@@ -62,7 +62,7 @@ export const UserHoverCard = ({ user, children }: Props) => {
           <Box css={{ p: '20px 20px 12px 20px', borderBottom: '2px solid $bgalt' }}>
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <Box>
-                <ProfileIcon src={user.image} size={96} alt="" />
+                <ProfileIcon src={user.image} css={{ size: '96px' }} alt="" />
                 <h2 style={{ marginTop: '8px' }}>{user.name}</h2>
               </Box>
             </Link>

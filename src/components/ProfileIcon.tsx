@@ -25,14 +25,9 @@ export const Wrapper = styled('div', {
   },
 });
 
-export const ProfileIcon = ({
-  src,
-  css = { size: '36px' },
-  rounded = 'full',
-  ...props
-}: Props) => {
+export const ProfileIcon = ({ src, css, rounded = 'full', ...props }: Props) => {
   return (
-    <Wrapper rounded={rounded} css={css}>
+    <Wrapper rounded={rounded} css={{ size: '36px', ...css }}>
       <Image src={src} {...props} fill alt="" />
     </Wrapper>
   );
