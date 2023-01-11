@@ -10,10 +10,10 @@ import { styled } from '../../stitches.config';
 
 export const Input = styled('input', {
   width: '100%',
-  padding: '14px 18px',
+  padding: '$3 $5',
   border: 'none',
-  borderRadius: '2rem',
-  fontSize: '.875rem',
+  borderRadius: '$7',
+  fontSize: '$3',
   backgroundColor: '$bgalt',
   color: '$white',
 
@@ -28,17 +28,16 @@ export const UserSettingsModal = styled(DropdownMenu.Content, {
   backgroundColor: '$white',
   minWidth: '130px',
   padding: '6px',
-  borderRadius: '8px',
+  borderRadius: '$2',
 });
 
 export const StyledItem = styled(DropdownMenu.Item, {
   display: 'flex',
   justifyContent: 'center',
   color: '$black',
-  fontSize: '.875rem',
-  borderRadius: '4px',
+  fontSize: '$3',
+  borderRadius: '$1',
   padding: '6px',
-  fontWeight: 400,
   cursor: 'pointer',
 
   '&:hover': {
@@ -51,7 +50,7 @@ export const StyledItem = styled(DropdownMenu.Item, {
 export const StyledSeparator = styled(DropdownMenu.Separator, {
   height: '1px',
   backgroundColor: '$gray',
-  margin: '4px',
+  margin: '$1',
 });
 
 export const StyledArrow = styled(DropdownMenu.Arrow, {
@@ -78,25 +77,25 @@ export const Header = () => {
       css={{
         position: 'sticky',
         top: 0,
-        p: '14px 16px',
+        p: '$3',
         zIndex: '$header',
         bc: '$bg',
 
-        '@dsk2': {
-          p: '14px 24px',
+        '@bp2': {
+          p: '$3 $6',
         },
       }}
     >
       <Flex justify={'between'} align={'center'} css={{ minWidth: '100%' }}>
         <Box css={{ size: '100%', position: 'relative', maxWidth: '360px' }}>
-          <form onSubmit={(e) => handleFindClick(e)}>
+          <Box as="form" onSubmit={(e) => handleFindClick(e)}>
             <Input ref={findRef} placeholder="Procurar" />
-            <Box css={{ position: 'absolute', right: 18, top: 14 }}>
+            <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
               <button type="submit">
                 <IoSearchSharp color="white" />
               </button>
             </Box>
-          </form>
+          </Box>
         </Box>
 
         {status === 'authenticated' ? (
@@ -106,10 +105,10 @@ export const Header = () => {
                 align={'center'}
                 gap={'3'}
                 css={{
-                  br: '24px',
+                  br: '$6',
                   ml: '$3',
                   py: '$1',
-                  px: '6px',
+                  px: '$2',
                   transition: 'all 200ms',
                   cursor: 'pointer',
 
@@ -131,7 +130,9 @@ export const Header = () => {
                 <StyledItem onClick={() => router.push('/' + session.user.name)}>
                   Perfil
                 </StyledItem>
-                <StyledItem onClick={() => signIn('osu')}>Entrar com osu</StyledItem>
+                {!session.user.osuAccountId && (
+                  <StyledItem onClick={() => signIn('osu')}>Entrar com osu</StyledItem>
+                )}
                 <StyledSeparator />
                 <StyledItem onClick={() => signOut()}>Sair</StyledItem>
                 <StyledArrow />

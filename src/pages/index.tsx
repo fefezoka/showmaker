@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useEffect } from 'react';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
-import { Box } from '../styles';
+import { Box, Heading } from '../styles';
 
 export default function Timeline() {
   const { ref, inView } = useInView();
@@ -36,7 +36,7 @@ export default function Timeline() {
 
       <Main>
         <Box as={'section'}>
-          <h3>Últimos posts</h3>
+          <Heading>Últimos posts</Heading>
         </Box>
         {posts.map(
           (post, index) =>

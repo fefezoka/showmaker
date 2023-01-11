@@ -38,14 +38,6 @@ export const global = globalCss({
     listStyle: 'none',
   },
 
-  'h1, h2, h3': {
-    lineHeight: '2.25rem',
-  },
-
-  h3: {
-    fontSize: '20px',
-  },
-
   input: {
     border: 'none',
   },

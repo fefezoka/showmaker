@@ -42,7 +42,7 @@ const Layout = ({ children }: Props) => {
         }}
       >
         <h2>Show Maker</h2>
-        <Image src={Spinner} alt="" priority height={64} width={64} />
+        <Image src={Spinner} alt="" priority loading="eager" height={64} width={64} />
       </div>
     );
   }

@@ -8,15 +8,14 @@ const StyledButton = styled('button', {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '12px',
+  padding: '$3',
   backgroundColor: '$blue',
-  border: '1px solid',
-  borderColor: '$bluealt',
+  border: '1px solid $bluealt',
   minWidth: '64px',
   color: 'white',
-  fontSize: '.875rem',
+  fontSize: '$3',
   cursor: 'pointer',
-  borderRadius: '8px',
+  borderRadius: '$2',
   transition: 'all 200ms',
 
   '&:hover': {
@@ -38,7 +37,7 @@ const StyledButton = styled('button', {
     },
     radius: {
       full: {
-        borderRadius: '50%',
+        borderRadius: '$round',
         minWidth: 'unset',
       },
     },

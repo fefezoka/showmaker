@@ -1,34 +1,26 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { CSS, styled } from '../../stitches.config';
 
 interface Props extends React.ComponentProps<typeof Image> {
   src: string;
   css?: CSS;
-  rounded?: 'half' | 'full';
 }
 
 export const Wrapper = styled('div', {
   flexShrink: 0,
   position: 'relative',
   overflow: 'hidden',
-
-  variants: {
-    rounded: {
-      half: {
-        borderRadius: '20%',
-      },
-      full: {
-        borderRadius: '50%',
-      },
-    },
-  },
 });
 
-export const ProfileIcon = ({ src, css, rounded = 'full', ...props }: Props) => {
-  return (
-    <Wrapper rounded={rounded} css={{ size: '36px', ...css }}>
-      <Image src={src} {...props} fill alt="" />
-    </Wrapper>
-  );
-};
+export const ProfileIcon = forwardRef<HTMLImageElement, Props>(
+  ({ src, css, ...props }: Props, forwardedRef) => {
+    return (
+      <Wrapper css={{ size: '$7', br: '$round', ...css }}>
+        <Image ref={forwardedRef} src={src} {...props} fill alt="" />
+      </Wrapper>
+    );
+  }
+);
+
+ProfileIcon.displayName = 'ProfileIcon';

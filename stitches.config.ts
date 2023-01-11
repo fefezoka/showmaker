@@ -1,5 +1,6 @@
 import { createStitches } from '@stitches/react';
 import type * as Stitches from '@stitches/react';
+export type { VariantProps } from '@stitches/react';
 
 export const {
   styled,
@@ -28,14 +29,15 @@ export const {
       overlay: 'rgb(0, 0, 0, .4)',
     },
     fontSizes: {
-      1: '0.625rem',
-      2: '0.72rem',
-      3: '0.875rem',
-      4: '1rem',
-      5: '1.125rem',
-      6: '1.25rem',
-      7: '1.5rem',
-      8: '1.75rem',
+      1: '10px',
+      2: '12px',
+      3: '14px',
+      4: '16px',
+      5: '18px',
+      6: '20px',
+      7: '24px',
+      8: '28px',
+      9: '32px',
     },
     zIndices: {
       header: 9,
@@ -49,10 +51,9 @@ export const {
       3: '12px',
       4: '16px',
       5: '20px',
-      6: '28px',
-      7: '36px',
-      8: '50px',
-      9: '66px',
+      6: '24px',
+      7: '32px',
+      8: '40px',
     },
     sizes: {
       1: '4px',
@@ -60,15 +61,25 @@ export const {
       3: '12px',
       4: '16px',
       5: '20px',
-      6: '28px',
-      7: '36px',
-      8: '50px',
-      9: '66px',
+      6: '24px',
+      7: '32px',
+      8: '40px',
+    },
+    radii: {
+      1: '4px',
+      2: '8px',
+      3: '12px',
+      4: '16px',
+      5: '20px',
+      6: '24px',
+      7: '32px',
+      round: '50%',
+      pill: '9999px',
     },
   },
   media: {
-    dsk1: '(min-width: 560px)',
-    dsk2: '(min-width: 768px)',
+    bp1: '(min-width: 560px)',
+    bp2: '(min-width: 768px)',
   },
 
   utils: {

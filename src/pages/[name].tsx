@@ -11,7 +11,7 @@ import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
-import { Box, Flex, Text } from '../styles';
+import { Box, Flex, Text, Heading } from '../styles';
 import { styled } from '../../stitches.config';
 
 type Feed = 'posts' | 'favorites';
@@ -22,9 +22,9 @@ export const FeedButton = styled('button', {
   alignItems: 'center',
   backgroundColor: 'transparent',
   borderColor: 'transparent',
-  fontSize: '.875rem',
-  padding: '14px 20px',
-  borderRadius: '8px',
+  fontSize: '$3',
+  padding: '$3 $4',
+  borderRadius: '$2',
   transition: 'all 200ms',
   color: '$white',
 
@@ -32,8 +32,8 @@ export const FeedButton = styled('button', {
     backgroundColor: '$bgalt',
   },
 
-  '@dsk2': {
-    fontSize: '1rem',
+  '@bp2': {
+    fontSize: '$4',
   },
 
   variants: {
@@ -106,7 +106,7 @@ export default function Profile() {
         </Head>
         <Main>
           <Box as={'section'}>
-            <h2>Usuário {name} não encontrado</h2>
+            <Heading>Usuário {name} não encontrado</Heading>
           </Box>
         </Main>
       </>
@@ -155,15 +155,17 @@ export default function Profile() {
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$4' }}>
-            <Flex gap={{ '@initial': '3', '@dsk2': '6' }} align="center">
+            <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">
               <FullProfileIcon
                 src={user.image}
-                css={{ size: '72px', '@dsk2': { size: '128px' } }}
+                css={{ size: '72px', '@bp2': { size: '128px' } }}
               />
               <Box>
-                <h2>{user.name}</h2>
-                {(user.followYou && user.isFollowing && <Text>Segue um ao outro</Text>) ||
-                  (user.followYou && <Text>Segue você</Text>)}
+                <Heading size="2">{user.name}</Heading>
+                {(user.followYou && user.isFollowing && (
+                  <Text size={'3'}>Segue um ao outro</Text>
+                )) ||
+                  (user.followYou && <Text size={'3'}>Segue você</Text>)}
               </Box>
             </Flex>
 
@@ -181,10 +183,10 @@ export default function Profile() {
             )}
           </Flex>
 
-          <Box css={{ fontSize: '15px' }}>
+          <Box>
             <Box>
-              Usuário desde{' '}
-              <Text weight={'bold'}>
+              <Text size={'3'}>Usuário desde </Text>
+              <Text size={'3'} weight={'bold'}>
                 {new Date(user.createdAt).getDate()}/
                 {new Date(user.createdAt).getMonth() + 1}/
                 {new Date(user.createdAt).getFullYear()}
@@ -192,14 +194,22 @@ export default function Profile() {
             </Box>
             <Flex justify="between" align="center">
               <Flex gap={'5'}>
-                <Text>
-                  Seguindo <Text weight={'bold'}>{user.followingAmount}</Text>
+                <Text size={'3'}>
+                  Seguindo{' '}
+                  <Text size={'3'} weight={'bold'}>
+                    {user.followingAmount}
+                  </Text>
                 </Text>
-                <Text>
-                  Seguidores <Text weight={'bold'}>{user.followersAmount}</Text>
+                <Text size={'3'}>
+                  Seguidores{' '}
+                  <Text size={'3'} weight={'bold'}>
+                    {user.followersAmount}
+                  </Text>
                 </Text>
               </Flex>
-              {<OsuHoverCard userId={user.id} />}
+              {user.osuAccountId && (
+                <OsuHoverCard userId={user.id} osuAccountId={user.osuAccountId} />
+              )}
             </Flex>
           </Box>
 

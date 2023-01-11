@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { ProfileIcon } from './';
@@ -29,7 +29,7 @@ export const Content = styled(Dialog.Content, {
   overflow: 'hidden',
   animation: `200ms ${Fade}`,
 
-  '@dsk2': {
+  '@bp2': {
     width: '460px',
     height: '460px',
   },
@@ -43,20 +43,27 @@ export const Overlay = styled(Dialog.Overlay, {
   animation: `200ms ${Fade}`,
 });
 
-export const FullProfileIcon = ({ src, css }: Props) => {
-  return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>
-        <button>
-          <ProfileIcon src={src} css={{ size: '36px', ...css }} alt="" />
-        </button>
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <Overlay />
-        <Content>
-          <Image src={src + '?size=512'} alt="" fill sizes="" />
-        </Content>
-      </Dialog.Portal>
-    </Dialog.Root>
-  );
-};
+export const FullProfileIcon = forwardRef<HTMLImageElement, Props>(
+  ({ src, css }: Props, forwardedRef) => {
+    return (
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <ProfileIcon
+            ref={forwardedRef}
+            src={src}
+            css={{ size: '$7', cursor: 'pointer', ...css }}
+            alt=""
+          />
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Overlay />
+          <Content>
+            <Image src={src + '?size=512'} alt="" fill sizes="" />
+          </Content>
+        </Dialog.Portal>
+      </Dialog.Root>
+    );
+  }
+);
+
+FullProfileIcon.displayName = 'FullProfileIcon';

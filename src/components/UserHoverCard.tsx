@@ -8,7 +8,7 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { useGetPosts } from '../hooks/useGetPosts';
 import axios from 'axios';
 import { keyframes, styled } from '../../stitches.config';
-import { Box, Flex, Text } from '../styles';
+import { Box, Flex, Heading, Text } from '../styles';
 
 const Fade = keyframes({
   from: {
@@ -27,7 +27,7 @@ interface Props {
 export const Content = styled(HoverCard.Content, {
   color: '$white',
   backgroundColor: '$bg',
-  borderRadius: '12px',
+  borderRadius: '$3',
   width: '440px',
   zIndex: '$modal',
   border: '2px solid $bgalt',
@@ -59,33 +59,41 @@ export const UserHoverCard = ({ user, children }: Props) => {
       <HoverCard.Trigger asChild>{children}</HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
-          <Box css={{ p: '20px 20px 12px 20px', borderBottom: '2px solid $bgalt' }}>
+          <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bgalt' }}>
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <Box>
                 <ProfileIcon src={user.image} css={{ size: '96px' }} alt="" />
-                <h2 style={{ marginTop: '8px' }}>{user.name}</h2>
+                <Box css={{ mt: '$3' }}>
+                  <Heading>{user.name}</Heading>
+                </Box>
               </Box>
             </Link>
 
-            <Box css={{ fontSize: '14px' }}>
+            <Box>
               {posts[0] && posts[0].data && (
-                <Text>
+                <Text size={'3'}>
                   Última postagem{' '}
                   {diffBetweenDates(new Date(), new Date(posts[0].data.createdAt))}
                 </Text>
               )}
 
               <Flex gap={'4'}>
-                <Text>
-                  Seguindo <Text weight={'bold'}>{user.followingAmount}</Text>
+                <Text size={'3'}>
+                  Seguindo{' '}
+                  <Text weight={'bold'} size={'3'}>
+                    {user.followingAmount}
+                  </Text>
                 </Text>
-                <Text>
-                  Seguidores <Text weight={'bold'}>{user.followersAmount}</Text>
+                <Text size={'3'}>
+                  Seguidores{' '}
+                  <Text weight={'bold'} size={'3'}>
+                    {user.followersAmount}
+                  </Text>
                 </Text>
               </Flex>
             </Box>
           </Box>
-          <Flex gap="1" css={{ pt: '8px' }}>
+          <Flex gap="1" css={{ pt: '$2' }}>
             {posts ? (
               posts.map(
                 (post) =>
@@ -99,21 +107,21 @@ export const UserHoverCard = ({ user, children }: Props) => {
                         textAlign: 'center',
 
                         '&:nth-of-type(1)': {
-                          borderBottomLeftRadius: '8px',
+                          borderBottomLeftRadius: '$2',
                         },
 
                         '&:nth-of-type(3)': {
-                          borderBottomRightRadius: '8px',
+                          borderBottomRightRadius: '$2',
                         },
                       }}
                     >
                       <Link href={`/post/${post.data.id}`}>
-                        <Text css={{ fontSize: '14px', lh: '1.5rem', fontWeight: 700 }}>
+                        <Text size={'3'} css={{ lh: '1.5rem', fontWeight: 700 }}>
                           {post.data.title.slice(0, 17)}
                         </Text>
                         <Box
                           css={{
-                            mt: '4px',
+                            mt: '$1',
                             transition: 'all 100ms',
                             overflow: 'hidden',
                             pt: '75%',

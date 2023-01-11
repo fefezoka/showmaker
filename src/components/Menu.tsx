@@ -5,16 +5,16 @@ import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';
-import { Box, Flex } from '../styles';
+import { Box, Flex, Heading } from '../styles';
 import { styled } from '../../stitches.config';
 const CreatePost = dynamic(() => import('./CreatePost'));
 
 export const Line = styled('div', {
   display: 'flex',
-  gap: '16px',
+  gap: '$4',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '16px 8px',
+  padding: '$4 $2',
   color: '$gray',
   minHeight: '40px',
   transition: 'all 200ms',
@@ -23,10 +23,10 @@ export const Line = styled('div', {
     color: '$white',
   },
 
-  '@dsk2': {
-    minHeight: '70px',
+  '@bp2': {
+    minHeight: '64px',
     justifyContent: 'left',
-    padding: '16px',
+    padding: '$4',
   },
 
   variants: {
@@ -52,9 +52,9 @@ export const Menu = () => {
         bottom: 0,
         minWidth: '100vw',
         zIndex: '$menu',
-        padding: '0px 20px',
+        padding: '0 $5',
 
-        '@dsk2': {
+        '@bp2': {
           borderRight: '2px solid $bgalt',
           position: 'sticky',
           top: 0,
@@ -66,22 +66,24 @@ export const Menu = () => {
     >
       <Flex
         as={'nav'}
-        direction={{ '@initial': 'row', '@dsk2': 'column' }}
+        direction={{ '@initial': 'row', '@bp2': 'column' }}
         justify={{ '@initial': 'between' }}
       >
         <Link href={'/'} prefetch={false}>
-          <Line active>{isDesktop ? <h3>Show Maker</h3> : <h4>SM</h4>}</Line>
+          <Line active>
+            {isDesktop ? <Heading>Show Maker</Heading> : <Heading>SM</Heading>}
+          </Line>
         </Link>
         <Link href={'/'} prefetch={false}>
           <Line active={router.pathname === '/'}>
             <IoHome size={20} />
-            {isDesktop && <h3>Página inicial</h3>}
+            {isDesktop && <Heading>Página inicial</Heading>}
           </Line>
         </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
           <Line active={router.asPath === `/${session?.user.name.replace(' ', '%20')}`}>
             <IoPerson size={20} />
-            {isDesktop && <h3>Perfil</h3>}
+            {isDesktop && <Heading>Perfil</Heading>}
           </Line>
         </Link>
         <Box
@@ -90,9 +92,9 @@ export const Menu = () => {
             right: 16,
             bottom: 84,
 
-            '@dsk2': {
+            '@bp2': {
               position: 'unset',
-              p: '16px',
+              p: '$4',
             },
           }}
         >

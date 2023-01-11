@@ -4,7 +4,7 @@ import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useQuery } from 'react-query';
-import { Box } from '../../styles';
+import { Box, Heading } from '../../styles';
 
 export default function Post() {
   const router = useRouter();
@@ -30,7 +30,7 @@ export default function Post() {
     return (
       <Main>
         <Box as={'section'}>
-          <h2>Post não encontrado</h2>
+          <Heading>Post não encontrado</Heading>
         </Box>
       </Main>
     );

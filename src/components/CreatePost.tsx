@@ -30,7 +30,7 @@ const StyledOverlay = styled(Dialog.Overlay, {
 });
 
 const StyledContent = styled(Dialog.Content, {
-  padding: '1.5rem',
+  padding: '$6',
   top: '50%',
   left: '50%',
   borderRadius: '8px',
@@ -42,7 +42,7 @@ const StyledContent = styled(Dialog.Content, {
   animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
   zIndex: '$modal',
 
-  '@dsk1': {
+  '@bp2': {
     width: '400px',
   },
 });
@@ -54,11 +54,10 @@ const DropContainer = styled('section', {
   justifyContent: 'center',
   flexDirection: 'column',
   alignItems: 'center',
-  border: '2px dashed',
-  borderColor: '$input-gray',
-  margin: '12px 0px',
-  borderRadius: '8px',
-  padding: '.875rem',
+  border: '2px dashed $input-gray',
+  margin: '$3 0',
+  borderRadius: '$2',
+  padding: '$3',
   cursor: 'pointer',
 
   variants: {
@@ -72,12 +71,11 @@ const DropContainer = styled('section', {
 
 const Input = styled('input', {
   backgroundColor: 'white',
-  padding: '12px 12px',
-  borderRadius: '8px',
+  padding: '$3',
+  borderRadius: '$2',
   width: '100%',
-  border: '1px solid',
-  margin: '4px 0px',
-  borderColor: '$input-gray',
+  border: '1px solid $input-gray',
+  margin: '$1 0px',
 });
 
 const CreatePost = () => {
@@ -216,7 +214,7 @@ const CreatePost = () => {
           <Dialog.Description>
             Compartilhe suas jogadas favoritas com a comunidade!
           </Dialog.Description>
-          <Box css={{ margin: '24px 0px 12px 0px' }}>
+          <Box css={{ mt: '$6' }}>
             <Text as={'label'} htmlFor="name">
               Título
             </Text>
@@ -241,7 +239,7 @@ const CreatePost = () => {
                     {...getRootProps()}
                     active={isDragActive || acceptedFiles.length !== 0}
                   >
-                    {fileRejections.length !== 0 && <p>Arquivo muito grande</p>}
+                    {fileRejections.length !== 0 && <Text>Arquivo muito grande</Text>}
                     {file ? (
                       <Flex gap={'4'}>
                         {thumbnail && (
@@ -252,17 +250,17 @@ const CreatePost = () => {
                         </Text>
                       </Flex>
                     ) : (
-                      <>
-                        <Text as={'p'}>Arraste um vídeo ou clique para procurar</Text>
-                        <Text as={'p'}>Limite de 100MB</Text>
-                      </>
+                      <Flex direction={'column'} align={'center'} gap={'1'}>
+                        <Text>Arraste um vídeo ou clique para procurar</Text>
+                        <Text>Limite de 100MB</Text>
+                      </Flex>
                     )}
                   </DropContainer>
                 </Box>
               )}
             </Dropzone>
           </Box>
-          <Flex justify={'between'} align={'center'} css={{ mt: '24px' }}>
+          <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
             <Dialog.Close asChild>
               <Button
                 disabled={loading}

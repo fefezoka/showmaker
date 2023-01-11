@@ -5,7 +5,7 @@ import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../../hooks/useGetPosts';
-import { Box } from '../../styles';
+import { Box, Heading } from '../../styles';
 
 export default function Search() {
   const router = useRouter();
@@ -31,11 +31,11 @@ export default function Search() {
     return <Main loading />;
   }
 
-  if (!posts) {
+  if (!posts || posts.length === 0) {
     return (
       <Main>
         <Box as={'section'}>
-          <h2>Post não encontrado</h2>
+          <Heading>Post não encontrado</Heading>
         </Box>
       </Main>
     );
@@ -48,7 +48,7 @@ export default function Search() {
       </Head>
       <Main>
         <Box as={'section'}>
-          <h3>Procurando por {title}</h3>
+          <Heading>Procurando por {title}</Heading>
         </Box>
         {posts.map(
           (post) => post.data && <FeedPost post={post.data} key={post.data.id} />

@@ -9,7 +9,8 @@ import { UserHoverCard } from './UserHoverCard';
 import axios from 'axios';
 import Spinner from '../assets/Spinner.svg';
 import Image from 'next/image';
-import { Box, Flex, Text } from '../styles';
+import { Box, Flex, Text, Heading } from '../styles';
+import { Video } from './Video';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;
@@ -20,13 +21,6 @@ export const FeedPost = memo(
   forwardRef(({ post, full, ...props }: Props, forwardRef) => {
     const { data: session } = useSession();
     const queryClient = useQueryClient();
-
-    const volume = useCallback((video: HTMLVideoElement) => {
-      const lastVolume = window.localStorage.getItem('volume');
-      if (video) {
-        video.volume = Number(lastVolume) || 0.25;
-      }
-    }, []);
 
     const handleLikeClick = () => {
       if (!session) {
@@ -135,7 +129,7 @@ export const FeedPost = memo(
             <Link href={`/${post.user.name}`}>
               <Flex align={'center'} gap={'4'}>
                 <ProfileIcon src={post.user.image} alt="" />
-                <h4>{post.user.name}</h4>
+                <Text weight={'bold'}>{post.user.name}</Text>
               </Flex>
             </Link>
           </UserHoverCard>
@@ -149,68 +143,34 @@ export const FeedPost = memo(
           </Box>
         </Flex>
 
-        <Flex align={'center'} justify={'between'} css={{ mb: '$4', width: '100%' }}>
+        <Flex align={'center'} justify={'between'} css={{ mb: '$4' }}>
           <Link href={`/post/${post.id}`}>
-            <h3>{post.title}</h3>
+            <Heading>{post.title}</Heading>
           </Link>
-          <Box>
-            <Text>{diffBetweenDates(new Date(), new Date(post.createdAt))}</Text>
+          <Box css={{ flexShrink: 0 }}>
+            <Text size={'3'}>
+              {diffBetweenDates(new Date(), new Date(post.createdAt))}
+            </Text>
           </Box>
         </Flex>
 
-        <Box
-          css={{
-            overflow: 'hidden',
-            width: '100%',
-            br: '1.5rem',
-            cursor: 'pointer',
-            position: 'relative',
-            pb: '56.25%',
-
-            video: {
-              position: 'absolute',
-              size: '100%',
-              objectFit: 'fill',
-            },
-          }}
-        >
-          <video
-            controls
-            ref={volume}
-            onVolumeChange={(e) => {
-              e.preventDefault();
-              window.localStorage.setItem(
-                'volume',
-                (e.target as HTMLVideoElement).volume.toFixed(2).toString()
-              );
-            }}
-            preload="none"
-            poster={post.thumbnailUrl}
-            onClick={(e) => {
-              e.preventDefault();
-              const video = e.target as HTMLVideoElement;
-              video.paused ? video.play() : video.pause();
-            }}
-          >
-            <source src={post.videoUrl} />
-          </video>
-        </Box>
+        <Video videoUrl={post.videoUrl} thumbnailUrl={post.thumbnailUrl} />
 
         {full ? (
           <Box>
             {session && (
-              <form onSubmit={commentSubmit}>
+              <Box as="form" onSubmit={commentSubmit}>
                 <Flex
-                  gap={{ '@initial': '2', '@dsk2': '4' }}
+                  gap={{ '@initial': '2', '@bp2': '4' }}
                   css={{
                     mt: '$4',
                     input: {
                       color: 'white',
-                      borderRadius: '.5rem',
+                      borderRadius: '$2',
                       width: '100%',
-                      padding: '0px 16px',
+                      padding: '0 $4',
                       backgroundColor: '$bgalt',
-                      fontSize: '14px',
+                      fontSize: '$3',
                     },
 
                     'input::placeholder': {
@@ -221,10 +181,10 @@ export const FeedPost = memo(
                   <Link href={`/${session.user.name}`}>
                     <ProfileIcon src={session.user.image} css={{ size: '36px' }} alt="" />
                   </Link>
-                  <input type="text" placeholder="Faça um comentário" />
-                  <Button value="Enviar" />
+                  <Box as="input" type="text" placeholder="Faça um comentário" />
+                  <Button type="submit" value="Enviar" />
                 </Flex>
-              </form>
+              </Box>
             )}
             {!isLoading ? (
               comments &&
@@ -235,7 +195,7 @@ export const FeedPost = memo(
                   css={{
                     mt: '$3',
                     '&:nth-of-type(1)': {
-                      marginTop: '1.5rem',
+                      mt: '$6',
                     },
                   }}
                   key={comment.id}
@@ -245,7 +205,7 @@ export const FeedPost = memo(
                       <Link href={`/${comment.user.name}`}>
                         <Flex align={'center'} gap={'3'}>
                           <ProfileIcon src={comment.user.image} alt="" />
-                          <h4>{comment.user.name}</h4>
+                          <Text weight={'bold'}>{comment.user.name}</Text>
                         </Flex>
                       </Link>
                     </UserHoverCard>
@@ -263,7 +223,7 @@ export const FeedPost = memo(
         ) : (
           <Box css={{ mt: '$4' }}>
             <Link href={`/post/${post.id}`}>
-              <Text>
+              <Text size={'3'}>
                 {post.commentsAmount
                   ? `Ver ${post.commentsAmount} comentários`
                   : 'Comentar'}

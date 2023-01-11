@@ -1,5 +1,4 @@
-import NextAuth, { DefaultSession } from 'next-auth';
-import { OsuProfile } from 'next-auth/providers/osu';
+import NextAuth from 'next-auth';
 
 declare module 'next-auth' {
   interface Session {

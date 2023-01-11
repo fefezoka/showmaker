@@ -29,7 +29,7 @@ export const Main = memo(({ children, loading }: Props) => {
             paddingTop: '1rem',
           },
 
-          '@dsk2': {
+          '@bp2': {
             '& > section': {
               padding: '1.5rem',
             },

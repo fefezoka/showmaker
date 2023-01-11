@@ -9,28 +9,30 @@ import { ProfileIcon } from './ProfileIcon';
 import { Box, Flex, Text } from '../styles';
 import { styled } from '../../stitches.config';
 import Link from 'next/link';
+import { diffBetweenDates } from '../utils/diffBetweenDates';
 
 interface Props {
   userId: string;
+  osuAccountId: number;
 }
 
 export const Content = styled(HoverCard.Content, {
   position: 'relative',
   zIndex: '$modal',
-  width: '300px',
-  height: '130px',
+  width: 290,
+  height: 130,
   backgroundColor: 'black',
   color: '$white',
-  borderRadius: '8px',
+  borderRadius: '$2',
   fontSize: '$3',
-  padding: '14px 10px',
+  padding: '10px',
   overflow: 'hidden',
   fontWeight: 'bold',
 });
 
-export const OsuHoverCard = ({ userId }: Props) => {
+export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data } = useQuery(
+  const { data, isLoading } = useQuery(
     ['osu-card', userId],
     async () => {
       const { data } = await axios.get<OsuProfile>(`/api/user/byid/${userId}/osu`);
@@ -42,99 +44,137 @@ export const OsuHoverCard = ({ userId }: Props) => {
   return (
     <HoverCard.Root open={open ? true : false} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
-        <Image src={OsuIcon} alt="" height={32} width={32} />
+        <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target={'_blank'}>
+          <Image src={OsuIcon} alt="" height={32} width={32} />
+        </Link>
       </HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
           <HoverCard.Arrow fill="white" color="white" />
-          {data && (
-            <>
-              <Box
-                css={{
-                  position: 'absolute',
-                  size: '100%',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  opacity: '60%',
-                }}
-              >
-                <Image style={{ objectFit: 'cover' }} src={data.cover.url} alt="" fill />
-              </Box>
-              <Box css={{ zIndex: 999, position: 'inherit', height: '100%' }}>
-                <Flex justify={'between'} css={{ height: '100%' }}>
-                  <Flex gap={'2'}>
-                    <Link href={`https://osu.ppy.sh/users/${data.id}`} target="_blank">
-                      <ProfileIcon
-                        src={data.avatar_url}
-                        css={{ size: '64px' }}
-                        rounded={'half'}
-                        alt=""
-                      />
-                    </Link>
-
-                    <Flex direction={'column'} justify={'between'}>
-                      <Box>
-                        <Box css={{ mb: '2px' }}>
-                          <Image
-                            src={`https://flagicons.lipis.dev/flags/4x3/${data.country_code.toLowerCase()}.svg`}
-                            alt=""
-                            width={36}
-                            height={27}
-                          />
-                        </Box>
+          {!isLoading ? (
+            data && (
+              <>
+                <Box
+                  css={{
+                    position: 'absolute',
+                    size: '100%',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: '60%',
+                  }}
+                >
+                  <Image
+                    style={{ objectFit: 'cover' }}
+                    src={data.cover.url}
+                    alt=""
+                    fill
+                  />
+                </Box>
+                <Box css={{ zIndex: '$modal', position: 'inherit', height: '100%' }}>
+                  <Flex justify={'between'} css={{ height: '100%' }}>
+                    <Flex gap={'2'}>
+                      <Flex direction={'column'} justify={'between'}>
                         <Link
                           href={`https://osu.ppy.sh/users/${data.id}`}
                           target="_blank"
                         >
-                          <Text size={'4'} weight={'bold'}>
-                            {data.username}
-                          </Text>
+                          <ProfileIcon
+                            src={data.avatar_url}
+                            css={{ size: '64px', br: '$2' }}
+                            alt=""
+                          />
                         </Link>
+
+                        <Flex justify={'center'} align={'center'}>
+                          <Box
+                            css={{
+                              size: '$6',
+                              br: '$round',
+                              border: `4px solid ${
+                                data.is_online ? '#b3d944' : '$black'
+                              }`,
+                              mb: '$1',
+                            }}
+                          />
+                        </Flex>
+                      </Flex>
+
+                      <Flex direction={'column'} justify={'between'}>
                         <Box>
-                          <Text size={'2'}>
-                            Desde {new Date(data.join_date).getDate()}/
-                            {new Date(data.join_date).getMonth()}/
-                            {new Date(data.join_date).getFullYear()}
-                          </Text>
+                          <Box css={{ mb: '2px' }}>
+                            <Image
+                              src={`https://flagicons.lipis.dev/flags/4x3/${data.country_code.toLowerCase()}.svg`}
+                              alt=""
+                              width={36}
+                              height={27}
+                            />
+                          </Box>
+                          <Link
+                            href={`https://osu.ppy.sh/users/${data.id}`}
+                            target="_blank"
+                          >
+                            <Text size={'4'} weight={'bold'}>
+                              {data.username}
+                            </Text>
+                          </Link>
+                          <Box>
+                            <Text size={'2'}>
+                              Desde {new Date(data.join_date).getDate()}/
+                              {new Date(data.join_date).getMonth()}/
+                              {new Date(data.join_date).getFullYear()}
+                            </Text>
+                          </Box>
                         </Box>
-                      </Box>
-                      {
-                        <Text weight={'bold'}>
-                          {data.is_online ? 'Online' : 'Offline'}
-                        </Text>
-                      }
+                        <Box>
+                          {!data.is_online && data.last_visit && (
+                            <Text size={'2'} as={'p'}>
+                              Visto por último{' '}
+                              {diffBetweenDates(new Date(), new Date(data.last_visit))}
+                            </Text>
+                          )}
+                          {
+                            <Text size={'3'}>
+                              {data.is_online ? 'Online' : 'Offline'}
+                            </Text>
+                          }
+                        </Box>
+                      </Flex>
                     </Flex>
+                    <>
+                      {data.statistics.global_rank && (
+                        <Box css={{ ta: 'right' }}>
+                          <Flex direction={'column'}>
+                            <Text weight={'bold'} size={'3'}>
+                              Global
+                            </Text>
+                            <Text size={'3'}>#{data.statistics.global_rank}</Text>
+                          </Flex>
+                          <Box
+                            css={{
+                              my: '6px',
+                              height: '1px',
+                              bc: 'white',
+                            }}
+                          />
+                          <Flex direction={'column'}>
+                            <Text weight={'bold'} size={'3'}>
+                              {data.country.name}
+                            </Text>
+                            <Text size={'3'}>#{data.statistics.country_rank}</Text>
+                          </Flex>
+                        </Box>
+                      )}
+                    </>
                   </Flex>
-                  <Box css={{ ta: 'right' }}>
-                    {data.statistics.global_rank && (
-                      <>
-                        <Box>
-                          <Text as={'p'} weight={'bold'}>
-                            Global
-                          </Text>
-                          <Text as={'p'}>#{data.statistics.global_rank}</Text>
-                        </Box>
-                        <Box
-                          css={{
-                            my: '6px',
-                            height: '1px',
-                            bc: 'white',
-                          }}
-                        />
-                        <Box>
-                          <Text as={'p'} weight={'bold'}>
-                            {data.country.name}
-                          </Text>
-                          <Text as={'p'}>#{data.statistics.country_rank}</Text>
-                        </Box>
-                      </>
-                    )}
-                  </Box>
-                </Flex>
-              </Box>
-            </>
+                </Box>
+              </>
+            )
+          ) : (
+            <Flex justify={'center'} css={{ mt: '$1' }}>
+              <Text weight={'bold'}>Carregando...</Text>
+            </Flex>
           )}
         </Content>
       </HoverCard.Portal>
