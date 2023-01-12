@@ -93,7 +93,7 @@ export const UserHoverCard = ({ user, children }: Props) => {
               </Flex>
             </Box>
           </Box>
-          <Flex gap="1" css={{ pt: '$2' }}>
+          <Flex css={{ pt: '$2', gap: '2px' }}>
             {posts ? (
               posts.map(
                 (post) =>

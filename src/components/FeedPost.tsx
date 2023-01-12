@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React, { memo, forwardRef, useCallback, FormEvent } from 'react';
+import React, { memo, forwardRef, FormEvent } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
@@ -168,7 +168,7 @@ export const FeedPost = memo(
                       color: 'white',
                       borderRadius: '$2',
                       width: '100%',
-                      padding: '0 $4',
+                      padding: '0 $3',
                       backgroundColor: '$bgalt',
                       fontSize: '$3',
                     },
@@ -179,7 +179,7 @@ export const FeedPost = memo(
                   }}
                 >
                   <Link href={`/${session.user.name}`}>
-                    <ProfileIcon src={session.user.image} css={{ size: '36px' }} alt="" />
+                    <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
                   </Link>
                   <Box as="input" type="text" placeholder="Faça um comentário" />
                   <Button type="submit" value="Enviar" />

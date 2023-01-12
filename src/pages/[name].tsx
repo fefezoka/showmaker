@@ -24,8 +24,7 @@ export const FeedButton = styled('button', {
   borderColor: 'transparent',
   fontSize: '$3',
   padding: '$3 $4',
-  borderRadius: '$2',
-  transition: 'all 200ms',
+  transition: 'background-color 200ms',
   color: '$white',
 
   '&:hover': {
@@ -40,6 +39,7 @@ export const FeedButton = styled('button', {
     active: {
       true: {
         fontWeight: 'bold',
+        borderBottom: '3px solid $blue',
       },
     },
   },
@@ -154,11 +154,11 @@ export default function Profile() {
       </Head>
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
-          <Flex justify={'between'} align={'center'} css={{ mb: '$4' }}>
+          <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>
             <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">
               <FullProfileIcon
                 src={user.image}
-                css={{ size: '72px', '@bp2': { size: '128px' } }}
+                css={{ size: '84px', '@bp2': { size: '144px' } }}
               />
               <Box>
                 <Heading size="2">{user.name}</Heading>
@@ -171,6 +171,7 @@ export default function Profile() {
 
             {!(session?.user.id === user.id) && (
               <Button
+                type="button"
                 value={
                   user.isFollowing
                     ? 'Parar de seguir'
@@ -183,41 +184,43 @@ export default function Profile() {
             )}
           </Flex>
 
-          <Box>
+          <Flex justify={'between'} align={'center'} gap={'5'}>
             <Box>
-              <Text size={'3'}>Usuário desde </Text>
-              <Text size={'3'} weight={'bold'}>
-                {new Date(user.createdAt).getDate()}/
-                {new Date(user.createdAt).getMonth() + 1}/
-                {new Date(user.createdAt).getFullYear()}
-              </Text>
+              <Box css={{ mb: '$1' }}>
+                <Text size={'3'}>Usuário desde </Text>
+                <Text size={'3'} weight={'bold'}>
+                  {new Date(user.createdAt).getDate()}/
+                  {new Date(user.createdAt).getMonth() + 1}/
+                  {new Date(user.createdAt).getFullYear()}
+                </Text>
+              </Box>
+              <Box>
+                <Text size={'3'}>Seguindo </Text>
+                <Text size={'3'} weight={'bold'} css={{ mr: '$3' }}>
+                  {user.followingAmount}
+                </Text>
+                <Text size={'3'}>Seguidores </Text>
+                <Text size={'3'} weight={'bold'}>
+                  {user.followersAmount}
+                </Text>
+              </Box>
             </Box>
-            <Flex justify="between" align="center">
-              <Flex gap={'5'}>
-                <Text size={'3'}>
-                  Seguindo{' '}
-                  <Text size={'3'} weight={'bold'}>
-                    {user.followingAmount}
-                  </Text>
-                </Text>
-                <Text size={'3'}>
-                  Seguidores{' '}
-                  <Text size={'3'} weight={'bold'}>
-                    {user.followersAmount}
-                  </Text>
-                </Text>
-              </Flex>
-              {user.osuAccountId && (
-                <OsuHoverCard userId={user.id} osuAccountId={user.osuAccountId} />
-              )}
-            </Flex>
-          </Box>
+
+            {user.osuAccountId && (
+              <OsuHoverCard userId={user.id} osuAccountId={user.osuAccountId} />
+            )}
+          </Flex>
 
           <Flex justify={'center'} css={{ pt: '$4' }}>
-            <FeedButton onClick={() => setFeed('posts')} active={feed === 'posts'}>
+            <FeedButton
+              type="button"
+              onClick={() => setFeed('posts')}
+              active={feed === 'posts'}
+            >
               Últimos posts
             </FeedButton>
             <FeedButton
+              type="button"
               onClick={() => setFeed('favorites')}
               active={feed === 'favorites'}
             >

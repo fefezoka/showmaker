@@ -10,7 +10,6 @@ const StyledButton = styled('button', {
   justifyContent: 'center',
   padding: '$3',
   backgroundColor: '$blue',
-  border: '1px solid $bluealt',
   minWidth: '64px',
   color: 'white',
   fontSize: '$3',

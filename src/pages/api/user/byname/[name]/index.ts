@@ -20,16 +20,30 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  if (user) {
-    return res.status(200).json({
-      ...user,
-      followYou: user?.following.some(
-        (follower) => follower.followingId === session?.user.id
-      ),
-      isFollowing: user?.followers.some(
-        (follower) => follower.followerId === session?.user.id
-      ),
-    });
+  if (!user) {
+    return res.status(404).json({ message: 'user not found' });
   }
-  return res.status(404).json({ message: 'user not found' });
+
+  const osuAccount = await prisma.account.findMany({
+    select: {
+      providerAccountId: true,
+    },
+    where: {
+      provider: 'osu',
+      AND: {
+        userId: user.id,
+      },
+    },
+  });
+
+  return res.status(200).json({
+    ...user,
+    followYou: user?.following.some(
+      (follower) => follower.followingId === session?.user.id
+    ),
+    isFollowing: user?.followers.some(
+      (follower) => follower.followerId === session?.user.id
+    ),
+    ...(osuAccount[0] && { osuAccountId: osuAccount[0].providerAccountId }),
+  });
 }
