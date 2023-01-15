@@ -2,7 +2,7 @@ import type { AppProps } from 'next/app';
 import { global } from '../styles/global';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider, useSession } from 'next-auth/react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient, Hydrate, DehydratedState } from 'react-query';
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
@@ -13,14 +13,19 @@ interface Props {
   children: ReactNode;
 }
 
-export default function myApp({ Component, pageProps }: AppProps<{ session: Session }>) {
+export default function myApp({
+  Component,
+  pageProps,
+}: AppProps<{ session: Session; dehydratedState: DehydratedState }>) {
   global();
 
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={pageProps.session}>
         <Layout>
-          <Component {...pageProps} />
+          <Hydrate state={pageProps.dehydratedState}>
+            <Component {...pageProps} />
+          </Hydrate>
         </Layout>
       </SessionProvider>
     </QueryClientProvider>

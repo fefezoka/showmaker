@@ -1,31 +1,38 @@
 import React from 'react';
 import { Main, FeedPost, TitleAndMetaTags } from '../../components';
 import axios from 'axios';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { dehydrate, QueryClient } from 'react-query';
 import { Box, Heading } from '../../styles';
+import { GetServerSideProps } from 'next';
 
-export default function Post() {
-  const router = useRouter();
-  const { id } = router.query;
+interface Props {
+  post: Post;
+}
 
-  const { data: post, isLoading } = useQuery<Post>(
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const id = context.params!.id;
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery(
     ['post', id],
     async () => {
-      const { data } = await axios.get(`/api/post/${id}`);
+      const { data } = await axios.get(`${process.env.SITE_URL}/api/post/${id}`);
       return data;
     },
     {
-      enabled: !!id,
       staleTime: Infinity,
     }
   );
 
-  if (isLoading) {
-    return <Main loading />;
-  }
+  return {
+    props: {
+      post: dehydrate(queryClient).queries[0].state.data,
+    },
+  };
+};
 
+export default function Post({ post }: Props) {
   if (!post) {
     return (
       <Main>
