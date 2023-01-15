@@ -25,6 +25,7 @@ export function TitleAndMetaTags({
     <Head>
       <title>{title}</title>
 
+      <meta name="description" content={description} />
       <meta property="og:site_name" content="Show Maker" />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
@@ -33,6 +34,11 @@ export function TitleAndMetaTags({
 
       <meta name="twitter:site" content="@showmaker" />
       <meta name="twitter:card" content="summary_large_image" />
+      <meta property="twitter:domain" content="show-maker.vercel.app" />
+      <meta property="twitter:url" content={`${url}${path}`} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={imageUrl} />
       <meta name="theme-color" content="#fff" />
     </Head>
   );

@@ -23,7 +23,7 @@ export default function Timeline() {
     <>
       <TitleAndMetaTags
         title="Showmaker - Página inicial"
-        imageUrl={posts[0].data?.videoUrl}
+        imageUrl={posts[0].data?.thumbnailUrl}
       />
 
       <Main>
