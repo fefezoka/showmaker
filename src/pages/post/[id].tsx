@@ -41,6 +41,7 @@ export default function Post() {
       <TitleAndMetaTags
         title={post.user?.name + ' - ' + post.title}
         imageUrl={post.thumbnailUrl}
+        pathname={'/post/' + post.id}
       />
       <Main>
         <FeedPost post={post} full />

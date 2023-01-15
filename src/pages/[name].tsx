@@ -148,7 +148,7 @@ export default function Profile() {
 
   return (
     <>
-      <TitleAndMetaTags title={`Perfil de ${user.name}`} />
+      <TitleAndMetaTags title={`Perfil de ${user.name}`} pathname={'/' + user.name} />
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>
