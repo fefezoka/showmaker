@@ -1,3 +1,4 @@
+export { Video } from './Video';
 export { Button } from './Button';
 export { FeedPost } from './FeedPost';
 export { FullProfileIcon } from './FullProfileIcon';

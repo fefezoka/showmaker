@@ -6,14 +6,16 @@ type TitleAndMetaTagsProps = {
   title?: string;
   description?: string;
   imageUrl?: string;
+  videoUrl?: string;
   url?: string;
   pathname?: string;
 };
 
 export function TitleAndMetaTags({
   title = 'Show Maker',
-  description = 'O maior rede social já feita. Elon Musk me contrate',
+  description = 'A maior rede social já feita. Elon Musk me contrate',
   imageUrl,
+  videoUrl,
   url = 'https://show-maker.vercel.app',
   pathname,
 }: TitleAndMetaTagsProps) {
@@ -30,7 +32,11 @@ export function TitleAndMetaTags({
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:site_name" content="Show Maker" />
-      <meta property="og:image" content={imageUrl} />
+      {videoUrl ? (
+        <meta property="og:video" content={videoUrl} />
+      ) : (
+        <meta property="og:image" content={imageUrl} />
+      )}
       <meta property="og:type" content="website" />
 
       <meta name="twitter:site" content="@showmaker" />
@@ -39,8 +45,12 @@ export function TitleAndMetaTags({
       <meta property="twitter:url" content={`${url}${path}`} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={imageUrl} />
-      <meta name="theme-color" content="#fff" />
+      {videoUrl ? (
+        <meta name="twitter:video" content={videoUrl} />
+      ) : (
+        <meta name="twitter:image" content={imageUrl} />
+      )}
+      <meta name="theme-color" content="#faaaff" />
     </Head>
   );
 }

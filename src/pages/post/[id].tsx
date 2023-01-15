@@ -47,7 +47,7 @@ export default function Post({ post }: Props) {
     <>
       <TitleAndMetaTags
         title={post.user?.name + ' - ' + post.title}
-        imageUrl={post.thumbnailUrl}
+        videoUrl={post.thumbnailUrl}
         pathname={'/post/' + post.id}
       />
       <Main>

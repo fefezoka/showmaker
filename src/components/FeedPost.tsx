@@ -4,13 +4,12 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient, useQuery } from 'react-query';
-import { Button, ProfileIcon } from './';
+import { Button, ProfileIcon, Video } from './';
 import { UserHoverCard } from './UserHoverCard';
 import axios from 'axios';
 import Spinner from '../assets/Spinner.svg';
 import Image from 'next/image';
 import { Box, Flex, Text, Heading } from '../styles';
-import { Video } from './Video';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;

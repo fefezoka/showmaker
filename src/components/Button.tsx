@@ -15,7 +15,7 @@ const StyledButton = styled('button', {
   fontSize: '$3',
   cursor: 'pointer',
   borderRadius: '$2',
-  transition: 'all 200ms',
+  transition: 'background-color 200ms',
 
   '&:hover': {
     backgroundColor: '$bluealt',
