@@ -25,20 +25,20 @@ export function TitleAndMetaTags({
     <Head>
       <title>{title}</title>
 
-      <meta name="title" content="Show Maker" />
-      <meta name="description" content={description} />
-
-      <meta property="og:url" content={`${url}${path}`} />
       <meta property="og:title" content={title} />
-      <meta property="og:type" content="website" />
       <meta property="og:description" content={description} />
-      <meta property="og:video" content={imageUrl} />
-      <meta property="og:video:type" content="application/x-shockwave-flash" />
-      <meta property="og:video:width" content="320" />
-      <meta property="og:video:height" content="180" />
-
-      <meta name="twitter:site" content="@showmaker" />
+      <meta property="og:type" content="article" />
+      <meta property="og:url" content={`${url}${path}`} />
+      <meta property="og:image" content={imageUrl} />
+      <meta property="og:image:type" content="image/png" />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta name="twitter:site" content={title} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
       <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image:src" content={imageUrl} />
+      <meta name="theme-color" content="#fff" />
     </Head>
   );
 }

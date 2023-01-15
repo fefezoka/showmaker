@@ -40,7 +40,7 @@ export default function Post() {
     <>
       <TitleAndMetaTags
         title={post.user?.name + ' - ' + post.title}
-        imageUrl={post.videoUrl}
+        imageUrl={post.thumbnailUrl}
       />
       <Main>
         <FeedPost post={post} full />
