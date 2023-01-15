@@ -81,20 +81,20 @@ export const UserHoverCard = ({ user, children }: Props) => {
                 <Text size={'3'}>
                   Seguindo{' '}
                   <Text weight={'bold'} size={'3'}>
-                    {user.followingAmount}
+                    {user.followingAmount ?? 0}
                   </Text>
                 </Text>
                 <Text size={'3'}>
                   Seguidores{' '}
                   <Text weight={'bold'} size={'3'}>
-                    {user.followersAmount}
+                    {user.followersAmount ?? 0}
                   </Text>
                 </Text>
               </Flex>
             </Box>
           </Box>
           <Flex css={{ pt: '$2', gap: '2px' }}>
-            {posts ? (
+            {posts.length !== 0 ? (
               posts.map(
                 (post) =>
                   post.data && (
@@ -145,7 +145,13 @@ export const UserHoverCard = ({ user, children }: Props) => {
                   )
               )
             ) : (
-              <Box>Sem posts</Box>
+              <Flex
+                justify={'center'}
+                align={'center'}
+                css={{ height: '144px', width: '100%' }}
+              >
+                <Text weight={'bold'}>Sem posts</Text>
+              </Flex>
             )}
           </Flex>
         </Content>
