@@ -7,6 +7,10 @@ export default async function insert(req: NextApiRequest, res: NextApiResponse) 
   const videoUrl = req.body.videoUrl;
   const thumbnailUrl = req.body.thumbnailUrl;
 
+  if (!email || !title || !videoUrl || !thumbnailUrl) {
+    return res.status(400).json({ message: 'error' });
+  }
+
   const response = await prisma.post.create({
     data: {
       title: title ?? 'callback',

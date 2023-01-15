@@ -4,6 +4,10 @@ import { prisma } from '../../../lib/prisma';
 export default async function newComment(req: NextApiRequest, res: NextApiResponse) {
   const { message, postId, userId } = req.body;
 
+  if (!message || !postId || !userId) {
+    return res.status(400).json({ message: 'error' });
+  }
+
   const response = await prisma.postComment.create({
     data: {
       message: message,

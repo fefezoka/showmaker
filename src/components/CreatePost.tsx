@@ -1,51 +1,25 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
-import * as Dialog from '@radix-ui/react-dialog';
-import { Button } from './Button';
+import { Button } from './';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
 import { useIsDesktop } from '../hooks/useIsDesktop';
 import { getVideoFrame } from '../utils/getVideoFrame';
 import { useQueryClient } from 'react-query';
-import { Box, Flex, Text } from '../styles';
-import { keyframes, styled } from '../../stitches.config';
-
-const fade = keyframes({
-  from: {
-    opacity: 0,
-  },
-  to: {
-    opacity: 1,
-  },
-});
-
-const StyledOverlay = styled(Dialog.Overlay, {
-  backgroundColor: '$overlay',
-  position: 'fixed',
-  inset: 0,
-  animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
-  zIndex: '$overlay',
-});
-
-const StyledContent = styled(Dialog.Content, {
-  padding: '$6',
-  top: '50%',
-  left: '50%',
-  borderRadius: '8px',
-  width: 'calc(100% - 20px)',
-  transform: 'translate(-50%, -50%)',
-  position: 'fixed',
-  backgroundColor: '$modal',
-  color: '$black',
-  animation: `${fade} 200ms cubic-bezier(0.16, 1, 0.3, 1)`,
-  zIndex: '$modal',
-
-  '@bp2': {
-    width: '400px',
-  },
-});
+import {
+  Box,
+  Flex,
+  Text,
+  Modal,
+  ModalClose,
+  ModalContent,
+  ModalDescription,
+  ModalTitle,
+  ModalTrigger,
+} from '../styles';
+import { styled } from '../../stitches.config';
 
 const DropContainer = styled('section', {
   width: '100%',
@@ -69,16 +43,7 @@ const DropContainer = styled('section', {
   },
 });
 
-const Input = styled('input', {
-  backgroundColor: 'white',
-  padding: '$3',
-  borderRadius: '$2',
-  width: '100%',
-  border: '1px solid $input-gray',
-  margin: '$1 0px',
-});
-
-const CreatePost = () => {
+export default function CreatePost() {
   const queryClient = useQueryClient();
   const titleRef = useRef<HTMLInputElement>(null);
   const { data: session } = useSession();
@@ -193,8 +158,8 @@ const CreatePost = () => {
   };
 
   return (
-    <Dialog.Root open={session && open ? true : false} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
+    <Modal open={session && open ? true : false} onOpenChange={setOpen}>
+      <ModalTrigger asChild>
         {isDesktop ? (
           <Button onClick={() => !session && signIn('discord')} value="Postar vídeo" />
         ) : (
@@ -204,82 +169,81 @@ const CreatePost = () => {
             onClick={() => !session && signIn('discord')}
           />
         )}
-      </Dialog.Trigger>
-      <Dialog.Portal>
-        <StyledOverlay />
-        <StyledContent
-          onInteractOutside={(e) => (loading ? e.preventDefault() : onClose())}
-        >
-          <Dialog.Title>Postar vídeo</Dialog.Title>
-          <Dialog.Description>
-            Compartilhe suas jogadas favoritas com a comunidade!
-          </Dialog.Description>
-          <Box css={{ mt: '$6' }}>
-            <Text as={'label'} htmlFor="name">
-              Título
-            </Text>
-            <Input id="name" ref={titleRef} />
-          </Box>
-          <Box>
-            <Dropzone
-              accept={{ 'video/mp4': [] }}
-              onDropAccepted={async (files) => {
-                setFile(files[0]);
-                setThumbnail(await getVideoFrame(files[0]));
-              }}
-              onDropRejected={() => {
-                setFile(undefined);
-                setThumbnail(undefined);
-              }}
-              maxSize={104857600}
-            >
-              {({ getRootProps, fileRejections, isDragActive, acceptedFiles }) => (
-                <Box as={'section'}>
-                  <DropContainer
-                    {...getRootProps()}
-                    active={isDragActive || acceptedFiles.length !== 0}
-                  >
-                    {fileRejections.length !== 0 && <Text>Arquivo muito grande</Text>}
-                    {file ? (
-                      <Flex gap={'4'}>
-                        {thumbnail && (
-                          <Image src={thumbnail} alt="" width={160} height={90} />
-                        )}
-                        <Text as={'p'} css={{ lineBreak: 'anywhere' }}>
-                          {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
-                        </Text>
-                      </Flex>
-                    ) : (
-                      <Flex direction={'column'} align={'center'} gap={'1'}>
-                        <Text>Arraste um vídeo ou clique para procurar</Text>
-                        <Text>Limite de 100MB</Text>
-                      </Flex>
-                    )}
-                  </DropContainer>
-                </Box>
-              )}
-            </Dropzone>
-          </Box>
-          <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
-            <Dialog.Close asChild>
-              <Button
-                disabled={loading}
-                onClick={onClose}
-                variant={'exit'}
-                value="Sair"
-              />
-            </Dialog.Close>
-            <Button
-              loading={loading}
-              disabled={!file}
-              onClick={processFile}
-              value="Enviar"
-            />
-          </Flex>
-        </StyledContent>
-      </Dialog.Portal>
-    </Dialog.Root>
+      </ModalTrigger>
+      <ModalContent onInteractOutside={(e) => (loading ? e.preventDefault() : onClose())}>
+        <ModalTitle>Postar vídeo</ModalTitle>
+        <ModalDescription>
+          Compartilhe suas jogadas favoritas com a comunidade!
+        </ModalDescription>
+        <Box css={{ mt: '$6' }}>
+          <Text as={'label'} htmlFor="name">
+            Título
+          </Text>
+          <Box
+            as={'input'}
+            ref={titleRef}
+            css={{
+              backgroundColor: 'white',
+              padding: '$3',
+              borderRadius: '$2',
+              width: '100%',
+              border: '1px solid $input-gray',
+              margin: '$1 0px',
+            }}
+          />
+        </Box>
+        <Box>
+          <Dropzone
+            accept={{ 'video/mp4': [] }}
+            onDropAccepted={async (files) => {
+              setFile(files[0]);
+              setThumbnail(await getVideoFrame(files[0]));
+            }}
+            onDropRejected={() => {
+              setFile(undefined);
+              setThumbnail(undefined);
+            }}
+            maxSize={104857600}
+          >
+            {({ getRootProps, fileRejections, isDragActive, acceptedFiles }) => (
+              <Box as={'section'}>
+                <DropContainer
+                  {...getRootProps()}
+                  active={isDragActive || acceptedFiles.length !== 0}
+                >
+                  {fileRejections.length !== 0 && <Text>Arquivo muito grande</Text>}
+                  {file ? (
+                    <Flex gap={'4'}>
+                      {thumbnail && (
+                        <Image src={thumbnail} alt="" width={160} height={90} />
+                      )}
+                      <Text as={'p'} css={{ lineBreak: 'anywhere' }}>
+                        {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
+                      </Text>
+                    </Flex>
+                  ) : (
+                    <Flex direction={'column'} align={'center'} gap={'1'}>
+                      <Text>Arraste um vídeo ou clique para procurar</Text>
+                      <Text>Limite de 100MB</Text>
+                    </Flex>
+                  )}
+                </DropContainer>
+              </Box>
+            )}
+          </Dropzone>
+        </Box>
+        <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
+          <ModalClose asChild>
+            <Button disabled={loading} onClick={onClose} variant={'exit'} value="Sair" />
+          </ModalClose>
+          <Button
+            loading={loading}
+            disabled={!file}
+            onClick={processFile}
+            value="Enviar"
+          />
+        </Flex>
+      </ModalContent>
+    </Modal>
   );
-};
-
-export default CreatePost;
+}

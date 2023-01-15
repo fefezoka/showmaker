@@ -4,7 +4,7 @@ import { prisma } from '../../../lib/prisma';
 export default async function follow(req: NextApiRequest, res: NextApiResponse) {
   const { followingId, followerId } = req.body;
 
-  if (followingId === followerId) {
+  if (followingId === followerId || !followingId || !followerId) {
     return res.status(400).json({ message: 'error' });
   }
 

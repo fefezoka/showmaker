@@ -4,6 +4,10 @@ import { prisma } from '../../../../../../lib/prisma';
 export default async function lastPosts(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
+  if (!id) {
+    return res.status(400).json({ message: 'error' });
+  }
+
   const response = await prisma.post.findMany({
     where: {
       userId: id as string,

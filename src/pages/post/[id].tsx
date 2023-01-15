@@ -1,5 +1,5 @@
 import React from 'react';
-import { Main, FeedPost } from '../../components';
+import { Main, FeedPost, TitleAndMetaTags } from '../../components';
 import axios from 'axios';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -38,11 +38,7 @@ export default function Post() {
 
   return (
     <>
-      <Head>
-        <title>
-          {post.user?.name} - {post.title}
-        </title>
-      </Head>
+      <TitleAndMetaTags title={post.user?.name + ' - ' + post.title} />
       <Main>
         <FeedPost post={post} full />
       </Main>

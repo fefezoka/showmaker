@@ -1,18 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Main, FeedPost, FullProfileIcon, Button, OsuHoverCard } from '../components';
+import {
+  Main,
+  FullProfileIcon,
+  Button,
+  OsuHoverCard,
+  TitleAndMetaTags,
+} from '../components';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
-import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 import { Box, Flex, Text, Heading } from '../styles';
 import { styled } from '../../stitches.config';
+import { PostPaginator } from '../components/PostPaginator';
 
 type Feed = 'posts' | 'favorites';
 
@@ -50,7 +56,6 @@ export default function Profile() {
   const { data: session } = useSession();
   const router = useRouter();
   const { name } = router.query;
-  const { inView, ref } = useInView();
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery<User>(
@@ -87,12 +92,6 @@ export default function Profile() {
   const posts = useGetPosts(
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
   );
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, fetchNextPage, hasNextPage]);
 
   if (isLoading) {
     return <Main loading />;
@@ -149,9 +148,7 @@ export default function Profile() {
 
   return (
     <>
-      <Head>
-        <title>Perfil de {user.name}</title>
-      </Head>
+      <TitleAndMetaTags title={`Perfil de ${user.name}`} />
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>
@@ -234,16 +231,11 @@ export default function Profile() {
             <Image src={Spinner} alt="" width={54} height={54} />
           </Flex>
         ) : (
-          posts.map(
-            (post, index) =>
-              post.data && (
-                <FeedPost
-                  post={post.data}
-                  key={post.data.id}
-                  ref={posts.length - 1 === index ? ref : null}
-                />
-              )
-          )
+          <PostPaginator
+            posts={posts}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+          />
         )}
       </Main>
     </>

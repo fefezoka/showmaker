@@ -130,9 +130,9 @@ export const Header = () => {
                 <StyledItem onClick={() => router.push('/' + session.user.name)}>
                   Perfil
                 </StyledItem>
-                {!session.user.osuAccountId && (
-                  <StyledItem onClick={() => signIn('osu')}>Entrar com osu</StyledItem>
-                )}
+                <StyledItem onClick={() => router.push('/config')}>
+                  Configurações
+                </StyledItem>
                 <StyledSeparator />
                 <StyledItem onClick={() => signOut()}>Sair</StyledItem>
                 <StyledArrow />
