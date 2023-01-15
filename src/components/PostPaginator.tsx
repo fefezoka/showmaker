@@ -30,7 +30,6 @@ export const PostPaginator = ({ hasNextPage, fetchNextPage, posts }: Props) => {
             />
           )
       )}
-      ;
     </>
   );
 };

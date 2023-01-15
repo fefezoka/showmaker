@@ -28,6 +28,7 @@ export function TitleAndMetaTags({
       <meta name="description" content={description} />
       <meta property="og:site_name" content="Show Maker" />
       <meta property="og:title" content={title} />
+      <meta property="og:type" content="website" />
       <meta property="og:description" content={description} />
       <meta property="og:url" content={`${url}${path}`} />
       <meta property="og:image" content={imageUrl} />

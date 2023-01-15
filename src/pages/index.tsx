@@ -21,10 +21,7 @@ export default function Timeline() {
 
   return (
     <>
-      <TitleAndMetaTags
-        title="Showmaker - Página inicial"
-        imageUrl={posts[0].data?.thumbnailUrl}
-      />
+      <TitleAndMetaTags title="Showmaker - Página inicial" />
 
       <Main>
         <Box as={'section'}>
