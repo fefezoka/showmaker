@@ -24,7 +24,7 @@ export default function myApp({
               openGraph={{
                 images: [{ url: ogimage.src }],
                 siteName: 'Show Maker',
-                description: 'A maior rede social já feita. Elon Musk me contrate',
+                description: 'A maior rede social já feita.',
                 url: 'https://show-maker.vercel.app',
                 type: 'website',
               }}
