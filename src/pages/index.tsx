@@ -1,5 +1,4 @@
-import Head from 'next/head';
-import { Main, TitleAndMetaTags } from '../components';
+import { Main } from '../components';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { Box, Heading } from '../styles';

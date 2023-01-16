@@ -1,11 +1,10 @@
 import React from 'react';
-import { Main, FeedPost, TitleAndMetaTags } from '../../components';
+import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { dehydrate, QueryClient } from 'react-query';
 import { Box, Heading } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import { getSession } from 'next-auth/react';
 
 interface Props {
   post: Post;

@@ -4,14 +4,13 @@ import { Account } from 'next-auth/';
 import { getSession, signIn } from 'next-auth/react';
 import { Main, TitleAndMetaTags } from '../components';
 import { prisma } from '../lib/prisma';
-import { Box, Flex, Grid, Heading } from '../styles';
+import { Box, Grid, Heading } from '../styles';
 import { IoRemoveCircle, IoAddCircle } from 'react-icons/io5';
 import { styled } from '../../stitches.config';
 import osuIcon from '../assets/osu-icon.png';
 import Image, { StaticImageData } from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 
 type providers = 'osu';
 
