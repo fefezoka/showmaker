@@ -2,7 +2,7 @@ import React from 'react';
 import { GetServerSideProps } from 'next';
 import { Account } from 'next-auth/';
 import { getSession, signIn } from 'next-auth/react';
-import { Main, TitleAndMetaTags } from '../components';
+import { Main } from '../components';
 import { prisma } from '../lib/prisma';
 import { Box, Grid, Heading } from '../styles';
 import { IoRemoveCircle, IoAddCircle } from 'react-icons/io5';
@@ -98,7 +98,6 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
 
   return (
     <>
-      <TitleAndMetaTags title="Configurações" />
       <Main>
         <Box as={'section'}>
           <Heading size="2">Configurações</Heading>

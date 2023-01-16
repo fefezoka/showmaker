@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import {
-  Main,
-  FullProfileIcon,
-  Button,
-  OsuHoverCard,
-  TitleAndMetaTags,
-} from '../components';
+import { Main, FullProfileIcon, Button, OsuHoverCard } from '../components';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
@@ -148,7 +142,6 @@ export default function Profile() {
 
   return (
     <>
-      <TitleAndMetaTags title={`Perfil de ${user.name}`} pathname={'/' + user.name} />
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>
