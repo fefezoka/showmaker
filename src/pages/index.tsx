@@ -3,6 +3,7 @@ import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import { Box, Heading } from '../styles';
 import { PostPaginator } from '../components/PostPaginator';
+import { NextSeo } from 'next-seo';
 
 export default function Timeline() {
   const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll({
@@ -20,8 +21,7 @@ export default function Timeline() {
 
   return (
     <>
-      {/* <TitleAndMetaTags title="Showmaker - Página inicial" /> */}
-
+      <NextSeo title="Show Maker // Página inicial" />
       <Main>
         <Box as={'section'}>
           <Heading>Últimos posts</Heading>

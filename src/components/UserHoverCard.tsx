@@ -9,6 +9,7 @@ import { useGetPosts } from '../hooks/useGetPosts';
 import axios from 'axios';
 import { keyframes, styled } from '../../stitches.config';
 import { Box, Flex, Heading, Text } from '../styles';
+import Spinner from '../assets/Spinner.svg';
 
 const Fade = keyframes({
   from: {
@@ -39,15 +40,13 @@ export const Content = styled(HoverCard.Content, {
 export const UserHoverCard = ({ user, children }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const { data } = useQuery<Post[]>(
+  const { data, isLoading } = useQuery<Post[]>(
     ['lastPosts', user.id],
     async () => {
       const { data } = await axios.get(`/api/user/byid/${user.id}/posts/lastPosts`);
       return data;
     },
     {
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
       enabled: !!open,
     }
   );
@@ -93,7 +92,7 @@ export const UserHoverCard = ({ user, children }: Props) => {
               </Flex>
             </Box>
           </Box>
-          <Flex css={{ pt: '$2', gap: '2px' }}>
+          <Flex css={{ pt: '$2', gap: '2px', height: '152px' }}>
             {posts.length !== 0 ? (
               posts.map(
                 (post) =>
@@ -148,9 +147,15 @@ export const UserHoverCard = ({ user, children }: Props) => {
               <Flex
                 justify={'center'}
                 align={'center'}
-                css={{ height: '144px', width: '100%' }}
+                css={{ height: '152px', width: '100%' }}
               >
-                <Text weight={'bold'}>Sem posts</Text>
+                {isLoading ? (
+                  <Flex justify={'center'}>
+                    <Image src={Spinner} height={40} width={40} alt="" />
+                  </Flex>
+                ) : (
+                  <Text weight={'bold'}>Sem posts</Text>
+                )}
               </Flex>
             )}
           </Flex>

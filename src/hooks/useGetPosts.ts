@@ -11,8 +11,6 @@ export const useGetPosts = (T: { id: string }[] | undefined) => {
           return data;
         },
         enabled: !!post,
-        refetchOnWindowFocus: false,
-        staleTime: Infinity,
       };
     }) ?? []
   );

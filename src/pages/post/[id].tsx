@@ -11,21 +11,20 @@ interface Props {
   dehydratedState: Post;
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const id = context.params!.id;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  if (ctx.req.url?.startsWith('/_next')) {
+    return {
+      props: {},
+    };
+  }
 
+  const id = ctx.params!.id;
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery(
-    ['post', id],
-    async () => {
-      const { data } = await axios.get(`${process.env.SITE_URL}/api/post/${id}`);
-      return data;
-    },
-    {
-      staleTime: Infinity,
-    }
-  );
+  await queryClient.prefetchQuery(['post', id], async () => {
+    const { data } = await axios.get(`${process.env.SITE_URL}/api/post/${id}`);
+    return data;
+  });
 
   return {
     props: {
@@ -38,31 +37,25 @@ export default function Post({ dehydratedState }: Props) {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: post, isLoading } = useQuery(
-    ['post', id],
-    async () => {
-      const { data } = await axios.get(`/api/post/${id}`);
-      return data;
-    },
-    {
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
-  );
+  const { data: post, isLoading } = useQuery<Post>(['post', id], async () => {
+    const { data } = await axios.get(`/api/post/${id}`);
+    return data;
+  });
 
   return (
     <>
-      {dehydratedState && (
-        <NextSeo
-          title={dehydratedState.user?.name + ' - ' + dehydratedState.title}
-          openGraph={{
-            images: [{ url: dehydratedState.thumbnailUrl }],
-            videos: [{ url: dehydratedState.videoUrl }],
-            type: 'video.other',
-          }}
-        />
-      )}
+      <NextSeo
+        {...(dehydratedState
+          ? {
+              title: `${dehydratedState.user.name} - ${dehydratedState.title}`,
+              openGraph: {
+                images: [{ url: dehydratedState.thumbnailUrl }],
+                videos: [{ url: dehydratedState.videoUrl }],
+                type: 'video.other',
+              },
+            }
+          : { title: `${post?.user.name} - ${post?.title}` })}
+      />
 
       <Main loading={isLoading}>
         {post && !isLoading && <FeedPost post={post} full />}

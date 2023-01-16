@@ -22,8 +22,6 @@ export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props)
       getNextPageParam: (currentPage, pages) => {
         return currentPage.length == 6 && pages.length + 1;
       },
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
       enabled: enabled,
     }
   );

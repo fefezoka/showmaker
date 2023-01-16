@@ -37,7 +37,7 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
       const { data } = await axios.get<OsuProfile>(`/api/user/byid/${userId}/osu`);
       return data;
     },
-    { staleTime: Infinity, refetchOnWindowFocus: false, retry: false, enabled: !!open }
+    { enabled: !!open }
   );
 
   return (

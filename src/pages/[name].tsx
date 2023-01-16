@@ -13,6 +13,7 @@ import { useQueryClient } from 'react-query';
 import { Box, Flex, Text, Heading } from '../styles';
 import { styled } from '../../stitches.config';
 import { PostPaginator } from '../components/PostPaginator';
+import { NextSeo } from 'next-seo';
 
 type Feed = 'posts' | 'favorites';
 
@@ -60,9 +61,6 @@ export default function Profile() {
     },
     {
       enabled: !!name,
-      retry: false,
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
     }
   );
 
@@ -142,6 +140,7 @@ export default function Profile() {
 
   return (
     <>
+      <NextSeo title={`Perfil de ${user.name}`} />
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>

@@ -19,9 +19,6 @@ export default function Search() {
     },
     {
       enabled: !!title,
-      retry: false,
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
     }
   );
 

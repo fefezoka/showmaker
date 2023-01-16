@@ -11,6 +11,7 @@ import osuIcon from '../assets/osu-icon.png';
 import Image, { StaticImageData } from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
 
 type providers = 'osu';
 
@@ -98,6 +99,7 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
 
   return (
     <>
+      <NextSeo title="Show Maker // Configurações" />
       <Main>
         <Box as={'section'}>
           <Heading size="2">Configurações</Heading>

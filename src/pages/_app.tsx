@@ -6,7 +6,15 @@ import { QueryClientProvider, QueryClient, Hydrate, DehydratedState } from 'reac
 import { DefaultSeo } from 'next-seo';
 import ogimage from '../assets/ogimage.png';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export default function myApp({
   Component,

@@ -21,9 +21,5 @@ export default async function lastPosts(req: NextApiRequest, res: NextApiRespons
     },
   });
 
-  if (!response || response.length === 0) {
-    res.status(400).json({ message: 'no data' });
-  }
-
   return res.status(200).json(response);
 }
