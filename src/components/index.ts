@@ -8,4 +8,3 @@ export { Menu } from './Menu';
 export { OsuHoverCard } from './OsuHoverCard';
 export { ProfileIcon } from './ProfileIcon';
 export { UserHoverCard } from './UserHoverCard';
-export { TitleAndMetaTags } from './TitleAndMetaTags';
