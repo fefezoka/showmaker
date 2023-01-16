@@ -1,20 +1,12 @@
 import type { AppProps } from 'next/app';
 import { global } from '../styles/global';
 import { Session } from 'next-auth/core/types';
-import { SessionProvider, useSession } from 'next-auth/react';
+import { SessionProvider } from 'next-auth/react';
 import { QueryClientProvider, QueryClient, Hydrate, DehydratedState } from 'react-query';
-import { ReactNode } from 'react';
-import Head from 'next/head';
+import { DefaultSeo } from 'next-seo';
 import ogimage from '../assets/ogimage.png';
-import Spinner from '../assets/Spinner.svg';
-import Image from 'next/image';
-import { TitleAndMetaTags } from '../components';
 
 const queryClient = new QueryClient();
-
-interface Props {
-  children: ReactNode;
-}
 
 export default function myApp({
   Component,
@@ -26,41 +18,22 @@ export default function myApp({
     <QueryClientProvider client={queryClient}>
       <SessionProvider session={pageProps.session}>
         <Hydrate state={pageProps.dehydratedState}>
-          {/* <Layout> */}
           <>
-            <TitleAndMetaTags />
+            <DefaultSeo
+              title="Show Maker"
+              openGraph={{
+                images: [{ url: ogimage.src }],
+                siteName: 'Show Maker',
+                description: 'A maior rede social já feita. Elon Musk me contrate',
+                url: 'https://show-maker.vercel.app',
+                type: 'website',
+              }}
+              twitter={{ cardType: 'summary_large_image' }}
+            />
             <Component {...pageProps} />
           </>
-          {/* </Layout> */}
         </Hydrate>
       </SessionProvider>
     </QueryClientProvider>
   );
 }
-
-// const Layout = ({ children }: Props) => {
-//   const session = useSession();
-
-//   return (
-//     <>
-//       {/* <TitleAndMetaTags imageUrl={ogimage.src}  /> */}
-
-//       {session.status === 'loading' ? (
-//         <div
-//           style={{
-//             display: 'flex',
-//             justifyContent: 'center',
-//             alignItems: 'center',
-//             height: '100vh',
-//             flexDirection: 'column',
-//           }}
-//         >
-//           <h2>Show Maker</h2>
-//           <Image src={Spinner} alt="" priority loading="eager" height={64} width={64} />
-//         </div>
-//       ) : (
-//         <>{children}</>
-//       )}
-//     </>
-//   );
-// };

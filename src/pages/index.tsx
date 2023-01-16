@@ -21,7 +21,7 @@ export default function Timeline() {
 
   return (
     <>
-      <TitleAndMetaTags title="Showmaker - Página inicial" />
+      {/* <TitleAndMetaTags title="Showmaker - Página inicial" /> */}
 
       <Main>
         <Box as={'section'}>

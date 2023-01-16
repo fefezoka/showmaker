@@ -4,6 +4,8 @@ import axios from 'axios';
 import { dehydrate, QueryClient } from 'react-query';
 import { Box, Heading } from '../../styles';
 import { GetServerSideProps } from 'next';
+import { NextSeo } from 'next-seo';
+import { getSession } from 'next-auth/react';
 
 interface Props {
   post: Post;
@@ -45,10 +47,13 @@ export default function Post({ post }: Props) {
 
   return (
     <>
-      <TitleAndMetaTags
+      <NextSeo
         title={post.user?.name + ' - ' + post.title}
-        videoUrl={post.thumbnailUrl}
-        pathname={'/post/' + post.id}
+        openGraph={{
+          images: [{ url: post.thumbnailUrl }],
+          videos: [{ url: post.videoUrl }],
+          type: 'video.other',
+        }}
       />
       <Main>
         <FeedPost post={post} full />
