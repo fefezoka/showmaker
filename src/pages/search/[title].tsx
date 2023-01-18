@@ -1,11 +1,11 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
 import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../../hooks/useGetPosts';
 import { Box, Heading } from '../../styles';
+import { NextSeo } from 'next-seo';
 
 export default function Search() {
   const router = useRouter();
@@ -40,9 +40,7 @@ export default function Search() {
 
   return (
     <>
-      <Head>
-        <title>Procurando por {title}</title>
-      </Head>
+      <NextSeo title={`Procurando por ${title}`} />
       <Main>
         <Box as={'section'}>
           <Heading>Procurando por {title}</Heading>

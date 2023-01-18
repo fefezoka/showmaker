@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import Head from 'next/head';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Main, FullProfileIcon, Button, OsuHoverCard } from '../components';
+import {
+  Main,
+  FullProfileIcon,
+  Button,
+  OsuHoverCard,
+  BirthdayBallons,
+} from '../components';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
@@ -47,13 +52,17 @@ export const FeedButton = styled('button', {
 });
 
 export default function Profile() {
-  const [feed, setFeed] = useState<Feed>('posts');
-  const { data: session } = useSession();
   const router = useRouter();
   const { name } = router.query;
+  const [feed, setFeed] = useState<Feed>('posts');
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery<User>(
+  const {
+    data: user,
+    isLoading,
+    isError,
+  } = useQuery<User>(
     ['user', name],
     async () => {
       const { data } = await axios.get(`/api/user/byname/${name}`);
@@ -85,16 +94,10 @@ export default function Profile() {
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
   );
 
-  if (isLoading) {
-    return <Main loading />;
-  }
-
-  if (!user) {
+  if (isError) {
     return (
       <>
-        <Head>
-          <title>Perfil não encontrado</title>
-        </Head>
+        <NextSeo title={`Usuário ${name ?? ''} não encontrado`} />
         <Main>
           <Box as={'section'}>
             <Heading>Usuário {name} não encontrado</Heading>
@@ -102,6 +105,10 @@ export default function Profile() {
         </Main>
       </>
     );
+  }
+
+  if (isLoading || !user) {
+    return <Main loading />;
   }
 
   const handleFollowClick = async () => {
@@ -142,6 +149,7 @@ export default function Profile() {
     <>
       <NextSeo title={`Perfil de ${user.name}`} />
       <Main>
+        {user.name === 'davidcaetano' && <BirthdayBallons />}
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>
             <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">

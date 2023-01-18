@@ -18,7 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const id = ctx.params!.id;
+  const id = ctx.params?.id;
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(['post', id], async () => {
@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient).queries[0]?.state.data ?? null,
+      dehydratedState: dehydrate(queryClient).queries[0]?.state.data,
     },
   };
 };

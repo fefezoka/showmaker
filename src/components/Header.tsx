@@ -5,7 +5,7 @@ import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';
-import { Box, Flex, Text } from '../styles';
+import { Box, Flex, Heading, Text } from '../styles';
 import { styled } from '../../stitches.config';
 
 export const Input = styled('input', {
@@ -87,6 +87,11 @@ export const Header = () => {
       }}
     >
       <Flex justify={'between'} align={'center'} css={{ minWidth: '100%' }}>
+        {!isDesktop && (
+          <Box as={'button'} css={{ mr: '$3' }} onClick={() => router.push('/')}>
+            <Heading>SM</Heading>
+          </Box>
+        )}
         <Box css={{ size: '100%', position: 'relative', maxWidth: '360px' }}>
           <Box as="form" onSubmit={(e) => handleFindClick(e)}>
             <Input ref={findRef} placeholder="Procurar" />

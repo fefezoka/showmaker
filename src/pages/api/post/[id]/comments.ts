@@ -19,6 +19,8 @@ export default async function comments(req: NextApiRequest, res: NextApiResponse
           id: true,
           name: true,
           image: true,
+          followersAmount: true,
+          followingAmount: true,
         },
       },
     },

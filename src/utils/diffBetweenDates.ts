@@ -1,5 +1,5 @@
 export const diffBetweenDates = (date1: Date, date2: Date) => {
-  const diff = Math.ceil((date1.getTime() - date2.getTime()) / (1000 * 60));
+  const diff = Math.ceil((date1.getTime() - date2.getTime()) / (1000 * 60)) || 1;
 
   if (diff < 60) {
     return `${diff.toFixed(0)}m atrás`;

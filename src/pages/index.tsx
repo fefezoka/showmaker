@@ -15,7 +15,7 @@ export default function Timeline() {
     ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
   );
 
-  if (!ids || !posts || posts.slice(0, 6).some((post) => post.isLoading === true)) {
+  if (!ids || !posts || posts.slice(0, 6).some((post) => post.isLoading)) {
     return <Main loading />;
   }
 

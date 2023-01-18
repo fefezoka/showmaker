@@ -125,7 +125,7 @@ export const FeedPost = memo(
       <Box as={'section'} {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
         <Flex justify={'between'}>
           <UserHoverCard user={post.user}>
-            <Link href={`/${post.user.name}`}>
+            <Link href={`/${post.user.name}`} prefetch={false}>
               <Flex align={'center'} gap={'4'}>
                 <ProfileIcon src={post.user.image} alt="" />
                 <Text weight={'bold'}>{post.user.name}</Text>
@@ -143,7 +143,7 @@ export const FeedPost = memo(
         </Flex>
 
         <Flex align={'center'} justify={'between'} css={{ mb: '$4' }}>
-          <Link href={`/post/${post.id}`}>
+          <Link href={`/post/${post.id}`} prefetch={false}>
             <Heading>{post.title}</Heading>
           </Link>
           <Box css={{ flexShrink: 0 }}>
@@ -177,7 +177,7 @@ export const FeedPost = memo(
                     },
                   }}
                 >
-                  <Link href={`/${session.user.name}`}>
+                  <Link href={`/${session.user.name}`} prefetch={false}>
                     <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
                   </Link>
                   <Box as="input" type="text" placeholder="Faça um comentário" />
@@ -201,7 +201,7 @@ export const FeedPost = memo(
                 >
                   <Flex gap={'3'} align={'center'}>
                     <UserHoverCard user={comment.user}>
-                      <Link href={`/${comment.user.name}`}>
+                      <Link href={`/${comment.user.name}`} prefetch={false}>
                         <Flex align={'center'} gap={'3'}>
                           <ProfileIcon src={comment.user.image} alt="" />
                           <Text weight={'bold'}>{comment.user.name}</Text>
@@ -221,7 +221,7 @@ export const FeedPost = memo(
           </Box>
         ) : (
           <Box css={{ mt: '$4' }}>
-            <Link href={`/post/${post.id}`}>
+            <Link href={`/post/${post.id}`} prefetch={false}>
               <Text size={'3'}>
                 {post.commentsAmount
                   ? `Ver ${post.commentsAmount} comentários`

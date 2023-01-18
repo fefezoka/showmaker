@@ -12,6 +12,7 @@ const queryClient = new QueryClient({
       staleTime: Infinity,
       retry: false,
       refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   },
 });
@@ -37,6 +38,7 @@ export default function myApp({
                 type: 'website',
               }}
               twitter={{ cardType: 'summary_large_image' }}
+              additionalMetaTags={[{ name: 'theme-color', content: '#dc8cfe' }]}
             />
             <Component {...pageProps} />
           </>

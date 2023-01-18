@@ -54,7 +54,7 @@ export const UserHoverCard = ({ user, children }: Props) => {
   const posts = useGetPosts(data);
 
   return (
-    <HoverCard.Root open={open ? true : false} onOpenChange={setOpen}>
+    <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>{children}</HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
@@ -80,19 +80,19 @@ export const UserHoverCard = ({ user, children }: Props) => {
                 <Text size={'3'}>
                   Seguindo{' '}
                   <Text weight={'bold'} size={'3'}>
-                    {user.followingAmount ?? 0}
+                    {user.followingAmount}
                   </Text>
                 </Text>
                 <Text size={'3'}>
                   Seguidores{' '}
                   <Text weight={'bold'} size={'3'}>
-                    {user.followersAmount ?? 0}
+                    {user.followersAmount}
                   </Text>
                 </Text>
               </Flex>
             </Box>
           </Box>
-          <Flex css={{ pt: '$2', gap: '2px', height: '152px' }}>
+          <Flex css={{ gap: '2px', minHeight: '140px' }}>
             {posts.length !== 0 ? (
               posts.map(
                 (post) =>
@@ -115,9 +115,18 @@ export const UserHoverCard = ({ user, children }: Props) => {
                       }}
                     >
                       <Link href={`/post/${post.data.id}`}>
-                        <Text size={'3'} css={{ lh: '1.5rem', fontWeight: 700 }}>
-                          {post.data.title.slice(0, 17)}
-                        </Text>
+                        <Box
+                          css={{
+                            px: '4px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          <Text size={'3'} weight={'bold'} css={{ lh: '1.875rem' }}>
+                            {post.data.title}
+                          </Text>
+                        </Box>
                         <Box
                           css={{
                             mt: '$1',
@@ -147,7 +156,7 @@ export const UserHoverCard = ({ user, children }: Props) => {
               <Flex
                 justify={'center'}
                 align={'center'}
-                css={{ height: '152px', width: '100%' }}
+                css={{ minHeight: '140px', width: '100%' }}
               >
                 {isLoading ? (
                   <Flex justify={'center'}>
