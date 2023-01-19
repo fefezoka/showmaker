@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient).queries[0]?.state.data,
+      dehydratedState: dehydrate(queryClient).queries[0]?.state.data ?? null,
     },
   };
 };
@@ -58,7 +58,7 @@ export default function Post({ dehydratedState }: Props) {
       />
 
       <Main loading={isLoading}>
-        {post && !isLoading && <FeedPost post={post} full />}
+        {post && !isLoading && <FeedPost post={post} />}
         {!post && !isLoading && (
           <Box as={'section'}>
             <Heading>Post não encontrado</Heading>

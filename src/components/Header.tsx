@@ -2,11 +2,11 @@ import React, { FormEvent, useRef, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { ProfileIcon } from './';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';
 import { Box, Flex, Heading, Text } from '../styles';
 import { styled } from '../../stitches.config';
+import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from '../styles';
 
 export const Input = styled('input', {
   width: '100%',
@@ -21,40 +21,6 @@ export const Input = styled('input', {
     color: '$gray',
     fontWeight: 700,
   },
-});
-
-export const UserSettingsModal = styled(DropdownMenu.Content, {
-  zIndex: '$modal',
-  backgroundColor: '$white',
-  minWidth: '130px',
-  padding: '6px',
-  borderRadius: '$2',
-});
-
-export const StyledItem = styled(DropdownMenu.Item, {
-  display: 'flex',
-  justifyContent: 'center',
-  color: '$black',
-  fontSize: '$3',
-  borderRadius: '$1',
-  padding: '6px',
-  cursor: 'pointer',
-
-  '&:hover': {
-    outline: 'none',
-    backgroundColor: '$bgalt',
-    color: '$white',
-  },
-});
-
-export const StyledSeparator = styled(DropdownMenu.Separator, {
-  height: '1px',
-  backgroundColor: '$gray',
-  margin: '$1',
-});
-
-export const StyledArrow = styled(DropdownMenu.Arrow, {
-  fill: '$white',
 });
 
 export const Header = () => {
@@ -104,8 +70,8 @@ export const Header = () => {
         </Box>
 
         {status === 'authenticated' ? (
-          <DropdownMenu.Root open={open ? true : false} onOpenChange={setOpen}>
-            <DropdownMenu.Trigger asChild>
+          <Menu open={open} onOpenChange={setOpen}>
+            <MenuTrigger asChild>
               <Flex
                 align={'center'}
                 gap={'3'}
@@ -127,23 +93,18 @@ export const Header = () => {
                 {isDesktop && <h4>{session?.user?.name}</h4>}
                 {open ? <IoCaretUp /> : <IoCaretDown />}
               </Flex>
-            </DropdownMenu.Trigger>
+            </MenuTrigger>
 
-            <DropdownMenu.Portal>
-              <UserSettingsModal>
-                <StyledItem onClick={() => router.push('/')}>Página inicial</StyledItem>
-                <StyledItem onClick={() => router.push('/' + session.user.name)}>
-                  Perfil
-                </StyledItem>
-                <StyledItem onClick={() => router.push('/config')}>
-                  Configurações
-                </StyledItem>
-                <StyledSeparator />
-                <StyledItem onClick={() => signOut()}>Sair</StyledItem>
-                <StyledArrow />
-              </UserSettingsModal>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
+            <MenuContent>
+              <MenuItem onClick={() => router.push('/')}>Página inicial</MenuItem>
+              <MenuItem onClick={() => router.push('/' + session.user.name)}>
+                Perfil
+              </MenuItem>
+              <MenuItem onClick={() => router.push('/config')}>Configurações</MenuItem>
+              <MenuSeparator />
+              <MenuItem onClick={() => signOut()}>Sair</MenuItem>
+            </MenuContent>
+          </Menu>
         ) : (
           <Box css={{ ta: 'right' }}>
             <button onClick={() => signIn('discord')}>

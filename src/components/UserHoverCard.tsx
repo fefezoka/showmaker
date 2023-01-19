@@ -22,6 +22,7 @@ const Fade = keyframes({
 
 interface Props {
   user: User;
+  href: string;
   children: ReactNode;
 }
 
@@ -37,7 +38,7 @@ export const Content = styled(HoverCard.Content, {
   boxShadow: '0px 0px 12px black',
 });
 
-export const UserHoverCard = ({ user, children }: Props) => {
+export const UserHoverCard = ({ user, href, children }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const { data, isLoading } = useQuery<Post[]>(
@@ -55,7 +56,11 @@ export const UserHoverCard = ({ user, children }: Props) => {
 
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen}>
-      <HoverCard.Trigger asChild>{children}</HoverCard.Trigger>
+      <HoverCard.Trigger asChild>
+        <Link href={href} prefetch={false}>
+          {children}
+        </Link>
+      </HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
           <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bgalt' }}>

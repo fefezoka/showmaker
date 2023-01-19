@@ -13,8 +13,8 @@ interface Post {
 }
 
 interface PostComment {
-  id?: string;
-  userId?: string;
+  id: string;
+  userId: string;
   postId: string;
   createdAt: Date;
   message: string;

@@ -24,7 +24,7 @@ export default function Search() {
 
   const posts = useGetPosts(ids);
 
-  if (isLoading) {
+  if (isLoading || posts.some((post) => post.isLoading)) {
     return <Main loading />;
   }
 

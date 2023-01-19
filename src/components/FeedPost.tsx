@@ -1,23 +1,22 @@
 import Link from 'next/link';
-import React, { memo, forwardRef, FormEvent } from 'react';
+import React, { memo, forwardRef } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
-import { useQueryClient, useQuery } from 'react-query';
-import { Button, ProfileIcon, Video } from './';
+import { useQueryClient } from 'react-query';
+import { ProfileIcon, Video } from './';
 import { UserHoverCard } from './UserHoverCard';
 import axios from 'axios';
-import Spinner from '../assets/Spinner.svg';
-import Image from 'next/image';
 import { Box, Flex, Text, Heading } from '../styles';
+import { FeedPostComments } from './FeedPostComments';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;
-  full?: boolean;
+  // full?: boolean;
 }
 
 export const FeedPost = memo(
-  forwardRef(({ post, full, ...props }: Props, forwardRef) => {
+  forwardRef(({ post, ...props }: Props, forwardRef) => {
     const { data: session } = useSession();
     const queryClient = useQueryClient();
 
@@ -35,14 +34,14 @@ export const FeedPost = memo(
         postId: post.id,
       });
 
-      queryClient.setQueryData<Post>(['post', post.id], (old) =>
-        old
-          ? {
-              ...old,
-              likes: old.likes + 1,
-              isLiked: true,
-            }
-          : post
+      queryClient.setQueryData<Post | undefined>(
+        ['post', post.id],
+        (old) =>
+          old && {
+            ...old,
+            likes: old.likes + 1,
+            isLiked: true,
+          }
       );
 
       queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
@@ -64,73 +63,25 @@ export const FeedPost = memo(
         userId: session?.user.id,
       });
 
-      queryClient.setQueryData<Post>(['post', post.id], (old) =>
-        old
-          ? {
-              ...old,
-              likes: old.likes - 1,
-              isLiked: false,
-            }
-          : post
-      );
-    };
-
-    const { data: comments, isLoading } = useQuery<PostComment[]>(
-      ['comments', post.id],
-      async () => {
-        const { data } = await axios.get(`/api/post/${post.id}/comments`);
-        return data;
-      },
-      {
-        enabled: !!full && post.commentsAmount > 0,
-        staleTime: Infinity,
-      }
-    );
-
-    const commentSubmit = async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const message = (e.currentTarget[0] as HTMLInputElement).value;
-
-      e.currentTarget.reset();
-
-      if (!message) {
-        return;
-      }
-
-      const { data } = await axios.post('/api/post/newComment', {
-        postId: post.id,
-        userId: session?.user.id,
-        message: message,
-      });
-
-      queryClient.setQueryData<PostComment[]>(['comments', post.id], (old) => [
-        data,
-        ...(old ? old : []),
-      ]);
-
-      queryClient.setQueryData<Post>(['post', post.id], (old) =>
-        old
-          ? {
-              ...old,
-              commentsAmount: old.commentsAmount + 1,
-            }
-          : {
-              ...post,
-              commentsAmount: post.commentsAmount + 1,
-            }
+      queryClient.setQueryData<Post | undefined>(
+        ['post', post.id],
+        (old) =>
+          old && {
+            ...old,
+            likes: old.likes - 1,
+            isLiked: false,
+          }
       );
     };
 
     return (
       <Box as={'section'} {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
         <Flex justify={'between'}>
-          <UserHoverCard user={post.user}>
-            <Link href={`/${post.user.name}`} prefetch={false}>
-              <Flex align={'center'} gap={'4'}>
-                <ProfileIcon src={post.user.image} alt="" />
-                <Text weight={'bold'}>{post.user.name}</Text>
-              </Flex>
-            </Link>
+          <UserHoverCard user={post.user} href={`/${post.user.name}`}>
+            <Flex align={'center'} gap={'4'}>
+              <ProfileIcon src={post.user.image} alt="" />
+              <Text weight={'bold'}>{post.user.name}</Text>
+            </Flex>
           </UserHoverCard>
           <Box css={{ ta: 'center', cursor: 'pointer' }} onClick={handleLikeClick}>
             {post.isLiked ? (
@@ -155,70 +106,10 @@ export const FeedPost = memo(
 
         <Video videoUrl={post.videoUrl} thumbnailUrl={post.thumbnailUrl} />
 
-        {full ? (
-          <Box>
-            {session && (
-              <Box as="form" onSubmit={commentSubmit}>
-                <Flex
-                  gap={{ '@initial': '2', '@bp2': '4' }}
-                  css={{
-                    mt: '$4',
-                    input: {
-                      color: 'white',
-                      borderRadius: '$2',
-                      width: '100%',
-                      padding: '0 $3',
-                      backgroundColor: '$bgalt',
-                      fontSize: '$3',
-                    },
+        <FeedPostComments post={post} />
 
-                    'input::placeholder': {
-                      color: '$gray',
-                    },
-                  }}
-                >
-                  <Link href={`/${session.user.name}`} prefetch={false}>
-                    <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
-                  </Link>
-                  <Box as="input" type="text" placeholder="Faça um comentário" />
-                  <Button type="submit" value="Enviar" />
-                </Flex>
-              </Box>
-            )}
-            {!isLoading ? (
-              comments &&
-              comments.map((comment) => (
-                <Flex
-                  align={'center'}
-                  justify={'between'}
-                  css={{
-                    mt: '$3',
-                    '&:nth-of-type(1)': {
-                      mt: '$6',
-                    },
-                  }}
-                  key={comment.id}
-                >
-                  <Flex gap={'3'} align={'center'}>
-                    <UserHoverCard user={comment.user}>
-                      <Link href={`/${comment.user.name}`} prefetch={false}>
-                        <Flex align={'center'} gap={'3'}>
-                          <ProfileIcon src={comment.user.image} alt="" />
-                          <Text weight={'bold'}>{comment.user.name}</Text>
-                        </Flex>
-                      </Link>
-                    </UserHoverCard>
-                    <Text>{comment.message}</Text>
-                  </Flex>
-                  <Text>{diffBetweenDates(new Date(), new Date(comment.createdAt))}</Text>
-                </Flex>
-              ))
-            ) : (
-              <Box css={{ ta: 'center' }}>
-                <Image src={Spinner} alt="" priority height={42} width={42} />
-              </Box>
-            )}
-          </Box>
+        {/* {full ? (
+          <FeedPostComments post={post} />
         ) : (
           <Box css={{ mt: '$4' }}>
             <Link href={`/post/${post.id}`} prefetch={false}>
@@ -229,7 +120,7 @@ export const FeedPost = memo(
               </Text>
             </Link>
           </Box>
-        )}
+        )} */}
       </Box>
     );
   })

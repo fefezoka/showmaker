@@ -218,7 +218,7 @@ export default function CreatePost() {
                         <Image src={thumbnail} alt="" width={160} height={90} />
                       )}
                       <Text as={'p'} css={{ lineBreak: 'anywhere' }}>
-                        {file?.name} - {(file?.size / 1048576).toFixed(2)} MB{' '}
+                        {file.name} - {(file.size / 1048576).toFixed(2)} MB{' '}
                       </Text>
                     </Flex>
                   ) : (

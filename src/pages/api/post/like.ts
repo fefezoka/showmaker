@@ -8,12 +8,16 @@ export default async function like(req: NextApiRequest, res: NextApiResponse) {
     return res.status(404).json('Error');
   }
 
-  await prisma.likedPost.create({
+  const response = await prisma.likedPost.create({
     data: {
       postId: postId,
       userId: userId,
     },
   });
+
+  if (!response) {
+    return res.status(400).json({ message: 'error' });
+  }
 
   await prisma.post.update({
     where: {

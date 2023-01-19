@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import {
-  Main,
-  FullProfileIcon,
-  Button,
-  OsuHoverCard,
-  BirthdayBallons,
-} from '../components';
+import { Main, FullProfileIcon, Button, OsuHoverCard } from '../components';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
@@ -121,27 +115,27 @@ export default function Profile() {
       followingId: user.id,
     });
 
-    queryClient.setQueryData<User>(['user', name], (old) =>
-      old
-        ? {
-            ...old,
-            followersAmount: old.isFollowing
-              ? old.followersAmount - 1
-              : old.followersAmount + 1,
-            isFollowing: !old.isFollowing,
-          }
-        : { ...user, isFollowing: !user.isFollowing }
+    queryClient.setQueryData<User | undefined>(
+      ['user', name],
+      (old) =>
+        old && {
+          ...old,
+          followersAmount: old.isFollowing
+            ? old.followersAmount - 1
+            : old.followersAmount + 1,
+          isFollowing: !old.isFollowing,
+        }
     );
 
-    queryClient.setQueryData<User>(['user', session.user.name], (old) =>
-      old
-        ? {
-            ...old,
-            followingAmount: user.isFollowing
-              ? old.followingAmount - 1
-              : old.followingAmount + 1,
-          }
-        : session.user
+    queryClient.setQueryData<User | undefined>(
+      ['user', session.user.name],
+      (old) =>
+        old && {
+          ...old,
+          followingAmount: user.isFollowing
+            ? old.followingAmount - 1
+            : old.followingAmount + 1,
+        }
     );
   };
 
@@ -149,7 +143,6 @@ export default function Profile() {
     <>
       <NextSeo title={`Perfil de ${user.name}`} />
       <Main>
-        {user.name === 'davidcaetano' && <BirthdayBallons />}
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex justify={'between'} align={'center'} css={{ mb: '$6' }}>
             <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">
@@ -166,7 +159,7 @@ export default function Profile() {
               </Box>
             </Flex>
 
-            {!(session?.user.id === user.id) && (
+            {session?.user.id !== user.id && (
               <Button
                 type="button"
                 value={
@@ -226,7 +219,7 @@ export default function Profile() {
           </Flex>
         </Box>
 
-        {posts.slice(0, 6).some((post) => post.status === 'loading') ? (
+        {posts.slice(0, 6).some((post) => post.isLoading) ? (
           <Flex justify={'center'} css={{ mt: '$4' }}>
             <Image src={Spinner} alt="" width={54} height={54} />
           </Flex>

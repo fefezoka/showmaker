@@ -12,3 +12,4 @@ export {
   ModalTitle,
   ModalTrigger,
 } from './Modal';
+export { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from './DropdownMenu';
