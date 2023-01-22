@@ -20,6 +20,8 @@ import {
   ModalTrigger,
 } from '../styles';
 import { styled } from '../../stitches.config';
+import ReactSelect from 'react-select';
+import Select from 'react-select/dist/declarations/src/Select';
 
 const DropContainer = styled('section', {
   width: '100%',
@@ -46,6 +48,7 @@ const DropContainer = styled('section', {
 export default function CreatePost() {
   const queryClient = useQueryClient();
   const titleRef = useRef<HTMLInputElement>(null);
+  const gameSelectRef = useRef<Select>(null);
   const { data: session } = useSession();
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -61,7 +64,9 @@ export default function CreatePost() {
   };
 
   const processFile = async () => {
-    if (loading || !file || !thumbnail || !titleRef.current?.value) {
+    const game = gameSelectRef.current?.getValue() as { value: string; label: string }[];
+
+    if (loading || !file || !thumbnail || !titleRef.current?.value || !game) {
       return;
     }
     setLoading(true);
@@ -138,6 +143,7 @@ export default function CreatePost() {
         title: titleRef.current?.value,
         thumbnailUrl: thumbnailUrl,
         videoUrl: videoUrl,
+        game: game[0].value,
       });
 
       queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
@@ -185,12 +191,39 @@ export default function CreatePost() {
             css={{
               backgroundColor: 'white',
               padding: '$3',
-              borderRadius: '$2',
+              borderRadius: '$1',
               width: '100%',
               border: '1px solid $input-gray',
               margin: '$1 0px',
+              transition: '100ms all',
+              '&:focus': {
+                border: '2px solid $blue',
+              },
             }}
           />
+
+          <Box>
+            <Text as={'label'}>Jogo</Text>
+            <Box css={{ margin: '$1 0px' }}>
+              <ReactSelect
+                ref={gameSelectRef}
+                styles={{
+                  input: (baseStyles) => ({
+                    ...baseStyles,
+                    minHeight: '34px',
+                  }),
+                }}
+                options={[
+                  { label: 'Valorant', value: 'valorant' },
+                  { label: 'FIFA', value: 'fifa' },
+                  { label: 'CS:GO', value: 'csgo' },
+                  { label: 'Rocket League', value: 'rocketleague' },
+                  { label: 'Rainbow Six Siege', value: 'r6' },
+                  { label: 'Outro', value: 'other' },
+                ]}
+              />
+            </Box>
+          </Box>
         </Box>
         <Box>
           <Dropzone

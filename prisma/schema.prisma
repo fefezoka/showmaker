@@ -70,6 +70,7 @@ model Post {
   commentsAmount Int?          @default(0)
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
+  game           String?
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
   likedBy        LikedPost[]

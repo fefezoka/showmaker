@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Main, FullProfileIcon, Button, OsuHoverCard } from '../components';
+import { Main, FullProfileIcon, Button, OsuHoverCard, FeedButton } from '../components';
 import { useQuery } from 'react-query';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
@@ -15,35 +15,6 @@ import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';
 
 type Feed = 'posts' | 'favorites';
-
-export const FeedButton = styled('button', {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'transparent',
-  borderColor: 'transparent',
-  fontSize: '$3',
-  padding: '$3 $4',
-  transition: 'background-color 200ms',
-  color: '$white',
-
-  '&:hover': {
-    backgroundColor: '$bgalt',
-  },
-
-  '@bp2': {
-    fontSize: '$4',
-  },
-
-  variants: {
-    active: {
-      true: {
-        fontWeight: 'bold',
-        borderBottom: '3px solid $blue',
-      },
-    },
-  },
-});
 
 export default function Profile() {
   const router = useRouter();
@@ -206,16 +177,14 @@ export default function Profile() {
               type="button"
               onClick={() => setFeed('posts')}
               active={feed === 'posts'}
-            >
-              Últimos posts
-            </FeedButton>
+              value={'Últimos posts'}
+            />
             <FeedButton
+              value={'Posts curtidos'}
               type="button"
               onClick={() => setFeed('favorites')}
               active={feed === 'favorites'}
-            >
-              Posts curtidos
-            </FeedButton>
+            />
           </Flex>
         </Box>
 

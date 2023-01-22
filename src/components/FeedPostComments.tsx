@@ -128,13 +128,15 @@ export const FeedPostComments = ({ post }: Props) => {
                 align={{ '@bp2': 'center' }}
               >
                 <UserHoverCard user={comment.user} href={`/${comment.user.name}`}>
-                  <Text weight={'bold'}>{comment.user.name}</Text>
+                  <Text size={{ '@initial': '3', '@bp2': '4' }} weight={'bold'}>
+                    {comment.user.name}
+                  </Text>
                 </UserHoverCard>
-                <Text>{comment.message}</Text>
+                <Text size={{ '@initial': '3', '@bp2': '4' }}>{comment.message}</Text>
               </Flex>
             </Flex>
-            <Flex gap={'2'}>
-              <Text css={{ fs: 0 }}>
+            <Flex gap={'2'} align={'center'}>
+              <Text size={{ '@initial': '2', '@bp2': '3' }} css={{ fs: 0 }}>
                 {diffBetweenDates(new Date(), new Date(comment.createdAt))}
               </Text>
               {session?.user.id === comment.user.id && (

@@ -24,6 +24,8 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
     return res.status(404).json({ message: 'user not found' });
   }
 
+  const { email, emailVerified, updatedAt, ...filteredUser } = user;
+
   const osuAccount = await prisma.account.findMany({
     select: {
       providerAccountId: true,
@@ -37,11 +39,11 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
   });
 
   return res.status(200).json({
-    ...user,
-    followYou: user?.following.some(
+    ...filteredUser,
+    followYou: user.following.some(
       (follower) => follower.followingId === session?.user.id
     ),
-    isFollowing: user?.followers.some(
+    isFollowing: user.followers.some(
       (follower) => follower.followerId === session?.user.id
     ),
     ...(osuAccount[0] && { osuAccountId: osuAccount[0].providerAccountId }),

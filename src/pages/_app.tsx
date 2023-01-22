@@ -38,7 +38,7 @@ export default function myApp({
                 type: 'website',
               }}
               twitter={{ cardType: 'summary_large_image' }}
-              additionalMetaTags={[{ name: 'theme-color', content: '#dc8cfe' }]}
+              additionalMetaTags={[{ name: 'theme-color', content: '#2795f4' }]}
             />
             <Component {...pageProps} />
           </>

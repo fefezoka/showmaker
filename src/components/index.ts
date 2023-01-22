@@ -1,5 +1,5 @@
-export { Video } from './Video';
 export { Button } from './Button';
+export { FeedButton } from './FeedButton';
 export { FeedPost } from './FeedPost';
 export { FullProfileIcon } from './FullProfileIcon';
 export { Header } from './Header';
@@ -8,3 +8,4 @@ export { Menu } from './Menu';
 export { OsuHoverCard } from './OsuHoverCard';
 export { ProfileIcon } from './ProfileIcon';
 export { UserHoverCard } from './UserHoverCard';
+export { Video } from './Video';

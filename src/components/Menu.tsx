@@ -53,8 +53,10 @@ export const Menu = () => {
         minWidth: '100vw',
         zIndex: '$menu',
         padding: '0 $5',
+        borderTop: '2px solid $bgalt',
 
         '@bp2': {
+          borderTop: 'unset',
           borderRight: '2px solid $bgalt',
           position: 'sticky',
           top: 0,
