@@ -15,7 +15,7 @@ const feedOptions = [
   { label: 'CS:GO', value: 'csgo' },
   { label: 'Rainbow Six', value: 'r6' },
   { label: 'Rocket League', value: 'rocketleague' },
-  { label: 'Outro', value: 'other' },
+  { label: 'Outros', value: 'other' },
 ] as const;
 type feed = typeof feedOptions[number];
 
@@ -42,7 +42,7 @@ export default function Timeline() {
     <>
       <NextSeo title="Show Maker // Página inicial" />
       <Main>
-        <Box as={'section'}>
+        <Box as={'section'} css={{ pb: '0 !important' }}>
           <Heading>Últimos posts</Heading>
           <Flex justify={'between'} wrap={'wrap'} css={{ mt: '$2' }}>
             {feedOptions.map((option) => (
