@@ -10,7 +10,6 @@ import Spinner from '../assets/Spinner.svg';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 import { Box, Flex, Text, Heading } from '../styles';
-import { styled } from '../../stitches.config';
 import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';
 
@@ -150,9 +149,9 @@ export default function Profile() {
               <Box css={{ mb: '$1' }}>
                 <Text size={'3'}>Usuário desde </Text>
                 <Text size={'3'} weight={'bold'}>
-                  {new Date(user.createdAt).getDate()}/
-                  {new Date(user.createdAt).getMonth() + 1}/
-                  {new Date(user.createdAt).getFullYear()}
+                  {new Intl.DateTimeFormat('pt-BR').format(
+                    new Date(user.createdAt).getTime()
+                  )}
                 </Text>
               </Box>
               <Box>

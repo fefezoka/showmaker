@@ -9,3 +9,4 @@ export { OsuHoverCard } from './OsuHoverCard';
 export { ProfileIcon } from './ProfileIcon';
 export { UserHoverCard } from './UserHoverCard';
 export { Video } from './Video';
+export { Select } from './Select';

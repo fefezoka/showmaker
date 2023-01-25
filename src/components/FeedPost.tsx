@@ -98,9 +98,7 @@ export const FeedPost = memo(
             <Heading>{post.title}</Heading>
           </Link>
           <Box css={{ flexShrink: 0 }}>
-            <Text size={'3'}>
-              {diffBetweenDates(new Date(), new Date(post.createdAt))}
-            </Text>
+            <Text size={'3'}>{diffBetweenDates(new Date(post.createdAt))}</Text>
           </Box>
         </Flex>
 

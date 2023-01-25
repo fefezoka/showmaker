@@ -26,7 +26,7 @@ export default function Timeline() {
     { api: '/api/post/feed/page', query: 'homepageIds' },
     {
       api: `/api/post/bygame/${feed.value}/page`,
-      query: ['feed', feed.value as string],
+      query: ['feed', feed.value],
     },
   ];
 

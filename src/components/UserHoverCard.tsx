@@ -76,8 +76,7 @@ export const UserHoverCard = ({ user, href, children }: Props) => {
             <Box>
               {posts[0] && posts[0].data && (
                 <Text size={'3'}>
-                  Última postagem{' '}
-                  {diffBetweenDates(new Date(), new Date(posts[0].data.createdAt))}
+                  Última postagem {diffBetweenDates(new Date(posts[0].data.createdAt))}
                 </Text>
               )}
 

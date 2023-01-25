@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
-import { Button } from './';
+import { Button, Select } from './';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
@@ -20,8 +20,6 @@ import {
   ModalTrigger,
 } from '../styles';
 import { styled } from '../../stitches.config';
-import ReactSelect from 'react-select';
-import Select from 'react-select/dist/declarations/src/Select';
 
 const DropContainer = styled('section', {
   width: '100%',
@@ -48,7 +46,7 @@ const DropContainer = styled('section', {
 export default function CreatePost() {
   const queryClient = useQueryClient();
   const titleRef = useRef<HTMLInputElement>(null);
-  const gameSelectRef = useRef<Select>(null);
+  const gameSelectRef = useRef<React.ElementRef<typeof Select>>(null);
   const { data: session } = useSession();
   const [file, setFile] = useState<File>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -197,22 +195,18 @@ export default function CreatePost() {
               margin: '$1 0px',
               transition: '100ms all',
               '&:focus': {
-                border: '2px solid $blue',
+                border: '1px solid #2684ff',
+                boxShadow: '0 0 0 1px #2684ff',
               },
             }}
           />
 
-          <Box>
+          <Box css={{ mt: '$1' }}>
             <Text as={'label'}>Jogo</Text>
             <Box css={{ margin: '$1 0px' }}>
-              <ReactSelect
+              <Select
                 ref={gameSelectRef}
-                styles={{
-                  input: (baseStyles) => ({
-                    ...baseStyles,
-                    minHeight: '34px',
-                  }),
-                }}
+                placeholder={'Selecione um jogo'}
                 options={[
                   { label: 'Valorant', value: 'valorant' },
                   { label: 'FIFA', value: 'fifa' },

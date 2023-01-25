@@ -18,7 +18,7 @@ interface Props {
 
 export const Content = styled(HoverCard.Content, {
   position: 'relative',
-  width: 290,
+  width: 295,
   height: 130,
   backgroundColor: '#000',
   color: '$white',
@@ -41,7 +41,7 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
   );
 
   return (
-    <HoverCard.Root open={open ? true : false} onOpenChange={setOpen}>
+    <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
         <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target={'_blank'}>
           <Image src={OsuIcon} alt="" height={32} width={32} />
@@ -112,9 +112,10 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
                             </Text>
                             <Box>
                               <Text size={'2'}>
-                                Desde {new Date(data.join_date).getDate()}/
-                                {new Date(data.join_date).getMonth()}/
-                                {new Date(data.join_date).getFullYear()}
+                                Desde{' '}
+                                {Intl.DateTimeFormat('pt-BR').format(
+                                  new Date(data.join_date).getTime()
+                                )}
                               </Text>
                             </Box>
                           </Box>
@@ -122,7 +123,7 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
                             {!data.is_online && data.last_visit && (
                               <Text size={'2'} as={'p'}>
                                 Visto por último{' '}
-                                {diffBetweenDates(new Date(), new Date(data.last_visit))}
+                                {diffBetweenDates(new Date(data.last_visit))}
                               </Text>
                             )}
                             {
@@ -137,10 +138,10 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
                         {data.statistics.global_rank && (
                           <Box css={{ ta: 'right' }}>
                             <Flex direction={'column'}>
-                              <Text weight={'bold'} size={'3'}>
+                              <Text weight={'bold'} size={'2'}>
                                 Global
                               </Text>
-                              <Text size={'3'}>#{data.statistics.global_rank}</Text>
+                              <Text size={'2'}>#{data.statistics.global_rank}</Text>
                             </Flex>
                             <Box
                               css={{
@@ -150,10 +151,10 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
                               }}
                             />
                             <Flex direction={'column'}>
-                              <Text weight={'bold'} size={'3'}>
+                              <Text weight={'bold'} size={'2'}>
                                 {data.country.name}
                               </Text>
-                              <Text size={'3'}>#{data.statistics.country_rank}</Text>
+                              <Text size={'2'}>#{data.statistics.country_rank}</Text>
                             </Flex>
                           </Box>
                         )}
