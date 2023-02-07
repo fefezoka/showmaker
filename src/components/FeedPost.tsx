@@ -44,17 +44,19 @@ export const FeedPost = memo(
           }
       );
 
-      queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
-        ['favorites', session?.user.name],
-        (old) =>
-          old
-            ? !old?.pages[0].some((cachepost) => cachepost.id === post.id)
-              ? old?.pages[0].unshift({ id: post.id })
-                ? old
-                : old
-              : old
-            : undefined
-      );
+      const oldFavorites = queryClient.getQueryData<PostsPagination>([
+        'favorites',
+        session?.user.name,
+      ]);
+
+      oldFavorites &&
+        queryClient.setQueryData<PostsPagination>(
+          ['favorites', session?.user.name],
+          !oldFavorites.pages[0].some((cachepost) => cachepost.id === post.id) &&
+            oldFavorites?.pages[0].unshift({ id: post.id })
+            ? oldFavorites
+            : oldFavorites
+        );
     };
 
     const dislikePost = async () => {

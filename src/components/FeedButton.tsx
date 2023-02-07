@@ -6,16 +6,13 @@ interface Props extends React.ComponentProps<typeof StyledFeedButton> {
 }
 
 const StyledFeedButton = styled('button', {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
   backgroundColor: 'transparent',
   borderColor: 'transparent',
   fontSize: '$3',
   padding: '$3 $4',
   transition: 'background-color 200ms',
   color: '$white',
-
+  textAlign: 'center',
   '&:hover': {
     backgroundColor: '$bgalt',
   },
@@ -36,5 +33,9 @@ const StyledFeedButton = styled('button', {
 });
 
 export const FeedButton = ({ value, ...props }: Props) => {
-  return <StyledFeedButton {...props}>{value}</StyledFeedButton>;
+  return (
+    <StyledFeedButton type="button" {...props}>
+      {value}
+    </StyledFeedButton>
+  );
 };

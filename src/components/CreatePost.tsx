@@ -144,15 +144,45 @@ export default function CreatePost() {
         game: game[0].value,
       });
 
-      queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
-        'homepageIds',
-        (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
-      );
+      const oldHomepageIds = queryClient.getQueryData<PostsPagination>('homepageIds');
 
-      queryClient.setQueryData<{ pages: [{ id: string }][] } | undefined>(
-        ['userposts', session?.user.name],
-        (old) => (old?.pages[0].unshift({ id: data.id }) ? old : undefined)
-      );
+      oldHomepageIds &&
+        queryClient.setQueryData<PostsPagination>(
+          'homepageIds',
+          oldHomepageIds.pages[0].unshift({ id: data.id })
+            ? oldHomepageIds
+            : oldHomepageIds
+        );
+
+      const selectedGame = (
+        gameSelectRef.current?.getValue() as { value: string; label: string }[]
+      )[0].value;
+
+      const oldSpecificGameHomepage = queryClient.getQueryData<PostsPagination>([
+        'feed',
+        selectedGame,
+      ]);
+
+      oldSpecificGameHomepage &&
+        queryClient.setQueryData<PostsPagination>(
+          ['feed', selectedGame],
+          oldSpecificGameHomepage.pages[0].unshift({ id: data.id })
+            ? oldSpecificGameHomepage
+            : oldSpecificGameHomepage
+        );
+
+      const oldProfilePosts = queryClient.getQueryData<PostsPagination>([
+        'userposts',
+        session?.user.name,
+      ]);
+
+      oldProfilePosts &&
+        queryClient.setQueryData<PostsPagination>(
+          ['userposts', session?.user.name],
+          oldProfilePosts?.pages[0].unshift({ id: data.id })
+            ? oldProfilePosts
+            : oldProfilePosts
+        );
 
       queryClient.setQueryData<Post>(['post', data.id], data);
       onClose();

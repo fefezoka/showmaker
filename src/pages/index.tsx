@@ -44,7 +44,15 @@ export default function Timeline() {
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Heading>Últimos posts</Heading>
-          <Flex justify={'between'} wrap={'wrap'} css={{ mt: '$2' }}>
+          <Flex
+            justify={'between'}
+            css={{
+              mt: '$2',
+              overflowX: 'scroll',
+              '&::-webkit-scrollbar': { display: 'none' },
+              '@bp2': { overflowX: 'unset' },
+            }}
+          >
             {feedOptions.map((option) => (
               <FeedButton
                 active={feed.value === option.value}
