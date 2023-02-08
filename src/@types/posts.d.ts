@@ -8,6 +8,7 @@ interface Post {
   updatedAt: Date;
   commentsAmount: number;
   isLiked: boolean;
+  game: string;
   postComments?: PostComment[];
   user: User;
 }

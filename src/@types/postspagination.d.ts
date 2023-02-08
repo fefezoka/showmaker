@@ -1,3 +1,3 @@
 interface PostsPagination {
-  pages: [{ id: string }][];
+  pages: { id: string }[][];
 }

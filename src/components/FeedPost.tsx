@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React, { memo, forwardRef } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { IoHeartOutline, IoHeart, IoClose } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 import { ProfileIcon, Video } from './';
@@ -76,6 +76,45 @@ export const FeedPost = memo(
       );
     };
 
+    const removePost = async () => {
+      await axios.post('api/post/remove', {
+        postId: post.id,
+      });
+
+      const feedPosts = queryClient.getQueryData<PostsPagination>(['homepageIds']);
+      feedPosts &&
+        queryClient.setQueryData<PostsPagination>(['homepageIds'], {
+          ...feedPosts,
+          pages: feedPosts.pages.map((page) =>
+            page.filter((postcache) => postcache.id !== post.id)
+          ),
+        });
+
+      const specificFeedPosts = queryClient.getQueryData<PostsPagination>([
+        'feed',
+        post.game,
+      ]);
+      specificFeedPosts &&
+        queryClient.setQueryData<PostsPagination>(['feed', post.game], {
+          ...feedPosts,
+          pages: specificFeedPosts.pages.map((page) =>
+            page.filter((postcache) => postcache.id !== post.id)
+          ),
+        });
+
+      const userPosts = queryClient.getQueryData<PostsPagination>([
+        'userposts',
+        post.user.name,
+      ]);
+      userPosts &&
+        queryClient.setQueryData<PostsPagination>(['userposts', post.user.name], {
+          ...feedPosts,
+          pages: userPosts.pages.map((page) =>
+            page.filter((postcache) => postcache.id !== post.id)
+          ),
+        });
+    };
+
     return (
       <Box as={'section'} {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
         <Flex justify={'between'}>
@@ -85,17 +124,29 @@ export const FeedPost = memo(
               <Text weight={'bold'}>{post.user.name}</Text>
             </Flex>
           </UserHoverCard>
-          <Box css={{ ta: 'center', cursor: 'pointer' }} onClick={handleLikeClick}>
-            {post.isLiked ? (
-              <IoHeart color="red" size={28} />
-            ) : (
-              <IoHeartOutline size={28} />
+          <Flex align={'center'} gap={'3'}>
+            <Flex
+              align={'center'}
+              gap={'1'}
+              css={{ cursor: 'pointer' }}
+              onClick={handleLikeClick}
+            >
+              {post.isLiked ? (
+                <IoHeart color="red" size={28} />
+              ) : (
+                <IoHeartOutline size={28} />
+              )}
+              <Text as={'p'}>{post.likes}</Text>
+            </Flex>
+            {post.user.id === session?.user.id && (
+              <Flex as={'button'}>
+                <IoClose onClick={removePost} />
+              </Flex>
             )}
-            <Text as={'p'}>{post.likes}</Text>
-          </Box>
+          </Flex>
         </Flex>
 
-        <Flex align={'center'} justify={'between'} css={{ mb: '$4' }}>
+        <Flex align={'center'} justify={'between'} css={{ mt: '$2', mb: '$4' }}>
           <Link href={`/post/${post.id}`} prefetch={false}>
             <Heading>{post.title}</Heading>
           </Link>
