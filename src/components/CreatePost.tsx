@@ -241,7 +241,7 @@ export default function CreatePost() {
                   { label: 'Valorant', value: 'valorant' },
                   { label: 'FIFA', value: 'fifa' },
                   { label: 'CS:GO', value: 'csgo' },
-                  { label: 'Rocket League', value: 'rocketleague' },
+                  { label: 'LOL', value: 'lol' },
                   { label: 'Rainbow Six Siege', value: 'r6' },
                   { label: 'Outro', value: 'other' },
                 ]}

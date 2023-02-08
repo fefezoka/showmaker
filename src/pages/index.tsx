@@ -14,7 +14,7 @@ const feedOptions = [
   { label: 'FIFA', value: 'fifa' },
   { label: 'CS:GO', value: 'csgo' },
   { label: 'Rainbow Six', value: 'r6' },
-  { label: 'Rocket League', value: 'rocketleague' },
+  { label: 'LOL', value: 'lol' },
   { label: 'Outros', value: 'other' },
 ] as const;
 type feed = typeof feedOptions[number];
