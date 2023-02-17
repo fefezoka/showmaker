@@ -36,6 +36,7 @@ export const Content = styled(Dialog.Content, {
 });
 
 export const Overlay = styled(Dialog.Overlay, {
+  backdropFilter: 'blur(8px)',
   backgroundColor: '$overlay',
   zIndex: '$overlay',
   position: 'fixed',

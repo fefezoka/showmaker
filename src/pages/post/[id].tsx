@@ -54,7 +54,7 @@ export default function Post({ dehydratedState }: Props) {
                 type: 'video.other',
               },
             }
-          : post && { title: `${post.user.name} - ${post.title}` })}
+          : post && { title: `${post.title} // ${post.user.name}` })}
       />
 
       <Main loading={isLoading}>
