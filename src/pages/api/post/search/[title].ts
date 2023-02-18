@@ -34,7 +34,5 @@ export default async function search(req: NextApiRequest, res: NextApiResponse) 
 
   const filter = response.map((r: { _id: string }) => ({ id: r._id }));
 
-  console.log(filter);
-
   return res.status(200).json(filter);
 }

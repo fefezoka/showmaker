@@ -18,7 +18,7 @@ const StyledFeedButton = styled('button', {
   },
 
   '@bp2': {
-    fontSize: '$4',
+    fontSize: '15px',
   },
 
   variants: {
