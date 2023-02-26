@@ -6,13 +6,13 @@ interface Props extends React.ComponentProps<typeof StyledFeedButton> {
 }
 
 const StyledFeedButton = styled('button', {
-  backgroundColor: 'transparent',
-  borderColor: 'transparent',
   fontSize: '$3',
   padding: '$3 $4',
   transition: 'background-color 200ms',
   color: '$white',
   textAlign: 'center',
+  flexShrink: 0,
+
   '&:hover': {
     backgroundColor: '$bgalt',
   },

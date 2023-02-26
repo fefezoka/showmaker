@@ -100,6 +100,7 @@ export default function CreatePost() {
 
         const piece = file.slice.bind(file)(start, end) as File;
         const videoData = await sendVideoPiece(piece, start, end - 1, size);
+
         if (end < size) {
           start += sliceSize;
           setTimeout(loop, 3);

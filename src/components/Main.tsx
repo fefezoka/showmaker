@@ -35,7 +35,6 @@ export const Main = memo(({ children, loading }: Props) => {
           <Box
             as={'main'}
             css={{
-              borderRight: '2px solid $bgalt',
               width: '100%',
 
               '& > section': {
@@ -49,6 +48,8 @@ export const Main = memo(({ children, loading }: Props) => {
               },
 
               '@bp2': {
+                borderRight: '2px solid $bgalt',
+
                 '& > section': {
                   padding: '1.5rem',
                 },
