@@ -27,7 +27,7 @@ export const Content = styled(Dialog.Content, {
   transform: 'translate(-50%, -50%)',
   zIndex: '$modal',
   overflow: 'hidden',
-  animation: `200ms ${Fade}`,
+  animation: `300ms ${Fade}`,
 
   '@bp2': {
     width: '460px',
@@ -41,7 +41,7 @@ export const Overlay = styled(Dialog.Overlay, {
   zIndex: '$overlay',
   position: 'fixed',
   inset: 0,
-  animation: `200ms ${Fade}`,
+  animation: `300ms ${Fade}`,
 });
 
 export const FullProfileIcon = forwardRef<HTMLImageElement, Props>(

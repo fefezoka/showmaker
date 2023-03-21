@@ -2,6 +2,7 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import OsuProvider from 'next-auth/providers/osu';
+import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '../../../lib/prisma';
 
 export default NextAuth({
@@ -14,6 +15,10 @@ export default NextAuth({
     OsuProvider({
       clientId: process.env.OSU_ID!,
       clientSecret: process.env.OSU_SECRET!,
+    }),
+    TwitchProvider({
+      clientId: process.env.TWITCH_ID!,
+      clientSecret: process.env.TWITCH_SECRET!,
     }),
   ],
   callbacks: {

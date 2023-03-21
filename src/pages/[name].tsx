@@ -6,12 +6,14 @@ import { useQuery } from 'react-query';
 import { useGetPosts } from '../hooks/useGetPosts';
 import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
 import Image from 'next/image';
+import twitchIcon from '../assets/twitch-icon.png';
 import Spinner from '../assets/Spinner.svg';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
 import { Box, Flex, Text, Heading } from '../styles';
 import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';
+import Link from 'next/link';
 
 type Feed = 'posts' | 'favorites';
 
@@ -166,9 +168,21 @@ export default function Profile() {
               </Box>
             </Box>
 
-            {user.osuAccountId && (
-              <OsuHoverCard userId={user.id} osuAccountId={user.osuAccountId} />
-            )}
+            <Flex align={'center'} gap={'2'}>
+              {user.osuAccountId && (
+                <OsuHoverCard userId={user.id} osuAccountId={user.osuAccountId} />
+              )}
+              {user.twitchAccountId && (
+                <div>
+                  <Link
+                    href={'https://twitch.tv/' + user.twitchAccountId}
+                    target={'_blank'}
+                  >
+                    <Image alt="" height={32} width={32} src={twitchIcon} />
+                  </Link>
+                </div>
+              )}
+            </Flex>
           </Flex>
 
           <Flex justify={'center'} css={{ pt: '$4' }}>

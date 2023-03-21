@@ -86,7 +86,7 @@ export default function CreatePost() {
 
     const processVideo = async () => {
       const size = file.size;
-      const sliceSize = 20000000;
+      const sliceSize = 15000000;
       var start = 0;
 
       const thumbData = await processThumbnail();
@@ -103,13 +103,13 @@ export default function CreatePost() {
 
         if (end < size) {
           start += sliceSize;
-          setTimeout(loop, 3);
+          setTimeout(loop, 10);
         } else {
           await processPostOnDb(thumbData.secure_url, videoData.secure_url);
         }
       };
 
-      setTimeout(loop, 3);
+      setTimeout(loop, 10);
     };
 
     const sendVideoPiece = async (

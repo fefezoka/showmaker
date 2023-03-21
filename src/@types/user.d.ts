@@ -9,5 +9,6 @@ interface User {
   isFollowing: boolean;
   followersAmount: number;
   followingAmount: number;
-  osuAccountId?: number;
+  osuAccountId?: string;
+  twitchAccountId: string;
 }

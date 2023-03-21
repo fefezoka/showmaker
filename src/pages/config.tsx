@@ -8,17 +8,22 @@ import { Box, Grid, Heading } from '../styles';
 import { IoRemoveCircle, IoAddCircle } from 'react-icons/io5';
 import { styled } from '../../stitches.config';
 import osuIcon from '../assets/osu-icon.png';
+import twitchIcon from '../assets/twitch-icon.png';
 import Image, { StaticImageData } from 'next/image';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 
-type providers = 'osu';
+type providers = 'osu' | 'twitch';
 
 const providers: { name: providers; logo: StaticImageData }[] = [
   {
     name: 'osu',
     logo: osuIcon,
+  },
+  {
+    name: 'twitch',
+    logo: twitchIcon,
   },
 ];
 
@@ -82,6 +87,13 @@ const ProviderContainer = styled('div', {
           backgroundColor: '#d65a91',
         },
       },
+      twitch: {
+        backgroundColor: '#6b2598',
+
+        '&:hover': {
+          backgroundColor: '#5f1f87',
+        },
+      },
     },
   },
 });
@@ -122,7 +134,7 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
                     <Image
                       src={
                         providers.find((provider) => provider.name === account.provider)
-                          ?.logo ?? osuIcon
+                          ?.logo ?? twitchIcon
                       }
                       alt=""
                       height={44}
@@ -154,15 +166,7 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
                     key={provider.name}
                     provider={provider.name as providers}
                   >
-                    <Image
-                      src={
-                        providers.find((provider) => provider.name === provider.name)
-                          ?.logo ?? osuIcon
-                      }
-                      alt=""
-                      height={44}
-                      width={44}
-                    />
+                    <Image src={provider.logo} alt="" height={44} width={44} />
                     <Heading>{provider.name}</Heading>
                     <button type="button" onClick={() => signIn(provider.name)}>
                       <IoAddCircle size={24} />

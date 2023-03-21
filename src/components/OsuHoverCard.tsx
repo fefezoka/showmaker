@@ -13,7 +13,7 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 
 interface Props {
   userId: string;
-  osuAccountId: number;
+  osuAccountId: string;
 }
 
 export const Content = styled(HoverCard.Content, {
