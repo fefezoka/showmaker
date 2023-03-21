@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Image from 'next/image';
 import { ProfileIcon } from './';
@@ -44,27 +44,36 @@ export const Overlay = styled(Dialog.Overlay, {
   animation: `300ms ${Fade}`,
 });
 
-export const FullProfileIcon = forwardRef<HTMLImageElement, Props>(
-  ({ src, css }: Props, forwardedRef) => {
-    return (
-      <Dialog.Root>
-        <Dialog.Trigger asChild>
-          <ProfileIcon
-            ref={forwardedRef}
-            src={src}
-            css={{ size: '$7', cursor: 'pointer', ...css }}
-            alt=""
-          />
-        </Dialog.Trigger>
-        <Dialog.Portal>
-          <Overlay />
-          <Content>
-            <Image src={src + '?size=512'} alt="" fill sizes="" />
-          </Content>
-        </Dialog.Portal>
-      </Dialog.Root>
-    );
-  }
-);
+export const FullProfileIcon = ({ src, css }: Props) => {
+  const profileIconRef = useRef<HTMLImageElement>(null);
+  const [open, setOpen] = useState(false);
 
-FullProfileIcon.displayName = 'FullProfileIcon';
+  const handleOpenChange = () => {
+    if (open === true) {
+      return setOpen(false);
+    }
+
+    if (!profileIconRef.current?.currentSrc.includes('discord-fallback')) {
+      setOpen(true);
+    }
+  };
+
+  return (
+    <Dialog.Root open={open} onOpenChange={handleOpenChange}>
+      <Dialog.Trigger asChild>
+        <ProfileIcon
+          ref={profileIconRef}
+          src={src}
+          css={{ size: '$7', cursor: 'pointer', ...css }}
+          alt=""
+        />
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Overlay />
+        <Content>
+          <Image src={src + '?size=512'} alt="" fill sizes="" />
+        </Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+};
