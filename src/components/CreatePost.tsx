@@ -79,7 +79,12 @@ export default function CreatePost() {
 
       const { data } = await axios.post(
         'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
-        formdata
+        formdata,
+        {
+          headers: {
+            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
+          },
+        }
       );
       return data;
     };
@@ -146,7 +151,6 @@ export default function CreatePost() {
       });
 
       const oldHomepageIds = queryClient.getQueryData<PostsPagination>('homepageIds');
-
       oldHomepageIds &&
         queryClient.setQueryData<PostsPagination>(
           'homepageIds',
@@ -155,18 +159,13 @@ export default function CreatePost() {
             : oldHomepageIds
         );
 
-      const selectedGame = (
-        gameSelectRef.current?.getValue() as { value: string; label: string }[]
-      )[0].value;
-
       const oldSpecificGameHomepage = queryClient.getQueryData<PostsPagination>([
         'feed',
-        selectedGame,
+        game[0].value,
       ]);
-
       oldSpecificGameHomepage &&
         queryClient.setQueryData<PostsPagination>(
-          ['feed', selectedGame],
+          ['feed', game[0].value],
           oldSpecificGameHomepage.pages[0].unshift({ id: data.id })
             ? oldSpecificGameHomepage
             : oldSpecificGameHomepage
@@ -176,7 +175,6 @@ export default function CreatePost() {
         'userposts',
         session?.user.name,
       ]);
-
       oldProfilePosts &&
         queryClient.setQueryData<PostsPagination>(
           ['userposts', session?.user.name],

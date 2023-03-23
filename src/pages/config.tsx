@@ -140,7 +140,10 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
                       height={44}
                       width={44}
                     />
-                    <Heading>{account.provider}</Heading>
+                    <Heading>
+                      {account.provider.charAt(0).toUpperCase() +
+                        account.provider.slice(1)}
+                    </Heading>
                     <button
                       type="button"
                       onClick={() => handleDisconnectAccount(account.id)}
@@ -167,7 +170,9 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
                     provider={provider.name as providers}
                   >
                     <Image src={provider.logo} alt="" height={44} width={44} />
-                    <Heading>{provider.name}</Heading>
+                    <Heading>
+                      {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
+                    </Heading>
                     <button type="button" onClick={() => signIn(provider.name)}>
                       <IoAddCircle size={24} />
                     </button>

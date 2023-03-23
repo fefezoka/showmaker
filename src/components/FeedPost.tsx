@@ -4,10 +4,19 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart, IoClose } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
 import { useQueryClient } from 'react-query';
-import { ProfileIcon, Video } from './';
+import { Button, ProfileIcon, Video } from './';
 import { UserHoverCard } from './UserHoverCard';
 import axios from 'axios';
-import { Box, Flex, Text, Heading } from '../styles';
+import {
+  Box,
+  Flex,
+  Text,
+  Heading,
+  Modal,
+  ModalTrigger,
+  ModalContent,
+  ModalClose,
+} from '../styles';
 import { FeedPostComments } from './FeedPostComments';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
@@ -96,7 +105,7 @@ export const FeedPost = memo(
       ]);
       specificFeedPosts &&
         queryClient.setQueryData<PostsPagination>(['feed', post.game], {
-          ...feedPosts,
+          ...specificFeedPosts,
           pages: specificFeedPosts.pages.map((page) =>
             page.filter((postcache) => postcache.id !== post.id)
           ),
@@ -108,8 +117,20 @@ export const FeedPost = memo(
       ]);
       userPosts &&
         queryClient.setQueryData<PostsPagination>(['userposts', post.user.name], {
-          ...feedPosts,
+          ...userPosts,
           pages: userPosts.pages.map((page) =>
+            page.filter((postcache) => postcache.id !== post.id)
+          ),
+        });
+
+      const userFavoritePosts = queryClient.getQueryData<PostsPagination>([
+        'favorites',
+        post.user.name,
+      ]);
+      userFavoritePosts &&
+        queryClient.setQueryData<PostsPagination>(['favorites', post.user.name], {
+          ...userFavoritePosts,
+          pages: userFavoritePosts.pages.map((page) =>
             page.filter((postcache) => postcache.id !== post.id)
           ),
         });
@@ -140,7 +161,27 @@ export const FeedPost = memo(
             </Flex>
             {post.user.id === session?.user.id && (
               <Flex as={'button'}>
-                <IoClose onClick={removePost} />
+                <Modal>
+                  <ModalTrigger>
+                    <IoClose />
+                  </ModalTrigger>
+                  <ModalContent css={{ p: '$5' }}>
+                    <Box css={{ mb: '$3' }}>
+                      <Heading>Excluir postagem</Heading>
+                    </Box>
+                    <Box css={{ mb: '$6' }}>
+                      <Text>
+                        Deseja realmente excluir o post &quot;{post.title}&quot;?
+                      </Text>
+                    </Box>
+                    <Flex justify={'between'}>
+                      <ModalClose>
+                        <Button variant={'exit'} value={'Cancelar'} />
+                      </ModalClose>
+                      <Button onClick={removePost} value={'Excluir'} />
+                    </Flex>
+                  </ModalContent>
+                </Modal>
               </Flex>
             )}
           </Flex>
@@ -158,20 +199,6 @@ export const FeedPost = memo(
         <Video videoUrl={post.videoUrl} thumbnailUrl={post.thumbnailUrl} />
 
         <FeedPostComments post={post} />
-
-        {/* {full ? (
-          <FeedPostComments post={post} />
-        ) : (
-          <Box css={{ mt: '$4' }}>
-            <Link href={`/post/${post.id}`} prefetch={false}>
-              <Text size={'3'}>
-                {post.commentsAmount
-                  ? `Ver ${post.commentsAmount} comentários`
-                  : 'Comentar'}
-              </Text>
-            </Link>
-          </Box>
-        )} */}
       </Box>
     );
   })

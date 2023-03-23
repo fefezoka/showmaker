@@ -48,33 +48,33 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  if (
-    twitchAccount.length !== 0 &&
-    twitchAccount[0].expires_at &&
-    Math.floor(Date.now() / 1000) > twitchAccount[0].expires_at
-  ) {
-    const { data } = await axios.post(`${process.env.SITE_URL}/api/auth/refreshToken`, {
-      client_id: process.env.TWITCH_ID,
-      client_secret: process.env.TWITCH_SECRET,
-      refresh_token: twitchAccount[0].refresh_token,
-      provider: 'twitch',
-      user_id: user.id,
-    });
+  // if (
+  //   twitchAccount.length !== 0 &&
+  //   twitchAccount[0].expires_at &&
+  //   Math.floor(Date.now() / 1000) > twitchAccount[0].expires_at
+  // ) {
+  //   const { data } = await axios.post(`${process.env.SITE_URL}/api/auth/refreshToken`, {
+  //     client_id: process.env.TWITCH_ID,
+  //     client_secret: process.env.TWITCH_SECRET,
+  //     refresh_token: twitchAccount[0].refresh_token,
+  //     provider: 'twitch',
+  //     user_id: user.id,
+  //   });
 
-    twitchAccount[0].access_token = data.acess_token;
-  }
+  //   twitchAccount[0].access_token = data.acess_token;
+  // }
 
-  const twitchUsername =
-    twitchAccount[0] &&
-    (await axios.get(
-      'https://api.twitch.tv/helix/users?id=' + twitchAccount[0].providerAccountId,
-      {
-        headers: {
-          Authorization: `Bearer ${twitchAccount[0].access_token}`,
-          'Client-Id': process.env.TWITCH_ID,
-        },
-      }
-    ));
+  // const twitchUsername =
+  //   twitchAccount[0] &&
+  //   (await axios.get(
+  //     'https://api.twitch.tv/helix/users?id=' + twitchAccount[0].providerAccountId,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${twitchAccount[0].access_token}`,
+  //         'Client-Id': process.env.TWITCH_ID,
+  //       },
+  //     }
+  //   ));
 
   return res.status(200).json({
     ...filteredUser,
@@ -85,8 +85,6 @@ export default async function profile(req: NextApiRequest, res: NextApiResponse)
       (follower) => follower.followerId === session?.user.id
     ),
     ...(osuAccount[0] && { osuAccountId: osuAccount[0].providerAccountId }),
-    ...(twitchAccount[0] && {
-      twitchAccountId: twitchUsername.data.data[0].display_name,
-    }),
+    ...(twitchAccount[0] && { twitchAccountId: twitchAccount[0].providerAccountId }),
   });
 }

@@ -22,31 +22,35 @@ export default async function refreshToken(req: NextApiRequest, res: NextApiResp
     osu: 'https://osu.ppy.sh/oauth/token',
   };
 
-  const { data } = await axios.post(providers[provider], {
-    client_id: client_id,
-    client_secret: client_secret,
-    refresh_token: refresh_token,
-    grant_type: 'refresh_token',
-    ...(provider === 'osu' && {
-      access_token: access_token,
-    }),
-  });
+  try {
+    const { data } = await axios.post(providers[provider], {
+      client_id: client_id,
+      client_secret: client_secret,
+      refresh_token: refresh_token,
+      grant_type: 'refresh_token',
+      ...(provider === 'osu' && {
+        access_token: access_token,
+      }),
+    });
 
-  await prisma.account.updateMany({
-    where: {
-      provider: provider,
-      AND: {
-        user: {
-          id: user_id,
+    await prisma.account.updateMany({
+      where: {
+        provider: provider,
+        AND: {
+          user: {
+            id: user_id,
+          },
         },
       },
-    },
-    data: {
-      access_token: data.access_token,
-      refresh_token: data.refresh_token,
-      expires_at: data.expires_in + Math.floor(Date.now() / 1000),
-    },
-  });
+      data: {
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_in + Math.floor(Date.now() / 1000),
+      },
+    });
 
-  return res.status(200).json({ acess_token: data.access_token });
+    return res.status(200).json({ acess_token: data.access_token });
+  } catch (error) {
+    res.status(400).json({ message: 'error' });
+  }
 }

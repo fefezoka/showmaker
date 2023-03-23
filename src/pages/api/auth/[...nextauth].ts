@@ -17,6 +17,14 @@ export default NextAuth({
       clientSecret: process.env.OSU_SECRET!,
     }),
     TwitchProvider({
+      profile(profile) {
+        return {
+          id: profile.preferred_username,
+          email: profile.email,
+          image: profile.picture,
+          name: profile.preferred_username,
+        };
+      },
       clientId: process.env.TWITCH_ID!,
       clientSecret: process.env.TWITCH_SECRET!,
     }),
