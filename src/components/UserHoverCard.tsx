@@ -5,7 +5,7 @@ import * as HoverCard from '@radix-ui/react-hover-card';
 import { ProfileIcon } from './ProfileIcon';
 import { useQuery } from 'react-query';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { useGetPosts } from '../hooks/useGetPosts';
+import { useGetPosts } from '../hooks';
 import axios from 'axios';
 import { keyframes, styled } from '../../stitches.config';
 import { Box, Flex, Heading, Text } from '../styles';
@@ -44,7 +44,7 @@ export const UserHoverCard = ({ user, href, children }: Props) => {
   const { data, isLoading } = useQuery<Post[]>(
     ['lastPosts', user.id],
     async () => {
-      const { data } = await axios.get(`/api/user/byid/${user.id}/posts/lastPosts`);
+      const { data } = await axios.get(`/api/user/byid/${user.id}/posts/last-posts`);
       return data;
     },
     {

@@ -4,9 +4,18 @@ import { ProfileIcon } from './';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';
-import { Box, Flex, Heading, Text } from '../styles';
+import {
+  Box,
+  Flex,
+  Heading,
+  Text,
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+  MenuTrigger,
+} from '../styles';
 import { styled } from '../../stitches.config';
-import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from '../styles';
 
 export const Input = styled('input', {
   width: '100%',

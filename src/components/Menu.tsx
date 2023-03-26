@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { useIsDesktop } from '../hooks/useIsDesktop';
+import { useIsDesktop } from '../hooks';
 import { Box, Flex, Heading } from '../styles';
 import { styled } from '../../stitches.config';
 const CreatePost = dynamic(() => import('./CreatePost'));

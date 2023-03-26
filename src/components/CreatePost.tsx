@@ -5,9 +5,8 @@ import { Button, Select } from './';
 import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
-import { useIsDesktop } from '../hooks/useIsDesktop';
+import { useIsDesktop, useCreatePost } from '../hooks';
 import { getVideoFrame } from '../utils/getVideoFrame';
-import { useQueryClient } from 'react-query';
 import {
   Box,
   Flex,
@@ -44,7 +43,6 @@ const DropContainer = styled('section', {
 });
 
 export default function CreatePost() {
-  const queryClient = useQueryClient();
   const titleRef = useRef<HTMLInputElement>(null);
   const gameSelectRef = useRef<React.ElementRef<typeof Select>>(null);
   const { data: session } = useSession();
@@ -52,6 +50,7 @@ export default function CreatePost() {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>();
+  const createPost = useCreatePost();
   const isDesktop = useIsDesktop();
 
   const onClose = () => {
@@ -110,7 +109,13 @@ export default function CreatePost() {
           start += sliceSize;
           setTimeout(loop, 10);
         } else {
-          await processPostOnDb(thumbData.secure_url, videoData.secure_url);
+          createPost.mutate({
+            game: game[0].value,
+            thumbnailUrl: thumbData.secure_url,
+            title: titleRef.current!.value,
+            videoUrl: videoData.secure_url,
+          });
+          onClose();
         }
       };
 
@@ -141,52 +146,6 @@ export default function CreatePost() {
       return data;
     };
 
-    const processPostOnDb = async (thumbnailUrl: string, videoUrl: string) => {
-      const { data } = await axios.post<Post>('/api/post/insert', {
-        ...session?.user,
-        title: titleRef.current?.value,
-        thumbnailUrl: thumbnailUrl,
-        videoUrl: videoUrl,
-        game: game[0].value,
-      });
-
-      const oldHomepageIds = queryClient.getQueryData<PostsPagination>('homepageIds');
-      oldHomepageIds &&
-        queryClient.setQueryData<PostsPagination>(
-          'homepageIds',
-          oldHomepageIds.pages[0].unshift({ id: data.id })
-            ? oldHomepageIds
-            : oldHomepageIds
-        );
-
-      const oldSpecificGameHomepage = queryClient.getQueryData<PostsPagination>([
-        'feed',
-        game[0].value,
-      ]);
-      oldSpecificGameHomepage &&
-        queryClient.setQueryData<PostsPagination>(
-          ['feed', game[0].value],
-          oldSpecificGameHomepage.pages[0].unshift({ id: data.id })
-            ? oldSpecificGameHomepage
-            : oldSpecificGameHomepage
-        );
-
-      const oldProfilePosts = queryClient.getQueryData<PostsPagination>([
-        'userposts',
-        session?.user.name,
-      ]);
-      oldProfilePosts &&
-        queryClient.setQueryData<PostsPagination>(
-          ['userposts', session?.user.name],
-          oldProfilePosts?.pages[0].unshift({ id: data.id })
-            ? oldProfilePosts
-            : oldProfilePosts
-        );
-
-      queryClient.setQueryData<Post>(['post', data.id], data);
-      onClose();
-    };
-
     processVideo();
   };
 
@@ -203,7 +162,9 @@ export default function CreatePost() {
           />
         )}
       </ModalTrigger>
-      <ModalContent onInteractOutside={(e) => (loading ? e.preventDefault() : onClose())}>
+      <ModalContent
+        onInteractOutside={(e: Event) => (loading ? e.preventDefault() : onClose())}
+      >
         <ModalTitle>Postar vídeo</ModalTitle>
         <ModalDescription>
           Compartilhe suas jogadas favoritas com a comunidade!

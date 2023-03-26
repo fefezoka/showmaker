@@ -1,6 +1,5 @@
 import { Main, FeedButton } from '../components';
-import { useGetPosts } from '../hooks/useGetPosts';
-import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
+import { useGetPosts, useInfinitePostIdByScroll } from '../hooks';
 import { Box, Flex, Heading } from '../styles';
 import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';

@@ -1,24 +1,24 @@
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import React, { FormEvent } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
-import { Box, Flex, Text, Menu, MenuTrigger, MenuContent, MenuItem } from '../styles';
-import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { Button } from './Button';
-import { ProfileIcon } from './ProfileIcon';
-import { UserHoverCard } from './UserHoverCard';
-import Spinner from '../assets/Spinner.svg';
-import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { useQuery } from 'react-query';
+import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
+import Image from 'next/image';
+import axios from 'axios';
+import { Box, Flex, Text, Menu, MenuTrigger, MenuContent, MenuItem } from '../styles';
+import { Button, ProfileIcon, UserHoverCard } from './';
+import { useDeletePostComment, useCreatePostComment } from '../hooks';
+import { diffBetweenDates } from '../utils/diffBetweenDates';
+import Spinner from '../assets/Spinner.svg';
 
 interface Props {
   post: Post;
 }
 
 export const FeedPostComments = ({ post }: Props) => {
-  const queryClient = useQueryClient();
   const { data: session } = useSession();
+  const deleteComment = useDeletePostComment();
+  const createComment = useCreatePostComment();
 
   const { data: comments, isLoading } = useQuery<PostComment[]>(
     ['comments', post.id],
@@ -41,37 +41,7 @@ export const FeedPostComments = ({ post }: Props) => {
       return;
     }
 
-    const { data } = await axios.post('/api/post/newComment', {
-      postId: post.id,
-      userId: session?.user.id,
-      message: message,
-    });
-
-    queryClient.setQueryData<PostComment[]>(['comments', post.id], (old) => [
-      data,
-      ...(old ? old : []),
-    ]);
-
-    queryClient.setQueryData<Post | undefined>(
-      ['post', post.id],
-      (old) =>
-        old && {
-          ...old,
-          commentsAmount: old.commentsAmount + 1,
-        }
-    );
-  };
-
-  const deleteComment = async (commentId: string) => {
-    await axios.post('/api/post/deleteComment', {
-      commentId: commentId,
-      postId: post.id,
-    });
-
-    queryClient.setQueryData<PostComment[] | undefined>(
-      ['comments', post.id],
-      (old) => old && old.filter((comments) => comments.id !== commentId)
-    );
+    createComment.mutate({ message: message, postId: post.id });
   };
 
   return (
@@ -147,7 +117,13 @@ export const FeedPostComments = ({ post }: Props) => {
                     </Box>
                   </MenuTrigger>
                   <MenuContent css={{ minWidth: 110 }}>
-                    <MenuItem onClick={() => deleteComment(comment.id)}>Apagar</MenuItem>
+                    <MenuItem
+                      onClick={() =>
+                        deleteComment.mutate({ commentId: comment.id, postId: post.id })
+                      }
+                    >
+                      Apagar
+                    </MenuItem>
                   </MenuContent>
                 </Menu>
               )}

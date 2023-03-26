@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { Main, FullProfileIcon, Button, OsuHoverCard, FeedButton } from '../components';
+import {
+  Main,
+  FullProfileIcon,
+  Button,
+  OsuHoverCard,
+  FeedButton,
+  PostPaginator,
+} from '../components';
 import { useQuery } from 'react-query';
-import { useGetPosts } from '../hooks/useGetPosts';
-import { useInfinitePostIdByScroll } from '../hooks/useInfinitePostIdByScroll';
+import { useGetPosts, useFollowSomeone, useInfinitePostIdByScroll } from '../hooks';
 import Image from 'next/image';
 import twitchIcon from '../assets/twitch-icon.png';
 import Spinner from '../assets/Spinner.svg';
 import { signIn, useSession } from 'next-auth/react';
-import { useQueryClient } from 'react-query';
 import { Box, Flex, Text, Heading } from '../styles';
-import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 
@@ -22,7 +26,7 @@ export default function Profile() {
   const { name } = router.query;
   const [feed, setFeed] = useState<Feed>('posts');
   const { data: session } = useSession();
-  const queryClient = useQueryClient();
+  const followSomeone = useFollowSomeone();
 
   const {
     data: user,
@@ -82,33 +86,7 @@ export default function Profile() {
       return signIn('discord');
     }
 
-    await axios.post(`/api/user/${user.isFollowing ? 'unfollow' : 'follow'}`, {
-      followerId: session.user.id,
-      followingId: user.id,
-    });
-
-    queryClient.setQueryData<User | undefined>(
-      ['user', name],
-      (old) =>
-        old && {
-          ...old,
-          followersAmount: old.isFollowing
-            ? old.followersAmount - 1
-            : old.followersAmount + 1,
-          isFollowing: !old.isFollowing,
-        }
-    );
-
-    queryClient.setQueryData<User | undefined>(
-      ['user', session.user.name],
-      (old) =>
-        old && {
-          ...old,
-          followingAmount: user.isFollowing
-            ? old.followingAmount - 1
-            : old.followingAmount + 1,
-        }
-    );
+    followSomeone.mutate(user);
   };
 
   return (
@@ -141,6 +119,7 @@ export default function Profile() {
                     ? 'Seguir de volta'
                     : 'Seguir'
                 }
+                disabled={followSomeone.isLoading}
                 onClick={handleFollowClick}
               />
             )}

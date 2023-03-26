@@ -3,10 +3,7 @@ import React, { memo, forwardRef } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart, IoClose } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
-import { useQueryClient } from 'react-query';
-import { Button, ProfileIcon, Video } from './';
-import { UserHoverCard } from './UserHoverCard';
-import axios from 'axios';
+import { Button, ProfileIcon, Video, UserHoverCard, FeedPostComments } from './';
 import {
   Box,
   Flex,
@@ -17,123 +14,27 @@ import {
   ModalContent,
   ModalClose,
 } from '../styles';
-import { FeedPostComments } from './FeedPostComments';
+import { useDeletePost, useLikePost, useDislikePost } from '../hooks';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   post: Post;
-  // full?: boolean;
 }
 
 export const FeedPost = memo(
   forwardRef(({ post, ...props }: Props, forwardRef) => {
     const { data: session } = useSession();
-    const queryClient = useQueryClient();
+    const deletePost = useDeletePost();
+    const likePost = useLikePost();
+    const dislikePost = useDislikePost();
 
     const handleLikeClick = () => {
       if (!session) {
         return signIn('discord');
       }
 
-      post.isLiked ? dislikePost() : likePost();
-    };
-
-    const likePost = async () => {
-      await axios.post('/api/post/like', {
-        userId: session?.user.id,
-        postId: post.id,
-      });
-
-      queryClient.setQueryData<Post | undefined>(
-        ['post', post.id],
-        (old) =>
-          old && {
-            ...old,
-            likes: old.likes + 1,
-            isLiked: true,
-          }
-      );
-
-      const oldFavorites = queryClient.getQueryData<PostsPagination>([
-        'favorites',
-        session?.user.name,
-      ]);
-
-      oldFavorites &&
-        queryClient.setQueryData<PostsPagination>(
-          ['favorites', session?.user.name],
-          !oldFavorites.pages[0].some((cachepost) => cachepost.id === post.id) &&
-            oldFavorites?.pages[0].unshift({ id: post.id })
-            ? oldFavorites
-            : oldFavorites
-        );
-    };
-
-    const dislikePost = async () => {
-      await axios.post('/api/post/dislike', {
-        postId: post.id,
-        userId: session?.user.id,
-      });
-
-      queryClient.setQueryData<Post | undefined>(
-        ['post', post.id],
-        (old) =>
-          old && {
-            ...old,
-            likes: old.likes - 1,
-            isLiked: false,
-          }
-      );
-    };
-
-    const removePost = async () => {
-      await axios.post('api/post/remove', {
-        postId: post.id,
-      });
-
-      const feedPosts = queryClient.getQueryData<PostsPagination>(['homepageIds']);
-      feedPosts &&
-        queryClient.setQueryData<PostsPagination>(['homepageIds'], {
-          ...feedPosts,
-          pages: feedPosts.pages.map((page) =>
-            page.filter((postcache) => postcache.id !== post.id)
-          ),
-        });
-
-      const specificFeedPosts = queryClient.getQueryData<PostsPagination>([
-        'feed',
-        post.game,
-      ]);
-      specificFeedPosts &&
-        queryClient.setQueryData<PostsPagination>(['feed', post.game], {
-          ...specificFeedPosts,
-          pages: specificFeedPosts.pages.map((page) =>
-            page.filter((postcache) => postcache.id !== post.id)
-          ),
-        });
-
-      const userPosts = queryClient.getQueryData<PostsPagination>([
-        'userposts',
-        post.user.name,
-      ]);
-      userPosts &&
-        queryClient.setQueryData<PostsPagination>(['userposts', post.user.name], {
-          ...userPosts,
-          pages: userPosts.pages.map((page) =>
-            page.filter((postcache) => postcache.id !== post.id)
-          ),
-        });
-
-      const userFavoritePosts = queryClient.getQueryData<PostsPagination>([
-        'favorites',
-        post.user.name,
-      ]);
-      userFavoritePosts &&
-        queryClient.setQueryData<PostsPagination>(['favorites', post.user.name], {
-          ...userFavoritePosts,
-          pages: userFavoritePosts.pages.map((page) =>
-            page.filter((postcache) => postcache.id !== post.id)
-          ),
-        });
+      post.isLiked
+        ? dislikePost.mutate({ postId: post.id })
+        : likePost.mutate({ postId: post.id });
     };
 
     return (
@@ -148,9 +49,11 @@ export const FeedPost = memo(
           <Flex align={'center'} gap={'3'}>
             <Flex
               align={'center'}
+              as={'button'}
               gap={'1'}
               css={{ cursor: 'pointer' }}
               onClick={handleLikeClick}
+              disabled={likePost.isLoading}
             >
               {post.isLiked ? (
                 <IoHeart color="red" size={28} />
@@ -160,29 +63,32 @@ export const FeedPost = memo(
               <Text as={'p'}>{post.likes}</Text>
             </Flex>
             {post.user.id === session?.user.id && (
-              <Flex as={'button'}>
-                <Modal>
-                  <ModalTrigger>
+              <Modal>
+                <ModalTrigger>
+                  <Flex>
                     <IoClose />
-                  </ModalTrigger>
-                  <ModalContent css={{ p: '$5' }}>
-                    <Box css={{ mb: '$3' }}>
-                      <Heading>Excluir postagem</Heading>
-                    </Box>
-                    <Box css={{ mb: '$6' }}>
-                      <Text>
-                        Deseja realmente excluir o post &quot;{post.title}&quot;?
-                      </Text>
-                    </Box>
-                    <Flex justify={'between'}>
-                      <ModalClose>
-                        <Button variant={'exit'} value={'Cancelar'} />
-                      </ModalClose>
-                      <Button onClick={removePost} value={'Excluir'} />
-                    </Flex>
-                  </ModalContent>
-                </Modal>
-              </Flex>
+                  </Flex>
+                </ModalTrigger>
+                <ModalContent css={{ p: '$5' }}>
+                  <Box css={{ mb: '$3' }}>
+                    <Heading>Excluir postagem</Heading>
+                  </Box>
+                  <Box css={{ mb: '$6' }}>
+                    <Text>Deseja realmente excluir o post &quot;{post.title}&quot;?</Text>
+                  </Box>
+                  <Flex justify={'between'}>
+                    <ModalClose asChild>
+                      <Button variant={'exit'} value={'Cancelar'} />
+                    </ModalClose>
+                    <Button
+                      onClick={() =>
+                        deletePost.mutate({ postId: post.id, game: post.game })
+                      }
+                      value={'Excluir'}
+                    />
+                  </Flex>
+                </ModalContent>
+              </Modal>
             )}
           </Flex>
         </Flex>

@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import React, { forwardRef, useState } from 'react';
 import { CSS, styled } from '../../stitches.config';
-import discordFallback from '../assets/discord-fallback.png';
 
 interface Props extends React.ComponentProps<typeof Image> {
   src: string;
@@ -22,7 +21,7 @@ export const ProfileIcon = forwardRef<HTMLImageElement, Props>(
       <Wrapper css={{ size: '$7', br: '$round', ...css }}>
         <Image
           ref={forwardedRef}
-          src={error ? discordFallback : src}
+          src={!error ? src : 'https://cdn.discordapp.com/embed/avatars/0.png'}
           {...props}
           fill
           alt=""

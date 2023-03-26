@@ -53,7 +53,7 @@ export const FullProfileIcon = ({ src, css }: Props) => {
       return setOpen(false);
     }
 
-    if (!profileIconRef.current?.currentSrc.includes('discord-fallback')) {
+    if (!profileIconRef.current?.currentSrc.includes('embed')) {
       setOpen(true);
     }
   };

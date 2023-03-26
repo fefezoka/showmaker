@@ -102,7 +102,7 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
   const router = useRouter();
 
   const handleDisconnectAccount = async (accountId: string) => {
-    await axios.post('/api/user/disconnectAccount', {
+    await axios.post('/api/user/disconnect-account', {
       accountId: accountId,
     });
 

@@ -1,6 +1,7 @@
 export { Button } from './Button';
 export { FeedButton } from './FeedButton';
 export { FeedPost } from './FeedPost';
+export { FeedPostComments } from './FeedPostComments';
 export { FullProfileIcon } from './FullProfileIcon';
 export { Header } from './Header';
 export { Main } from './Main';
@@ -10,3 +11,4 @@ export { ProfileIcon } from './ProfileIcon';
 export { UserHoverCard } from './UserHoverCard';
 export { Video } from './Video';
 export { Select } from './Select';
+export { PostPaginator } from './PostPaginator';
