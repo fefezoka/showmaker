@@ -23,7 +23,7 @@ export default async function osu(req: NextApiRequest, res: NextApiResponse) {
   }
 
   if (response[0].expires_at && Math.floor(Date.now() / 1000) > response[0].expires_at) {
-    const { data } = await axios.post(`${process.env.SITE_URL}/api/auth/refreshToken`, {
+    const { data } = await axios.post(`${process.env.SITE_URL}/api/auth/refresh-token`, {
       client_id: process.env.OSU_ID,
       client_secret: process.env.OSU_SECRET,
       refresh_token: response[0].refresh_token,

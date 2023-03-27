@@ -19,13 +19,12 @@ export const useCreatePostComment = () => {
         message: message,
       }),
     {
-      onSuccess: ({ data }) => {
+      onSuccess: ({ data }, { postId }) => {
         queryClient.setQueryData<PostComment[]>(['comments', data.postId], (old) => [
           data,
           ...(old ? old : []),
         ]);
-      },
-      onMutate: ({ postId }) => {
+
         queryClient.setQueryData<Post | undefined>(
           ['post', postId],
           (old) =>

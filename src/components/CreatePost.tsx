@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import { Button, Select } from './';
-import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
 import { useIsDesktop, useCreatePost } from '../hooks';
@@ -47,7 +46,6 @@ export default function CreatePost() {
   const gameSelectRef = useRef<React.ElementRef<typeof Select>>(null);
   const { data: session } = useSession();
   const [file, setFile] = useState<File>();
-  const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>();
   const createPost = useCreatePost();
@@ -56,97 +54,30 @@ export default function CreatePost() {
   const onClose = () => {
     setOpen(false);
     setFile(undefined);
-    setLoading(false);
     setThumbnail(undefined);
   };
 
   const processFile = async () => {
     const game = gameSelectRef.current?.getValue() as { value: string; label: string }[];
 
-    if (loading || !file || !thumbnail || !titleRef.current?.value || !game) {
+    if (
+      createPost.isLoading ||
+      !file ||
+      !thumbnail ||
+      !titleRef.current?.value ||
+      !game
+    ) {
       return;
     }
-    setLoading(true);
 
-    const XUniqueUploadId = +new Date();
+    await createPost.mutateAsync({
+      file,
+      game: game[0].value,
+      thumbnail,
+      title: titleRef.current?.value,
+    });
 
-    const processThumbnail = async () => {
-      const formdata = new FormData();
-      formdata.append('cloud_name', 'dlgkvfmky');
-      formdata.append('file', thumbnail);
-      formdata.append('upload_preset', 'gjfsvh53');
-
-      const { data } = await axios.post(
-        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
-        formdata,
-        {
-          headers: {
-            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
-          },
-        }
-      );
-      return data;
-    };
-
-    const processVideo = async () => {
-      const size = file.size;
-      const sliceSize = 15000000;
-      var start = 0;
-
-      const thumbData = await processThumbnail();
-
-      const loop = async () => {
-        var end = start + sliceSize;
-
-        if (end > size) {
-          end = size;
-        }
-
-        const piece = file.slice.bind(file)(start, end) as File;
-        const videoData = await sendVideoPiece(piece, start, end - 1, size);
-
-        if (end < size) {
-          start += sliceSize;
-          setTimeout(loop, 10);
-        } else {
-          createPost.mutate({
-            game: game[0].value,
-            thumbnailUrl: thumbData.secure_url,
-            title: titleRef.current!.value,
-            videoUrl: videoData.secure_url,
-          });
-          onClose();
-        }
-      };
-
-      setTimeout(loop, 10);
-    };
-
-    const sendVideoPiece = async (
-      piece: File,
-      start: number,
-      end: number,
-      size: number
-    ) => {
-      const formdata = new FormData();
-      formdata.append('cloud_name', 'dlgkvfmky');
-      formdata.append('file', piece);
-      formdata.append('upload_preset', 'tamnuopz');
-
-      const { data } = await axios.post(
-        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
-        formdata,
-        {
-          headers: {
-            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
-            'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
-          },
-        }
-      );
-      return data;
-    };
-
-    processVideo();
+    onClose();
   };
 
   return (
@@ -163,7 +94,9 @@ export default function CreatePost() {
         )}
       </ModalTrigger>
       <ModalContent
-        onInteractOutside={(e: Event) => (loading ? e.preventDefault() : onClose())}
+        onInteractOutside={(e: Event) =>
+          createPost.isLoading ? e.preventDefault() : onClose()
+        }
       >
         <ModalTitle>Postar vídeo</ModalTitle>
         <ModalDescription>
@@ -251,10 +184,15 @@ export default function CreatePost() {
         </Box>
         <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
           <ModalClose asChild>
-            <Button disabled={loading} onClick={onClose} variant={'exit'} value="Sair" />
+            <Button
+              disabled={createPost.isLoading}
+              onClick={onClose}
+              variant={'exit'}
+              value="Sair"
+            />
           </ModalClose>
           <Button
-            loading={loading}
+            loading={createPost.isLoading}
             disabled={!file}
             onClick={processFile}
             value="Enviar"

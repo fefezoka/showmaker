@@ -20,14 +20,14 @@ export const FeedPostComments = ({ post }: Props) => {
   const deleteComment = useDeletePostComment();
   const createComment = useCreatePostComment();
 
-  const { data: comments, isLoading } = useQuery<PostComment[]>(
+  const { data: comments, isFetching } = useQuery<PostComment[]>(
     ['comments', post.id],
     async () => {
       const { data } = await axios.get(`/api/post/${post.id}/comments`);
       return data;
     },
     {
-      enabled: post.commentsAmount > 0,
+      enabled: post.commentsAmount > 0 && !createComment.isLoading,
     }
   );
 
@@ -74,7 +74,7 @@ export const FeedPostComments = ({ post }: Props) => {
           </Flex>
         </Box>
       )}
-      {!isLoading ? (
+      {!isFetching ? (
         comments &&
         comments.map((comment) => (
           <Flex
@@ -112,9 +112,9 @@ export const FeedPostComments = ({ post }: Props) => {
               {session?.user.id === comment.user.id && (
                 <Menu>
                   <MenuTrigger asChild>
-                    <Box as={'button'}>
+                    <Flex as={'button'}>
                       <IoSettingsSharp />
-                    </Box>
+                    </Flex>
                   </MenuTrigger>
                   <MenuContent css={{ minWidth: 110 }}>
                     <MenuItem
