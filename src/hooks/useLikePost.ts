@@ -3,7 +3,7 @@ import { useSession } from 'next-auth/react';
 import { useMutation, useQueryClient } from 'react-query';
 
 interface Props {
-  postId: string;
+  post: Post;
 }
 
 export const useLikePost = () => {
@@ -11,16 +11,16 @@ export const useLikePost = () => {
   const { data: session } = useSession();
 
   return useMutation(
-    async ({ postId }: Props) => {
+    async ({ post }: Props) => {
       await axios.post('/api/post/like', {
-        postId,
+        postId: post.id,
         userId: session?.user.id,
       });
     },
     {
-      onMutate: ({ postId }) => {
+      onMutate: ({ post }) => {
         queryClient.setQueryData<Post | undefined>(
-          ['post', postId],
+          ['post', post.id],
           (old) =>
             old && {
               ...old,
@@ -28,6 +28,32 @@ export const useLikePost = () => {
               isLiked: true,
             }
         );
+
+        const queries = [
+          'homepagePosts',
+          ['feed', post.game],
+          ['userposts', post.user.name],
+          ['favorites', post.user.name],
+        ];
+
+        queries.forEach((query) => {
+          const homepagePosts = queryClient.getQueryData<PostsPagination>(query);
+          homepagePosts &&
+            queryClient.setQueryData<PostsPagination>(query, {
+              pages: homepagePosts?.pages.map((page) =>
+                page.map((postcache) => {
+                  if (postcache.id === post.id) {
+                    return {
+                      ...postcache,
+                      isLiked: true,
+                      likes: postcache.likes + 1,
+                    };
+                  }
+                  return postcache;
+                })
+              ),
+            });
+        });
 
         const oldFavorites = queryClient.getQueryData<PostsPagination>([
           'favorites',
@@ -37,8 +63,8 @@ export const useLikePost = () => {
         oldFavorites &&
           queryClient.setQueryData<PostsPagination>(
             ['favorites', session?.user.name],
-            !oldFavorites.pages[0].some((cachepost) => cachepost.id === postId) &&
-              oldFavorites?.pages[0].unshift({ id: postId })
+            !oldFavorites.pages[0].some((cachepost) => cachepost.id === post.id) &&
+              oldFavorites?.pages[0].unshift(post)
               ? oldFavorites
               : oldFavorites
           );

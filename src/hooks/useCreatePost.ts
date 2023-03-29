@@ -97,38 +97,21 @@ export const useCreatePost = () => {
     },
     {
       onSuccess: ({ data }) => {
-        const oldHomepageIds = queryClient.getQueryData<PostsPagination>('homepageIds');
-        oldHomepageIds &&
-          queryClient.setQueryData<PostsPagination>(
-            'homepageIds',
-            oldHomepageIds.pages[0].unshift({ id: data.id })
-              ? oldHomepageIds
-              : oldHomepageIds
-          );
+        const queries = [
+          'homepagePosts',
+          ['feed', data.game],
+          ['userposts', session?.user.name],
+          ['favorites', session?.user.name],
+        ];
 
-        const oldSpecificGameHomepage = queryClient.getQueryData<PostsPagination>([
-          'feed',
-          data.game,
-        ]);
-        oldSpecificGameHomepage &&
-          queryClient.setQueryData<PostsPagination>(
-            ['feed', data.game],
-            oldSpecificGameHomepage.pages[0].unshift({ id: data.id })
-              ? oldSpecificGameHomepage
-              : oldSpecificGameHomepage
-          );
-
-        const oldProfilePosts = queryClient.getQueryData<PostsPagination>([
-          'userposts',
-          session?.user.name,
-        ]);
-        oldProfilePosts &&
-          queryClient.setQueryData<PostsPagination>(
-            ['userposts', session?.user.name],
-            oldProfilePosts?.pages[0].unshift({ id: data.id })
-              ? oldProfilePosts
-              : oldProfilePosts
-          );
+        queries.forEach((query) => {
+          const posts = queryClient.getQueryData<PostsPagination>(query);
+          posts &&
+            queryClient.setQueryData<PostsPagination>(
+              query,
+              posts.pages[0].unshift(data) ? posts : posts
+            );
+        });
 
         queryClient.setQueryData<Post>(['post', data.id], data);
       },

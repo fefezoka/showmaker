@@ -1,18 +1,21 @@
-import { useInfiniteQuery } from 'react-query';
+import { QueryKey, useInfiniteQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
 
 interface Props {
   api: string;
-  query: string | string[];
+  query: QueryKey;
   enabled?: boolean;
 }
 
 export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props) => {
+  const queryClient = useQueryClient();
+
   const {
-    data: ids,
+    data: posts,
     fetchNextPage,
     hasNextPage,
-  } = useInfiniteQuery(
+    isLoading,
+  } = useInfiniteQuery<Post[]>(
     query,
     async ({ pageParam = 1 }) => {
       const { data } = await axios.get(api + (api.endsWith('/') ? '' : '/') + pageParam);
@@ -22,9 +25,23 @@ export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props)
       getNextPageParam: (currentPage, pages) => {
         return currentPage.length == 6 && pages.length + 1;
       },
+      onSuccess: (data) => {
+        data.pages.forEach((page) => {
+          page.forEach((post) => {
+            queryClient.setQueryData(['post', post.id], post);
+          });
+        });
+      },
       enabled: enabled,
     }
   );
 
-  return { ids, fetchNextPage, hasNextPage };
+  return {
+    posts: posts?.pages.reduce((accumulator, currentValue) =>
+      accumulator.concat(currentValue)
+    ),
+    fetchNextPage,
+    hasNextPage,
+    isLoading,
+  };
 };

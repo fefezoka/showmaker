@@ -1,8 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 import { prisma } from '../../../../../../../../lib/prisma';
 
 export default async function favorites(req: NextApiRequest, res: NextApiResponse) {
   const { page, id } = req.query;
+  const session = await getSession({ req: req });
 
   if (!page || !id) {
     return res.status(400).json({ message: 'error' });
@@ -21,10 +23,26 @@ export default async function favorites(req: NextApiRequest, res: NextApiRespons
     orderBy: {
       createdAt: 'desc',
     },
-    select: {
-      id: true,
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          followersAmount: true,
+          followingAmount: true,
+        },
+      },
+      likedBy: true,
     },
   });
 
-  return res.status(200).json(response);
+  return res.status(200).json(
+    response.map((post) => {
+      return {
+        ...post,
+        isLiked: post.likedBy.some((like) => like.userId === session?.user.id),
+      };
+    })
+  );
 }

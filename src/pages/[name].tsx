@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useQuery } from 'react-query';
+import { signIn, useSession } from 'next-auth/react';
 import {
   Main,
   FullProfileIcon,
@@ -9,15 +12,12 @@ import {
   FeedButton,
   PostPaginator,
 } from '../components';
-import { useQuery } from 'react-query';
-import { useGetPosts, useFollowSomeone, useInfinitePostIdByScroll } from '../hooks';
+import { useFollowSomeone, useInfinitePostIdByScroll } from '../hooks';
 import Image from 'next/image';
 import twitchIcon from '../assets/twitch-icon.png';
 import Spinner from '../assets/Spinner.svg';
-import { signIn, useSession } from 'next-auth/react';
 import { Box, Flex, Text, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
-import Link from 'next/link';
 
 type Feed = 'posts' | 'favorites';
 
@@ -56,13 +56,12 @@ export default function Profile() {
     },
   ];
 
-  const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll(
-    feedOptions[feed === 'posts' ? 0 : 1]
-  );
-
-  const posts = useGetPosts(
-    ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
-  );
+  const {
+    posts,
+    fetchNextPage,
+    hasNextPage,
+    isLoading: postsIsLoading,
+  } = useInfinitePostIdByScroll(feedOptions[feed === 'posts' ? 0 : 1]);
 
   if (isError) {
     return (
@@ -180,16 +179,16 @@ export default function Profile() {
           </Flex>
         </Box>
 
-        {posts.slice(0, 6).some((post) => post.isLoading) ? (
-          <Flex justify={'center'} css={{ mt: '$4' }}>
-            <Image src={Spinner} alt="" width={54} height={54} />
-          </Flex>
-        ) : (
+        {!postsIsLoading ? (
           <PostPaginator
             posts={posts}
             fetchNextPage={fetchNextPage}
             hasNextPage={hasNextPage}
           />
+        ) : (
+          <Flex justify={'center'} css={{ mt: '$4' }}>
+            <Image src={Spinner} alt="" width={54} height={54} />
+          </Flex>
         )}
       </Main>
     </>

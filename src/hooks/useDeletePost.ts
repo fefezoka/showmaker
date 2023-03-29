@@ -18,50 +18,23 @@ export const useDeletePost = () => {
       }),
     {
       onMutate: ({ postId, game }) => {
-        const feedPosts = queryClient.getQueryData<PostsPagination>(['homepageIds']);
-        feedPosts &&
-          queryClient.setQueryData<PostsPagination>(['homepageIds'], {
-            ...feedPosts,
-            pages: feedPosts.pages.map((page) =>
-              page.filter((postcache) => postcache.id !== postId)
-            ),
-          });
+        const queries = [
+          ['homepagePosts'],
+          ['feed', game],
+          ['userposts', session?.user.name],
+          ['favorites', session?.user.name],
+        ];
 
-        const specificFeedPosts = queryClient.getQueryData<PostsPagination>([
-          'feed',
-          game,
-        ]);
-        specificFeedPosts &&
-          queryClient.setQueryData<PostsPagination>(['feed', game], {
-            ...specificFeedPosts,
-            pages: specificFeedPosts.pages.map((page) =>
-              page.filter((postcache) => postcache.id !== postId)
-            ),
-          });
-
-        const userPosts = queryClient.getQueryData<PostsPagination>([
-          'userposts',
-          session?.user.name,
-        ]);
-        userPosts &&
-          queryClient.setQueryData<PostsPagination>(['userposts', session?.user.name], {
-            ...userPosts,
-            pages: userPosts.pages.map((page) =>
-              page.filter((postcache) => postcache.id !== postId)
-            ),
-          });
-
-        const userFavoritePosts = queryClient.getQueryData<PostsPagination>([
-          'favorites',
-          session?.user.name,
-        ]);
-        userFavoritePosts &&
-          queryClient.setQueryData<PostsPagination>(['favorites', session?.user.name], {
-            ...userFavoritePosts,
-            pages: userFavoritePosts.pages.map((page) =>
-              page.filter((postcache) => postcache.id !== postId)
-            ),
-          });
+        queries.forEach((query) => {
+          const posts = queryClient.getQueryData<PostsPagination>(query);
+          posts &&
+            queryClient.setQueryData<PostsPagination>(query, {
+              ...posts,
+              pages: posts.pages.map((page) =>
+                page.filter((postcache) => postcache.id !== postId)
+              ),
+            });
+        });
       },
     }
   );

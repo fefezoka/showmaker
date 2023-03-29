@@ -10,8 +10,8 @@ export default async function like(req: NextApiRequest, res: NextApiResponse) {
 
   const response = await prisma.likedPost.create({
     data: {
-      postId: postId,
-      userId: userId,
+      postId,
+      userId,
     },
   });
 

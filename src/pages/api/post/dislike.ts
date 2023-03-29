@@ -10,8 +10,8 @@ export default async function dislike(req: NextApiRequest, res: NextApiResponse)
 
   await prisma.likedPost.deleteMany({
     where: {
-      postId: postId,
-      userId: userId,
+      postId,
+      userId,
     },
   });
 

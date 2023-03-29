@@ -31,17 +31,6 @@ export default NextAuth({
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      // if (account?.provider === 'osu') {
-      //   await prisma.user.update({
-      //     data: {
-      //       osuAccountId: account.providerAccountId,
-      //     },
-      //     where: {
-      //       id: account.userId,
-      //     },
-      //   });
-      // }
-
       if (account?.provider === 'discord' && profile && user) {
         if (profile.image_url !== user.image || profile.username !== user.name) {
           await prisma.user.update({

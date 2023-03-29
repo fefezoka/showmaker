@@ -48,7 +48,7 @@ export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
         </Link>
       </HoverCard.Trigger>
       <HoverCard.Portal>
-        <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target="_blank">
+        <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target={'_blank'}>
           <Content>
             <HoverCard.Arrow fill="white" color="white" />
             {!isLoading ? (

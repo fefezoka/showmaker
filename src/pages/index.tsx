@@ -1,11 +1,12 @@
 import { Main, FeedButton } from '../components';
-import { useGetPosts, useInfinitePostIdByScroll } from '../hooks';
+import { useInfinitePostIdByScroll } from '../hooks';
 import { Box, Flex, Heading } from '../styles';
 import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
+import { QueryKey } from 'react-query';
 
 const feedOptions = [
   { label: 'Todos', value: 'all' },
@@ -21,20 +22,16 @@ type feed = typeof feedOptions[number];
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);
 
-  const fetchFeeds: { api: string; query: string | string[] }[] = [
-    { api: '/api/post/feed/page', query: 'homepageIds' },
+  const fetchFeeds: { api: string; query: QueryKey }[] = [
+    { api: '/api/post/feed/page', query: ['homepagePosts'] },
     {
       api: `/api/post/bygame/${feed.value}/page`,
       query: ['feed', feed.value],
     },
   ];
 
-  const { ids, fetchNextPage, hasNextPage } = useInfinitePostIdByScroll(
+  const { posts, fetchNextPage, hasNextPage, isLoading } = useInfinitePostIdByScroll(
     feed.value === 'all' ? fetchFeeds[0] : fetchFeeds[1]
-  );
-
-  const posts = useGetPosts(
-    ids?.pages.reduce((accumulator, currentValue) => accumulator.concat(currentValue))
   );
 
   return (
@@ -62,7 +59,7 @@ export default function Timeline() {
             ))}
           </Flex>
         </Box>
-        {!posts.slice(0, 6).some((post) => post.isLoading) ? (
+        {!isLoading ? (
           <PostPaginator
             posts={posts}
             fetchNextPage={fetchNextPage}

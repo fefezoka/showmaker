@@ -13,8 +13,17 @@ export default async function lastPosts(req: NextApiRequest, res: NextApiRespons
       userId: id as string,
     },
     take: 3,
-    select: {
-      id: true,
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          followersAmount: true,
+          followingAmount: true,
+        },
+      },
+      likedBy: true,
     },
     orderBy: {
       createdAt: 'desc',

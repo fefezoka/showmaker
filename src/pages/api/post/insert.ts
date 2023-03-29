@@ -8,19 +8,19 @@ export default async function insert(req: NextApiRequest, res: NextApiResponse) 
   const thumbnailUrl = req.body.thumbnailUrl;
   const game = req.body.game;
 
-  // if (!id || !title || !videoUrl || !thumbnailUrl || !game) {
-  //   return res.status(400).json({ message: 'error' });
-  // }
+  if (!id || !title || !videoUrl || !thumbnailUrl || !game) {
+    return res.status(400).json({ message: 'error' });
+  }
 
   const response = await prisma.post.create({
     data: {
-      title: title ?? 'fallback',
-      videoUrl: videoUrl ?? 'fallback',
-      thumbnailUrl: thumbnailUrl ?? 'fallback',
-      game: game ?? 'other',
+      title,
+      videoUrl,
+      thumbnailUrl,
+      game,
       user: {
         connect: {
-          id: id,
+          id,
         },
       },
     },

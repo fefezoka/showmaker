@@ -4,7 +4,6 @@ export { useDeletePost } from './useDeletePost';
 export { useDeletePostComment } from './useDeletePostComment';
 export { useDislikePost } from './useDislikePost';
 export { useFollowSomeone } from './useFollowSomeone';
-export { useGetPosts } from './useGetPosts';
 export { useInfinitePostIdByScroll } from './useInfinitePostIdByScroll';
 export { useIsDesktop } from './useIsDesktop';
 export { useLikePost } from './useLikePost';

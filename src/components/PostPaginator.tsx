@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { UseQueryResult } from 'react-query';
 import { FeedPost } from './FeedPost';
 
 interface Props {
   hasNextPage: boolean | undefined;
   fetchNextPage: () => {};
-  posts: UseQueryResult<Post, unknown>[];
+  posts: Post[] | undefined;
 }
 
 export const PostPaginator = ({ hasNextPage, fetchNextPage, posts }: Props) => {
@@ -20,16 +19,14 @@ export const PostPaginator = ({ hasNextPage, fetchNextPage, posts }: Props) => {
 
   return (
     <>
-      {posts.map(
-        (post, index) =>
-          post.data && (
-            <FeedPost
-              ref={posts.length - 1 === index ? ref : null}
-              post={post.data}
-              key={post.data.id}
-            />
-          )
-      )}
+      {posts &&
+        posts.map((post, index) => (
+          <FeedPost
+            ref={posts.length - 1 === index ? ref : null}
+            post={post}
+            key={post.id}
+          />
+        ))}
     </>
   );
 };

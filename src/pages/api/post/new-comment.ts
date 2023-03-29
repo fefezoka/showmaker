@@ -10,9 +10,9 @@ export default async function newComment(req: NextApiRequest, res: NextApiRespon
 
   const response = await prisma.postComment.create({
     data: {
-      message: message,
-      postId: postId,
-      userId: userId,
+      message,
+      postId,
+      userId,
     },
     include: {
       user: true,

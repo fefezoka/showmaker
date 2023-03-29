@@ -32,9 +32,7 @@ export const FeedPost = memo(
         return signIn('discord');
       }
 
-      post.isLiked
-        ? dislikePost.mutate({ postId: post.id })
-        : likePost.mutate({ postId: post.id });
+      post.isLiked ? dislikePost.mutate({ post: post }) : likePost.mutate({ post: post });
     };
 
     return (

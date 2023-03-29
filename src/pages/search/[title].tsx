@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { useGetPosts } from '../../hooks/useGetPosts';
 import { Box, Heading } from '../../styles';
 import { NextSeo } from 'next-seo';
 
@@ -11,7 +10,7 @@ export default function Search() {
   const router = useRouter();
   const { title } = router.query;
 
-  const { data: ids, isLoading } = useQuery<{ id: string }[]>(
+  const { data: posts, isLoading } = useQuery<Post[]>(
     ['search', title],
     async () => {
       const { data } = await axios.get(`/api/post/search/${title}`);
@@ -22,9 +21,7 @@ export default function Search() {
     }
   );
 
-  const posts = useGetPosts(ids);
-
-  if (isLoading || posts.some((post) => post.isLoading)) {
+  if (isLoading) {
     return <Main loading />;
   }
 
@@ -45,9 +42,7 @@ export default function Search() {
         <Box as={'section'}>
           <Heading>Procurando por {title}</Heading>
         </Box>
-        {posts.map(
-          (post) => post.data && <FeedPost post={post.data} key={post.data.id} />
-        )}
+        {posts.map((post) => post && <FeedPost post={post} key={post.id} />)}
       </Main>
     </>
   );

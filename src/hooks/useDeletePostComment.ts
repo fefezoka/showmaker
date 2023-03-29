@@ -21,6 +21,15 @@ export const useDeletePostComment = () => {
           ['comments', postId],
           (old) => old && old.filter((comments) => comments.id !== commentId)
         );
+
+        queryClient.setQueryData<Post | undefined>(
+          ['post', postId],
+          (old) =>
+            old && {
+              ...old,
+              commentsAmount: old.commentsAmount - 1,
+            }
+        );
       },
     }
   );
