@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 interface Props {
   title: string;
@@ -97,20 +98,19 @@ export const useCreatePost = () => {
     },
     {
       onSuccess: ({ data }) => {
-        const queries = [
-          'homepagePosts',
+        [
+          ['homepagePosts'],
           ['feed', data.game],
           ['userposts', session?.user.name],
-          ['favorites', session?.user.name],
-        ];
-
-        queries.forEach((query) => {
-          const posts = queryClient.getQueryData<PostsPagination>(query);
-          posts &&
-            queryClient.setQueryData<PostsPagination>(
-              query,
-              posts.pages[0].unshift(data) ? posts : posts
-            );
+        ].forEach((query) => {
+          queryClient.setQueryData<PostsPagination>(
+            query,
+            (old) =>
+              old &&
+              produce(old, (draft) => {
+                draft.pages[0].unshift(data);
+              })
+          );
         });
 
         queryClient.setQueryData<Post>(['post', data.id], data);

@@ -6,7 +6,6 @@ import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
-import { QueryKey } from 'react-query';
 
 const feedOptions = [
   { label: 'Todos', value: 'all' },
@@ -22,16 +21,13 @@ type feed = typeof feedOptions[number];
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);
 
-  const fetchFeeds: { api: string; query: QueryKey }[] = [
-    { api: '/api/post/feed/page', query: ['homepagePosts'] },
-    {
-      api: `/api/post/bygame/${feed.value}/page`,
-      query: ['feed', feed.value],
-    },
-  ];
-
   const { posts, fetchNextPage, hasNextPage, isLoading } = useInfinitePostIdByScroll(
-    feed.value === 'all' ? fetchFeeds[0] : fetchFeeds[1]
+    feed.value === 'all'
+      ? { api: '/api/post/feed/page', query: ['homepagePosts'] }
+      : {
+          api: `/api/post/bygame/${feed.value}/page`,
+          query: ['feed', feed.value],
+        }
   );
 
   return (

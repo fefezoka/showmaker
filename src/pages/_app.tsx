@@ -2,7 +2,12 @@ import type { AppProps } from 'next/app';
 import { global } from '../styles/global';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider } from 'next-auth/react';
-import { QueryClientProvider, QueryClient, Hydrate, DehydratedState } from 'react-query';
+import {
+  QueryClientProvider,
+  QueryClient,
+  Hydrate,
+  DehydratedState,
+} from '@tanstack/react-query';
 import { DefaultSeo } from 'next-seo';
 import ogimage from '../assets/ogimage.png';
 

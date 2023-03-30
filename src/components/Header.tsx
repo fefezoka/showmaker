@@ -71,9 +71,9 @@ export const Header = () => {
           <Box as="form" onSubmit={(e) => handleFindClick(e)}>
             <Input ref={findRef} placeholder="Procurar" />
             <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
-              <button type="submit">
+              <Box as={'button'} type="submit">
                 <IoSearchSharp color="white" />
-              </button>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -99,7 +99,7 @@ export const Header = () => {
                 onClick={() => router.push(`/${session.user.name}`)}
               >
                 <ProfileIcon src={session?.user?.image as string} alt="" />
-                {isDesktop && <h4>{session?.user?.name}</h4>}
+                {isDesktop && <Text weight={'bold'}>{session?.user?.name}</Text>}
                 {open ? <IoCaretUp /> : <IoCaretDown />}
               </Flex>
             </MenuTrigger>
@@ -116,9 +116,9 @@ export const Header = () => {
           </Menu>
         ) : (
           <Box css={{ ta: 'right' }}>
-            <button onClick={() => signIn('discord')}>
+            <Box as={'button'} onClick={() => signIn('discord')}>
               <Text weight={'bold'}>Logar com Discord</Text>
-            </button>
+            </Box>
           </Box>
         )}
       </Flex>

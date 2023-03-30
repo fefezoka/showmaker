@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 interface Props {
   postId: string;
@@ -20,18 +21,21 @@ export const useCreatePostComment = () => {
       }),
     {
       onSuccess: ({ data }, { postId }) => {
-        queryClient.setQueryData<PostComment[]>(['comments', data.postId], (old) => [
-          data,
-          ...(old ? old : []),
-        ]);
+        queryClient.setQueryData<PostComment[]>(['comments', data.postId], (old) =>
+          old
+            ? produce(old, (draft) => {
+                draft.unshift(data);
+              })
+            : [data]
+        );
 
-        queryClient.setQueryData<Post | undefined>(
+        queryClient.setQueryData<Post>(
           ['post', postId],
           (old) =>
-            old && {
-              ...old,
-              commentsAmount: old.commentsAmount + 1,
-            }
+            old &&
+            produce(old, (draft) => {
+              draft.commentsAmount += 1;
+            })
         );
       },
     }

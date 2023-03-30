@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 export const useFollowSomeone = () => {
   const queryClient = useQueryClient();
@@ -15,27 +16,27 @@ export const useFollowSomeone = () => {
     },
     {
       onMutate: (user) => {
-        queryClient.setQueryData<User | undefined>(
+        queryClient.setQueryData<User>(
           ['user', user.name],
           (old) =>
-            old && {
-              ...old,
-              followersAmount: old.isFollowing
-                ? old.followersAmount - 1
-                : old.followersAmount + 1,
-              isFollowing: !old.isFollowing,
-            }
+            old &&
+            produce(old, (draft) => {
+              draft.isFollowing
+                ? (draft.followersAmount -= 1)
+                : (draft.followersAmount += 1);
+              draft.isFollowing = !draft.isFollowing;
+            })
         );
 
-        queryClient.setQueryData<User | undefined>(
+        queryClient.setQueryData<User>(
           ['user', session?.user.name],
           (old) =>
-            old && {
-              ...old,
-              followingAmount: user.isFollowing
-                ? old.followingAmount - 1
-                : old.followingAmount + 1,
-            }
+            old &&
+            produce(old, (draft) => {
+              draft.isFollowing
+                ? (draft.followingAmount -= 1)
+                : (draft.followingAmount += 1);
+            })
         );
       },
     }

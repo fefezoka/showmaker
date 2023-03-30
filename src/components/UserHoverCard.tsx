@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { ProfileIcon } from './ProfileIcon';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import axios from 'axios';
 import { keyframes, styled } from '../../stitches.config';

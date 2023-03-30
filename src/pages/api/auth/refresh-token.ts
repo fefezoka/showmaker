@@ -49,7 +49,7 @@ export default async function refreshToken(req: NextApiRequest, res: NextApiResp
       },
     });
 
-    return res.status(200).json({ acess_token: data.access_token });
+    return res.status(200).json({ access_token: data.access_token });
   } catch (error) {
     res.status(400).json({ message: 'error' });
   }

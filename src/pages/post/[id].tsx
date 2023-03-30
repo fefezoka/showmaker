@@ -1,7 +1,7 @@
 import React from 'react';
 import { Main, FeedPost } from '../../components';
 import axios from 'axios';
-import { dehydrate, QueryClient, useQuery } from 'react-query';
+import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
 import { Box, Heading } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';

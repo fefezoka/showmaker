@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { OsuProfile } from 'next-auth/providers/osu';
 import axios from 'axios';
 import OsuIcon from '../assets/osu-icon.png';

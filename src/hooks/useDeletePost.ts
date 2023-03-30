@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 interface Props {
   postId: string;
@@ -18,22 +19,22 @@ export const useDeletePost = () => {
       }),
     {
       onMutate: ({ postId, game }) => {
-        const queries = [
+        [
           ['homepagePosts'],
           ['feed', game],
           ['userposts', session?.user.name],
           ['favorites', session?.user.name],
-        ];
-
-        queries.forEach((query) => {
-          const posts = queryClient.getQueryData<PostsPagination>(query);
-          posts &&
-            queryClient.setQueryData<PostsPagination>(query, {
-              ...posts,
-              pages: posts.pages.map((page) =>
-                page.filter((postcache) => postcache.id !== postId)
-              ),
-            });
+        ].forEach((query) => {
+          queryClient.setQueryData<PostsPagination>(
+            query,
+            (old) =>
+              old &&
+              produce(old, (draft) => {
+                draft.pages = draft.pages.map((page) =>
+                  page.filter((postcache) => postcache.id !== postId)
+                );
+              })
+          );
         });
       },
     }

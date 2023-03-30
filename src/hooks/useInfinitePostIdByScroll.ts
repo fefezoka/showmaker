@@ -1,4 +1,4 @@
-import { QueryKey, useInfiniteQuery, useQueryClient } from 'react-query';
+import { QueryKey, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 interface Props {

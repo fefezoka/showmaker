@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { signIn, useSession } from 'next-auth/react';
 import {
   Main,
@@ -43,25 +43,24 @@ export default function Profile() {
     }
   );
 
-  const feedOptions = [
-    {
-      api: `/api/user/byid/${user?.id}/posts/page`,
-      query: ['userposts', name as string],
-      enabled: !!user,
-    },
-    {
-      api: `/api/user/byid/${user?.id}/posts/page/favorites`,
-      query: ['favorites', name as string],
-      enabled: !!user,
-    },
-  ];
-
   const {
     posts,
     fetchNextPage,
     hasNextPage,
     isLoading: postsIsLoading,
-  } = useInfinitePostIdByScroll(feedOptions[feed === 'posts' ? 0 : 1]);
+  } = useInfinitePostIdByScroll(
+    feed === 'posts'
+      ? {
+          api: `/api/user/byid/${user?.id}/posts/page`,
+          query: ['userposts', name as string],
+          enabled: !!user,
+        }
+      : {
+          api: `/api/user/byid/${user?.id}/posts/page/favorites`,
+          query: ['favorites', name as string],
+          enabled: !!user,
+        }
+  );
 
   if (isError) {
     return (

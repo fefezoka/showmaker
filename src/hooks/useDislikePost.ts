@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 interface Props {
   post: Post;
@@ -19,40 +20,33 @@ export const useDislikePost = () => {
     },
     {
       onMutate: ({ post }) => {
-        queryClient.setQueryData<Post | undefined>(
-          ['post', post.id],
-          (old) =>
-            old && {
-              ...old,
-              likes: old.likes - 1,
-              isLiked: false,
-            }
-        );
+        const newPost = produce(post, (draft) => {
+          draft.likes -= 1;
+          draft.isLiked = false;
+        });
 
-        const queries = [
-          'homepagePosts',
+        queryClient.setQueryData<Post>(['post', post.id], newPost);
+
+        [
+          ['homepagePosts'],
           ['feed', post.game],
           ['userposts', post.user.name],
           ['favorites', post.user.name],
-        ];
-
-        queries.forEach((query) => {
-          const homepagePosts = queryClient.getQueryData<PostsPagination>(query);
-          homepagePosts &&
-            queryClient.setQueryData<PostsPagination>(query, {
-              pages: homepagePosts?.pages.map((page) =>
-                page.map((postcache) => {
-                  if (postcache.id === post.id) {
-                    return {
-                      ...postcache,
-                      isLiked: false,
-                      likes: postcache.likes - 1,
-                    };
-                  }
-                  return postcache;
-                })
-              ),
-            });
+        ].forEach((query) => {
+          queryClient.setQueryData<PostsPagination>(
+            query,
+            (old) =>
+              old && {
+                pages: old.pages.map((page) =>
+                  page.map((postcache) => {
+                    if (postcache.id === post.id) {
+                      return newPost;
+                    }
+                    return postcache;
+                  })
+                ),
+              }
+          );
         });
       },
     }

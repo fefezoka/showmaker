@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
 import Image from 'next/image';

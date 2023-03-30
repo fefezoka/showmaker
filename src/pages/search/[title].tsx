@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { Main, FeedPost } from '../../components';
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { Box, Heading } from '../../styles';
 import { NextSeo } from 'next-seo';
 

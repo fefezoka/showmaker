@@ -32,6 +32,8 @@ export default async function osu(req: NextApiRequest, res: NextApiResponse) {
       access_token: response[0].access_token,
     });
 
+    console.log(data);
+
     response[0].access_token = data.access_token;
   }
 

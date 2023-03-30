@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { produce } from 'immer';
 
 interface Props {
   postId: string;
@@ -17,18 +18,18 @@ export const useDeletePostComment = () => {
       }),
     {
       onMutate: ({ commentId, postId }) => {
-        queryClient.setQueryData<PostComment[] | undefined>(
+        queryClient.setQueryData<PostComment[]>(
           ['comments', postId],
-          (old) => old && old.filter((comments) => comments.id !== commentId)
+          (old) => old && old.filter((comment) => comment.id !== commentId)
         );
 
-        queryClient.setQueryData<Post | undefined>(
+        queryClient.setQueryData<Post>(
           ['post', postId],
           (old) =>
-            old && {
-              ...old,
-              commentsAmount: old.commentsAmount - 1,
-            }
+            old &&
+            produce(old, (draft) => {
+              draft.commentsAmount -= 1;
+            })
         );
       },
     }
