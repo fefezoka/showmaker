@@ -6,6 +6,7 @@ import { Box, Heading } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
+import { PostSkeleton } from '../../styles/Skeleton';
 
 interface Props {
   dehydratedState: Post;
@@ -57,7 +58,8 @@ export default function Post({ dehydratedState }: Props) {
           : post && { title: `${post.title} // ${post.user.name}` })}
       />
 
-      <Main loading={isLoading}>
+      <Main>
+        {isLoading && <PostSkeleton />}
         {post && !isLoading && <FeedPost post={post} />}
         {!post && !isLoading && (
           <Box as={'section'}>

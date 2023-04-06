@@ -6,7 +6,7 @@ import { IoSettingsSharp } from 'react-icons/io5';
 import Image from 'next/image';
 import axios from 'axios';
 import { Box, Flex, Text, Menu, MenuTrigger, MenuContent, MenuItem } from '../styles';
-import { Button, ProfileIcon, UserHoverCard } from './';
+import { Button, ProfileIcon, UserHoverCard } from '.';
 import { useDeletePostComment, useCreatePostComment } from '../hooks';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import Spinner from '../assets/Spinner.svg';

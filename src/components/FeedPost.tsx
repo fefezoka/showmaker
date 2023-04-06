@@ -3,7 +3,7 @@ import React, { memo, forwardRef } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart, IoClose } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
-import { Button, ProfileIcon, Video, UserHoverCard, FeedPostComments } from './';
+import { Button, ProfileIcon, Video, UserHoverCard, FeedPostComments } from '.';
 import {
   Box,
   Flex,
@@ -32,7 +32,7 @@ export const FeedPost = memo(
         return signIn('discord');
       }
 
-      post.isLiked ? dislikePost.mutate({ post: post }) : likePost.mutate({ post: post });
+      post.isLiked ? dislikePost.mutate({ post }) : likePost.mutate({ post });
     };
 
     return (

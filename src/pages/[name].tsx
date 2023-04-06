@@ -18,6 +18,7 @@ import twitchIcon from '../assets/twitch-icon.png';
 import Spinner from '../assets/Spinner.svg';
 import { Box, Flex, Text, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
+import { PostSkeleton, ProfileSkeleton } from '../styles/Skeleton';
 
 type Feed = 'posts' | 'favorites';
 
@@ -75,8 +76,14 @@ export default function Profile() {
     );
   }
 
-  if (isLoading || !user) {
-    return <Main loading />;
+  if (isLoading) {
+    return (
+      <Main>
+        <ProfileSkeleton />
+        <PostSkeleton />
+        <PostSkeleton />
+      </Main>
+    );
   }
 
   const handleFollowClick = async () => {
@@ -164,10 +171,10 @@ export default function Profile() {
 
           <Flex justify={'center'} css={{ pt: '$4' }}>
             <FeedButton
+              value={'Últimos posts'}
               type="button"
               onClick={() => setFeed('posts')}
               active={feed === 'posts'}
-              value={'Últimos posts'}
             />
             <FeedButton
               value={'Posts curtidos'}
@@ -178,17 +185,12 @@ export default function Profile() {
           </Flex>
         </Box>
 
-        {!postsIsLoading ? (
-          <PostPaginator
-            posts={posts}
-            fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-          />
-        ) : (
-          <Flex justify={'center'} css={{ mt: '$4' }}>
-            <Image src={Spinner} alt="" width={54} height={54} />
-          </Flex>
-        )}
+        <PostPaginator
+          loading={postsIsLoading}
+          posts={posts}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
       </Main>
     </>
   );

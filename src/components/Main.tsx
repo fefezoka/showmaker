@@ -1,16 +1,15 @@
 import React, { ReactNode, memo } from 'react';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
-import { Header, Menu } from './';
+import { Header, Menu } from '.';
 import { Box, Flex } from '../styles';
 import { useSession } from 'next-auth/react';
 
 interface Props {
   children?: ReactNode;
-  loading?: boolean;
 }
 
-export const Main = memo(({ children, loading }: Props) => {
+export const Main = memo(({ children }: Props) => {
   const { status } = useSession();
 
   return (
@@ -57,14 +56,7 @@ export const Main = memo(({ children, loading }: Props) => {
             }}
           >
             <Header />
-            <>
-              {loading && (
-                <Box css={{ ta: 'center', width: '100%' }}>
-                  <Image priority src={Spinner} width={54} height={54} alt="" />
-                </Box>
-              )}
-              {children}
-            </>
+            {children}
           </Box>
         </Flex>
       )}

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
-import { Button, Select } from './';
+import { Button, Select } from '.';
 import { signIn, useSession } from 'next-auth/react';
 import { IoAdd } from 'react-icons/io5';
 import { useIsDesktop, useCreatePost } from '../hooks';
@@ -161,7 +161,9 @@ export default function CreatePost() {
                   {...getRootProps()}
                   active={isDragActive || acceptedFiles.length !== 0}
                 >
-                  {fileRejections.length !== 0 && <Text>Arquivo muito grande</Text>}
+                  {fileRejections.length !== 0 && (
+                    <Text weight={'bold'}>Arquivo muito grande</Text>
+                  )}
                   {file ? (
                     <Flex gap={'4'}>
                       {thumbnail && (
@@ -192,8 +194,8 @@ export default function CreatePost() {
             />
           </ModalClose>
           <Button
-            loading={createPost.isLoading}
             disabled={!file}
+            loading={createPost.isLoading}
             onClick={processFile}
             value="Enviar"
           />

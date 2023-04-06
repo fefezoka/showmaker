@@ -1,11 +1,8 @@
-import { Main, FeedButton } from '../components';
+import { Main, FeedButton, PostPaginator } from '../components';
 import { useInfinitePostIdByScroll } from '../hooks';
 import { Box, Flex, Heading } from '../styles';
-import { PostPaginator } from '../components/PostPaginator';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
-import Image from 'next/image';
-import Spinner from '../assets/Spinner.svg';
 
 const feedOptions = [
   { label: 'Todos', value: 'all' },
@@ -55,17 +52,12 @@ export default function Timeline() {
             ))}
           </Flex>
         </Box>
-        {!isLoading ? (
-          <PostPaginator
-            posts={posts}
-            fetchNextPage={fetchNextPage}
-            hasNextPage={hasNextPage}
-          />
-        ) : (
-          <Flex justify={'center'} css={{ mt: '$2' }}>
-            <Image src={Spinner} width={52} height={52} alt="" />
-          </Flex>
-        )}
+        <PostPaginator
+          loading={isLoading}
+          posts={posts}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
       </Main>
     </>
   );

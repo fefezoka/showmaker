@@ -1,6 +1,6 @@
 import React, { FormEvent, useRef, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { ProfileIcon } from './';
+import { ProfileIcon } from '.';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import { useIsDesktop } from '../hooks/useIsDesktop';

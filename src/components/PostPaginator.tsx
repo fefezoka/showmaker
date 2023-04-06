@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Box } from '../styles';
+import { PostSkeleton } from '../styles/Skeleton';
 import { FeedPost } from './FeedPost';
 
 interface Props {
   hasNextPage: boolean | undefined;
   fetchNextPage: () => {};
   posts: Post[] | undefined;
+  loading?: boolean;
 }
 
-export const PostPaginator = ({ hasNextPage, fetchNextPage, posts }: Props) => {
+export const PostPaginator = ({
+  hasNextPage,
+  fetchNextPage,
+  posts,
+  loading = true,
+}: Props) => {
   const { ref, inView } = useInView();
 
   useEffect(() => {
@@ -16,6 +24,15 @@ export const PostPaginator = ({ hasNextPage, fetchNextPage, posts }: Props) => {
       fetchNextPage();
     }
   }, [inView, fetchNextPage, hasNextPage]);
+
+  if (loading) {
+    return (
+      <Box>
+        <PostSkeleton />
+        <PostSkeleton />
+      </Box>
+    );
+  }
 
   return (
     <>

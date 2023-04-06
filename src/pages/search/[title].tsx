@@ -5,12 +5,17 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { Box, Heading } from '../../styles';
 import { NextSeo } from 'next-seo';
+import { PostSkeleton } from '../../styles/Skeleton';
 
 export default function Search() {
   const router = useRouter();
   const { title } = router.query;
 
-  const { data: posts, isLoading } = useQuery<Post[]>(
+  const {
+    data: posts,
+    isLoading,
+    isError,
+  } = useQuery<Post[]>(
     ['search', title],
     async () => {
       const { data } = await axios.get(`/api/post/search/${title}`);
@@ -21,11 +26,7 @@ export default function Search() {
     }
   );
 
-  if (isLoading) {
-    return <Main loading />;
-  }
-
-  if (!posts || posts.length === 0) {
+  if (isError) {
     return (
       <Main>
         <Box as={'section'}>
@@ -42,7 +43,15 @@ export default function Search() {
         <Box as={'section'}>
           <Heading>Procurando por {title}</Heading>
         </Box>
-        {posts.map((post) => post && <FeedPost post={post} key={post.id} />)}
+
+        {isLoading ? (
+          <Box>
+            <PostSkeleton />
+            <PostSkeleton />
+          </Box>
+        ) : (
+          posts.map((post) => post && <FeedPost post={post} key={post.id} />)
+        )}
       </Main>
     </>
   );
