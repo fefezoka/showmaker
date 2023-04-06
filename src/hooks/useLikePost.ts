@@ -25,6 +25,19 @@ export const useLikePost = () => {
           draft.likes += 1;
         });
 
+        const updateData = (old: PostsPagination) => {
+          return {
+            pages: old.pages.map((page) =>
+              page.map((postcache) => {
+                if (postcache.id === post.id) {
+                  return newPost;
+                }
+                return postcache;
+              })
+            ),
+          };
+        };
+
         [
           ['homepagePosts'],
           ['feed', post.game],
@@ -33,19 +46,14 @@ export const useLikePost = () => {
         ].forEach((query) => {
           queryClient.setQueryData<PostsPagination>(
             query,
-            (old) =>
-              old && {
-                pages: old.pages.map((page) =>
-                  page.map((postcache) => {
-                    if (postcache.id === post.id) {
-                      return newPost;
-                    }
-                    return postcache;
-                  })
-                ),
-              }
+            (old) => old && updateData(old)
           );
         });
+
+        queryClient.setQueriesData<PostsPagination>(
+          ['search'],
+          (old) => old && updateData(old)
+        );
 
         queryClient.setQueryData<PostsPagination>(
           ['favorites', session?.user.name],

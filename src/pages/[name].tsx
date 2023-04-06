@@ -15,7 +15,7 @@ import {
 import { useFollowSomeone, useInfinitePostIdByScroll } from '../hooks';
 import Image from 'next/image';
 import twitchIcon from '../assets/twitch-icon.png';
-import Spinner from '../assets/Spinner.svg';
+import BlitzNotFound from '../assets/blitz.webp';
 import { Box, Flex, Text, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
 import { PostSkeleton, ProfileSkeleton } from '../styles/Skeleton';
@@ -68,9 +68,16 @@ export default function Profile() {
       <>
         <NextSeo title={`Usuário ${name ?? ''} não encontrado`} />
         <Main>
-          <Box as={'section'}>
-            <Heading>Usuário {name} não encontrado</Heading>
-          </Box>
+          <Flex as={'section'} direction={'column'} justify={'center'} align={'center'}>
+            <Text size={'6'}>
+              Usuário{' '}
+              <Text size={'6'} weight={'bold'}>
+                {name}
+              </Text>{' '}
+              não encontrado
+            </Text>
+            <Image src={BlitzNotFound} alt="" height={256} width={256} />
+          </Flex>
         </Main>
       </>
     );

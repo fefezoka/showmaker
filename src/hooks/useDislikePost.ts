@@ -25,6 +25,19 @@ export const useDislikePost = () => {
           draft.isLiked = false;
         });
 
+        const updateData = (old: PostsPagination) => {
+          return {
+            pages: old.pages.map((page) =>
+              page.map((postcache) => {
+                if (postcache.id === post.id) {
+                  return newPost;
+                }
+                return postcache;
+              })
+            ),
+          };
+        };
+
         queryClient.setQueryData<Post>(['post', post.id], newPost);
 
         [
@@ -35,19 +48,14 @@ export const useDislikePost = () => {
         ].forEach((query) => {
           queryClient.setQueryData<PostsPagination>(
             query,
-            (old) =>
-              old && {
-                pages: old.pages.map((page) =>
-                  page.map((postcache) => {
-                    if (postcache.id === post.id) {
-                      return newPost;
-                    }
-                    return postcache;
-                  })
-                ),
-              }
+            (old) => old && updateData(old)
           );
         });
+
+        queryClient.setQueriesData<PostsPagination>(
+          ['search'],
+          (old) => old && updateData(old)
+        );
       },
     }
   );

@@ -15,6 +15,7 @@ export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props)
     fetchNextPage,
     hasNextPage,
     isLoading,
+    isError,
   } = useInfiniteQuery<Post[]>(
     query,
     async ({ pageParam = 1 }) => {
@@ -43,5 +44,6 @@ export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props)
     fetchNextPage,
     hasNextPage,
     isLoading,
+    isError,
   };
 };

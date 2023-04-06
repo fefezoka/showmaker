@@ -1,30 +1,19 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Main, FeedPost } from '../../components';
-import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+import { Main, PostPaginator } from '../../components';
 import { Box, Heading } from '../../styles';
 import { NextSeo } from 'next-seo';
-import { PostSkeleton } from '../../styles/Skeleton';
+import { useInfinitePostIdByScroll } from '../../hooks';
 
 export default function Search() {
   const router = useRouter();
   const { title } = router.query;
 
-  const {
-    data: posts,
-    isLoading,
-    isError,
-  } = useQuery<Post[]>(
-    ['search', title],
-    async () => {
-      const { data } = await axios.get(`/api/post/search/${title}`);
-      return data;
-    },
-    {
-      enabled: !!title,
-    }
-  );
+  const { posts, isLoading, fetchNextPage, hasNextPage, isError } =
+    useInfinitePostIdByScroll({
+      api: `/api/post/search/${title}/page`,
+      query: ['search', title],
+    });
 
   if (isError) {
     return (
@@ -44,14 +33,12 @@ export default function Search() {
           <Heading>Procurando por {title}</Heading>
         </Box>
 
-        {isLoading ? (
-          <Box>
-            <PostSkeleton />
-            <PostSkeleton />
-          </Box>
-        ) : (
-          posts.map((post) => post && <FeedPost post={post} key={post.id} />)
-        )}
+        <PostPaginator
+          posts={posts}
+          loading={isLoading}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+        />
       </Main>
     </>
   );

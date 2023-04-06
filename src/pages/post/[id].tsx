@@ -2,11 +2,13 @@ import React from 'react';
 import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import { Box, Heading } from '../../styles';
+import { Flex, Heading } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { PostSkeleton } from '../../styles/Skeleton';
+import BlitzNotFound from '../../assets/blitz.webp';
+import Image from 'next/image';
 
 interface Props {
   dehydratedState: Post;
@@ -62,9 +64,10 @@ export default function Post({ dehydratedState }: Props) {
         {isLoading && <PostSkeleton />}
         {post && !isLoading && <FeedPost post={post} />}
         {!post && !isLoading && (
-          <Box as={'section'}>
+          <Flex as={'section'} align={'center'} direction={'column'}>
             <Heading>Post não encontrado</Heading>
-          </Box>
+            <Image src={BlitzNotFound} alt="" height={256} width={256} />
+          </Flex>
         )}
       </Main>
     </>
