@@ -19,7 +19,7 @@ export const useInfinitePostIdByScroll = ({ api, query, enabled = true }: Props)
   } = useInfiniteQuery<Post[]>(
     query,
     async ({ pageParam = 1 }) => {
-      const { data } = await axios.get(api + (api.endsWith('/') ? '' : '/') + pageParam);
+      const { data } = await axios.get(api + pageParam);
       return data;
     },
     {

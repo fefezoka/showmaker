@@ -29,7 +29,7 @@ export const Main = memo(({ children }: Props) => {
         </div>
       )}
       {status !== 'loading' && (
-        <Flex css={{ maxWidth: '1024px', m: '0 auto' }}>
+        <Flex css={{ maxWidth: '960px', m: '0 auto' }}>
           <Menu />
           <Box
             as={'main'}

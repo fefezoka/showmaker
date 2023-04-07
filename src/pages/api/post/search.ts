@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../../../../lib/prisma';
+import { prisma } from '../../../lib/prisma';
 import { getSession } from 'next-auth/react';
 
 export default async function search(req: NextApiRequest, res: NextApiResponse) {
-  const { title, page } = req.query;
+  const { q: title, page } = req.query;
   const session = await getSession({ req });
 
   if (!title) {
@@ -60,8 +60,6 @@ export default async function search(req: NextApiRequest, res: NextApiResponse) 
       },
     ],
   })) as any;
-
-  console.log(response);
 
   if (response.length === 0 || !response) {
     return res.status(404).json({ message: 'no results' });

@@ -97,3 +97,30 @@ export const ProfileSkeleton = () => {
     </Box>
   );
 };
+
+export const CommentSkeleton = ({ rows }: { rows?: number }) => {
+  return (
+    <>
+      {[...Array(rows)].map((_, index) => (
+        <Flex
+          justify={'between'}
+          align={'center'}
+          key={index}
+          css={{
+            mt: '$3',
+            '&:nth-of-type(1)': {
+              mt: '$6',
+            },
+          }}
+        >
+          <Flex gap={'3'} align={'center'}>
+            <Circle css={{ size: 32 }} />
+            <Line css={{ width: 96, height: 16 }} />
+            <Line css={{ width: 192, height: 16 }} />
+          </Flex>
+          <Line css={{ width: 96, height: 16 }} />
+        </Flex>
+      ))}
+    </>
+  );
+};

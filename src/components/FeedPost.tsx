@@ -79,9 +79,7 @@ export const FeedPost = memo(
                       <Button variant={'exit'} value={'Cancelar'} />
                     </ModalClose>
                     <Button
-                      onClick={() =>
-                        deletePost.mutate({ postId: post.id, game: post.game })
-                      }
+                      onClick={() => deletePost.mutate({ postId: post.id })}
                       value={'Excluir'}
                     />
                   </Flex>

@@ -1,21 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { prisma } from '../../../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 
-export default async function timeline(req: NextApiRequest, res: NextApiResponse) {
-  const { page } = req.query;
+export default async function userPosts(req: NextApiRequest, res: NextApiResponse) {
+  const { name, page } = req.query;
   const session = await getSession({ req: req });
 
-  if (!page) {
+  if (!page || !name) {
     return res.status(400).json({ message: 'error' });
   }
 
   const response = await prisma.post.findMany({
     skip: Number(page) === 1 ? 0 : (Number(page) - 1) * 6,
     take: 6,
-    orderBy: {
-      createdAt: 'desc',
-    },
     include: {
       user: {
         select: {
@@ -27,6 +24,14 @@ export default async function timeline(req: NextApiRequest, res: NextApiResponse
         },
       },
       likedBy: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    where: {
+      user: {
+        name: name as string,
+      },
     },
   });
 

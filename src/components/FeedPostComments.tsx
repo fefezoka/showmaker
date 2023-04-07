@@ -3,13 +3,12 @@ import { useSession } from 'next-auth/react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
-import Image from 'next/image';
 import axios from 'axios';
 import { Box, Flex, Text, Menu, MenuTrigger, MenuContent, MenuItem } from '../styles';
 import { Button, ProfileIcon, UserHoverCard } from '.';
 import { useDeletePostComment, useCreatePostComment } from '../hooks';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
-import Spinner from '../assets/Spinner.svg';
+import { CommentSkeleton } from '../styles/Skeleton';
 
 interface Props {
   post: Post;
@@ -131,9 +130,7 @@ export const FeedPostComments = ({ post }: Props) => {
           </Flex>
         ))
       ) : (
-        <Box css={{ ta: 'center' }}>
-          <Image src={Spinner} alt="" priority height={42} width={42} />
-        </Box>
+        <CommentSkeleton rows={2} />
       )}
     </Box>
   );

@@ -98,20 +98,23 @@ export const useCreatePost = () => {
     },
     {
       onSuccess: ({ data }) => {
-        [
-          ['homepagePosts'],
-          ['feed', data.game],
-          ['userposts', session?.user.name],
-        ].forEach((query) => {
-          queryClient.setQueryData<PostsPagination>(
-            query,
-            (old) =>
-              old &&
-              produce(old, (draft) => {
-                draft.pages[0].unshift(data);
-              })
-          );
-        });
+        queryClient.setQueriesData<PostsPagination>(
+          ['posts', 'feed'],
+          (old) =>
+            old &&
+            produce(old, (draft) => {
+              draft.pages[0].unshift(data);
+            })
+        );
+
+        queryClient.setQueryData<PostsPagination>(
+          ['posts', 'posts', session?.user.name],
+          (old) =>
+            old &&
+            produce(old, (draft) => {
+              draft.pages[0].unshift(data);
+            })
+        );
 
         queryClient.setQueryData<Post>(['post', data.id], data);
       },

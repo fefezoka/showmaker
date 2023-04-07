@@ -35,15 +35,15 @@ export const Input = styled('input', {
 export const Header = () => {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState<boolean>(false);
-  const findRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const isDesktop = useIsDesktop();
 
-  const handleFindClick = (e: FormEvent) => {
+  const handleFindClick = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (findRef?.current?.value) {
-      router.push(`/search/${findRef.current.value}`);
-    }
+
+    router.push(
+      '/search/' + encodeURIComponent((e.currentTarget[0] as HTMLInputElement).value)
+    );
   };
 
   return (
@@ -69,7 +69,7 @@ export const Header = () => {
         )}
         <Box css={{ size: '100%', position: 'relative', maxWidth: '360px' }}>
           <Box as="form" onSubmit={(e) => handleFindClick(e)}>
-            <Input ref={findRef} placeholder="Procurar" />
+            <Input placeholder="Procurar" />
             <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
               <Box as={'button'} type="submit">
                 <IoSearchSharp color="white" />

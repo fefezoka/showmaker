@@ -36,7 +36,7 @@ export default function Profile() {
   } = useQuery<User>(
     ['user', name],
     async () => {
-      const { data } = await axios.get(`/api/user/byname/${name}`);
+      const { data } = await axios.get(`/api/user/${name}`);
       return data;
     },
     {
@@ -49,19 +49,11 @@ export default function Profile() {
     fetchNextPage,
     hasNextPage,
     isLoading: postsIsLoading,
-  } = useInfinitePostIdByScroll(
-    feed === 'posts'
-      ? {
-          api: `/api/user/byid/${user?.id}/posts/page`,
-          query: ['userposts', name as string],
-          enabled: !!user,
-        }
-      : {
-          api: `/api/user/byid/${user?.id}/posts/page/favorites`,
-          query: ['favorites', name as string],
-          enabled: !!user,
-        }
-  );
+  } = useInfinitePostIdByScroll({
+    api: `/api/user/${user?.name}/${feed}?page=`,
+    query: ['posts', feed, name as string],
+    enabled: !!user,
+  });
 
   if (isError) {
     return (

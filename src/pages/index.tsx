@@ -18,14 +18,10 @@ type feed = typeof feedOptions[number];
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);
 
-  const { posts, fetchNextPage, hasNextPage, isLoading } = useInfinitePostIdByScroll(
-    feed.value === 'all'
-      ? { api: '/api/post/feed/page', query: ['homepagePosts'] }
-      : {
-          api: `/api/post/bygame/${feed.value}/page`,
-          query: ['feed', feed.value],
-        }
-  );
+  const { posts, fetchNextPage, hasNextPage, isLoading } = useInfinitePostIdByScroll({
+    api: `/api/post/feed?${feed.value !== 'all' ? `game=${feed.value}&` : ''}page=`,
+    query: ['posts', 'feed', feed.value],
+  });
 
   return (
     <>

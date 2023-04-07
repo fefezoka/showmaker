@@ -43,7 +43,7 @@ export const UserHoverCard = ({ user, href, children }: Props) => {
   const { data: posts, isLoading } = useQuery<Post[]>(
     ['lastPosts', user.id],
     async () => {
-      const { data } = await axios.get(`/api/user/byid/${user.id}/posts/last-posts`);
+      const { data } = await axios.get(`/api/user/${user.name}/last-posts`);
       return data;
     },
     {

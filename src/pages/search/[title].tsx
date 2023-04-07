@@ -11,8 +11,9 @@ export default function Search() {
 
   const { posts, isLoading, fetchNextPage, hasNextPage, isError } =
     useInfinitePostIdByScroll({
-      api: `/api/post/search/${title}/page`,
-      query: ['search', title],
+      api: `/api/post/search?q=${encodeURIComponent(title as string)}&page=`,
+      query: ['posts', 'search', title],
+      enabled: !!title,
     });
 
   if (isError) {

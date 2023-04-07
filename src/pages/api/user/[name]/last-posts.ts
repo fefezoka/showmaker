@@ -1,16 +1,18 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { prisma } from '../../../../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 
 export default async function lastPosts(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+  const { name } = req.query;
 
-  if (!id) {
+  if (!name) {
     return res.status(400).json({ message: 'error' });
   }
 
   const response = await prisma.post.findMany({
     where: {
-      userId: id as string,
+      user: {
+        name: name as string,
+      },
     },
     take: 3,
     include: {

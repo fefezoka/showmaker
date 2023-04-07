@@ -1,18 +1,22 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import { prisma } from '../../../../../../../lib/prisma';
+import { prisma } from '../../../lib/prisma';
 
-export default async function userPosts(req: NextApiRequest, res: NextApiResponse) {
-  const { id, page } = req.query;
+export default async function timeline(req: NextApiRequest, res: NextApiResponse) {
+  const { page, game } = req.query;
   const session = await getSession({ req: req });
 
-  if (!page || !id) {
+  if (!page) {
     return res.status(400).json({ message: 'error' });
   }
 
   const response = await prisma.post.findMany({
     skip: Number(page) === 1 ? 0 : (Number(page) - 1) * 6,
     take: 6,
+    ...(game && { where: { game: game as string } }),
+    orderBy: {
+      createdAt: 'desc',
+    },
     include: {
       user: {
         select: {
@@ -24,12 +28,6 @@ export default async function userPosts(req: NextApiRequest, res: NextApiRespons
         },
       },
       likedBy: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    where: {
-      userId: id as string,
     },
   });
 

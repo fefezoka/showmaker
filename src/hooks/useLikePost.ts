@@ -25,38 +25,23 @@ export const useLikePost = () => {
           draft.likes += 1;
         });
 
-        const updateData = (old: PostsPagination) => {
-          return {
-            pages: old.pages.map((page) =>
-              page.map((postcache) => {
-                if (postcache.id === post.id) {
-                  return newPost;
-                }
-                return postcache;
-              })
-            ),
-          };
-        };
-
-        [
-          ['homepagePosts'],
-          ['feed', post.game],
-          ['userposts', post.user.name],
-          ['favorites', post.user.name],
-        ].forEach((query) => {
-          queryClient.setQueryData<PostsPagination>(
-            query,
-            (old) => old && updateData(old)
-          );
-        });
-
         queryClient.setQueriesData<PostsPagination>(
-          ['search'],
-          (old) => old && updateData(old)
+          ['posts'],
+          (old) =>
+            old && {
+              pages: old.pages.map((page) =>
+                page.map((postcache) => {
+                  if (postcache.id === post.id) {
+                    return newPost;
+                  }
+                  return postcache;
+                })
+              ),
+            }
         );
 
         queryClient.setQueryData<PostsPagination>(
-          ['favorites', session?.user.name],
+          ['posts', 'favorites', session?.user.name],
           (old) =>
             old &&
             produce(old, (draft) => {
