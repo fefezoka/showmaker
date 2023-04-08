@@ -3,17 +3,17 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
 export default async function refreshToken(req: NextApiRequest, res: NextApiResponse) {
-  const { client_id, client_secret, access_token, refresh_token, user_id, provider } =
+  const { client_id, client_secret, access_token, refresh_token, username, provider } =
     req.body as {
       client_id: string;
       client_secret: string;
       access_token?: string;
       refresh_token: string;
-      user_id: string;
+      username: string;
       provider: 'twitch' | 'osu';
     };
 
-  if (!client_id || !client_secret || !refresh_token || !provider || !user_id) {
+  if (!client_id || !client_secret || !refresh_token || !provider || !username) {
     return res.status(400).json({ message: 'missing values' });
   }
 
@@ -38,7 +38,7 @@ export default async function refreshToken(req: NextApiRequest, res: NextApiResp
         provider: provider,
         AND: {
           user: {
-            id: user_id,
+            name: username,
           },
         },
       },

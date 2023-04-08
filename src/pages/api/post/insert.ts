@@ -2,11 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from '../../../lib/prisma';
 
 export default async function insert(req: NextApiRequest, res: NextApiResponse) {
-  const id = req.body.id;
-  const title = req.body.title;
-  const videoUrl = req.body.videoUrl;
-  const thumbnailUrl = req.body.thumbnailUrl;
-  const game = req.body.game;
+  const { id, title, videoUrl, thumbnailUrl, game } = req.body;
 
   if (!id || !title || !videoUrl || !thumbnailUrl || !game) {
     return res.status(400).json({ message: 'error' });

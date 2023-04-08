@@ -41,9 +41,10 @@ export const Header = () => {
   const handleFindClick = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    router.push(
-      '/search/' + encodeURIComponent((e.currentTarget[0] as HTMLInputElement).value)
-    );
+    router.push({
+      pathname: '/search',
+      query: { q: (e.currentTarget[0] as HTMLInputElement).value },
+    });
   };
 
   return (

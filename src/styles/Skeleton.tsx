@@ -62,18 +62,18 @@ export const PostSkeleton = () => {
       <Flex align={'center'} justify={'between'}>
         <Flex align={'center'} gap={'2'}>
           <Circle css={{ size: 32 }} />
-          <Line css={{ height: 24, width: 120 }} />
+          <Line css={{ height: 22, width: 120 }} />
         </Flex>
-        <Line css={{ height: 24, width: 60 }} />
+        <Line css={{ height: 22, width: 60 }} />
       </Flex>
       <Flex css={{ mt: '$2' }} justify={'between'} gap={'3'}>
-        <Line css={{ height: 24, width: 240 }} />
-        <Line css={{ height: 24, width: 120 }} />
+        <Line css={{ height: 22, width: 240 }} />
+        <Line css={{ height: 22, width: 120 }} />
       </Flex>
-      <Box css={{ mt: '$4' }}>
-        <Rectangle css={{ height: 200, br: '$6', '@bp2': { height: 320 } }} />
+      <Box css={{ mt: '$6' }}>
+        <Rectangle css={{ pb: '56.25%', br: '$6' }} />
       </Box>
-      <Flex align={'center'} justify={'center'} css={{ mt: '$3' }} gap={'4'}>
+      <Flex align={'center'} justify={'center'} css={{ mt: '$4' }} gap={'4'}>
         <Circle css={{ size: 40 }} />
         <Line css={{ height: 40, width: '100%' }} />
         <Rectangle css={{ height: 40, width: 88 }} />

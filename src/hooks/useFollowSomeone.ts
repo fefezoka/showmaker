@@ -33,7 +33,7 @@ export const useFollowSomeone = () => {
           (old) =>
             old &&
             produce(old, (draft) => {
-              draft.isFollowing
+              user.isFollowing
                 ? (draft.followingAmount -= 1)
                 : (draft.followingAmount += 1);
             })

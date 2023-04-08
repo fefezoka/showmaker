@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 
 interface Props {
-  userId: string;
+  username: string;
   osuAccountId: string;
 }
 
@@ -29,12 +29,12 @@ export const Content = styled(HoverCard.Content, {
   fontWeight: 'bold',
 });
 
-export const OsuHoverCard = ({ userId, osuAccountId }: Props) => {
+export const OsuHoverCard = ({ username, osuAccountId }: Props) => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, isLoading } = useQuery(
-    ['osu-card', userId],
+    ['osu-card', username],
     async () => {
-      const { data } = await axios.get<OsuProfile>(`/api/user/byid/${userId}/osu`);
+      const { data } = await axios.get<OsuProfile>(`/api/user/${username}/osu`);
       return data;
     },
     { enabled: !!open }

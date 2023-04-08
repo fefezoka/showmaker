@@ -2,11 +2,10 @@ import React from 'react';
 import { Main, FeedPost } from '../../components';
 import axios from 'axios';
 import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
-import { Flex, Heading } from '../../styles';
+import { Flex, Heading, PostSkeleton } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
-import { PostSkeleton } from '../../styles/Skeleton';
 import BlitzNotFound from '../../assets/blitz.webp';
 import Image from 'next/image';
 

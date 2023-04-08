@@ -1,17 +1,39 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Main, PostPaginator } from '../../components';
-import { Box, Heading } from '../../styles';
+import { Main, PostPaginator } from '../components';
+import { Box, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
-import { useInfinitePostIdByScroll } from '../../hooks';
+import { useInfinitePostIdByScroll } from '../hooks';
+import { GetServerSideProps } from 'next';
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { q } = query;
+
+  if (!q) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 export default function Search() {
   const router = useRouter();
-  const { title } = router.query;
+  const { q: title } = router.query;
+
+  if (!title) {
+    router.push('/');
+  }
 
   const { posts, isLoading, fetchNextPage, hasNextPage, isError } =
     useInfinitePostIdByScroll({
-      api: `/api/post/search?q=${encodeURIComponent(title as string)}&page=`,
+      api: `/api/post/search?q=${title}&page=`,
       query: ['posts', 'search', title],
       enabled: !!title,
     });
