@@ -97,7 +97,6 @@ export const Header = () => {
                     backgroundColor: '$bgalt',
                   },
                 }}
-                onClick={() => router.push(`/${session.user.name}`)}
               >
                 <ProfileIcon src={session?.user?.image as string} alt="" />
                 {isDesktop && <Text weight={'bold'}>{session?.user?.name}</Text>}
