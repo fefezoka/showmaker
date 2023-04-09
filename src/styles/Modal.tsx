@@ -16,7 +16,9 @@ export const Modal = DialogPrimitive.Root;
 export const ModalTrigger = DialogPrimitive.Trigger;
 
 export const ModalOverlay = styled(DialogPrimitive.Overlay, overlayStyles, {
-  animation: `${fade} 200ms`,
+  '&[data-state="open"]': {
+    animation: `${fade} 200ms`,
+  },
 });
 
 export const StyledModalContent = styled(DialogPrimitive.Content, {
@@ -31,7 +33,10 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
   color: '$black',
   backgroundColor: '$modal',
   borderRadius: '$2',
-  animation: `${fade} 200ms`,
+
+  '&[data-state="open"]': {
+    animation: `${fade} 200ms`,
+  },
 
   '@bp2': {
     width: '400px',

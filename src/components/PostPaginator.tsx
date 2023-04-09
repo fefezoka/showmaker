@@ -4,7 +4,7 @@ import { Box } from '../styles';
 import { PostSkeleton } from '../styles/Skeleton';
 import { FeedPost } from './FeedPost';
 
-interface Props {
+interface PostPaginatorProps {
   hasNextPage: boolean | undefined;
   fetchNextPage: () => {};
   posts: Post[] | undefined;
@@ -16,7 +16,7 @@ export const PostPaginator = ({
   fetchNextPage,
   posts,
   loading = true,
-}: Props) => {
+}: PostPaginatorProps) => {
   const { ref, inView } = useInView();
 
   useEffect(() => {

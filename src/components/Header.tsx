@@ -80,7 +80,7 @@ export const Header = () => {
         </Box>
 
         {status === 'authenticated' ? (
-          <Menu open={open} onOpenChange={setOpen}>
+          <Menu open={open} onOpenChange={setOpen} modal={false}>
             <MenuTrigger asChild>
               <Flex
                 align={'center'}

@@ -14,5 +14,5 @@ export default async function remove(req: NextApiRequest, res: NextApiResponse) 
     },
   });
 
-  res.status(200).json(response);
+  res.status(201).json(response);
 }

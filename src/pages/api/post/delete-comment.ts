@@ -15,7 +15,7 @@ export default async function deleteComment(req: NextApiRequest, res: NextApiRes
   });
 
   if (!response) {
-    res.status(200).json({ message: 'error' });
+    res.status(400).json({ message: 'error' });
   }
 
   await prisma.post.update({
@@ -29,5 +29,5 @@ export default async function deleteComment(req: NextApiRequest, res: NextApiRes
     },
   });
 
-  return res.status(200).json({ message: 'ok' });
+  return res.status(201).json({ message: 'ok' });
 }

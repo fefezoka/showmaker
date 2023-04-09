@@ -19,7 +19,7 @@ const Fade = keyframes({
   },
 });
 
-interface Props {
+interface UserHoverCardProps {
   user: User;
   href: string;
   children: ReactNode;
@@ -37,7 +37,7 @@ export const Content = styled(HoverCard.Content, {
   boxShadow: '0px 0px 12px black',
 });
 
-export const UserHoverCard = ({ user, href, children }: Props) => {
+export const UserHoverCard = ({ user, href, children }: UserHoverCardProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const { data: posts, isLoading } = useQuery<Post[]>(

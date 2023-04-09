@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { forwardRef, useState } from 'react';
 import { CSS, styled } from '../../stitches.config';
 
-interface Props extends React.ComponentProps<typeof Image> {
+interface ProfileIconProps extends React.ComponentProps<typeof Image> {
   src: string;
   css?: CSS;
 }
@@ -13,8 +13,8 @@ export const Wrapper = styled('div', {
   overflow: 'hidden',
 });
 
-export const ProfileIcon = forwardRef<HTMLImageElement, Props>(
-  ({ src, css, ...props }: Props, forwardedRef) => {
+export const ProfileIcon = forwardRef<HTMLImageElement, ProfileIconProps>(
+  ({ src, css, ...props }: ProfileIconProps, forwardedRef) => {
     const [error, setError] = useState(false);
 
     return (

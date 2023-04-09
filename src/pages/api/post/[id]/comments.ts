@@ -5,7 +5,7 @@ export default async function comments(req: NextApiRequest, res: NextApiResponse
   const { id } = req.query;
 
   if (!id) {
-    return res.status(404).send({ message: 'error' });
+    return res.status(400).send({ message: 'error' });
   }
 
   const response = await prisma.postComment.findMany({

@@ -7,7 +7,7 @@ export default async function search(req: NextApiRequest, res: NextApiResponse) 
   const session = await getSession({ req });
 
   if (!title) {
-    return res.status(404).send({ message: 'error' });
+    return res.status(400).send({ message: 'error' });
   }
 
   const response = (await prisma.post.aggregateRaw({

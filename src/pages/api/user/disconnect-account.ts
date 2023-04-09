@@ -8,7 +8,7 @@ export default async function disconnectAccount(
   const { accountId } = req.body;
 
   if (!accountId) {
-    return res.status(400).json({ message: 'missing account id' });
+    return res.status(400).json({ message: 'missing fields' });
   }
 
   const response = await prisma.account.delete({
@@ -21,5 +21,5 @@ export default async function disconnectAccount(
     return res.status(400).json({ message: 'error' });
   }
 
-  res.status(200).json(response);
+  res.status(201).json(response);
 }

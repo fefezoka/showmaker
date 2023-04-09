@@ -22,6 +22,7 @@ export const MenuItem = styled(DropdownMenu.Item, {
   padding: '$2',
   cursor: 'pointer',
   zIndex: '$modal',
+
   '&:hover': {
     outline: 'none',
     backgroundColor: '$bgalt',

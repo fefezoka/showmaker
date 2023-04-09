@@ -11,7 +11,7 @@ import { styled } from '../../stitches.config';
 import Link from 'next/link';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 
-interface Props {
+interface OsuHoverCardProps {
   username: string;
   osuAccountId: string;
 }
@@ -29,7 +29,7 @@ export const Content = styled(HoverCard.Content, {
   fontWeight: 'bold',
 });
 
-export const OsuHoverCard = ({ username, osuAccountId }: Props) => {
+export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, isLoading } = useQuery(
     ['osu-card', username],

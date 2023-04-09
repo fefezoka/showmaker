@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '../../stitches.config';
 
-interface Props extends React.ComponentProps<typeof StyledFeedButton> {
+interface ButtonProps extends React.ComponentProps<typeof StyledFeedButton> {
   value: string;
 }
 
@@ -32,7 +32,7 @@ const StyledFeedButton = styled('button', {
   },
 });
 
-export const FeedButton = ({ value, ...props }: Props) => {
+export const FeedButton = ({ value, ...props }: ButtonProps) => {
   return (
     <StyledFeedButton type="button" {...props}>
       {value}

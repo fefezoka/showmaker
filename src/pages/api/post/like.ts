@@ -5,7 +5,7 @@ export default async function like(req: NextApiRequest, res: NextApiResponse) {
   const { postId, userId } = req.body;
 
   if (!postId || !userId) {
-    return res.status(404).json('Error');
+    return res.status(400).json({ message: 'missing fields' });
   }
 
   const response = await prisma.likedPost.create({
@@ -30,5 +30,5 @@ export default async function like(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  return res.status(200).json({ message: 'ok' });
+  return res.status(201).json({ message: 'ok' });
 }

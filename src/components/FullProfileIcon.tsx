@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ProfileIcon } from '.';
 import { keyframes, styled, CSS } from '../../stitches.config';
 
-interface Props {
+interface FullProfileIconProps {
   src: string;
   css?: CSS;
 }
@@ -44,7 +44,7 @@ export const Overlay = styled(Dialog.Overlay, {
   animation: `300ms ${Fade}`,
 });
 
-export const FullProfileIcon = ({ src, css }: Props) => {
+export const FullProfileIcon = ({ src, css }: FullProfileIconProps) => {
   const profileIconRef = useRef<HTMLImageElement>(null);
   const [open, setOpen] = useState(false);
 

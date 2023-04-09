@@ -10,11 +10,11 @@ import { useDeletePostComment, useCreatePostComment } from '../hooks';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { CommentSkeleton } from '../styles/Skeleton';
 
-interface Props {
+interface FeedPostCommentsProps {
   post: Post;
 }
 
-export const FeedPostComments = ({ post }: Props) => {
+export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
   const { data: session } = useSession();
   const deleteComment = useDeletePostComment();
   const createComment = useCreatePostComment();

@@ -5,7 +5,7 @@ export default async function newComment(req: NextApiRequest, res: NextApiRespon
   const { message, postId, userId } = req.body;
 
   if (!message || !postId || !userId) {
-    return res.status(400).json({ message: 'error' });
+    return res.status(400).json({ message: 'missing fields' });
   }
 
   const response = await prisma.postComment.create({
@@ -30,5 +30,5 @@ export default async function newComment(req: NextApiRequest, res: NextApiRespon
     },
   });
 
-  return res.status(200).json(response);
+  return res.status(201).json(response);
 }

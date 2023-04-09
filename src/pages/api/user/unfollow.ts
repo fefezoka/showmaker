@@ -5,7 +5,7 @@ export default async function unfollow(req: NextApiRequest, res: NextApiResponse
   const { followingId, followerId } = req.body;
 
   if (followingId === followerId || !followingId || !followerId) {
-    return res.status(400).json({ message: 'error' });
+    return res.status(400).json({ message: 'missing fields' });
   }
 
   await prisma.follows.deleteMany({
@@ -37,5 +37,5 @@ export default async function unfollow(req: NextApiRequest, res: NextApiResponse
     },
   });
 
-  res.status(200).json({ message: 'ok' });
+  res.status(201).json({ message: 'ok' });
 }

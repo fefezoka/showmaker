@@ -5,11 +5,11 @@ import { Header, Menu } from '.';
 import { Box, Flex } from '../styles';
 import { useSession } from 'next-auth/react';
 
-interface Props {
+interface MainProps {
   children?: ReactNode;
 }
 
-export const Main = memo(({ children }: Props) => {
+export const Main = memo(({ children }: MainProps) => {
   const { status } = useSession();
 
   return (
