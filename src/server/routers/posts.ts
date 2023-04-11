@@ -1,5 +1,6 @@
 import { Post, postSchema } from '../../common/types';
 import { procedure, router } from '../trpc';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 export const posts = router({
@@ -106,7 +107,10 @@ export const posts = router({
         })) as any;
 
         if (response.length === 0 || !response) {
-          return;
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: 'Posts not found',
+          });
         }
 
         const filter = response
@@ -188,8 +192,6 @@ export const posts = router({
             nextCursor = nextItem!.id;
           }
 
-          console.log(posts);
-
           return {
             posts: posts.map((post) => {
               return {
@@ -261,7 +263,10 @@ export const posts = router({
       });
 
       if (!post) {
-        return;
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Post not found',
+        });
       }
 
       const { emailVerified, email, ...user } = post.user;
@@ -297,7 +302,10 @@ export const posts = router({
     )
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session) {
-        return;
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Must be logged',
+        });
       }
 
       const response = await ctx.prisma.likedPost.create({
@@ -323,7 +331,10 @@ export const posts = router({
     .input(z.object({ post: postSchema }))
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session) {
-        return;
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Must be logged',
+        });
       }
 
       const response = await ctx.prisma.likedPost.deleteMany({
@@ -355,7 +366,10 @@ export const posts = router({
     )
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session) {
-        return;
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Must be logged',
+        });
       }
 
       const response = await ctx.prisma.postComment.create({
@@ -389,15 +403,11 @@ export const posts = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.prisma.postComment.delete({
+      await ctx.prisma.postComment.delete({
         where: {
           id: input.commentId,
         },
       });
-
-      if (!response) {
-        return;
-      }
 
       await ctx.prisma.post.update({
         data: {
