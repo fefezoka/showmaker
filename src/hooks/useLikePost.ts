@@ -1,58 +1,55 @@
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
-
-interface Props {
-  post: Post;
-}
+import { getQueryKey } from '@trpc/react-query';
+import { trpc } from '../utils/trpc';
+import { useSession } from 'next-auth/react';
+import { PostPagination } from '../common/types';
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();
+  const utils = trpc.useContext();
   const { data: session } = useSession();
 
-  return useMutation(
-    async ({ post }: Props) => {
-      await axios.post('/api/post/like', {
-        postId: post.id,
-        userId: session?.user.id,
+  return trpc.posts.like.useMutation({
+    onMutate: ({ post }) => {
+      const newPost = produce(post, (draft) => {
+        draft.isLiked = true;
+        draft.likes += 1;
       });
-    },
-    {
-      onMutate: ({ post }) => {
-        const newPost = produce(post, (draft) => {
-          draft.isLiked = true;
-          draft.likes += 1;
-        });
 
-        queryClient.setQueriesData<PostsPagination>(
-          ['posts'],
+      const infiniteQueries = queryClient.getQueriesData(
+        getQueryKey(trpc.posts.infinitePosts)
+      );
+
+      infiniteQueries.forEach((query) =>
+        queryClient.setQueriesData<PostPagination>(
+          query[0],
           (old) =>
-            old && {
-              pages: old.pages.map((page) =>
-                page.map((postcache) => {
+            old &&
+            produce(old, (draft) => {
+              draft.pages.map((page) => {
+                page.posts = page.posts.map((postcache) => {
                   if (postcache.id === post.id) {
                     return newPost;
                   }
                   return postcache;
-                })
-              ),
-            }
-        );
+                });
+              });
+            })
+        )
+      );
 
-        queryClient.setQueryData<PostsPagination>(
-          ['posts', 'favorites', session?.user.name],
+      session &&
+        utils.posts.infinitePosts.user.profile.setInfiniteData(
+          { name: session.user.name, feed: 'favorites' },
           (old) =>
             old &&
             produce(old, (draft) => {
-              !draft.pages.some((page) =>
-                page.some((postcache) => postcache.id === post.id)
-              ) && draft.pages[0].unshift(newPost);
+              draft.pages[0].posts.unshift(newPost);
             })
         );
 
-        queryClient.setQueryData<Post>(['post', post.id], newPost);
-      },
-    }
-  );
+      utils.posts.byId.setData({ postId: post.id }, newPost);
+    },
+  });
 };

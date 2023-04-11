@@ -1,17 +1,16 @@
 import React from 'react';
 import { Main, FeedPost } from '../../components';
-import axios from 'axios';
-import { dehydrate, QueryClient, useQuery } from '@tanstack/react-query';
+import { createServerSideHelpers } from '@trpc/react-query/server';
+import { appRouter } from '../../server/routers/_app';
+import { createContext } from '../../server/context';
 import { Flex, Heading, PostSkeleton } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import BlitzNotFound from '../../assets/blitz.webp';
 import Image from 'next/image';
-
-interface Props {
-  dehydratedState: Post;
-}
+import { trpc } from '../../utils/trpc';
+import { Post as PostType } from '../../common/types';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (ctx.req.url?.startsWith('/_next')) {
@@ -20,29 +19,32 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const id = ctx.params?.id;
-  const queryClient = new QueryClient();
+  const id = ctx.params?.id as string;
 
-  await queryClient.prefetchQuery(['post', id], async () => {
-    const { data } = await axios.get(`${process.env.SITE_URL}/api/post/${id}`);
-    return data;
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createContext(ctx),
   });
+
+  await helpers.posts.byId.prefetch({ postId: id });
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient).queries[0]?.state.data ?? null,
+      dehydratedState: JSON.parse(
+        JSON.stringify(helpers.dehydrate().queries[0].state.data)
+      ),
     },
   };
 };
 
-export default function Post({ dehydratedState }: Props) {
+export default function Post({ dehydratedState }: { dehydratedState: PostType }) {
   const router = useRouter();
   const { id } = router.query;
 
-  const { data: post, isLoading } = useQuery<Post>(['post', id], async () => {
-    const { data } = await axios.get(`/api/post/${id}`);
-    return data;
-  });
+  const { data: post, isLoading } = trpc.posts.byId.useQuery(
+    { postId: id as string },
+    { enabled: !!id }
+  );
 
   return (
     <>

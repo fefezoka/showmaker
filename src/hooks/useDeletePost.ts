@@ -1,32 +1,30 @@
-import axios from 'axios';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
-
-interface Props {
-  postId: string;
-}
+import { trpc } from '../utils/trpc';
+import { getQueryKey } from '@trpc/react-query';
+import { PostPagination } from '../common/types';
 
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(
-    async ({ postId }: Props) =>
-      await axios.post('api/post/remove', {
-        postId,
-      }),
-    {
-      onMutate: ({ postId }) => {
-        queryClient.setQueriesData<PostsPagination>(
-          ['posts'],
+  return trpc.posts.delete.useMutation({
+    onMutate: ({ postId }) => {
+      const infiniteQueries = queryClient.getQueriesData(
+        getQueryKey(trpc.posts.infinitePosts)
+      );
+
+      infiniteQueries.forEach((query) =>
+        queryClient.setQueriesData<PostPagination>(
+          query[0],
           (old) =>
             old &&
             produce(old, (draft) => {
-              draft.pages = draft.pages.map((page) =>
-                page.filter((postcache) => postcache.id !== postId)
-              );
+              draft.pages.map((page) => {
+                page.posts = page.posts.filter((postcache) => postcache.id !== postId);
+              });
             })
-        );
-      },
-    }
-  );
+        )
+      );
+    },
+  });
 };

@@ -1,14 +1,14 @@
 import React, { FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
-import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
-import axios from 'axios';
 import { Box, Flex, Text, Menu, MenuTrigger, MenuContent, MenuItem } from '../styles';
 import { Button, ProfileIcon, UserHoverCard } from '.';
 import { useDeletePostComment, useCreatePostComment } from '../hooks';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { CommentSkeleton } from '../styles/Skeleton';
+import { trpc } from '../utils/trpc';
+import { Post } from '../common/types';
 
 interface FeedPostCommentsProps {
   post: Post;
@@ -19,12 +19,8 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
   const deleteComment = useDeletePostComment();
   const createComment = useCreatePostComment();
 
-  const { data: comments, isFetching } = useQuery<PostComment[]>(
-    ['comments', post.id],
-    async () => {
-      const { data } = await axios.get(`/api/post/${post.id}/comments`);
-      return data;
-    },
+  const { data: comments, isFetching } = trpc.posts.comments.useQuery(
+    { postId: post.id },
     {
       enabled: post.commentsAmount > 0 && !createComment.isLoading,
     }

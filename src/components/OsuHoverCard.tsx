@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
-import { useQuery } from '@tanstack/react-query';
-import { OsuProfile } from 'next-auth/providers/osu';
-import axios from 'axios';
 import OsuIcon from '../assets/osu-icon.png';
 import Image from 'next/image';
 import { ProfileIcon } from './ProfileIcon';
@@ -10,6 +7,7 @@ import { Box, Flex, Text } from '../styles';
 import { styled } from '../../stitches.config';
 import Link from 'next/link';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
+import { trpc } from '../utils/trpc';
 
 interface OsuHoverCardProps {
   username: string;
@@ -31,14 +29,7 @@ export const Content = styled(HoverCard.Content, {
 
 export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data, isLoading } = useQuery(
-    ['osu-card', username],
-    async () => {
-      const { data } = await axios.get<OsuProfile>(`/api/user/${username}/osu`);
-      return data;
-    },
-    { enabled: !!open }
-  );
+  const { data, isLoading } = trpc.user.osu.useQuery({ username });
 
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen}>

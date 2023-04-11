@@ -1,47 +1,43 @@
-import axios from 'axios';
-import { useSession } from 'next-auth/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
-
-interface Props {
-  post: Post;
-}
+import { trpc } from '../utils/trpc';
+import { PostPagination } from '../common/types';
+import { getQueryKey } from '@trpc/react-query';
 
 export const useDislikePost = () => {
   const queryClient = useQueryClient();
-  const { data: session } = useSession();
+  const utils = trpc.useContext();
 
-  return useMutation(
-    async ({ post }: Props) => {
-      await axios.post('/api/post/dislike', {
-        postId: post.id,
-        userId: session?.user.id,
+  return trpc.posts.dislike.useMutation({
+    onMutate: ({ post }) => {
+      const newPost = produce(post, (draft) => {
+        draft.likes -= 1;
+        draft.isLiked = false;
       });
-    },
-    {
-      onMutate: ({ post }) => {
-        const newPost = produce(post, (draft) => {
-          draft.likes -= 1;
-          draft.isLiked = false;
-        });
 
-        queryClient.setQueryData<Post>(['post', post.id], newPost);
+      const infiniteQueries = queryClient.getQueriesData(
+        getQueryKey(trpc.posts.infinitePosts)
+      );
 
-        queryClient.setQueriesData<PostsPagination>(
-          ['posts'],
+      utils.posts.byId.setData({ postId: post.id }, newPost);
+
+      infiniteQueries.forEach((query) =>
+        queryClient.setQueriesData<PostPagination>(
+          query[0],
           (old) =>
-            old && {
-              pages: old.pages.map((page) =>
-                page.map((postcache) => {
+            old &&
+            produce(old, (draft) => {
+              draft.pages.map((page) => {
+                page.posts = page.posts.map((postcache) => {
                   if (postcache.id === post.id) {
                     return newPost;
                   }
                   return postcache;
-                })
-              ),
-            }
-        );
-      },
-    }
-  );
+                });
+              });
+            })
+        )
+      );
+    },
+  });
 };

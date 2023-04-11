@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useQuery } from '@tanstack/react-query';
 import { signIn, useSession } from 'next-auth/react';
 import {
   Main,
@@ -12,12 +10,13 @@ import {
   FeedButton,
   PostPaginator,
 } from '../components';
-import { useFollowSomeone, useInfinitePostIdByScroll } from '../hooks';
+import { useFollow, useUnfollow } from '../hooks';
 import Image from 'next/image';
 import twitchIcon from '../assets/twitch-icon.png';
 import BlitzNotFound from '../assets/blitz.webp';
 import { Box, Flex, Text, Heading, ProfileSkeleton } from '../styles';
 import { NextSeo } from 'next-seo';
+import { trpc } from '../utils/trpc';
 
 type Feed = 'posts' | 'favorites';
 
@@ -26,33 +25,32 @@ export default function Profile() {
   const { name } = router.query;
   const [feed, setFeed] = useState<Feed>('posts');
   const { data: session } = useSession();
-  const followSomeone = useFollowSomeone();
+  const followSomeone = useFollow();
+  const unfollowSomeone = useUnfollow();
 
   const {
     data: user,
     isLoading,
     isError,
-  } = useQuery<User>(
-    ['user', name],
-    async () => {
-      const { data } = await axios.get(`/api/user/${name}`);
-      return data;
-    },
+  } = trpc.user.profile.useQuery(
+    { name: name as string },
     {
       enabled: !!name,
     }
   );
 
   const {
-    posts,
+    data: posts,
     fetchNextPage,
     hasNextPage,
     isLoading: postsIsLoading,
-  } = useInfinitePostIdByScroll({
-    api: `/api/user/${user?.name}/${feed}?page=`,
-    query: ['posts', feed, name as string],
-    enabled: !!user,
-  });
+  } = trpc.posts.infinitePosts.user.profile.useInfiniteQuery(
+    { name: name as string, feed },
+    {
+      getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
+      enabled: !!name,
+    }
+  );
 
   if (isError) {
     return (
@@ -79,7 +77,10 @@ export default function Profile() {
       return signIn('discord');
     }
 
-    user && followSomeone.mutate(user);
+    user &&
+      (user.isFollowing
+        ? unfollowSomeone.mutate({ followingUser: user })
+        : followSomeone.mutate({ followingUser: user }));
   };
 
   return (

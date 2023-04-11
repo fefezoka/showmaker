@@ -10,9 +10,9 @@ import { styled } from '../../stitches.config';
 import osuIcon from '../assets/osu-icon.png';
 import twitchIcon from '../assets/twitch-icon.png';
 import Image, { StaticImageData } from 'next/image';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import { trpc } from '../utils/trpc';
 
 type providers = 'osu' | 'twitch';
 
@@ -102,9 +102,7 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
   const router = useRouter();
 
   const handleDisconnectAccount = async (accountId: string) => {
-    await axios.post('/api/user/disconnect-account', {
-      accountId: accountId,
-    });
+    trpc.auth.disconnectAccount.useMutation().mutate({ accountId });
 
     router.reload();
   };

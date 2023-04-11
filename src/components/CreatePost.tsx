@@ -18,6 +18,7 @@ import {
   ModalTrigger,
 } from '../styles';
 import { styled } from '../../stitches.config';
+import axios from 'axios';
 
 const DropContainer = styled('section', {
   width: '100%',
@@ -49,9 +50,11 @@ export default function CreatePost() {
   const [open, setOpen] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>();
   const createPost = useCreatePost();
+  const [isSendingVideo, setIsSendingVideo] = useState<boolean>(false);
   const isDesktop = useIsDesktop();
 
   const onClose = () => {
+    setIsSendingVideo(false);
     setOpen(false);
     setFile(undefined);
     setThumbnail(undefined);
@@ -69,12 +72,84 @@ export default function CreatePost() {
     ) {
       return;
     }
+    setIsSendingVideo(true);
+    const XUniqueUploadId = +new Date();
 
-    await createPost.mutateAsync({
-      file,
+    const processThumbnail = async () => {
+      const formdata = new FormData();
+      formdata.append('cloud_name', 'dlgkvfmky');
+      formdata.append('file', thumbnail);
+      formdata.append('upload_preset', 'gjfsvh53');
+
+      const { data } = await axios.post(
+        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
+        formdata,
+        {
+          headers: {
+            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
+          },
+        }
+      );
+      return data;
+    };
+
+    const processVideo = async () => {
+      const size = file.size;
+      const sliceSize = 15000000;
+      var start = 0;
+
+      const loop: any = async () => {
+        var end = start + sliceSize;
+
+        if (end > size) {
+          end = size;
+        }
+
+        const piece = file.slice.bind(file)(start, end) as File;
+        const videoData = await sendVideoPiece(piece, start, end - 1, size);
+        if (end < size) {
+          start += sliceSize;
+          return loop();
+        }
+        return videoData;
+      };
+      return await loop();
+    };
+
+    const sendVideoPiece = async (
+      piece: File,
+      start: number,
+      end: number,
+      size: number
+    ) => {
+      const formdata = new FormData();
+      formdata.append('cloud_name', 'dlgkvfmky');
+      formdata.append('file', piece);
+      formdata.append('upload_preset', 'tamnuopz');
+
+      const { data } = await axios.post(
+        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
+        formdata,
+        {
+          headers: {
+            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
+            'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
+          },
+        }
+      );
+      return data;
+    };
+
+    const [videoData, thumbData] = await Promise.all([
+      processVideo(),
+      processThumbnail(),
+    ]);
+
+    createPost.mutateAsync({
       game: game[0].value,
-      thumbnail,
-      title: titleRef.current?.value,
+      thumbnailUrl: thumbData.secure_url,
+      title: titleRef.current.value,
+      videoUrl: videoData.secure_url,
     });
 
     onClose();
@@ -187,7 +262,7 @@ export default function CreatePost() {
         <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
           <ModalClose asChild>
             <Button
-              disabled={createPost.isLoading}
+              disabled={createPost.isLoading || isSendingVideo}
               onClick={onClose}
               variant={'exit'}
               value="Sair"
@@ -195,7 +270,7 @@ export default function CreatePost() {
           </ModalClose>
           <Button
             disabled={!file}
-            loading={createPost.isLoading}
+            loading={createPost.isLoading || isSendingVideo}
             onClick={processFile}
             value="Enviar"
           />

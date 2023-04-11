@@ -15,6 +15,7 @@ import {
   ModalClose,
 } from '../styles';
 import { useDeletePost, useLikePost, useDislikePost } from '../hooks';
+import { Post } from '../common/types';
 
 interface FeedPostProps extends React.HTMLProps<HTMLDivElement> {
   post: Post;
@@ -32,7 +33,7 @@ export const FeedPost = memo(
         return signIn('discord');
       }
 
-      post.isLiked ? dislikePost.mutate({ post }) : likePost.mutate({ post });
+      post.isLiked ? dislikePost.mutate({ post }) : likePost.mutateAsync({ post });
     };
 
     return (

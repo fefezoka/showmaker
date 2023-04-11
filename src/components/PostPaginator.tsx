@@ -3,11 +3,13 @@ import { useInView } from 'react-intersection-observer';
 import { Box } from '../styles';
 import { PostSkeleton } from '../styles/Skeleton';
 import { FeedPost } from './FeedPost';
+import { InfiniteData } from '@tanstack/react-query';
+import { Post } from '../common/types';
 
 interface PostPaginatorProps {
   hasNextPage: boolean | undefined;
   fetchNextPage: () => {};
-  posts: Post[] | undefined;
+  posts: InfiniteData<{ posts: Post[]; nextCursor?: string | undefined }> | undefined;
   loading?: boolean;
 }
 
@@ -37,13 +39,15 @@ export const PostPaginator = ({
   return (
     <>
       {posts &&
-        posts.map((post, index) => (
-          <FeedPost
-            ref={posts.length - 1 === index ? ref : null}
-            post={post}
-            key={post.id}
-          />
-        ))}
+        posts.pages.map((page) =>
+          page.posts.map((post, index) => (
+            <FeedPost
+              ref={page.posts.length - 1 === index ? ref : null}
+              post={post}
+              key={post.id}
+            />
+          ))
+        )}
     </>
   );
 };

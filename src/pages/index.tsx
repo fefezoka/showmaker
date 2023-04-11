@@ -1,8 +1,8 @@
 import { Main, FeedButton, PostPaginator } from '../components';
-import { useInfinitePostIdByScroll } from '../hooks';
 import { Box, Flex, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
+import { trpc } from '../utils/trpc';
 
 const feedOptions = [
   { label: 'Todos', value: 'all' },
@@ -18,10 +18,19 @@ type feed = typeof feedOptions[number];
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);
 
-  const { posts, fetchNextPage, hasNextPage, isLoading } = useInfinitePostIdByScroll({
-    api: `/api/post/feed?${feed.value !== 'all' ? `game=${feed.value}&` : ''}page=`,
-    query: ['posts', 'feed', feed.value],
-  });
+  const {
+    data: posts,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+  } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
+    {
+      ...(feed.value !== 'all' && { game: feed.value }),
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
+    }
+  );
 
   return (
     <>

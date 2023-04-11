@@ -3,12 +3,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import * as HoverCard from '@radix-ui/react-hover-card';
 import { ProfileIcon } from './ProfileIcon';
-import { useQuery } from '@tanstack/react-query';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
-import axios from 'axios';
 import { keyframes, styled } from '../../stitches.config';
 import { Box, Flex, Heading, Text } from '../styles';
 import Spinner from '../assets/Spinner.svg';
+import { trpc } from '../utils/trpc';
+import { User } from '../common/types';
 
 const Fade = keyframes({
   from: {
@@ -40,15 +40,11 @@ export const Content = styled(HoverCard.Content, {
 export const UserHoverCard = ({ user, href, children }: UserHoverCardProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const { data: posts, isLoading } = useQuery<Post[]>(
-    ['lastPosts', user.id],
-    async () => {
-      const { data } = await axios.get(`/api/user/${user.name}/last-posts`);
-      return data;
-    },
+  const { data: posts, isLoading } = trpc.user.lastPosts.useQuery(
     {
-      enabled: !!open,
-    }
+      username: user.name,
+    },
+    { enabled: open }
   );
 
   return (

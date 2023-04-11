@@ -3,8 +3,8 @@ import { useRouter } from 'next/router';
 import { Main, PostPaginator } from '../components';
 import { Box, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
-import { useInfinitePostIdByScroll } from '../hooks';
 import { GetServerSideProps } from 'next';
+import { trpc } from '../utils/trpc';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { q } = query;
@@ -27,16 +27,20 @@ export default function Search() {
   const router = useRouter();
   const { q: title } = router.query;
 
-  if (!title) {
-    router.push('/');
-  }
-
-  const { posts, isLoading, fetchNextPage, hasNextPage, isError } =
-    useInfinitePostIdByScroll({
-      api: `/api/post/search?q=${title}&page=`,
-      query: ['posts', 'search', title],
+  const {
+    data: posts,
+    isLoading,
+    fetchNextPage,
+    hasNextPage,
+    isError,
+  } = trpc.posts.infinitePosts.search.useInfiniteQuery(
+    { q: title as string },
+    {
       enabled: !!title,
-    });
+      getNextPageParam: (lastPage, pages) =>
+        lastPage.posts.length === 6 && pages.length + 1,
+    }
+  );
 
   if (isError) {
     return (
