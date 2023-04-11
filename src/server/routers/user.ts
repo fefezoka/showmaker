@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { procedure, router } from '../trpc';
 import axios from 'axios';
+import { TRPCError } from '@trpc/server';
 
 export const user = router({
   profile: procedure
@@ -24,7 +25,10 @@ export const user = router({
       });
 
       if (!user) {
-        return;
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found',
+        });
       }
 
       const osuAccount = await ctx.prisma.account.findMany({
@@ -75,7 +79,10 @@ export const user = router({
       });
 
       if (!response) {
-        return;
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Osu profile not found',
+        });
       }
 
       if (
@@ -137,7 +144,10 @@ export const user = router({
     .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session) {
-        return;
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Must be logged',
+        });
       }
 
       await ctx.prisma.follows.createMany({
@@ -173,7 +183,10 @@ export const user = router({
     .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session) {
-        return;
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'Must be logged',
+        });
       }
 
       await ctx.prisma.follows.deleteMany({

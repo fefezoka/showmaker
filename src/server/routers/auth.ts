@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { procedure, router } from '../trpc';
 import axios from 'axios';
+import { TRPCError } from '@trpc/server';
 
 export const auth = router({
   disconnectAccount: procedure
@@ -60,7 +61,10 @@ export const auth = router({
           access_token: data.access_token,
         };
       } catch (error) {
-        return { message: 'error' };
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'error',
+        });
       }
     }),
 });

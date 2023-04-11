@@ -279,7 +279,6 @@ export const posts = router({
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
       };
     }),
-
   comments: procedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -393,6 +392,7 @@ export const posts = router({
           },
         },
       });
+
       return response;
     }),
   deleteComment: procedure
