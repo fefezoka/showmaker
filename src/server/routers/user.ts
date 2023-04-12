@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { procedure, router } from '../trpc';
+import { authenticatedProcedure, procedure, router } from '../trpc';
 import axios from 'axios';
 import { TRPCError } from '@trpc/server';
 
@@ -140,16 +140,9 @@ export const user = router({
       });
       return response;
     }),
-  follow: procedure
+  follow: authenticatedProcedure
     .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Must be logged',
-        });
-      }
-
       await ctx.prisma.follows.createMany({
         data: {
           followingId: input.followingUser.id,
@@ -179,16 +172,9 @@ export const user = router({
         },
       });
     }),
-  unfollow: procedure
+  unfollow: authenticatedProcedure
     .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Must be logged',
-        });
-      }
-
       await ctx.prisma.follows.deleteMany({
         where: {
           followingId: input.followingUser.id,

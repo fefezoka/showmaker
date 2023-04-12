@@ -1,5 +1,5 @@
 import { Post, postSchema } from '../../common/types';
-import { procedure, router } from '../trpc';
+import { authenticatedProcedure, procedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -206,7 +206,7 @@ export const posts = router({
         }),
     }),
   }),
-  create: procedure
+  create: authenticatedProcedure
     .input(
       z.object({
         title: z.string(),
@@ -224,7 +224,7 @@ export const posts = router({
           game: input.game,
           user: {
             connect: {
-              id: ctx.session?.user.id,
+              id: ctx.session.user.id,
             },
           },
         },
@@ -239,7 +239,7 @@ export const posts = router({
         isLiked: false,
       };
     }),
-  delete: procedure
+  delete: authenticatedProcedure
     .input(z.object({ postId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.prisma.post.delete({
@@ -293,20 +293,13 @@ export const posts = router({
       });
       return response;
     }),
-  like: procedure
+  like: authenticatedProcedure
     .input(
       z.object({
         post: postSchema,
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Must be logged',
-        });
-      }
-
       const response = await ctx.prisma.likedPost.create({
         data: {
           postId: input.post.id,
@@ -326,16 +319,9 @@ export const posts = router({
       });
       return response;
     }),
-  dislike: procedure
+  dislike: authenticatedProcedure
     .input(z.object({ post: postSchema }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Must be logged',
-        });
-      }
-
       const response = await ctx.prisma.likedPost.deleteMany({
         where: {
           postId: input.post.id,
@@ -356,7 +342,7 @@ export const posts = router({
       return response;
     }),
 
-  createComment: procedure
+  createComment: authenticatedProcedure
     .input(
       z.object({
         message: z.string(),
@@ -364,13 +350,6 @@ export const posts = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-          message: 'Must be logged',
-        });
-      }
-
       const response = await ctx.prisma.postComment.create({
         data: {
           message: input.message,
@@ -395,7 +374,7 @@ export const posts = router({
 
       return response;
     }),
-  deleteComment: procedure
+  deleteComment: authenticatedProcedure
     .input(
       z.object({
         commentId: z.string(),

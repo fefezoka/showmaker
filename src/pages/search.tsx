@@ -25,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
 export default function Search() {
   const router = useRouter();
+  const utils = trpc.useContext();
   const { q: title } = router.query;
 
   const {
@@ -39,6 +40,13 @@ export default function Search() {
       enabled: !!title,
       getNextPageParam: (lastPage, pages) =>
         lastPage.posts.length === 6 && pages.length + 1,
+      onSuccess(data) {
+        data.pages.forEach((page) =>
+          page.posts.forEach((post) =>
+            utils.posts.byId.setData({ postId: post.id }, post)
+          )
+        );
+      },
     }
   );
 

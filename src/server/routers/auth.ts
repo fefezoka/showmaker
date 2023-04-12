@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { procedure, router } from '../trpc';
+import { authenticatedProcedure, procedure, router } from '../trpc';
 import axios from 'axios';
 import { TRPCError } from '@trpc/server';
 
 export const auth = router({
-  disconnectAccount: procedure
+  disconnectAccount: authenticatedProcedure
     .input(z.object({ accountId: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const response = await ctx.prisma.account.delete({

@@ -17,6 +17,7 @@ type feed = typeof feedOptions[number];
 
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);
+  const utils = trpc.useContext();
 
   const {
     data: posts,
@@ -29,6 +30,13 @@ export default function Timeline() {
     },
     {
       getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
+      onSuccess(data) {
+        data.pages.forEach((page) =>
+          page.posts.forEach((post) =>
+            utils.posts.byId.setData({ postId: post.id }, post)
+          )
+        );
+      },
     }
   );
 

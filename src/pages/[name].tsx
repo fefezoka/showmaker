@@ -22,11 +22,12 @@ type Feed = 'posts' | 'favorites';
 
 export default function Profile() {
   const router = useRouter();
-  const { name } = router.query;
+  const name = router.query.name as string;
   const [feed, setFeed] = useState<Feed>('posts');
   const { data: session } = useSession();
   const followSomeone = useFollow();
   const unfollowSomeone = useUnfollow();
+  const utils = trpc.useContext();
 
   const {
     data: user,
@@ -48,6 +49,13 @@ export default function Profile() {
     { name: name as string, feed },
     {
       getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
+      onSuccess(data) {
+        data.pages.forEach((page) =>
+          page.posts.forEach((post) =>
+            utils.posts.byId.setData({ postId: post.id }, post)
+          )
+        );
+      },
       enabled: !!name,
     }
   );
