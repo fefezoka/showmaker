@@ -100,9 +100,10 @@ const ProviderContainer = styled('div', {
 
 export default function Config({ accounts, noConnectionProviders }: Props) {
   const router = useRouter();
+  const disconnectAccount = trpc.auth.disconnectAccount.useMutation();
 
   const handleDisconnectAccount = async (accountId: string) => {
-    trpc.auth.disconnectAccount.useMutation().mutate({ accountId });
+    await disconnectAccount.mutateAsync({ accountId });
 
     router.reload();
   };
@@ -142,12 +143,13 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
                       {account.provider.charAt(0).toUpperCase() +
                         account.provider.slice(1)}
                     </Heading>
-                    <button
+                    <Box
+                      as="button"
                       type="button"
                       onClick={() => handleDisconnectAccount(account.id)}
                     >
                       <IoRemoveCircle size={24} />
-                    </button>
+                    </Box>
                   </ProviderContainer>
                 ))}
               </Grid>
@@ -171,9 +173,9 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
                     <Heading>
                       {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
                     </Heading>
-                    <button type="button" onClick={() => signIn(provider.name)}>
+                    <Box as="button" type="button" onClick={() => signIn(provider.name)}>
                       <IoAddCircle size={24} />
-                    </button>
+                    </Box>
                   </ProviderContainer>
                 ))}
               </Grid>
