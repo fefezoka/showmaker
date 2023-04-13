@@ -2,13 +2,21 @@ import React, { FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
-import { Box, Flex, Text, Menu, MenuTrigger, MenuContent, MenuItem } from '../styles';
-import { Button, ProfileIcon, UserHoverCard } from '.';
-import { useDeletePostComment, useCreatePostComment } from '../hooks';
+import {
+  Box,
+  Flex,
+  Text,
+  Menu,
+  MenuTrigger,
+  MenuContent,
+  MenuItem,
+  CommentSkeleton,
+} from '@styles';
+import { Button, ProfileIcon, UserHoverCard } from '@components';
+import { useDeletePostComment, useCreatePostComment } from '@hooks';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { CommentSkeleton } from '../styles/Skeleton';
 import { trpc } from '../utils/trpc';
-import { Post } from '../common/types';
+import { Post } from '../@types/types';
 
 interface FeedPostCommentsProps {
   post: Post;
@@ -84,7 +92,7 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
             key={comment.id}
           >
             <Flex align={'center'} gap={'3'}>
-              <UserHoverCard user={comment.user} href={`/${comment.user.name}`}>
+              <UserHoverCard user={comment.user}>
                 <ProfileIcon src={comment.user.image} alt="" />
               </UserHoverCard>
               <Flex
@@ -92,7 +100,7 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
                 direction={{ '@initial': 'column', '@bp2': 'row' }}
                 align={{ '@bp2': 'center' }}
               >
-                <UserHoverCard user={comment.user} href={`/${comment.user.name}`}>
+                <UserHoverCard user={comment.user}>
                   <Text size={{ '@initial': '3', '@bp2': '4' }} weight={'bold'}>
                     {comment.user.name}
                   </Text>

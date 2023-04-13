@@ -12,5 +12,6 @@ export {
   ModalTitle,
   ModalTrigger,
 } from './Modal';
+export { Tabs, TabsContent, TabsTrigger, TabsList } from './Tabs';
 export { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from './DropdownMenu';
 export { ProfileSkeleton, PostSkeleton, CommentSkeleton } from './Skeleton';

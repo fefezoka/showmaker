@@ -2,13 +2,13 @@ import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import * as HoverCard from '@radix-ui/react-hover-card';
-import { ProfileIcon } from './ProfileIcon';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { keyframes, styled } from '../../stitches.config';
-import { Box, Flex, Heading, Text } from '../styles';
 import Spinner from '../assets/Spinner.svg';
 import { trpc } from '../utils/trpc';
-import { User } from '../common/types';
+import { User } from '../@types/types';
+import { ProfileIcon } from '@components';
+import { Box, Flex, Heading, Text } from '@styles';
 
 const Fade = keyframes({
   from: {
@@ -21,7 +21,6 @@ const Fade = keyframes({
 
 interface UserHoverCardProps {
   user: User;
-  href: string;
   children: ReactNode;
 }
 
@@ -37,7 +36,7 @@ export const Content = styled(HoverCard.Content, {
   boxShadow: '0px 0px 12px black',
 });
 
-export const UserHoverCard = ({ user, href, children }: UserHoverCardProps) => {
+export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
   const { data: posts, isLoading } = trpc.user.lastPosts.useQuery(
@@ -50,7 +49,7 @@ export const UserHoverCard = ({ user, href, children }: UserHoverCardProps) => {
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
-        <Link href={href} prefetch={false}>
+        <Link href={`/${user.name}`} prefetch={false}>
           {children}
         </Link>
       </HoverCard.Trigger>

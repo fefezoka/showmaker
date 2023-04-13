@@ -1,5 +1,5 @@
-import { Main, FeedButton, PostPaginator } from '../components';
-import { Box, Flex, Heading } from '../styles';
+import { Main, FeedButton, PostPaginator } from '@components';
+import { Box, Flex, Heading } from '@styles';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { trpc } from '../utils/trpc';

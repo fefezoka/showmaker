@@ -204,4 +204,49 @@ export const user = router({
         },
       });
     }),
+  followingUsers: procedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.user.findMany({
+        where: {
+          followers: {
+            some: {
+              followerId: input.userId,
+            },
+          },
+        },
+      });
+      return response.map((user) => {
+        return {
+          ...user,
+          isFollowing: true,
+          followYou: false,
+        };
+      });
+    }),
+  followerUsers: procedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const response = await ctx.prisma.user.findMany({
+        where: {
+          following: {
+            some: {
+              followingId: input.userId,
+            },
+          },
+        },
+        include: {
+          followers: true,
+        },
+      });
+      return response.map((user) => {
+        return {
+          ...user,
+          isFollowing: user.followers.some(
+            (follower) => follower.followerId === input.userId
+          ),
+          followYou: false,
+        };
+      });
+    }),
 });

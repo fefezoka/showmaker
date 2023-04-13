@@ -9,12 +9,13 @@ import {
   OsuHoverCard,
   FeedButton,
   PostPaginator,
-} from '../components';
-import { useFollow, useUnfollow } from '../hooks';
+  SeeUserFollow,
+} from '@components';
+import { useFollow, useUnfollow } from '@hooks';
 import Image from 'next/image';
 import twitchIcon from '../assets/twitch-icon.png';
 import BlitzNotFound from '../assets/blitz.webp';
-import { Box, Flex, Text, Heading, ProfileSkeleton } from '../styles';
+import { Box, Flex, Text, Heading, ProfileSkeleton } from '@styles';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
 
@@ -138,16 +139,24 @@ export default function Profile() {
                     )}
                   </Text>
                 </Box>
-                <Box>
-                  <Text size={'3'}>Seguindo </Text>
-                  <Text size={'3'} weight={'bold'} css={{ mr: '$3' }}>
-                    {user.followingAmount}
-                  </Text>
-                  <Text size={'3'}>Seguidores </Text>
-                  <Text size={'3'} weight={'bold'}>
-                    {user.followersAmount}
-                  </Text>
-                </Box>
+                <Flex gap={'3'}>
+                  <SeeUserFollow userId={user.id} defaultTab="followers">
+                    <Box as={'button'}>
+                      <Text size={'3'}>Seguidores </Text>
+                      <Text size={'3'} weight={'bold'}>
+                        {user.followersAmount}
+                      </Text>
+                    </Box>
+                  </SeeUserFollow>
+                  <SeeUserFollow userId={user.id} defaultTab="following">
+                    <Box as={'button'}>
+                      <Text size={'3'}>Seguindo </Text>
+                      <Text size={'3'} weight={'bold'}>
+                        {user.followingAmount}
+                      </Text>
+                    </Box>
+                  </SeeUserFollow>
+                </Flex>
               </Box>
 
               <Flex align={'center'} gap={'2'}>

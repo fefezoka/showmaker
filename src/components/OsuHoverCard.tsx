@@ -3,11 +3,11 @@ import * as HoverCard from '@radix-ui/react-hover-card';
 import OsuIcon from '../assets/osu-icon.png';
 import Image from 'next/image';
 import { ProfileIcon } from './ProfileIcon';
-import { Box, Flex, Text } from '../styles';
 import { styled } from '../../stitches.config';
 import Link from 'next/link';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { trpc } from '../utils/trpc';
+import { Box, Flex, Text } from '@styles';
 
 interface OsuHoverCardProps {
   username: string;

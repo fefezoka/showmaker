@@ -1,8 +1,8 @@
 import React, { ReactNode, memo } from 'react';
 import Image from 'next/image';
 import Spinner from '../assets/Spinner.svg';
-import { Header, Menu } from '.';
-import { Box, Flex } from '../styles';
+import { Header, Menu } from '@components';
+import { Box, Flex } from '@styles';
 import { useSession } from 'next-auth/react';
 
 interface MainProps {

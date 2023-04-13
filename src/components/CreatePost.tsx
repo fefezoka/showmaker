@@ -1,11 +1,13 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
-import { Button, Select } from '.';
 import { signIn, useSession } from 'next-auth/react';
+import { styled } from '../../stitches.config';
+import axios from 'axios';
 import { IoAdd } from 'react-icons/io5';
-import { useIsDesktop, useCreatePost } from '../hooks';
 import { getVideoFrame } from '../utils/getVideoFrame';
+import { useIsDesktop, useCreatePost } from '@hooks';
+import { Button, Select } from '@components';
 import {
   Box,
   Flex,
@@ -16,9 +18,7 @@ import {
   ModalDescription,
   ModalTitle,
   ModalTrigger,
-} from '../styles';
-import { styled } from '../../stitches.config';
-import axios from 'axios';
+} from '@styles';
 
 const DropContainer = styled('section', {
   width: '100%',

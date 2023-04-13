@@ -12,3 +12,4 @@ export { UserHoverCard } from './UserHoverCard';
 export { Video } from './Video';
 export { Select } from './Select';
 export { PostPaginator } from './PostPaginator';
+export { SeeUserFollow } from './SeeUserFollow';

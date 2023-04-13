@@ -27,7 +27,35 @@ export const useUnfollow = () => {
         (old) =>
           old &&
           produce(old, (draft) => {
-            draft.followersAmount += 1;
+            draft.followingAmount -= 1;
+          })
+      );
+
+      utils.user.followingUsers.setData(
+        { userId: session?.user.id },
+        (old) =>
+          old &&
+          produce(old, (draft) => {
+            draft.forEach((user) => {
+              if (user.id === followingUser.id) {
+                user.isFollowing = false;
+                user.followingAmount -= 1;
+              }
+            });
+          })
+      );
+
+      utils.user.followerUsers.setData(
+        { userId: session?.user.id },
+        (old) =>
+          old &&
+          produce(old, (draft) => {
+            draft.forEach((user) => {
+              if (user.id === followingUser.id) {
+                user.isFollowing = false;
+                user.followingAmount -= 1;
+              }
+            });
           })
       );
     },

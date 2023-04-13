@@ -1,4 +1,4 @@
-import { Post, postSchema } from '../../common/types';
+import { Post, postSchema } from '../../@types/types';
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';

@@ -2,9 +2,7 @@ import React from 'react';
 import { GetServerSideProps } from 'next';
 import { Account } from 'next-auth/';
 import { getSession, signIn } from 'next-auth/react';
-import { Main } from '../components';
 import { prisma } from '../lib/prisma';
-import { Box, Grid, Heading } from '../styles';
 import { IoRemoveCircle, IoAddCircle } from 'react-icons/io5';
 import { styled } from '../../stitches.config';
 import osuIcon from '../assets/osu-icon.png';
@@ -13,6 +11,8 @@ import Image, { StaticImageData } from 'next/image';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
+import { Main } from '@components';
+import { Box, Grid, Heading } from '@styles';
 
 type providers = 'osu' | 'twitch';
 

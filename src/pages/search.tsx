@@ -1,10 +1,10 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { Main, PostPaginator } from '../components';
-import { Box, Heading } from '../styles';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { trpc } from '../utils/trpc';
+import { Main, PostPaginator } from '@components';
+import { Box, Heading } from '@styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { q } = query;

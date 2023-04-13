@@ -1,16 +1,16 @@
 import React from 'react';
-import { Main, FeedPost } from '../../components';
 import { createServerSideHelpers } from '@trpc/react-query/server';
 import { appRouter } from '../../server/routers/_app';
 import { createContext } from '../../server/context';
-import { Flex, Heading, PostSkeleton } from '../../styles';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import BlitzNotFound from '../../assets/blitz.webp';
 import Image from 'next/image';
 import { trpc } from '../../utils/trpc';
-import { Post as PostType } from '../../common/types';
+import { Post as PostType } from '../../@types/types';
+import { Main, FeedPost } from '@components';
+import { Flex, Heading, PostSkeleton } from '@styles';
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (ctx.req.url?.startsWith('/_next')) {

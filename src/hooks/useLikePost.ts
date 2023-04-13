@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { getQueryKey } from '@trpc/react-query';
 import { trpc } from '../utils/trpc';
 import { useSession } from 'next-auth/react';
-import { PostPagination } from '../common/types';
+import { PostPagination } from '../@types/types';
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();

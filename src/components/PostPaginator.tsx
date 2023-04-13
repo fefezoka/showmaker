@@ -4,7 +4,7 @@ import { Box } from '../styles';
 import { PostSkeleton } from '../styles/Skeleton';
 import { FeedPost } from './FeedPost';
 import { InfiniteData } from '@tanstack/react-query';
-import { Post } from '../common/types';
+import { Post } from '../@types/types';
 
 interface PostPaginatorProps {
   hasNextPage: boolean | undefined;

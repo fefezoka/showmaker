@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { trpc } from '../utils/trpc';
 import { getQueryKey } from '@trpc/react-query';
-import { PostPagination } from '../common/types';
+import { PostPagination } from '../@types/types';
 
 export const useDeletePost = () => {
   const queryClient = useQueryClient();

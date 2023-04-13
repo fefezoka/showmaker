@@ -1,9 +1,10 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import { ProfileIcon } from '.';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
-import { useIsDesktop } from '../hooks/useIsDesktop';
+import { styled } from '../../stitches.config';
+import { ProfileIcon } from '@components';
+import { useIsDesktop } from '@hooks';
 import {
   Box,
   Flex,
@@ -14,8 +15,7 @@ import {
   MenuItem,
   MenuSeparator,
   MenuTrigger,
-} from '../styles';
-import { styled } from '../../stitches.config';
+} from '@styles';
 
 export const Input = styled('input', {
   width: '100%',

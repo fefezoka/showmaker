@@ -3,7 +3,8 @@ import React, { memo, forwardRef } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { IoHeartOutline, IoHeart, IoClose } from 'react-icons/io5';
 import { signIn, useSession } from 'next-auth/react';
-import { Button, ProfileIcon, Video, UserHoverCard, FeedPostComments } from '.';
+import { Post } from '../@types/types';
+import { Button, ProfileIcon, Video, UserHoverCard, FeedPostComments } from '@components';
 import {
   Box,
   Flex,
@@ -13,9 +14,8 @@ import {
   ModalTrigger,
   ModalContent,
   ModalClose,
-} from '../styles';
-import { useDeletePost, useLikePost, useDislikePost } from '../hooks';
-import { Post } from '../common/types';
+} from '@styles';
+import { useDeletePost, useLikePost, useDislikePost } from '@hooks';
 
 interface FeedPostProps extends React.HTMLProps<HTMLDivElement> {
   post: Post;
@@ -39,7 +39,7 @@ export const FeedPost = memo(
     return (
       <Box as={'section'} {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
         <Flex justify={'between'}>
-          <UserHoverCard user={post.user} href={`/${post.user.name}`}>
+          <UserHoverCard user={post.user}>
             <Flex align={'center'} gap={'4'}>
               <ProfileIcon src={post.user.image} alt="" />
               <Text weight={'bold'}>{post.user.name}</Text>
