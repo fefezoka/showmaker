@@ -3,6 +3,7 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import { styled } from '../../stitches.config';
+import discordIcon from '../assets/discord-icon.png';
 import { ProfileIcon } from '@components';
 import { useIsDesktop } from '@hooks';
 import {
@@ -16,6 +17,7 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from '@styles';
+import Image from 'next/image';
 
 export const Input = styled('input', {
   width: '100%',
@@ -115,11 +117,16 @@ export const Header = () => {
             </MenuContent>
           </Menu>
         ) : (
-          <Box css={{ ta: 'right' }}>
-            <Box as={'button'} onClick={() => signIn('discord')}>
-              <Text weight={'bold'}>Logar com Discord</Text>
-            </Box>
-          </Box>
+          <Flex
+            align={'center'}
+            gap={'2'}
+            as={'button'}
+            css={{ px: '$4', py: '$2', bc: '$bgalt', br: '$7', ml: '$3' }}
+            onClick={() => signIn('discord')}
+          >
+            <Image src={discordIcon} alt="" height={24} width={24} />
+            <Text weight={'bold'}>{isDesktop ? 'Logar com Discord' : 'Logar'}</Text>
+          </Flex>
         )}
       </Flex>
     </Box>

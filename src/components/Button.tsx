@@ -52,7 +52,7 @@ interface ButtonProps extends React.ComponentProps<typeof StyledButton> {
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ value, Icon, loading, ...props }: ButtonProps, forwardedRef) => {
     return (
-      <StyledButton {...props} ref={forwardedRef}>
+      <StyledButton type="button" {...props} ref={forwardedRef}>
         {loading && <Image src={Spinner} height={18} width={18} alt="" />}
         {Icon && <Icon size={18} />}
         {!loading && !Icon && value}

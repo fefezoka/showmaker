@@ -262,7 +262,7 @@ export default function CreatePost() {
         <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
           <ModalClose asChild>
             <Button
-              disabled={createPost.isLoading || isSendingVideo}
+              disabled={isSendingVideo}
               onClick={onClose}
               variant={'exit'}
               value="Sair"
@@ -270,7 +270,7 @@ export default function CreatePost() {
           </ModalClose>
           <Button
             disabled={!file}
-            loading={createPost.isLoading || isSendingVideo}
+            loading={isSendingVideo}
             onClick={processFile}
             value="Enviar"
           />

@@ -75,7 +75,7 @@ export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowPro
                         <Text weight={'bold'}>{user.name}</Text>
                       </Flex>
                     </UserHoverCard>
-                    {user.id !== session?.user.id && (
+                    {session && user.id !== session?.user.id && (
                       <Button
                         css={{ p: '$2', height: '20px' }}
                         value={user.isFollowing ? 'Seguindo' : 'Seguir'}

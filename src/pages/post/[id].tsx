@@ -31,7 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       dehydratedState: JSON.parse(
-        JSON.stringify(helpers.dehydrate().queries[0].state.data)
+        JSON.stringify(helpers.dehydrate().queries[0].state.data ?? null)
       ),
     },
   };
