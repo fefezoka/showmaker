@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import twitchIcon from '../assets/twitch-icon.png';
 import BlitzNotFound from '../assets/blitz.webp';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
+import { SiTwitch } from 'react-icons/si';
 import {
   Main,
   FullProfileIcon,
@@ -169,7 +169,7 @@ export default function Profile() {
                       href={'https://twitch.tv/' + user.twitchAccountId}
                       target={'_blank'}
                     >
-                      <Image alt="" height={32} width={32} src={twitchIcon} />
+                      <SiTwitch size={28} />
                     </Link>
                   </Box>
                 )}

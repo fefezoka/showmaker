@@ -14,21 +14,23 @@ export const {
 } = createStitches({
   theme: {
     colors: {
+      overlay: 'rgb(0, 0, 0, .4)',
+      black: 'rgb(20, 25, 32)',
       bg: 'rgb(30, 42, 56)',
       bgalt: 'rgb(56, 64, 77)',
       skeleton: 'rgb(56, 64, 77)',
       skeletonalt: 'rgb(72, 84, 102)',
       scrollthumb: 'rgb(72, 84, 102)',
-      black: 'rgb(20, 25, 32)',
       gray: 'rgb(169, 172, 182)',
       'input-gray': 'rgb(192, 196, 199)',
       white: 'rgb(232, 240, 249)',
+      modal: 'rgb(250, 251, 253)',
       red: '#ff5050',
       redalt: '#e84d4d',
       blue: '#18A0FB',
       bluealt: '#148dde',
-      modal: 'rgb(250, 251, 253)',
-      overlay: 'rgb(0, 0, 0, .4)',
+      twitch: '#6b2598',
+      osu: '#e4649d',
     },
     fontSizes: {
       1: '10px',

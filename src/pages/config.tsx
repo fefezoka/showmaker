@@ -1,36 +1,29 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
-import { Account } from 'next-auth/';
 import { getSession, signIn } from 'next-auth/react';
-import { prisma } from '../lib/prisma';
-import { IoRemoveCircle, IoAddCircle } from 'react-icons/io5';
-import { styled } from '../../stitches.config';
-import osuIcon from '../assets/osu-icon.png';
-import twitchIcon from '../assets/twitch-icon.png';
-import Image, { StaticImageData } from 'next/image';
+import { IoRemoveCircle, IoAddCircle, IoLogoTwitch } from 'react-icons/io5';
+import { SiOsu } from 'react-icons/si';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
 import { Main } from '@components';
-import { Box, Grid, Heading } from '@styles';
+import { Box, Flex, Grid, Heading, Text } from '@styles';
+import { IconType } from 'react-icons/lib';
 
 type providers = 'osu' | 'twitch';
 
-const providers: { name: providers; logo: StaticImageData }[] = [
+const providers: { name: providers; logo: IconType; bc: string }[] = [
   {
     name: 'osu',
-    logo: osuIcon,
+    logo: SiOsu,
+    bc: '$osu',
   },
   {
     name: 'twitch',
-    logo: twitchIcon,
+    logo: IoLogoTwitch,
+    bc: '$twitch',
   },
 ];
-
-interface Props {
-  accounts: (Account & { id: string })[];
-  noConnectionProviders: typeof providers;
-}
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession({ ctx: ctx });
@@ -44,66 +37,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const accounts = await prisma.account.findMany({
-    select: {
-      id: true,
-      provider: true,
-      providerAccountId: true,
-    },
-    where: {
-      provider: {
-        not: 'discord',
-      },
-      userId: session.user.id,
-    },
-  });
-
-  const noConnectionProviders = providers.filter(
-    (provider) => !accounts.some((account) => provider.name === account.provider)
-  );
-
   return {
-    props: {
-      accounts: accounts,
-      noConnectionProviders: noConnectionProviders,
-    },
+    props: {},
   };
 };
 
-const ProviderContainer = styled('div', {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  br: '$1',
-  transition: 'all 200ms',
-  padding: '$3 $4',
-
-  variants: {
-    provider: {
-      osu: {
-        backgroundColor: '#e4649d',
-
-        '&:hover': {
-          backgroundColor: '#d65a91',
-        },
-      },
-      twitch: {
-        backgroundColor: '#6b2598',
-
-        '&:hover': {
-          backgroundColor: '#5f1f87',
-        },
-      },
-    },
-  },
-});
-
-export default function Config({ accounts, noConnectionProviders }: Props) {
+export default function Config() {
   const router = useRouter();
   const disconnectAccount = trpc.auth.disconnectAccount.useMutation();
+  const { data: accounts } = trpc.auth.accounts.useQuery();
 
-  const handleDisconnectAccount = async (accountId: string) => {
-    await disconnectAccount.mutateAsync({ accountId });
+  if (!accounts) {
+    return <></>;
+  }
+
+  const handleConnectDisconnectAccount = async (provider: string) => {
+    accounts.some((account) => account.provider === provider)
+      ? await disconnectAccount.mutateAsync({ provider })
+      : signIn(provider);
 
     router.reload();
   };
@@ -117,70 +68,60 @@ export default function Config({ accounts, noConnectionProviders }: Props) {
         </Box>
         <Box as={'section'}>
           <Heading size="2">Contas</Heading>
-          {accounts.length !== 0 && (
-            <Box css={{ mt: '$2' }}>
-              <Heading>Contas conectadas</Heading>
-              <Grid
-                columns={{ '@initial': '1', '@bp2': '2' }}
-                gap={'4'}
-                css={{ mt: '$2' }}
-              >
-                {accounts.map((account) => (
-                  <ProviderContainer
-                    key={account.provider}
-                    provider={account.provider as providers}
+          <Box css={{ mt: '$2' }}>
+            <Grid columns={{ '@initial': '1', '@bp2': '2' }} gap={'4'} css={{ mt: '$2' }}>
+              {providers.map((provider) => (
+                <Flex
+                  justify={'between'}
+                  align={'center'}
+                  css={{
+                    br: '$1',
+                    transition: 'all 200ms',
+                    ...(accounts.some((account) => account.provider === provider.name)
+                      ? { bc: '$bgalt' }
+                      : { bc: provider.bc }),
+                  }}
+                  key={provider.name}
+                >
+                  <Flex
+                    align={'center'}
+                    justify={'center'}
+                    css={{
+                      br: '$1',
+                      height: 72,
+                      width: 72,
+                      bc: provider.bc,
+                    }}
                   >
-                    <Image
-                      src={
-                        providers.find((provider) => provider.name === account.provider)
-                          ?.logo ?? twitchIcon
-                      }
-                      alt=""
-                      height={44}
-                      width={44}
-                    />
-                    <Heading>
-                      {account.provider.charAt(0).toUpperCase() +
-                        account.provider.slice(1)}
-                    </Heading>
-                    <Box
-                      as="button"
-                      type="button"
-                      onClick={() => handleDisconnectAccount(account.id)}
-                    >
-                      <IoRemoveCircle size={24} />
-                    </Box>
-                  </ProviderContainer>
-                ))}
-              </Grid>
-            </Box>
-          )}
-
-          {noConnectionProviders.length !== 0 && (
-            <Box css={{ mt: '$2' }}>
-              <Heading>Conectar</Heading>
-              <Grid
-                columns={{ '@initial': '1', '@bp2': '2' }}
-                gap={'4'}
-                css={{ mt: '$2' }}
-              >
-                {noConnectionProviders.map((provider) => (
-                  <ProviderContainer
-                    key={provider.name}
-                    provider={provider.name as providers}
-                  >
-                    <Image src={provider.logo} alt="" height={44} width={44} />
-                    <Heading>
+                    <provider.logo size={32} />
+                  </Flex>
+                  <Box css={{ ta: 'center' }}>
+                    <Heading css={{ lh: 'unset' }}>
                       {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
                     </Heading>
-                    <Box as="button" type="button" onClick={() => signIn(provider.name)}>
+                    <Text size={'3'} css={{ color: '$input-gray' }}>
+                      {
+                        accounts.find((account) => account.provider === provider.name)
+                          ?.providerAccountId
+                      }
+                    </Text>
+                  </Box>
+                  <Box
+                    as="button"
+                    type="button"
+                    css={{ mr: '$4' }}
+                    onClick={() => handleConnectDisconnectAccount(provider.name)}
+                  >
+                    {accounts.some((account) => account.provider === provider.name) ? (
+                      <IoRemoveCircle size={24} />
+                    ) : (
                       <IoAddCircle size={24} />
-                    </Box>
-                  </ProviderContainer>
-                ))}
-              </Grid>
-            </Box>
-          )}
+                    )}
+                  </Box>
+                </Flex>
+              ))}
+            </Grid>
+          </Box>
         </Box>
       </Main>
     </>

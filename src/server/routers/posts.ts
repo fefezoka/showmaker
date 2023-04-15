@@ -239,16 +239,14 @@ export const posts = router({
         isLiked: false,
       };
     }),
-  delete: authenticatedProcedure
-    .input(z.object({ postId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      const response = await ctx.prisma.post.delete({
+  delete: authenticatedProcedure.input(z.object({ postId: z.string() })).mutation(
+    async ({ ctx, input }) =>
+      await ctx.prisma.post.delete({
         where: {
           id: input.postId,
         },
-      });
-      return response;
-    }),
+      })
+  ),
   byId: procedure
     .input(z.object({ postId: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -279,10 +277,9 @@ export const posts = router({
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
       };
     }),
-  comments: procedure
-    .input(z.object({ postId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.postComment.findMany({
+  comments: procedure.input(z.object({ postId: z.string() })).query(
+    async ({ ctx, input }) =>
+      await ctx.prisma.postComment.findMany({
         where: {
           postId: input.postId,
         },
@@ -290,9 +287,8 @@ export const posts = router({
         include: {
           user: true,
         },
-      });
-      return response;
-    }),
+      })
+  ),
   like: authenticatedProcedure
     .input(
       z.object({

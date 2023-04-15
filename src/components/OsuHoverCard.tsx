@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
-import OsuIcon from '../assets/osu-icon.png';
 import Image from 'next/image';
 import { ProfileIcon } from './ProfileIcon';
 import { styled } from '../../stitches.config';
 import Link from 'next/link';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { trpc } from '../utils/trpc';
+import { SiOsu } from 'react-icons/si';
 import { Box, Flex, Text } from '@styles';
 
 interface OsuHoverCardProps {
@@ -35,7 +35,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
     <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
         <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target={'_blank'}>
-          <Image src={OsuIcon} alt="" height={32} width={32} />
+          <SiOsu size={28} />
         </Link>
       </HoverCard.Trigger>
       <HoverCard.Portal>

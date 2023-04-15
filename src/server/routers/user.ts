@@ -112,10 +112,9 @@ export const user = router({
 
       return data;
     }),
-  lastPosts: procedure
-    .input(z.object({ username: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.post.findMany({
+  lastPosts: procedure.input(z.object({ username: z.string() })).query(
+    async ({ ctx, input }) =>
+      await ctx.prisma.post.findMany({
         where: {
           user: {
             name: input.username,
@@ -137,9 +136,8 @@ export const user = router({
         orderBy: {
           createdAt: 'desc',
         },
-      });
-      return response;
-    }),
+      })
+  ),
   follow: authenticatedProcedure
     .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
     .mutation(async ({ ctx, input }) => {

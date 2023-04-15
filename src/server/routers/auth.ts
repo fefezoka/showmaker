@@ -5,15 +5,36 @@ import { TRPCError } from '@trpc/server';
 
 export const auth = router({
   disconnectAccount: authenticatedProcedure
-    .input(z.object({ accountId: z.string() }))
-    .mutation(async ({ ctx, input }) => {
-      const response = await ctx.prisma.account.delete({
-        where: {
-          id: input.accountId,
+    .input(z.object({ provider: z.string() }))
+    .mutation(
+      async ({ ctx, input }) =>
+        await ctx.prisma.account.deleteMany({
+          where: {
+            provider: input.provider,
+            AND: {
+              userId: ctx.session.user.id,
+            },
+          },
+        })
+    ),
+  accounts: authenticatedProcedure.query(
+    async ({ ctx }) =>
+      await ctx.prisma.account.findMany({
+        select: {
+          id: true,
+          provider: true,
+          providerAccountId: true,
         },
-      });
-      return response;
-    }),
+        where: {
+          provider: {
+            not: 'discord',
+          },
+          AND: {
+            userId: ctx.session.user.id,
+          },
+        },
+      })
+  ),
   refreshToken: procedure
     .input(
       z.object({
