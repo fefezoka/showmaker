@@ -84,9 +84,9 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
             align={'center'}
             justify={'between'}
             css={{
-              mt: '$3',
+              mt: '$2',
               '&:nth-of-type(1)': {
-                mt: '$6',
+                mt: '$4',
               },
             }}
             key={comment.id}

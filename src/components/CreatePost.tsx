@@ -43,14 +43,15 @@ const DropContainer = styled('section', {
 });
 
 export default function CreatePost() {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const gameSelectRef = useRef<React.ElementRef<typeof Select>>(null);
-  const { data: session } = useSession();
   const [file, setFile] = useState<File>();
   const [open, setOpen] = useState<boolean>(false);
   const [thumbnail, setThumbnail] = useState<string>();
-  const createPost = useCreatePost();
   const [isSendingVideo, setIsSendingVideo] = useState<boolean>(false);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const gameSelectRef = useRef<React.ElementRef<typeof Select>>(null);
+  const titleRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession();
+  const createPost = useCreatePost();
   const isDesktop = useIsDesktop();
 
   const onClose = () => {
@@ -58,6 +59,7 @@ export default function CreatePost() {
     setOpen(false);
     setFile(undefined);
     setThumbnail(undefined);
+    setUploadProgress(0);
   };
 
   const processFile = async () => {
@@ -131,6 +133,9 @@ export default function CreatePost() {
         'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
         formdata,
         {
+          onUploadProgress(progressEvent) {
+            setUploadProgress((start + progressEvent.loaded) / size);
+          },
           headers: {
             'X-Unique-Upload-Id': `${XUniqueUploadId}`,
             'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
@@ -170,7 +175,7 @@ export default function CreatePost() {
       </ModalTrigger>
       <ModalContent
         onInteractOutside={(e: Event) =>
-          createPost.isLoading ? e.preventDefault() : onClose()
+          isSendingVideo ? e.preventDefault() : onClose()
         }
       >
         <ModalTitle>Postar vídeo</ModalTitle>
@@ -240,18 +245,66 @@ export default function CreatePost() {
                     <Text weight={'bold'}>Arquivo muito grande</Text>
                   )}
                   {file ? (
-                    <Flex gap={'4'}>
+                    <Flex gap={'3'} justify={'between'} css={{ width: '100%' }}>
                       {thumbnail && (
-                        <Image src={thumbnail} alt="" width={160} height={90} />
+                        <Box
+                          as={Image}
+                          src={thumbnail}
+                          alt=""
+                          width={110}
+                          height={90}
+                          css={{ objectFit: 'cover' }}
+                        />
                       )}
-                      <Text as={'p'} css={{ lineBreak: 'anywhere' }}>
-                        {file.name} - {(file.size / 1048576).toFixed(2)} MB{' '}
-                      </Text>
+                      <Flex
+                        direction={'column'}
+                        justify={'between'}
+                        css={{ width: '100%' }}
+                      >
+                        <Text
+                          as={'p'}
+                          weight={'bold'}
+                          size={'3'}
+                          css={{ lineBreak: 'anywhere' }}
+                        >
+                          {file.name}
+                        </Text>
+                        <Box>
+                          <Text size={'2'}>
+                            {((file.size / 1048576) * uploadProgress).toFixed(0)} MB /{' '}
+                            {(file.size / 1048576).toFixed(0)} MB
+                          </Text>
+                          <Flex align={'center'} gap={'2'} css={{ mt: '2px' }}>
+                            <Box
+                              css={{
+                                height: '$2',
+                                width: '100%',
+                                backgroundColor: '$bgalt',
+                                br: '$1',
+                                position: 'relative',
+                              }}
+                            >
+                              <Box
+                                css={{
+                                  width: (uploadProgress * 100).toFixed(0) + '%',
+                                  height: '100%',
+                                  position: 'absolute',
+                                  top: 0,
+                                  left: 0,
+                                  bc: '$blue',
+                                  br: '$1',
+                                }}
+                              />
+                            </Box>
+                            <Text size={'2'}>{(uploadProgress * 100).toFixed(0)}%</Text>
+                          </Flex>
+                        </Box>
+                      </Flex>
                     </Flex>
                   ) : (
                     <Flex direction={'column'} align={'center'} gap={'1'}>
-                      <Text>Arraste um vídeo ou clique para procurar</Text>
-                      <Text>Limite de 100MB</Text>
+                      <Text size={'3'}>Arraste um vídeo ou clique para procurar</Text>
+                      <Text size={'3'}>Limite de 100 MB</Text>
                     </Flex>
                   )}
                 </DropContainer>

@@ -12,14 +12,19 @@ import { Post as PostType } from '../../@types/types';
 import { Main, FeedPost } from '@components';
 import { Flex, Heading, PostSkeleton } from '@styles';
 
+interface Props {
+  dehydratedState: PostType;
+  id: string;
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const id = ctx.params?.id as string;
+
   if (ctx.req.url?.startsWith('/_next')) {
     return {
-      props: {},
+      props: { id },
     };
   }
-
-  const id = ctx.params?.id as string;
 
   const helpers = createServerSideHelpers({
     router: appRouter,
@@ -33,25 +38,20 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       dehydratedState: JSON.parse(
         JSON.stringify(helpers.dehydrate().queries[0].state.data ?? null)
       ),
+      id,
     },
   };
 };
 
-export default function Post({ dehydratedState }: { dehydratedState: PostType }) {
-  const router = useRouter();
-  const { id } = router.query;
-
-  const { data: post, isLoading } = trpc.posts.byId.useQuery(
-    { postId: id as string },
-    { enabled: !!id }
-  );
+export default function Post({ dehydratedState, id }: Props) {
+  const { data: post, isLoading } = trpc.posts.byId.useQuery({ postId: id });
 
   return (
     <>
       <NextSeo
         {...(dehydratedState
           ? {
-              title: `${dehydratedState.user.name} - ${dehydratedState.title}`,
+              title: `${dehydratedState.title} // ${dehydratedState.user.name}`,
               openGraph: {
                 images: [{ url: dehydratedState.thumbnailUrl }],
                 videos: [{ url: dehydratedState.videoUrl }],

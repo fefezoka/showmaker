@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
+import Image from 'next/image';
+import twitchIcon from '../assets/twitch-icon.png';
+import BlitzNotFound from '../assets/blitz.webp';
+import { NextSeo } from 'next-seo';
+import { trpc } from '../utils/trpc';
 import {
   Main,
   FullProfileIcon,
@@ -12,12 +17,7 @@ import {
   SeeUserFollow,
 } from '@components';
 import { useFollow, useUnfollow } from '@hooks';
-import Image from 'next/image';
-import twitchIcon from '../assets/twitch-icon.png';
-import BlitzNotFound from '../assets/blitz.webp';
 import { Box, Flex, Text, Heading, ProfileSkeleton } from '@styles';
-import { NextSeo } from 'next-seo';
-import { trpc } from '../utils/trpc';
 
 type Feed = 'posts' | 'favorites';
 
