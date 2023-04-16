@@ -52,11 +52,11 @@ export default function Config() {
   }
 
   const handleConnectDisconnectAccount = async (provider: string) => {
-    accounts.some((account) => account.provider === provider)
-      ? await disconnectAccount.mutateAsync({ provider })
-      : signIn(provider);
-
-    router.reload();
+    if (accounts.some((account) => account.provider === provider)) {
+      await disconnectAccount.mutateAsync({ provider });
+      router.reload();
+    }
+    await signIn(provider);
   };
 
   return (
