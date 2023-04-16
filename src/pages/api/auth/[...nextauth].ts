@@ -1,10 +1,9 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import NextAuth from 'next-auth';
+import NextAuth, { User } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import OsuProvider from 'next-auth/providers/osu';
 import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '../../../lib/prisma';
-import { User } from '../../../@types/types';
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),

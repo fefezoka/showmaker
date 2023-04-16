@@ -8,6 +8,10 @@ export const useFollow = () => {
 
   return trpc.user.follow.useMutation({
     onMutate: ({ followingUser }) => {
+      if (!session) {
+        return;
+      }
+
       utils.user.profile.setData(
         { name: followingUser.name },
         (old) =>
@@ -19,7 +23,7 @@ export const useFollow = () => {
       );
 
       utils.user.profile.setData(
-        { name: session?.user.name },
+        { name: session.user.name },
         (old) =>
           old &&
           produce(old, (draft) => {
@@ -29,7 +33,7 @@ export const useFollow = () => {
       );
 
       utils.user.followerUsers.setData(
-        { userId: session?.user.id },
+        { userId: session.user.id },
         (old) =>
           old &&
           produce(old, (draft) => {
@@ -43,7 +47,7 @@ export const useFollow = () => {
       );
 
       utils.user.followingUsers.setData(
-        { userId: session?.user.id },
+        { userId: session.user.id },
         (old) =>
           old &&
           produce(old, (draft) => {

@@ -1,18 +1,15 @@
 import NextAuth from 'next-auth';
-import { User } from './types';
 
 declare module 'next-auth' {
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+    image: string;
+  }
+
   interface Session {
-    user: {
-      name: string;
-      id: string;
-      createdAt: string;
-      email: string;
-      followersAmount: number;
-      followingAmount: number;
-      image: string;
-      updatedAt: string;
-    };
+    user: User;
   }
 
   interface Profile {
