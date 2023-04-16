@@ -164,7 +164,7 @@ export default function CreatePost() {
     <Modal open={session && open ? true : false} onOpenChange={setOpen}>
       <ModalTrigger asChild>
         {isDesktop ? (
-          <Button onClick={() => !session && signIn('discord')} value="Postar vídeo" />
+          <Button onClick={() => !session && signIn('discord')}>Postar vídeo</Button>
         ) : (
           <Button
             Icon={IoAdd}
@@ -242,7 +242,7 @@ export default function CreatePost() {
                   active={isDragActive || acceptedFiles.length !== 0}
                 >
                   {fileRejections.length !== 0 && (
-                    <Text weight={'bold'}>Arquivo muito grande</Text>
+                    <Text weight={600}>Arquivo muito grande</Text>
                   )}
                   {file ? (
                     <Flex gap={'3'} justify={'between'} css={{ width: '100%' }}>
@@ -263,7 +263,7 @@ export default function CreatePost() {
                       >
                         <Text
                           as={'p'}
-                          weight={'bold'}
+                          weight={600}
                           size={'3'}
                           css={{ lineBreak: 'anywhere' }}
                         >
@@ -314,19 +314,13 @@ export default function CreatePost() {
         </Box>
         <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
           <ModalClose asChild>
-            <Button
-              disabled={isSendingVideo}
-              onClick={onClose}
-              variant={'exit'}
-              value="Sair"
-            />
+            <Button disabled={isSendingVideo} onClick={onClose} variant={'exit'}>
+              Sair
+            </Button>
           </ModalClose>
-          <Button
-            disabled={!file}
-            loading={isSendingVideo}
-            onClick={processFile}
-            value="Enviar"
-          />
+          <Button disabled={!file} loading={isSendingVideo} onClick={processFile}>
+            Enviar
+          </Button>
         </Flex>
       </ModalContent>
     </Modal>

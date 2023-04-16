@@ -40,18 +40,14 @@ export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowPro
           <TabsList asChild>
             <Flex justify={'center'} gap={'4'} css={{ borderBottom: '1px solid $bg' }}>
               <TabsTrigger value="followers" asChild>
-                <FeedButton
-                  theme={'light'}
-                  value="Seguidores"
-                  active={tab === 'followers'}
-                />
+                <FeedButton theme={'light'} active={tab === 'followers'}>
+                  Seguidores
+                </FeedButton>
               </TabsTrigger>
               <TabsTrigger value="following" asChild>
-                <FeedButton
-                  theme={'light'}
-                  value="Seguindo"
-                  active={tab === 'following'}
-                />
+                <FeedButton theme={'light'} active={tab === 'following'}>
+                  Seguindo
+                </FeedButton>
               </TabsTrigger>
             </Flex>
           </TabsList>
@@ -72,19 +68,20 @@ export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowPro
                     <UserHoverCard user={user}>
                       <Flex align={'center'} gap={'2'}>
                         <ProfileIcon css={{ size: '$8' }} src={user.image} alt="" />
-                        <Text weight={'bold'}>{user.name}</Text>
+                        <Text weight={600}>{user.name}</Text>
                       </Flex>
                     </UserHoverCard>
                     {session && user.id !== session?.user.id && (
                       <Button
                         css={{ p: '$2', height: '20px' }}
-                        value={user.isFollowing ? 'Seguindo' : 'Seguir'}
                         onClick={() =>
                           user.isFollowing
                             ? unfollow.mutate({ followingUser: user })
                             : follow.mutate({ followingUser: user })
                         }
-                      />
+                      >
+                        {user.isFollowing ? 'Seguindo' : 'Seguir'}
+                      </Button>
                     )}
                   </Flex>
                 ))}

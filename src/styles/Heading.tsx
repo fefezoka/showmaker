@@ -27,10 +27,10 @@ export const Heading = React.forwardRef<
   };
 
   const textCss: Record<HeadingSizeVariants, CSS> = {
-    1: { fontWeight: 700, lineHeight: '20px', '@bp2': { lineHeight: '32px' } },
-    2: { fontWeight: 700, lineHeight: '25px', '@bp2': { lineHeight: '42px' } },
-    3: { fontWeight: 700, lineHeight: '33px', '@bp2': { lineHeight: '56px' } },
-    4: { fontWeight: 700, lineHeight: '35px', '@bp2': { lineHeight: '64px' } },
+    1: { fontWeight: 600, lineHeight: '20px', '@bp2': { lineHeight: '32px' } },
+    2: { fontWeight: 600, lineHeight: '25px', '@bp2': { lineHeight: '42px' } },
+    3: { fontWeight: 600, lineHeight: '33px', '@bp2': { lineHeight: '56px' } },
+    4: { fontWeight: 600, lineHeight: '35px', '@bp2': { lineHeight: '64px' } },
   };
 
   return (

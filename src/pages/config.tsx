@@ -6,9 +6,9 @@ import { SiOsu } from 'react-icons/si';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
+import { IconType } from 'react-icons/lib';
 import { Main } from '@components';
 import { Box, Flex, Grid, Heading, Text } from '@styles';
-import { IconType } from 'react-icons/lib';
 
 type providers = 'osu' | 'twitch';
 
@@ -100,6 +100,9 @@ export default function Config() {
                       {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
                     </Heading>
                     <Text size={'3'} css={{ color: '$input-gray' }}>
+                      Logado como{' '}
+                    </Text>
+                    <Text size={'3'} css={{ color: '$input-gray' }} weight={600}>
                       {
                         accounts.find((account) => account.provider === provider.name)
                           ?.providerAccountId
@@ -113,9 +116,9 @@ export default function Config() {
                     onClick={() => handleConnectDisconnectAccount(provider.name)}
                   >
                     {accounts.some((account) => account.provider === provider.name) ? (
-                      <IoRemoveCircle size={24} />
+                      <Box as={IoRemoveCircle} size={24} css={{ color: '$white' }} />
                     ) : (
-                      <IoAddCircle size={24} />
+                      <Box as={IoAddCircle} size={24} css={{ color: '$white' }} />
                     )}
                   </Box>
                 </Flex>

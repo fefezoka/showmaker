@@ -16,6 +16,7 @@ const StyledButton = styled('button', {
   cursor: 'pointer',
   borderRadius: '$2',
   transition: 'background-color 200ms',
+  fontWeight: 500,
 
   '&:hover': {
     backgroundColor: '$bluealt',
@@ -27,7 +28,6 @@ const StyledButton = styled('button', {
         backgroundColor: '$red',
         color: '$white',
         borderColor: '$white',
-        fontWeight: 700,
 
         '&:hover': {
           backgroundColor: '$redalt',
@@ -44,18 +44,17 @@ const StyledButton = styled('button', {
 });
 
 interface ButtonProps extends React.ComponentProps<typeof StyledButton> {
-  value?: string;
   loading?: boolean;
   Icon?: IconType;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ value, Icon, loading, ...props }: ButtonProps, forwardedRef) => {
+  ({ Icon, loading, ...props }: ButtonProps, forwardedRef) => {
     return (
       <StyledButton type="button" {...props} ref={forwardedRef}>
         {loading && <Image src={Spinner} height={18} width={18} alt="" />}
         {Icon && <Icon size={18} />}
-        {!loading && !Icon && value}
+        {!loading && !Icon && props.children}
       </StyledButton>
     );
   }

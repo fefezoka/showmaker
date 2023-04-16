@@ -1,58 +1,57 @@
 import React, { forwardRef } from 'react';
 import { styled } from '../../stitches.config';
 
-interface ButtonProps extends React.ComponentProps<typeof StyledFeedButton> {
-  value: string;
-}
-
 const StyledFeedButton = styled('button', {
   fontSize: '$3',
   padding: '$3 $4',
-  transition: 'background-color 200ms',
+  transition: 'border-bottom-color 300ms ease-out, font-weight 200ms ease-in',
   color: '$white',
   textAlign: 'center',
   flexShrink: 0,
+  borderBottom: '2px solid transparent',
+  fontWeight: 500,
 
   '@bp2': {
     fontSize: '15px',
+  },
+
+  '&:hover': {
+    borderBottomColor: '$gray',
   },
 
   variants: {
     active: {
       true: {
         color: '$blue',
-        fontWeight: 'bold',
-        borderBottom: '3px solid $blue',
+        borderBottomColor: '$blue',
+        fontWeight: 600,
+
+        '&:hover': {
+          borderBottomColor: '$blue',
+        },
       },
     },
     theme: {
-      dark: {
-        '&:hover': {
-          backgroundColor: '$bgalt',
-        },
-      },
       light: {
         color: '$black',
 
         '&:hover': {
-          fontWeight: 'bold',
+          borderBottomColor: '$black',
         },
       },
     },
   },
-  defaultVariants: {
-    theme: 'dark',
-  },
 });
 
-export const FeedButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ value, ...props }: ButtonProps, forwardedRef) => {
-    return (
-      <StyledFeedButton type="button" {...props} ref={forwardedRef}>
-        {value}
-      </StyledFeedButton>
-    );
-  }
-);
+export const FeedButton = forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof StyledFeedButton>
+>(({ ...props }: React.ComponentProps<typeof StyledFeedButton>, forwardedRef) => {
+  return (
+    <StyledFeedButton type="button" {...props} ref={forwardedRef}>
+      {props.children}
+    </StyledFeedButton>
+  );
+});
 
 FeedButton.displayName = 'FeedButton';

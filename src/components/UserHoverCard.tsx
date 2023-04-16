@@ -75,13 +75,13 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
               <Flex gap={'4'}>
                 <Text size={'3'}>
                   Seguindo{' '}
-                  <Text weight={'bold'} size={'3'}>
+                  <Text weight={600} size={'3'}>
                     {user.followingAmount}
                   </Text>
                 </Text>
                 <Text size={'3'}>
                   Seguidores{' '}
-                  <Text weight={'bold'} size={'3'}>
+                  <Text weight={600} size={'3'}>
                     {user.followersAmount}
                   </Text>
                 </Text>
@@ -117,7 +117,7 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      <Text size={'3'} weight={'bold'} css={{ lh: '1.875rem' }}>
+                      <Text size={'3'} weight={600} css={{ lh: '1.875rem' }}>
                         {post.title}
                       </Text>
                     </Box>
@@ -156,7 +156,7 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
                     <Image src={Spinner} height={40} width={40} alt="" />
                   </Flex>
                 ) : (
-                  <Text weight={'bold'}>Sem posts</Text>
+                  <Text weight={600}>Sem posts</Text>
                 )}
               </Flex>
             )}

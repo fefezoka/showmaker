@@ -30,7 +30,6 @@ export const Input = styled('input', {
 
   '&::placeholder': {
     color: '$gray',
-    fontWeight: 700,
   },
 });
 
@@ -101,7 +100,7 @@ export const Header = () => {
                 }}
               >
                 <ProfileIcon src={session?.user?.image as string} alt="" />
-                {isDesktop && <Text weight={'bold'}>{session?.user?.name}</Text>}
+                {isDesktop && <Text weight={600}>{session?.user?.name}</Text>}
                 {open ? <IoCaretUp /> : <IoCaretDown />}
               </Flex>
             </MenuTrigger>
@@ -125,7 +124,7 @@ export const Header = () => {
             onClick={() => signIn('discord')}
           >
             <Image src={discordIcon} alt="" height={24} width={24} />
-            <Text weight={'bold'}>{isDesktop ? 'Logar com Discord' : 'Logar'}</Text>
+            <Text weight={500}>{isDesktop ? 'Logar com Discord' : 'Logar'}</Text>
           </Flex>
         )}
       </Flex>

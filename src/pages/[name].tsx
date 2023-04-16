@@ -15,6 +15,7 @@ import {
   FeedButton,
   PostPaginator,
   SeeUserFollow,
+  ProviderIcon,
 } from '@components';
 import { useFollow, useUnfollow } from '@hooks';
 import { Box, Flex, Text, Heading, ProfileSkeleton } from '@styles';
@@ -69,7 +70,7 @@ export default function Profile() {
           <Flex as={'section'} direction={'column'} justify={'center'} align={'center'}>
             <Text size={'6'}>
               Usuário{' '}
-              <Text size={'6'} weight={'bold'}>
+              <Text size={'6'} weight={600}>
                 {name}
               </Text>{' '}
               não encontrado
@@ -118,14 +119,13 @@ export default function Profile() {
                   type="button"
                   disabled={followSomeone.isLoading}
                   onClick={handleFollowClick}
-                  value={
-                    user.isFollowing
-                      ? 'Parar de seguir'
-                      : user.followYou
-                      ? 'Seguir de volta'
-                      : 'Seguir'
-                  }
-                />
+                >
+                  {user.isFollowing
+                    ? 'Parar de seguir'
+                    : user.followYou
+                    ? 'Seguir de volta'
+                    : 'Seguir'}
+                </Button>
               )}
             </Flex>
 
@@ -133,7 +133,7 @@ export default function Profile() {
               <Box>
                 <Box css={{ mb: '$1' }}>
                   <Text size={'3'}>Usuário desde </Text>
-                  <Text size={'3'} weight={'bold'}>
+                  <Text size={'3'} weight={600}>
                     {new Intl.DateTimeFormat('pt-BR').format(
                       new Date(user.createdAt).getTime()
                     )}
@@ -143,7 +143,7 @@ export default function Profile() {
                   <SeeUserFollow userId={user.id} defaultTab="followers">
                     <Box as={'button'}>
                       <Text size={'3'}>Seguidores </Text>
-                      <Text size={'3'} weight={'bold'}>
+                      <Text size={'3'} weight={600}>
                         {user.followersAmount}
                       </Text>
                     </Box>
@@ -151,7 +151,7 @@ export default function Profile() {
                   <SeeUserFollow userId={user.id} defaultTab="following">
                     <Box as={'button'}>
                       <Text size={'3'}>Seguindo </Text>
-                      <Text size={'3'} weight={'bold'}>
+                      <Text size={'3'} weight={600}>
                         {user.followingAmount}
                       </Text>
                     </Box>
@@ -169,7 +169,7 @@ export default function Profile() {
                       href={'https://twitch.tv/' + user.twitchAccountId}
                       target={'_blank'}
                     >
-                      <SiTwitch size={28} />
+                      <ProviderIcon Icon={SiTwitch} bc="$twitch" />
                     </Link>
                   </Box>
                 )}
@@ -178,17 +178,19 @@ export default function Profile() {
 
             <Flex justify={'center'} css={{ pt: '$4' }}>
               <FeedButton
-                value={'Últimos posts'}
                 type="button"
                 onClick={() => setFeed('posts')}
                 active={feed === 'posts'}
-              />
+              >
+                Últimos posts
+              </FeedButton>
               <FeedButton
-                value={'Posts curtidos'}
                 type="button"
                 onClick={() => setFeed('favorites')}
                 active={feed === 'favorites'}
-              />
+              >
+                Posts curtidos
+              </FeedButton>
             </Flex>
           </Box>
         ) : (

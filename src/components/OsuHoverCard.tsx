@@ -8,6 +8,7 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { trpc } from '../utils/trpc';
 import { SiOsu } from 'react-icons/si';
 import { Box, Flex, Text } from '@styles';
+import { ProviderIcon } from './ProviderIcon';
 
 interface OsuHoverCardProps {
   username: string;
@@ -35,7 +36,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
     <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
         <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target={'_blank'}>
-          <SiOsu size={28} />
+          <ProviderIcon Icon={SiOsu} bc="$osu" isAlreadyRound hasBorder />
         </Link>
       </HoverCard.Trigger>
       <HoverCard.Portal>
@@ -98,7 +99,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                               />
                             </Box>
 
-                            <Text size={'4'} weight={'bold'}>
+                            <Text size={'4'} weight={600}>
                               {data.username}
                             </Text>
                             <Box>
@@ -129,7 +130,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                         {data.statistics.global_rank && (
                           <Box css={{ ta: 'right' }}>
                             <Flex direction={'column'}>
-                              <Text weight={'bold'} size={'2'}>
+                              <Text weight={600} size={'2'}>
                                 Global
                               </Text>
                               <Text size={'2'}>#{data.statistics.global_rank}</Text>
@@ -142,7 +143,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                               }}
                             />
                             <Flex direction={'column'}>
-                              <Text weight={'bold'} size={'2'}>
+                              <Text weight={600} size={'2'}>
                                 {data.country.name}
                               </Text>
                               <Text size={'2'}>#{data.statistics.country_rank}</Text>
@@ -156,7 +157,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
               )
             ) : (
               <Flex justify={'center'} css={{ mt: '$1' }}>
-                <Text weight={'bold'}>Carregando...</Text>
+                <Text weight={600}>Carregando...</Text>
               </Flex>
             )}
           </Content>

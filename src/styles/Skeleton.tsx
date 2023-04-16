@@ -58,7 +58,7 @@ export const Rectangle = ({ css }: { css: CSS }) => {
 
 export const PostSkeleton = () => {
   return (
-    <Box css={{ p: '$6', borderBottom: '2px solid $bgalt' }}>
+    <Box css={{ p: '$4', '@bp2': { p: '$6' }, borderBottom: '2px solid $bgalt' }}>
       <Flex align={'center'} justify={'between'}>
         <Flex align={'center'} gap={'2'}>
           <Circle css={{ size: 32 }} />
@@ -84,7 +84,7 @@ export const PostSkeleton = () => {
 
 export const ProfileSkeleton = () => {
   return (
-    <Box css={{ p: '$6', pb: 0 }}>
+    <Box css={{ p: '$6', '@bp2': { p: '$4' }, pb: 0 }}>
       <Flex gap={'4'} css={{ mb: '$6' }} align={'center'}>
         <Circle css={{ size: 84, '@bp2': { size: 144 } }} />
         <Line css={{ height: 24, width: 192 }} />

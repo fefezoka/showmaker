@@ -42,7 +42,7 @@ export const FeedPost = memo(
           <UserHoverCard user={post.user}>
             <Flex align={'center'} gap={'4'}>
               <ProfileIcon src={post.user.image} alt="" />
-              <Text weight={'bold'}>{post.user.name}</Text>
+              <Text weight={600}>{post.user.name}</Text>
             </Flex>
           </UserHoverCard>
           <Flex align={'center'} gap={'3'}>
@@ -77,12 +77,11 @@ export const FeedPost = memo(
                   </Box>
                   <Flex justify={'between'}>
                     <ModalClose asChild>
-                      <Button variant={'exit'} value={'Cancelar'} />
+                      <Button variant={'exit'}>Cancelar</Button>
                     </ModalClose>
-                    <Button
-                      onClick={() => deletePost.mutate({ postId: post.id })}
-                      value={'Excluir'}
-                    />
+                    <Button onClick={() => deletePost.mutate({ postId: post.id })}>
+                      Excluir
+                    </Button>
                   </Flex>
                 </ModalContent>
               </Modal>

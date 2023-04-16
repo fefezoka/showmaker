@@ -60,8 +60,9 @@ export default function Timeline() {
                 active={feed.value === option.value}
                 key={option.value}
                 onClick={() => setFeed(option)}
-                value={option.label}
-              />
+              >
+                {option.label}
+              </FeedButton>
             ))}
           </Flex>
         </Box>

@@ -3,7 +3,7 @@ import { globalCss } from '../../stitches.config';
 import { Raleway } from 'next/font/google';
 
 const raleway = Raleway({
-  weight: '400',
+  weight: ['400', '500', '600'],
   subsets: ['latin'],
 });
 

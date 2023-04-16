@@ -21,11 +21,11 @@ export const Text = styled('span', {
       },
       '5': {
         fontSize: '$5',
-        letterSpacing: '-.015em',
+        letterSpacing: '-.026em',
       },
       '6': {
         fontSize: '$6',
-        letterSpacing: '-.016em',
+        letterSpacing: '-.028em',
       },
       '7': {
         fontSize: '$7',
@@ -44,17 +44,20 @@ export const Text = styled('span', {
       },
     },
     weight: {
-      normal: {
+      400: {
         fontWeight: 400,
       },
-      bold: {
-        fontWeight: 700,
+      500: {
+        fontWeight: 500,
+      },
+      600: {
+        fontWeight: 600,
       },
     },
   },
 
   defaultVariants: {
     size: '4',
-    weight: 'normal',
+    weight: 400,
   },
 });

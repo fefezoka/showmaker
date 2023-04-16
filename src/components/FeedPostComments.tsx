@@ -73,7 +73,7 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
               <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
             </Link>
             <Box as="input" type="text" placeholder="Faça um comentário" />
-            <Button type="submit" value="Enviar" />
+            <Button type="submit">Enviar</Button>
           </Flex>
         </Box>
       )}
@@ -101,7 +101,7 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
                 align={{ '@bp2': 'center' }}
               >
                 <UserHoverCard user={comment.user}>
-                  <Text size={{ '@initial': '3', '@bp2': '4' }} weight={'bold'}>
+                  <Text size={{ '@initial': '3', '@bp2': '4' }} weight={600}>
                     {comment.user.name}
                   </Text>
                 </UserHoverCard>

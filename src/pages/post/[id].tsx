@@ -4,7 +4,6 @@ import { appRouter } from '../../server/routers/_app';
 import { createContext } from '../../server/context';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import { useRouter } from 'next/router';
 import BlitzNotFound from '../../assets/blitz.webp';
 import Image from 'next/image';
 import { trpc } from '../../utils/trpc';
