@@ -68,7 +68,9 @@ export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowPro
                     <UserHoverCard user={user}>
                       <Flex align={'center'} gap={'2'}>
                         <ProfileIcon css={{ size: '$8' }} src={user.image} alt="" />
-                        <Text weight={600}>{user.name}</Text>
+                        <Text weight={600} color={'black-primary'}>
+                          {user.name}
+                        </Text>
                       </Flex>
                     </UserHoverCard>
                     {session && user.id !== session?.user.id && (

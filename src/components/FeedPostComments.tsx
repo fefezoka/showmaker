@@ -12,7 +12,7 @@ import {
   MenuItem,
   CommentSkeleton,
 } from '@styles';
-import { Button, ProfileIcon, UserHoverCard } from '@components';
+import { Button, Input, ProfileIcon, UserHoverCard } from '@components';
 import { useDeletePostComment, useCreatePostComment } from '@hooks';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { trpc } from '../utils/trpc';
@@ -50,32 +50,20 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
   return (
     <Box>
       {session && (
-        <Box as="form" onSubmit={commentSubmit}>
-          <Flex
-            gap={{ '@initial': '2', '@bp2': '4' }}
-            css={{
-              mt: '$4',
-              input: {
-                color: 'white',
-                borderRadius: '$2',
-                width: '100%',
-                padding: '0 $3',
-                backgroundColor: '$bgalt',
-                fontSize: '$3',
-              },
-
-              'input::placeholder': {
-                color: '$gray',
-              },
-            }}
-          >
-            <Link href={`/${session.user.name}`} prefetch={false}>
-              <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
-            </Link>
-            <Box as="input" type="text" placeholder="Faça um comentário" />
-            <Button type="submit">Enviar</Button>
-          </Flex>
-        </Box>
+        <Flex
+          as="form"
+          onSubmit={commentSubmit}
+          gap={{ '@initial': '2', '@bp2': '4' }}
+          css={{
+            mt: '$4',
+          }}
+        >
+          <Link href={`/${session.user.name}`} prefetch={false}>
+            <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
+          </Link>
+          <Input css={{ br: '$2', p: '$3' }} placeholder="Faça um comentário" />
+          <Button type="submit">Enviar</Button>
+        </Flex>
       )}
       {!isFetching ? (
         comments &&

@@ -15,12 +15,21 @@ export const Line = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '$4 $2',
-  color: '$gray',
+  color: '$text-secondary',
   minHeight: '40px',
   transition: 'all 200ms',
 
+  h1: {
+    transition: 'all 200ms',
+    color: '$text-secondary',
+  },
+
   '&:hover': {
-    color: '$white',
+    color: '$text-primary',
+
+    h1: {
+      color: '$text-primary',
+    },
   },
 
   '@bp2': {
@@ -32,7 +41,11 @@ export const Line = styled('div', {
   variants: {
     active: {
       true: {
-        color: '$white',
+        color: '$text-primary',
+
+        h1: {
+          color: '$text-primary',
+        },
       },
     },
   },

@@ -16,7 +16,7 @@ const StyledMenuContent = styled(DropdownMenu.Content, {
 export const MenuItem = styled(DropdownMenu.Item, {
   display: 'flex',
   justifyContent: 'center',
-  color: '$black',
+  color: '$text-black-primary',
   fontSize: '$3',
   borderRadius: '$1',
   padding: '$2',
@@ -26,7 +26,7 @@ export const MenuItem = styled(DropdownMenu.Item, {
   '&:hover': {
     outline: 'none',
     backgroundColor: '$bgalt',
-    color: '$white',
+    color: '$text-primary',
   },
 });
 

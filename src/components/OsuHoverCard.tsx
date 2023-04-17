@@ -20,7 +20,6 @@ export const Content = styled(HoverCard.Content, {
   width: 295,
   height: 130,
   backgroundColor: '#000',
-  color: '$white',
   borderRadius: '$2',
   fontSize: '$3',
   padding: '10px',

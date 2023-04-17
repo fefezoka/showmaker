@@ -15,10 +15,6 @@ const StyledFeedButton = styled('button', {
     fontSize: '15px',
   },
 
-  '&:hover': {
-    borderBottomColor: '$gray',
-  },
-
   variants: {
     active: {
       true: {
@@ -27,7 +23,7 @@ const StyledFeedButton = styled('button', {
         fontWeight: 600,
 
         '&:hover': {
-          borderBottomColor: '$blue',
+          borderBottomColor: '$blue !important',
         },
       },
     },
@@ -39,7 +35,16 @@ const StyledFeedButton = styled('button', {
           borderBottomColor: '$black',
         },
       },
+      dark: {
+        '&:hover': {
+          borderBottomColor: '$gray',
+        },
+      },
     },
+  },
+
+  defaultVariants: {
+    theme: 'dark',
   },
 });
 

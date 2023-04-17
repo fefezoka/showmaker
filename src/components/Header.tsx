@@ -2,9 +2,8 @@ import React, { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
-import { styled } from '../../stitches.config';
 import discordIcon from '../assets/discord-icon.png';
-import { ProfileIcon } from '@components';
+import { Input, ProfileIcon } from '@components';
 import { useIsDesktop } from '@hooks';
 import {
   Box,
@@ -18,20 +17,6 @@ import {
   MenuTrigger,
 } from '@styles';
 import Image from 'next/image';
-
-export const Input = styled('input', {
-  width: '100%',
-  padding: '$3 $5',
-  border: 'none',
-  borderRadius: '$7',
-  fontSize: '$3',
-  backgroundColor: '$bgalt',
-  color: '$white',
-
-  '&::placeholder': {
-    color: '$gray',
-  },
-});
 
 export const Header = () => {
   const { data: session, status } = useSession();
@@ -69,15 +54,12 @@ export const Header = () => {
             <Heading>SM</Heading>
           </Box>
         )}
-        <Box css={{ size: '100%', position: 'relative', maxWidth: '360px' }}>
-          <Box as="form" onSubmit={(e) => handleFindClick(e)}>
-            <Input placeholder="Procurar" />
-            <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
-              <Box as={'button'} type="submit">
-                <IoSearchSharp color="white" />
-              </Box>
-            </Box>
-          </Box>
+        <Box
+          css={{ size: '100%', maxWidth: '360px' }}
+          as="form"
+          onSubmit={(e) => handleFindClick(e)}
+        >
+          <Input placeholder="Procurar" Icon={IoSearchSharp} />
         </Box>
 
         {status === 'authenticated' ? (

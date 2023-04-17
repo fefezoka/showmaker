@@ -7,7 +7,7 @@ import axios from 'axios';
 import { IoAdd } from 'react-icons/io5';
 import { getVideoFrame } from '../utils/getVideoFrame';
 import { useIsDesktop, useCreatePost } from '@hooks';
-import { Button, Select } from '@components';
+import { Button, Input, Select } from '@components';
 import {
   Box,
   Flex,
@@ -183,29 +183,15 @@ export default function CreatePost() {
           Compartilhe suas jogadas favoritas com a comunidade!
         </ModalDescription>
         <Box css={{ mt: '$6' }}>
-          <Text as={'label'} htmlFor="name">
+          <Text as={'label'} htmlFor="name" color={'black-primary'}>
             Título
           </Text>
-          <Box
-            as={'input'}
-            ref={titleRef}
-            css={{
-              backgroundColor: 'white',
-              padding: '$3',
-              borderRadius: '$1',
-              width: '100%',
-              border: '1px solid $input-gray',
-              margin: '$1 0px',
-              transition: '100ms all',
-              '&:focus': {
-                border: '1px solid #2684ff',
-                boxShadow: '0 0 0 1px #2684ff',
-              },
-            }}
-          />
+          <Input ref={titleRef} theme={'light'} />
 
           <Box css={{ mt: '$1' }}>
-            <Text as={'label'}>Jogo</Text>
+            <Text as={'label'} color={'black-primary'}>
+              Jogo
+            </Text>
             <Box css={{ margin: '$1 0px' }}>
               <Select
                 ref={gameSelectRef}
@@ -265,12 +251,13 @@ export default function CreatePost() {
                           as={'p'}
                           weight={600}
                           size={'3'}
+                          color={'black-primary'}
                           css={{ lineBreak: 'anywhere' }}
                         >
                           {file.name}
                         </Text>
                         <Box>
-                          <Text size={'2'}>
+                          <Text size={'2'} color={'black-primary'}>
                             {((file.size / 1048576) * uploadProgress).toFixed(0)} MB /{' '}
                             {(file.size / 1048576).toFixed(0)} MB
                           </Text>
@@ -296,15 +283,21 @@ export default function CreatePost() {
                                 }}
                               />
                             </Box>
-                            <Text size={'2'}>{(uploadProgress * 100).toFixed(0)}%</Text>
+                            <Text size={'2'} color={'black-primary'}>
+                              {(uploadProgress * 100).toFixed(0)}%
+                            </Text>
                           </Flex>
                         </Box>
                       </Flex>
                     </Flex>
                   ) : (
                     <Flex direction={'column'} align={'center'} gap={'1'}>
-                      <Text size={'3'}>Arraste um vídeo ou clique para procurar</Text>
-                      <Text size={'3'}>Limite de 100 MB</Text>
+                      <Text size={'3'} color={'black-primary'}>
+                        Arraste um vídeo ou clique para procurar
+                      </Text>
+                      <Text size={'3'} color={'black-primary'}>
+                        Limite de 100 MB
+                      </Text>
                     </Flex>
                   )}
                 </DropContainer>

@@ -11,7 +11,7 @@ const StyledButton = styled('button', {
   padding: '$3',
   backgroundColor: '$blue',
   minWidth: '64px',
-  color: 'white',
+  color: '$text-primary',
   fontSize: '$3',
   cursor: 'pointer',
   borderRadius: '$2',
@@ -26,7 +26,6 @@ const StyledButton = styled('button', {
     variant: {
       exit: {
         backgroundColor: '$red',
-        color: '$white',
         borderColor: '$white',
 
         '&:hover': {

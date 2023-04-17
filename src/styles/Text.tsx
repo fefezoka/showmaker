@@ -54,10 +54,25 @@ export const Text = styled('span', {
         fontWeight: 600,
       },
     },
+    color: {
+      primary: {
+        color: '$text-primary',
+      },
+      secondary: {
+        color: '$text-secondary',
+      },
+      'black-primary': {
+        color: 'text-black-primary',
+      },
+      'black-secondary': {
+        color: 'text-black-secondary',
+      },
+    },
   },
 
   defaultVariants: {
     size: '4',
     weight: 400,
+    color: 'primary',
   },
 });

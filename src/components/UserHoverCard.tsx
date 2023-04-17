@@ -25,7 +25,6 @@ interface UserHoverCardProps {
 }
 
 export const Content = styled(HoverCard.Content, {
-  color: '$white',
   backgroundColor: '$bg',
   borderRadius: '$3',
   width: '440px',
@@ -67,19 +66,19 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
 
             <Box>
               {posts && posts[0] && (
-                <Text size={'3'}>
+                <Text size={'2'}>
                   Última postagem {diffBetweenDates(new Date(posts[0].createdAt))}
                 </Text>
               )}
 
               <Flex gap={'4'}>
-                <Text size={'3'}>
+                <Text size={'2'}>
                   Seguindo{' '}
                   <Text weight={600} size={'3'}>
                     {user.followingAmount}
                   </Text>
                 </Text>
-                <Text size={'3'}>
+                <Text size={'2'}>
                   Seguidores{' '}
                   <Text weight={600} size={'3'}>
                     {user.followersAmount}

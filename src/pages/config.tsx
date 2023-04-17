@@ -1,13 +1,12 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { getSession, signIn } from 'next-auth/react';
-import { IoRemoveCircle, IoAddCircle, IoLogoTwitch } from 'react-icons/io5';
+import { IoAddCircle, IoLogoTwitch, IoHelp } from 'react-icons/io5';
 import { SiOsu } from 'react-icons/si';
-import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
 import { IconType } from 'react-icons/lib';
-import { Main } from '@components';
+import { LoggedProvider, Main } from '@components';
 import { Box, Flex, Grid, Heading, Text } from '@styles';
 
 type providers = 'osu' | 'twitch';
@@ -43,21 +42,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function Config() {
-  const router = useRouter();
-  const disconnectAccount = trpc.auth.disconnectAccount.useMutation();
-  const { data: accounts } = trpc.auth.accounts.useQuery();
+  const { data: accounts, isLoading } = trpc.auth.accounts.useQuery();
 
-  if (!accounts) {
-    return <></>;
+  if (isLoading) {
+    return <Main />;
   }
-
-  const handleConnectDisconnectAccount = async (provider: string) => {
-    if (accounts.some((account) => account.provider === provider)) {
-      await disconnectAccount.mutateAsync({ provider });
-      router.reload();
-    }
-    await signIn(provider);
-  };
 
   return (
     <>
@@ -67,64 +56,72 @@ export default function Config() {
           <Heading size="2">Configurações</Heading>
         </Box>
         <Box as={'section'}>
-          <Heading size="2">Contas</Heading>
-          <Box css={{ mt: '$2' }}>
-            <Grid columns={{ '@initial': '1', '@bp2': '2' }} gap={'4'} css={{ mt: '$2' }}>
-              {providers.map((provider) => (
-                <Flex
-                  justify={'between'}
-                  align={'center'}
-                  css={{
-                    br: '$1',
-                    transition: 'all 200ms',
-                    ...(accounts.some((account) => account.provider === provider.name)
-                      ? { bc: '$bgalt' }
-                      : { bc: provider.bc }),
-                  }}
-                  key={provider.name}
+          {accounts && accounts.length !== 0 && (
+            <Box>
+              <Heading size="2">Contas</Heading>
+              <Box css={{ mt: '$2' }}>
+                <Grid
+                  columns={{ '@initial': '1', '@bp2': '2' }}
+                  gap={'4'}
+                  css={{ mt: '$2' }}
                 >
-                  <Flex
-                    align={'center'}
-                    justify={'center'}
-                    css={{
-                      br: '$1',
-                      height: 72,
-                      width: 72,
-                      bc: provider.bc,
-                    }}
-                  >
-                    <provider.logo size={32} />
-                  </Flex>
-                  <Box css={{ ta: 'center' }}>
-                    <Heading css={{ lh: 'unset' }}>
-                      {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
-                    </Heading>
-                    <Text size={'3'} css={{ color: '$input-gray' }}>
-                      Logado como{' '}
-                    </Text>
-                    <Text size={'3'} css={{ color: '$input-gray' }} weight={600}>
-                      {
-                        accounts.find((account) => account.provider === provider.name)
-                          ?.providerAccountId
+                  {accounts.map((account, index) => (
+                    <LoggedProvider
+                      key={index}
+                      account={account}
+                      provider={
+                        providers.find(
+                          (provider) => provider.name === account.provider
+                        ) || {
+                          name: account.provider,
+                          bc: '$bgalt',
+                          logo: IoHelp,
+                        }
                       }
-                    </Text>
-                  </Box>
-                  <Box
-                    as="button"
-                    type="button"
-                    css={{ mr: '$4' }}
-                    onClick={() => handleConnectDisconnectAccount(provider.name)}
-                  >
-                    {accounts.some((account) => account.provider === provider.name) ? (
-                      <Box as={IoRemoveCircle} size={24} css={{ color: '$white' }} />
-                    ) : (
-                      <Box as={IoAddCircle} size={24} css={{ color: '$white' }} />
-                    )}
-                  </Box>
+                    />
+                  ))}
+                </Grid>
+              </Box>
+            </Box>
+          )}
+
+          {!accounts ||
+            (accounts.length !== providers.length && (
+              <Box css={{ mt: '$4' }}>
+                <Text weight={600}>Logar</Text>
+                <Flex css={{ mt: '$2' }} gap={'4'}>
+                  {providers
+                    .filter(
+                      (provider) =>
+                        !accounts.some((account) => account.provider === provider.name)
+                    )
+                    .map((provider, index) => (
+                      <Flex
+                        align={'center'}
+                        justify={'between'}
+                        key={index}
+                        css={{
+                          borderRadius: '$2',
+                          p: '$4 $3',
+                          bc: provider.bc,
+                          width: '192px',
+                        }}
+                      >
+                        <provider.logo size={28} />
+                        <Text weight={600}>
+                          {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
+                        </Text>
+                        <Flex as={'button'} onClick={() => signIn(provider.name)}>
+                          <Flex
+                            as={IoAddCircle}
+                            css={{ size: 20, color: '$text-primary' }}
+                          />
+                        </Flex>
+                      </Flex>
+                    ))}
                 </Flex>
-              ))}
-            </Grid>
-          </Box>
+              </Box>
+            ))}
         </Box>
       </Main>
     </>
