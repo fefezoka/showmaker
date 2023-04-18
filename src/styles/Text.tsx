@@ -62,10 +62,10 @@ export const Text = styled('span', {
         color: '$text-secondary',
       },
       'black-primary': {
-        color: 'text-black-primary',
+        color: '$text-black-primary',
       },
       'black-secondary': {
-        color: 'text-black-secondary',
+        color: '$text-black-secondary',
       },
     },
   },

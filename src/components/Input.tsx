@@ -18,6 +18,13 @@ const StyledInput = styled('input', {
 
   '&::placeholder': {
     color: '$text-secondary',
+    fontSize: '$2',
+  },
+
+  '@bp2': {
+    '&::placeholder': {
+      fontSize: '$3',
+    },
   },
 
   variants: {
@@ -33,15 +40,20 @@ const StyledInput = styled('input', {
           border: '1px solid #2684ff',
           boxShadow: '0 0 0 1px #2684ff',
         },
+
+        color: '$text-black-secondary',
       },
     },
   },
 });
 
-export const Input = ({ Icon, ...props }: InputProps) => {
+export const Input = React.forwardRef<
+  React.ElementRef<typeof StyledInput>,
+  React.ComponentProps<typeof StyledInput>
+>(({ Icon, ...props }: InputProps, forwardedRef) => {
   return (
     <Box css={{ size: '100%', position: 'relative' }}>
-      <StyledInput {...props} />
+      <StyledInput {...props} ref={forwardedRef} />
       {Icon && (
         <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
           <Box as={'button'} type="submit">
@@ -51,4 +63,6 @@ export const Input = ({ Icon, ...props }: InputProps) => {
       )}
     </Box>
   );
-};
+});
+
+Input.displayName = 'Input';

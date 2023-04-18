@@ -55,14 +55,19 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
           onSubmit={commentSubmit}
           gap={{ '@initial': '2', '@bp2': '4' }}
           css={{
-            mt: '$4',
+            mt: '$2',
+            '@bp2': {
+              mt: '$4',
+            },
           }}
         >
           <Link href={`/${session.user.name}`} prefetch={false}>
             <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
           </Link>
           <Input css={{ br: '$2', p: '$3' }} placeholder="Faça um comentário" />
-          <Button type="submit">Enviar</Button>
+          <Button type="submit" css={{ minWidth: '52px' }}>
+            Enviar
+          </Button>
         </Flex>
       )}
       {!isFetching ? (

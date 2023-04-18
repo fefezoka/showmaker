@@ -93,8 +93,10 @@ export const FeedPost = memo(
           <Link href={`/post/${post.id}`} prefetch={false}>
             <Heading>{post.title}</Heading>
           </Link>
-          <Box css={{ flexShrink: 0 }}>
-            <Text size={'3'}>{diffBetweenDates(new Date(post.createdAt))}</Text>
+          <Box css={{ fs: 0 }}>
+            <Text size={{ '@initial': '2', '@bp2': '3' }}>
+              {diffBetweenDates(new Date(post.createdAt))}
+            </Text>
           </Box>
         </Flex>
 

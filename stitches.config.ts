@@ -17,7 +17,7 @@ export const {
       overlay: 'rgb(0, 0, 0, .4)',
       black: 'rgb(20, 25, 32)',
       'text-black-primary': 'rgb(20, 25, 27)',
-      'text-black-secondary': 'rgb(50, 55, 60)',
+      'text-black-secondary': 'rgb(70, 72, 75)',
       bg: 'rgb(30, 42, 56)',
       bgalt: 'rgb(56, 64, 77)',
       skeleton: 'rgb(56, 64, 77)',

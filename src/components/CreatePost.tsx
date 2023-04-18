@@ -18,29 +18,8 @@ import {
   ModalDescription,
   ModalTitle,
   ModalTrigger,
+  Heading,
 } from '@styles';
-
-const DropContainer = styled('section', {
-  width: '100%',
-  height: '120px',
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  alignItems: 'center',
-  border: '2px dashed $input-gray',
-  margin: '$3 0',
-  borderRadius: '$2',
-  padding: '$3',
-  cursor: 'pointer',
-
-  variants: {
-    active: {
-      true: {
-        borderColor: '$blue',
-      },
-    },
-  },
-});
 
 export default function CreatePost() {
   const [file, setFile] = useState<File>();
@@ -49,7 +28,7 @@ export default function CreatePost() {
   const [isSendingVideo, setIsSendingVideo] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const gameSelectRef = useRef<React.ElementRef<typeof Select>>(null);
-  const titleRef = useRef<HTMLInputElement>(null);
+  const titleRef = useRef<React.ElementRef<typeof Input>>(null);
   const { data: session } = useSession();
   const createPost = useCreatePost();
   const isDesktop = useIsDesktop();
@@ -74,6 +53,7 @@ export default function CreatePost() {
     ) {
       return;
     }
+
     setIsSendingVideo(true);
     const XUniqueUploadId = +new Date();
 
@@ -178,11 +158,17 @@ export default function CreatePost() {
           isSendingVideo ? e.preventDefault() : onClose()
         }
       >
-        <ModalTitle>Postar vídeo</ModalTitle>
-        <ModalDescription>
-          Compartilhe suas jogadas favoritas com a comunidade!
+        <ModalTitle asChild>
+          <Heading size="2" color={'black-primary'} css={{ lh: 'unset' }}>
+            Postar vídeo
+          </Heading>
+        </ModalTitle>
+        <ModalDescription asChild>
+          <Text color={'black-secondary'}>
+            Compartilhe suas jogadas favoritas com a comunidade!
+          </Text>
         </ModalDescription>
-        <Box css={{ mt: '$6' }}>
+        <Box css={{ mt: '$5' }}>
           <Text as={'label'} htmlFor="name" color={'black-primary'}>
             Título
           </Text>
@@ -222,86 +208,100 @@ export default function CreatePost() {
             maxSize={104857600}
           >
             {({ getRootProps, fileRejections, isDragActive, acceptedFiles }) => (
-              <Box as={'section'}>
-                <DropContainer
-                  {...getRootProps()}
-                  active={isDragActive || acceptedFiles.length !== 0}
-                >
-                  {fileRejections.length !== 0 && (
-                    <Text weight={600}>Arquivo muito grande</Text>
-                  )}
-                  {file ? (
-                    <Flex gap={'3'} justify={'between'} css={{ width: '100%' }}>
-                      {thumbnail && (
-                        <Box
-                          as={Image}
-                          src={thumbnail}
-                          alt=""
-                          width={110}
-                          height={90}
-                          css={{ objectFit: 'cover' }}
-                        />
-                      )}
-                      <Flex
-                        direction={'column'}
-                        justify={'between'}
-                        css={{ width: '100%' }}
+              <Flex
+                justify={'center'}
+                direction={'column'}
+                align={'center'}
+                css={{
+                  width: '100%',
+                  height: '120px',
+                  border: '2px dashed $input-gray',
+                  margin: '$3 0',
+                  borderRadius: '$2',
+                  padding: '$3',
+                  cursor: 'pointer',
+                  ...((isDragActive || acceptedFiles.length !== 0) && {
+                    borderColor: '$blue',
+                  }),
+                }}
+                {...getRootProps()}
+              >
+                {file ? (
+                  <Flex gap={'3'} justify={'between'} css={{ width: '100%' }}>
+                    {thumbnail && (
+                      <Box
+                        as={Image}
+                        src={thumbnail}
+                        alt=""
+                        width={110}
+                        height={90}
+                        css={{ objectFit: 'cover' }}
+                      />
+                    )}
+                    <Flex
+                      direction={'column'}
+                      justify={'between'}
+                      css={{ width: '100%' }}
+                    >
+                      <Text
+                        as={'p'}
+                        weight={600}
+                        size={'3'}
+                        color={'black-primary'}
+                        css={{ lineBreak: 'anywhere' }}
                       >
-                        <Text
-                          as={'p'}
-                          weight={600}
-                          size={'3'}
-                          color={'black-primary'}
-                          css={{ lineBreak: 'anywhere' }}
-                        >
-                          {file.name}
+                        {file.name}
+                      </Text>
+                      <Box>
+                        <Text size={'2'} color={'black-primary'}>
+                          {((file.size / 1048576) * uploadProgress).toFixed(0)} MB /{' '}
+                          {(file.size / 1048576).toFixed(0)} MB
                         </Text>
-                        <Box>
-                          <Text size={'2'} color={'black-primary'}>
-                            {((file.size / 1048576) * uploadProgress).toFixed(0)} MB /{' '}
-                            {(file.size / 1048576).toFixed(0)} MB
-                          </Text>
-                          <Flex align={'center'} gap={'2'} css={{ mt: '2px' }}>
+                        <Flex align={'center'} gap={'2'} css={{ mt: '2px' }}>
+                          <Box
+                            css={{
+                              height: '$2',
+                              width: '100%',
+                              backgroundColor: '$bgalt',
+                              br: '$1',
+                              position: 'relative',
+                            }}
+                          >
                             <Box
                               css={{
-                                height: '$2',
-                                width: '100%',
-                                backgroundColor: '$bgalt',
+                                width: (uploadProgress * 100).toFixed(0) + '%',
+                                height: '100%',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                bc: '$blue',
                                 br: '$1',
-                                position: 'relative',
                               }}
-                            >
-                              <Box
-                                css={{
-                                  width: (uploadProgress * 100).toFixed(0) + '%',
-                                  height: '100%',
-                                  position: 'absolute',
-                                  top: 0,
-                                  left: 0,
-                                  bc: '$blue',
-                                  br: '$1',
-                                }}
-                              />
-                            </Box>
-                            <Text size={'2'} color={'black-primary'}>
-                              {(uploadProgress * 100).toFixed(0)}%
-                            </Text>
-                          </Flex>
-                        </Box>
-                      </Flex>
+                            />
+                          </Box>
+                          <Text size={'2'} color={'black-primary'}>
+                            {(uploadProgress * 100).toFixed(0)}%
+                          </Text>
+                        </Flex>
+                      </Box>
                     </Flex>
-                  ) : (
-                    <Flex direction={'column'} align={'center'} gap={'1'}>
-                      <Text size={'3'} color={'black-primary'}>
-                        Arraste um vídeo ou clique para procurar
+                  </Flex>
+                ) : (
+                  <Flex direction={'column'} align={'center'} gap={'1'}>
+                    {fileRejections.length !== 0 && (
+                      <Text weight={600} color={'black-primary'} size={'3'}>
+                        Arquivo muito grande
                       </Text>
-                      <Text size={'3'} color={'black-primary'}>
-                        Limite de 100 MB
-                      </Text>
-                    </Flex>
-                  )}
-                </DropContainer>
-              </Box>
+                    )}
+                    <Text size={'3'} color={'black-secondary'}>
+                      Arraste um vídeo ou clique para procurar
+                    </Text>
+                    <Text size={'3'} color={'black-secondary'}>
+                      Limite de 100 MB
+                    </Text>
+                  </Flex>
+                )}
+              </Flex>
             )}
           </Dropzone>
         </Box>
