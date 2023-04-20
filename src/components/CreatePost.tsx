@@ -159,17 +159,17 @@ export default function CreatePost() {
         }
       >
         <ModalTitle asChild>
-          <Heading size="2" color={'black-primary'} css={{ lh: 'unset' }}>
+          <Heading size="3" color={'black-primary'} css={{ lh: 'unset' }}>
             Postar vídeo
           </Heading>
         </ModalTitle>
         <ModalDescription asChild>
-          <Text color={'black-secondary'}>
+          <Text color={'black-secondary'} size={'4'}>
             Compartilhe suas jogadas favoritas com a comunidade!
           </Text>
         </ModalDescription>
         <Box css={{ mt: '$5' }}>
-          <Text as={'label'} htmlFor="name" color={'black-primary'}>
+          <Text as={'label'} color={'black-primary'}>
             Título
           </Text>
           <Input ref={titleRef} theme={'light'} />
@@ -215,13 +215,13 @@ export default function CreatePost() {
                 css={{
                   width: '100%',
                   height: '120px',
-                  border: '2px dashed $input-gray',
+                  border: '2px dashed $gray-2',
                   margin: '$3 0',
                   borderRadius: '$2',
                   padding: '$3',
                   cursor: 'pointer',
                   ...((isDragActive || acceptedFiles.length !== 0) && {
-                    borderColor: '$blue',
+                    borderColor: '$blue-1',
                   }),
                 }}
                 {...getRootProps()}
@@ -246,7 +246,6 @@ export default function CreatePost() {
                       <Text
                         as={'p'}
                         weight={600}
-                        size={'3'}
                         color={'black-primary'}
                         css={{ lineBreak: 'anywhere' }}
                       >
@@ -262,7 +261,7 @@ export default function CreatePost() {
                             css={{
                               height: '$2',
                               width: '100%',
-                              backgroundColor: '$bgalt',
+                              backgroundColor: '$bg-2',
                               br: '$1',
                               position: 'relative',
                             }}
@@ -274,7 +273,7 @@ export default function CreatePost() {
                                 position: 'absolute',
                                 top: 0,
                                 left: 0,
-                                bc: '$blue',
+                                bc: '$blue-1',
                                 br: '$1',
                               }}
                             />
@@ -289,16 +288,14 @@ export default function CreatePost() {
                 ) : (
                   <Flex direction={'column'} align={'center'} gap={'1'}>
                     {fileRejections.length !== 0 && (
-                      <Text weight={600} color={'black-primary'} size={'3'}>
+                      <Text weight={600} color={'black-primary'}>
                         Arquivo muito grande
                       </Text>
                     )}
-                    <Text size={'3'} color={'black-secondary'}>
+                    <Text color={'black-secondary'}>
                       Arraste um vídeo ou clique para procurar
                     </Text>
-                    <Text size={'3'} color={'black-secondary'}>
-                      Limite de 100 MB
-                    </Text>
+                    <Text color={'black-secondary'}>Limite de 100 MB</Text>
                   </Flex>
                 )}
               </Flex>

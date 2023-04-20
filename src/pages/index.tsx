@@ -45,7 +45,7 @@ export default function Timeline() {
       <NextSeo title="Show Maker // Página inicial" />
       <Main>
         <Box as={'section'} css={{ pb: '0 !important' }}>
-          <Heading>Últimos posts</Heading>
+          <Heading size="2">Últimos posts</Heading>
           <Flex
             justify={'between'}
             css={{

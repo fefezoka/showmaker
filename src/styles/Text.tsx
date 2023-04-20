@@ -21,26 +21,21 @@ export const Text = styled('span', {
       },
       '5': {
         fontSize: '$5',
-        letterSpacing: '-.026em',
+        letterSpacing: '-.022em',
       },
       '6': {
         fontSize: '$6',
-        letterSpacing: '-.028em',
+        letterSpacing: '-.024em',
       },
       '7': {
         fontSize: '$7',
-        letterSpacing: '-.031em',
+        letterSpacing: '-.027em',
         textIndent: '-.005em',
       },
       '8': {
         fontSize: '$8',
-        letterSpacing: '-.034em',
+        letterSpacing: '-.028em',
         textIndent: '-.018em',
-      },
-      '9': {
-        fontSize: '$9',
-        letterSpacing: '-.055em',
-        textIndent: '-.025em',
       },
     },
     weight: {
@@ -67,11 +62,14 @@ export const Text = styled('span', {
       'black-secondary': {
         color: '$text-black-secondary',
       },
+      'red-primary': {
+        color: '$red-2',
+      },
     },
   },
 
   defaultVariants: {
-    size: '4',
+    size: '3',
     weight: 400,
     color: 'primary',
   },

@@ -6,8 +6,8 @@ export const Menu = DropdownMenu.Root;
 export const MenuTrigger = DropdownMenu.Trigger;
 
 const StyledMenuContent = styled(DropdownMenu.Content, {
-  zIndex: '$modal',
-  backgroundColor: '$white',
+  zIndex: '$menu',
+  backgroundColor: '$white-1',
   minWidth: '130px',
   padding: '$1',
   borderRadius: '$2',
@@ -21,23 +21,21 @@ export const MenuItem = styled(DropdownMenu.Item, {
   borderRadius: '$1',
   padding: '$2',
   cursor: 'pointer',
-  zIndex: '$modal',
 
   '&:hover': {
     outline: 'none',
-    backgroundColor: '$bgalt',
-    color: '$text-primary',
+    fontWeight: 600,
   },
 });
 
 export const MenuSeparator = styled(DropdownMenu.Separator, {
   height: '1px',
-  backgroundColor: '$gray',
+  backgroundColor: '$gray-1',
   margin: '$1',
 });
 
 const MenuArrow = styled(DropdownMenu.Arrow, {
-  fill: '$white',
+  fill: '$white-1',
 });
 
 type MenuContentPrimitiveProps = React.ComponentProps<typeof DropdownMenu.Content>;

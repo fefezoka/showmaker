@@ -20,16 +20,29 @@ const StyledIcon = styled('div', {
 
 export const ProviderIcon = ({ Icon, bc, isAlreadyRound, hasBorder }: ProviderIcon) => {
   return isAlreadyRound ? (
-    <StyledIcon as={Icon} css={{ size: 32, bc, ...(hasBorder && { br: '$round' }) }} />
+    <StyledIcon
+      as={Icon}
+      css={{
+        size: 24,
+        bc,
+        ...(hasBorder && { br: '$round' }),
+        '@bp2': {
+          size: 32,
+        },
+      }}
+    />
   ) : (
     <StyledIcon
       css={{
-        size: 32,
+        size: 24,
         bc,
         br: '$round',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        '@bp2': {
+          size: 32,
+        },
       }}
     >
       <Icon size={18} />

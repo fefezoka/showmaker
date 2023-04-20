@@ -26,7 +26,7 @@ export const Video = ({ videoUrl, thumbnailUrl, ...props }: VideoProps) => {
       css={{
         overflow: 'hidden',
         width: '100%',
-        br: '$6',
+        br: '$4',
         cursor: 'pointer',
         position: 'relative',
         pb: '56.25%',

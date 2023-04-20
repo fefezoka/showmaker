@@ -11,7 +11,7 @@ export const StyledTabsContent = styled(TabsPrimitive.Content, {
   height: '360px',
 
   '&::-webkit-scrollbar-track': {
-    backgroundColor: '$gray',
+    backgroundColor: '$gray-1',
   },
   '&::-webkit-scrollbar': {
     width: '$2',

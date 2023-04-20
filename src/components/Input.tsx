@@ -13,27 +13,22 @@ const StyledInput = styled('input', {
   border: 'none',
   borderRadius: '$7',
   fontSize: '$3',
-  backgroundColor: '$bgalt',
+  backgroundColor: '$bg-2',
   color: '$text-primary',
+  minHeight: 40,
 
   '&::placeholder': {
     color: '$text-secondary',
     fontSize: '$2',
   },
 
-  '@bp2': {
-    '&::placeholder': {
-      fontSize: '$3',
-    },
-  },
-
   variants: {
     theme: {
       light: {
-        backgroundColor: 'white',
+        backgroundColor: '$white-1',
         padding: '$3',
         borderRadius: '$1',
-        border: '1px solid $input-gray',
+        border: '1px solid $gray-2',
         transition: '100ms all',
 
         '&:focus': {

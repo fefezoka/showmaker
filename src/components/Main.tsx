@@ -37,20 +37,20 @@ export const Main = memo(({ children }: MainProps) => {
               width: '100%',
 
               '& > section': {
-                padding: '1rem',
+                padding: '$4',
                 borderBottom: '2px solid',
-                borderColor: '$bgalt',
+                borderColor: '$bg-2',
               },
 
               '& section:first-of-type': {
-                paddingTop: '1rem',
+                paddingTop: '$4',
               },
 
               '@bp2': {
-                borderRight: '2px solid $bgalt',
+                borderRight: '2px solid $bg-2',
 
                 '& > section': {
-                  padding: '1.5rem',
+                  padding: '$5',
                 },
               },
             }}

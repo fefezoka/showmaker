@@ -41,10 +41,10 @@ export const Header = () => {
         top: 0,
         p: '$3',
         zIndex: '$header',
-        bc: '$bg',
+        bc: '$bg-1',
 
         '@bp2': {
-          p: '$3 $6',
+          p: '$3 $5',
         },
       }}
     >
@@ -67,7 +67,7 @@ export const Header = () => {
             <MenuTrigger asChild>
               <Flex
                 align={'center'}
-                gap={'3'}
+                gap={'2'}
                 css={{
                   br: '$6',
                   ml: '$3',
@@ -77,12 +77,16 @@ export const Header = () => {
                   cursor: 'pointer',
 
                   '&:hover': {
-                    backgroundColor: '$bgalt',
+                    backgroundColor: '$bg-2',
                   },
                 }}
               >
-                <ProfileIcon src={session?.user?.image as string} alt="" />
-                {isDesktop && <Text weight={600}>{session?.user?.name}</Text>}
+                <ProfileIcon src={session.user.image as string} alt="" />
+                {isDesktop && (
+                  <Text weight={600} size={'4'}>
+                    {session.user.name}
+                  </Text>
+                )}
                 {open ? <IoCaretUp /> : <IoCaretDown />}
               </Flex>
             </MenuTrigger>
@@ -102,7 +106,7 @@ export const Header = () => {
             align={'center'}
             gap={'2'}
             as={'button'}
-            css={{ px: '$4', py: '$2', bc: '$bgalt', br: '$7', ml: '$3' }}
+            css={{ px: '$4', py: '$2', bc: '$bg-2', br: '$7', ml: '$3' }}
             onClick={() => signIn('discord')}
           >
             <Image src={discordIcon} alt="" height={24} width={24} />

@@ -5,10 +5,10 @@ import { Flex } from './Flex';
 
 const Glow = keyframes({
   '0%, 100%': {
-    backgroundColor: '$skeleton',
+    backgroundColor: '$bg-2',
   },
   '50%': {
-    backgroundColor: '$skeletonalt',
+    backgroundColor: '$bg-3',
   },
 });
 
@@ -58,18 +58,15 @@ export const Rectangle = ({ css }: { css: CSS }) => {
 
 export const PostSkeleton = () => {
   return (
-    <Box css={{ p: '$4', '@bp2': { p: '$6' }, borderBottom: '2px solid $bgalt' }}>
+    <Box css={{ p: '$4', '@bp2': { p: '$6' }, borderBottom: '2px solid $bg-2' }}>
       <Flex align={'center'} justify={'between'}>
         <Flex align={'center'} gap={'2'}>
           <Circle css={{ size: 32 }} />
-          <Line css={{ height: 22, width: 120 }} />
+          <Line css={{ height: 22, width: 180 }} />
         </Flex>
-        <Line css={{ height: 22, width: 60 }} />
+        <Line css={{ height: 22, width: 100 }} />
       </Flex>
-      <Flex css={{ mt: '$2' }} justify={'between'} gap={'3'}>
-        <Line css={{ height: 22, width: 240 }} />
-        <Line css={{ height: 22, width: 120 }} />
-      </Flex>
+      <Line css={{ height: 22, width: 240, mt: '$2' }} />
       <Box css={{ mt: '$6' }}>
         <Rectangle css={{ pb: '56.25%', br: '$6' }} />
       </Box>
@@ -91,8 +88,8 @@ export const ProfileSkeleton = () => {
       </Flex>
       <Line rows={2} css={{ height: 16, width: 200 }} />
       <Flex css={{ mt: '$4' }} justify={'center'} gap={'4'}>
-        <Rectangle css={{ height: 40, width: 120 }} />
-        <Rectangle css={{ height: 40, width: 120 }} />
+        <Rectangle css={{ height: 36, width: 110 }} />
+        <Rectangle css={{ height: 36, width: 110 }} />
       </Flex>
     </Box>
   );

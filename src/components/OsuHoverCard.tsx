@@ -79,7 +79,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                                 size: '$6',
                                 br: '$round',
                                 border: `4px solid ${
-                                  data.is_online ? '#b3d944' : '$black'
+                                  data.is_online ? '#b3d944' : '$black-1'
                                 }`,
                                 mb: '$1',
                               }}
@@ -102,7 +102,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                               {data.username}
                             </Text>
                             <Box>
-                              <Text size={'2'}>
+                              <Text size={'1'}>
                                 Desde{' '}
                                 {Intl.DateTimeFormat('pt-BR').format(
                                   new Date(data.join_date).getTime()
@@ -112,13 +112,13 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                           </Box>
                           <Box>
                             {!data.is_online && data.last_visit && (
-                              <Text size={'2'} as={'p'}>
+                              <Text size={'1'} as={'p'}>
                                 Visto por último{' '}
                                 {diffBetweenDates(new Date(data.last_visit))}
                               </Text>
                             )}
                             {
-                              <Text size={'3'}>
+                              <Text size={'1'} weight={600}>
                                 {data.is_online ? 'Online' : 'Offline'}
                               </Text>
                             }
@@ -129,7 +129,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                         {data.statistics.global_rank && (
                           <Box css={{ ta: 'right' }}>
                             <Flex direction={'column'}>
-                              <Text weight={600} size={'2'}>
+                              <Text weight={600} size={'1'}>
                                 Global
                               </Text>
                               <Text size={'2'}>#{data.statistics.global_rank}</Text>
@@ -142,7 +142,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                               }}
                             />
                             <Flex direction={'column'}>
-                              <Text weight={600} size={'2'}>
+                              <Text weight={600} size={'1'}>
                                 {data.country.name}
                               </Text>
                               <Text size={'2'}>#{data.statistics.country_rank}</Text>

@@ -53,11 +53,11 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
         <Flex
           as="form"
           onSubmit={commentSubmit}
-          gap={{ '@initial': '2', '@bp2': '4' }}
+          gap={{ '@initial': '2', '@bp2': '3' }}
           css={{
             mt: '$2',
             '@bp2': {
-              mt: '$4',
+              mt: '$3',
             },
           }}
         >

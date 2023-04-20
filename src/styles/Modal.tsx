@@ -30,7 +30,7 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
   width: 'calc(100% - 40px)',
   padding: '$6',
   willChange: 'transform',
-  color: '$black',
+  color: '$black-1',
   backgroundColor: '$modal',
   borderRadius: '$2',
 

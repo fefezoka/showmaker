@@ -11,33 +11,29 @@ const StyledFeedButton = styled('button', {
   borderBottom: '2px solid transparent',
   fontWeight: 500,
 
-  '@bp2': {
-    fontSize: '15px',
-  },
-
   variants: {
     active: {
       true: {
         color: '$blue',
-        borderBottomColor: '$blue',
+        borderBottomColor: '$blue-2',
         fontWeight: 600,
 
         '&:hover': {
-          borderBottomColor: '$blue !important',
+          borderBottomColor: '$blue-2 !important',
         },
       },
     },
     theme: {
       light: {
-        color: '$black',
+        color: '$text-black-primary',
 
         '&:hover': {
-          borderBottomColor: '$black',
+          borderBottomColor: '$black-1',
         },
       },
       dark: {
         '&:hover': {
-          borderBottomColor: '$gray',
+          borderBottomColor: '$gray-1',
         },
       },
     },

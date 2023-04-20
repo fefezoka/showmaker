@@ -38,7 +38,7 @@ export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowPro
           onValueChange={(value) => setTab(value as typeof defaultTab)}
         >
           <TabsList asChild>
-            <Flex justify={'center'} gap={'4'} css={{ borderBottom: '1px solid $bg' }}>
+            <Flex justify={'center'} gap={'4'} css={{ borderBottom: '1px solid $bg-1' }}>
               <TabsTrigger value="followers" asChild>
                 <FeedButton theme={'light'} active={tab === 'followers'}>
                   Seguidores

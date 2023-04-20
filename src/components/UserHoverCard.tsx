@@ -25,11 +25,11 @@ interface UserHoverCardProps {
 }
 
 export const Content = styled(HoverCard.Content, {
-  backgroundColor: '$bg',
+  backgroundColor: '$bg-1',
   borderRadius: '$3',
   width: '440px',
   zIndex: '$modal',
-  border: '2px solid $bgalt',
+  border: '2px solid $bg-2',
   transition: 'all 200ms ease-out',
   animation: `250ms ${Fade}`,
   boxShadow: '0px 0px 12px black',
@@ -54,7 +54,7 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
       </HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
-          <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bgalt' }}>
+          <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bg-2' }}>
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <Box>
                 <ProfileIcon src={user.image} css={{ size: '96px' }} alt="" />
@@ -74,13 +74,13 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
               <Flex gap={'4'}>
                 <Text size={'2'}>
                   Seguindo{' '}
-                  <Text weight={600} size={'3'}>
+                  <Text weight={600} size={'2'}>
                     {user.followingAmount}
                   </Text>
                 </Text>
                 <Text size={'2'}>
                   Seguidores{' '}
-                  <Text weight={600} size={'3'}>
+                  <Text weight={600} size={'2'}>
                     {user.followersAmount}
                   </Text>
                 </Text>
@@ -116,7 +116,7 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      <Text size={'3'} weight={600} css={{ lh: '1.875rem' }}>
+                      <Text weight={600} css={{ lh: '1.875rem' }} size={'2'}>
                         {post.title}
                       </Text>
                     </Box>

@@ -9,7 +9,7 @@ const StyledButton = styled('button', {
   alignItems: 'center',
   justifyContent: 'center',
   padding: '$3',
-  backgroundColor: '$blue',
+  backgroundColor: '$blue-2',
   minWidth: '64px',
   color: '$text-primary',
   fontSize: '$3',
@@ -19,17 +19,17 @@ const StyledButton = styled('button', {
   fontWeight: 500,
 
   '&:hover': {
-    backgroundColor: '$bluealt',
+    backgroundColor: '$blue-1',
   },
 
   variants: {
     variant: {
       exit: {
-        backgroundColor: '$red',
-        borderColor: '$white',
+        backgroundColor: '$red-1',
+        borderColor: '$white-1',
 
         '&:hover': {
-          backgroundColor: '$redalt',
+          backgroundColor: '$red-2',
         },
       },
     },

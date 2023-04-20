@@ -34,7 +34,7 @@ export const LoggedProvider = ({ provider, account }: LoggedProviderProps) => {
       css={{
         br: '$1',
         transition: 'all 200ms',
-        bc: '$bgalt',
+        bc: '$bg-2',
       }}
       key={provider.name}
     >
@@ -54,10 +54,8 @@ export const LoggedProvider = ({ provider, account }: LoggedProviderProps) => {
         <Heading css={{ lh: 'unset' }}>
           {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
         </Heading>
-        <Text size={'3'} css={{ color: '$text-secondary' }}>
-          Logado como{' '}
-        </Text>
-        <Text size={'3'} css={{ color: '$text-secondary' }} weight={600}>
+        <Text css={{ color: '$text-secondary' }}>Logado como </Text>
+        <Text css={{ color: '$text-secondary' }} weight={600}>
           {account.providerAccountId}
         </Text>
       </Box>

@@ -102,7 +102,7 @@ export default function Profile() {
             <Flex
               justify={'between'}
               align={'center'}
-              css={{ mb: '$3', '@bp2': { mb: '$6' } }}
+              css={{ mb: '$3', '@bp2': { mb: '$5' } }}
             >
               <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">
                 <FullProfileIcon
@@ -110,11 +110,11 @@ export default function Profile() {
                   css={{ size: '84px', '@bp2': { size: '144px' } }}
                 />
                 <Box>
-                  <Heading size="2">{user.name}</Heading>
+                  <Heading size="3">{user.name}</Heading>
                   {(user.followYou && user.isFollowing && (
-                    <Text size={'3'}>Segue um ao outro</Text>
+                    <Text>Segue um ao outro</Text>
                   )) ||
-                    (user.followYou && <Text size={'3'}>Segue você</Text>)}
+                    (user.followYou && <Text>Segue você</Text>)}
                 </Box>
               </Flex>
 
@@ -136,8 +136,8 @@ export default function Profile() {
             <Flex justify={'between'} align={'center'} gap={'5'}>
               <Box>
                 <Box css={{ mb: '$1' }}>
-                  <Text size={{ '@initial': '2', '@bp2': '3' }}>Usuário desde </Text>
-                  <Text size={{ '@initial': '2', '@bp2': '3' }} weight={600}>
+                  <Text size={'2'}>Usuário desde </Text>
+                  <Text size={'2'} weight={600}>
                     {new Intl.DateTimeFormat('pt-BR').format(
                       new Date(user.createdAt).getTime()
                     )}
@@ -146,16 +146,16 @@ export default function Profile() {
                 <Flex gap={'3'}>
                   <SeeUserFollow userId={user.id} defaultTab="followers">
                     <Box as={'button'}>
-                      <Text size={{ '@initial': '2', '@bp2': '3' }}>Seguidores </Text>
-                      <Text size={{ '@initial': '2', '@bp2': '3' }} weight={600}>
+                      <Text size={'2'}>Seguidores </Text>
+                      <Text size={'2'} weight={600}>
                         {user.followersAmount}
                       </Text>
                     </Box>
                   </SeeUserFollow>
                   <SeeUserFollow userId={user.id} defaultTab="following">
                     <Box as={'button'}>
-                      <Text size={{ '@initial': '2', '@bp2': '3' }}>Seguindo </Text>
-                      <Text size={{ '@initial': '2', '@bp2': '3' }} weight={600}>
+                      <Text size={'2'}>Seguindo </Text>
+                      <Text size={'2'} weight={600}>
                         {user.followingAmount}
                       </Text>
                     </Box>

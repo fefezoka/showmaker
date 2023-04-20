@@ -54,7 +54,7 @@ export default function Search() {
     return (
       <Main>
         <Box as={'section'}>
-          <Heading>Post não encontrado</Heading>
+          <Heading size="2">Post não encontrado</Heading>
         </Box>
       </Main>
     );
@@ -65,7 +65,7 @@ export default function Search() {
       <NextSeo title={`Procurando por ${title}`} />
       <Main>
         <Box as={'section'}>
-          <Heading>Procurando por {title}</Heading>
+          <Heading size="2">Procurando por {title}</Heading>
         </Box>
 
         <PostPaginator

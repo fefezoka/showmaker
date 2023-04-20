@@ -61,16 +61,16 @@ export const Menu = () => {
       as={'aside'}
       css={{
         position: 'fixed',
-        backgroundColor: '$bg',
+        backgroundColor: '$bg-1',
         bottom: 0,
         minWidth: '100vw',
         zIndex: '$menu',
         padding: '0 $5',
-        borderTop: '2px solid $bgalt',
+        borderTop: '2px solid $bg-2',
 
         '@bp2': {
           borderTop: 'unset',
-          borderRight: '2px solid $bgalt',
+          borderRight: '2px solid $bg-2',
           position: 'sticky',
           top: 0,
           height: '100vh',
@@ -86,19 +86,19 @@ export const Menu = () => {
       >
         <Link href={'/'} prefetch={false}>
           <Line active>
-            {isDesktop ? <Heading>Show Maker</Heading> : <Heading>SM</Heading>}
+            {isDesktop ? <Heading size="2">Show Maker</Heading> : <Heading>SM</Heading>}
           </Line>
         </Link>
         <Link href={'/'} prefetch={false}>
           <Line active={router.pathname === '/'}>
             <IoHome size={20} />
-            {isDesktop && <Heading>Página inicial</Heading>}
+            {isDesktop && <Heading size="2">Página inicial</Heading>}
           </Line>
         </Link>
         <Link href={session ? `/${session.user.name}` : '#'} prefetch={false}>
           <Line active={router.asPath === `/${session?.user.name.replace(' ', '%20')}`}>
             <IoPerson size={20} />
-            {isDesktop && <Heading>Perfil</Heading>}
+            {isDesktop && <Heading size="2">Perfil</Heading>}
           </Line>
         </Link>
         <Box
