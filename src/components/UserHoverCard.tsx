@@ -48,9 +48,9 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
-        <Link href={`/${user.name}`} prefetch={false}>
+        <Flex as={Link} href={`/${user.name}`}>
           {children}
-        </Link>
+        </Flex>
       </HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>

@@ -5,7 +5,7 @@ const StyledFeedButton = styled('button', {
   fontSize: '$3',
   padding: '$3 $4',
   transition: 'border-bottom-color 300ms ease-out, font-weight 200ms ease-in',
-  color: '$white',
+  color: '$text-secondary',
   textAlign: 'center',
   flexShrink: 0,
   borderBottom: '2px solid transparent',
@@ -16,7 +16,6 @@ const StyledFeedButton = styled('button', {
       true: {
         color: '$blue',
         borderBottomColor: '$blue-2',
-        fontWeight: 600,
 
         '&:hover': {
           borderBottomColor: '$blue-2 !important',

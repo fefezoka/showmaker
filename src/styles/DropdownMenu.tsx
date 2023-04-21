@@ -7,35 +7,42 @@ export const MenuTrigger = DropdownMenu.Trigger;
 
 const StyledMenuContent = styled(DropdownMenu.Content, {
   zIndex: '$menu',
-  backgroundColor: '$white-1',
-  minWidth: '130px',
-  padding: '$1',
+  backgroundColor: '$bg-2',
+  padding: '$2 0',
   borderRadius: '$2',
+  border: '2px solid $bg-3',
 });
 
 export const MenuItem = styled(DropdownMenu.Item, {
-  display: 'flex',
-  justifyContent: 'center',
-  color: '$text-black-primary',
+  color: '$text-primary',
   fontSize: '$3',
-  borderRadius: '$1',
-  padding: '$2',
+  padding: '$2 $4',
   cursor: 'pointer',
+  width: '100%',
 
   '&:hover': {
     outline: 'none',
-    fontWeight: 600,
+    backgroundColor: '$bg-3',
+  },
+
+  variants: {
+    theme: {
+      alert: {
+        color: '$red-1',
+        fontWeight: 600,
+      },
+    },
   },
 });
 
 export const MenuSeparator = styled(DropdownMenu.Separator, {
-  height: '1px',
-  backgroundColor: '$gray-1',
-  margin: '$1',
+  height: '2px',
+  backgroundColor: '$bg-3',
+  margin: '$1 0',
 });
 
 const MenuArrow = styled(DropdownMenu.Arrow, {
-  fill: '$white-1',
+  fill: '$bg-3',
 });
 
 type MenuContentPrimitiveProps = React.ComponentProps<typeof DropdownMenu.Content>;

@@ -25,7 +25,7 @@ const StyledInput = styled('input', {
   variants: {
     theme: {
       light: {
-        backgroundColor: '$white-1',
+        backgroundColor: 'white',
         padding: '$3',
         borderRadius: '$1',
         border: '1px solid $gray-2',

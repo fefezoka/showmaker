@@ -91,7 +91,6 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
               <Flex
                 gap={{ '@bp2': '3' }}
                 direction={{ '@initial': 'column', '@bp2': 'row' }}
-                align={{ '@bp2': 'center' }}
               >
                 <UserHoverCard user={comment.user}>
                   <Text size={{ '@initial': '3', '@bp2': '4' }} weight={600}>

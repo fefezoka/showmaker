@@ -110,11 +110,11 @@ export default function Profile() {
                   css={{ size: '84px', '@bp2': { size: '144px' } }}
                 />
                 <Box>
-                  <Heading size="3">{user.name}</Heading>
+                  <Heading size={'3'}>{user.name}</Heading>
                   {(user.followYou && user.isFollowing && (
-                    <Text>Segue um ao outro</Text>
+                    <Text size={'2'}>Segue um ao outro</Text>
                   )) ||
-                    (user.followYou && <Text>Segue você</Text>)}
+                    (user.followYou && <Text size={'2'}>Segue você</Text>)}
                 </Box>
               </Flex>
 
@@ -124,11 +124,7 @@ export default function Profile() {
                   disabled={followSomeone.isLoading}
                   onClick={handleFollowClick}
                 >
-                  {user.isFollowing
-                    ? 'Parar de seguir'
-                    : user.followYou
-                    ? 'Seguir de volta'
-                    : 'Seguir'}
+                  {user.isFollowing ? 'Seguindo' : 'Seguir'}
                 </Button>
               )}
             </Flex>

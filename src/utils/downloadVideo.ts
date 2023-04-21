@@ -5,7 +5,7 @@ export const downloadVideo = (url: string, title: string) => {
     const urlObject = window.URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement('a');
     link.href = urlObject;
-    link.setAttribute('download', title + '.mp4');
+    link.setAttribute('download', title.replace(' ', '_') + '.mp4');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

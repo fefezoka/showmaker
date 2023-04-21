@@ -98,7 +98,9 @@ export const Header = () => {
               </MenuItem>
               <MenuItem onClick={() => router.push('/config')}>Configurações</MenuItem>
               <MenuSeparator />
-              <MenuItem onClick={() => signOut()}>Sair</MenuItem>
+              <MenuItem theme={'alert'} onClick={() => signOut()}>
+                Sair
+              </MenuItem>
             </MenuContent>
           </Menu>
         ) : (
