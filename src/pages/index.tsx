@@ -1,4 +1,4 @@
-import { Main, FeedButton, PostPaginator } from '@components';
+import { FeedButton, PostPaginator } from '@components';
 import { Box, Flex, Heading } from '@styles';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
@@ -43,36 +43,34 @@ export default function Timeline() {
   return (
     <>
       <NextSeo title="Show Maker // Página inicial" />
-      <Main>
-        <Box as={'section'} css={{ pb: '0 !important' }}>
-          <Heading size="2">Últimos posts</Heading>
-          <Flex
-            justify={'between'}
-            css={{
-              mt: '$2',
-              overflowX: 'scroll',
-              '&::-webkit-scrollbar': { display: 'none' },
-              '@bp2': { overflowX: 'unset' },
-            }}
-          >
-            {feedOptions.map((option) => (
-              <FeedButton
-                active={feed.value === option.value}
-                key={option.value}
-                onClick={() => setFeed(option)}
-              >
-                {option.label}
-              </FeedButton>
-            ))}
-          </Flex>
-        </Box>
-        <PostPaginator
-          loading={isLoading}
-          posts={posts}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-        />
-      </Main>
+      <Box as={'section'} css={{ pb: '0 !important' }}>
+        <Heading size="2">Últimos posts</Heading>
+        <Flex
+          justify={'between'}
+          css={{
+            mt: '$2',
+            overflowX: 'scroll',
+            '&::-webkit-scrollbar': { display: 'none' },
+            '@bp2': { overflowX: 'unset' },
+          }}
+        >
+          {feedOptions.map((option) => (
+            <FeedButton
+              active={feed.value === option.value}
+              key={option.value}
+              onClick={() => setFeed(option)}
+            >
+              {option.label}
+            </FeedButton>
+          ))}
+        </Flex>
+      </Box>
+      <PostPaginator
+        loading={isLoading}
+        posts={posts}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+      />
     </>
   );
 }

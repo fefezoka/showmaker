@@ -18,11 +18,11 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { trpc } from '../utils/trpc';
 import { Post } from '../@types/types';
 
-interface FeedPostCommentsProps {
+interface IFeedPostComments {
   post: Post;
 }
 
-export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
+export const FeedPostComments = ({ post }: IFeedPostComments) => {
   const { data: session } = useSession();
   const deleteComment = useDeletePostComment();
   const createComment = useCreatePostComment();

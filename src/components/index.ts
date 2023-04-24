@@ -12,7 +12,7 @@ export { UserHoverCard } from './UserHoverCard';
 export { Video } from './Video';
 export { Select } from './Select';
 export { PostPaginator } from './PostPaginator';
-export { SeeUserFollow } from './SeeUserFollow';
+export { UserFollowTabs } from './UserFollowTabs';
 export { ProviderIcon } from './ProviderIcon';
 export { LoggedProvider } from './LoggedProvider';
 export { Input } from './Input';

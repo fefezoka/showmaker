@@ -6,7 +6,7 @@ import { FeedPost } from './FeedPost';
 import { InfiniteData } from '@tanstack/react-query';
 import { Post } from '../@types/types';
 
-interface PostPaginatorProps {
+interface IPostPaginator {
   hasNextPage: boolean | undefined;
   fetchNextPage: () => {};
   posts: InfiniteData<{ posts: Post[]; nextCursor?: string | undefined }> | undefined;
@@ -18,7 +18,7 @@ export const PostPaginator = ({
   fetchNextPage,
   posts,
   loading = true,
-}: PostPaginatorProps) => {
+}: IPostPaginator) => {
   const { ref, inView } = useInView();
 
   useEffect(() => {

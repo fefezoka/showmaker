@@ -2,7 +2,7 @@ import React from 'react';
 import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
 
-interface ProviderIcon {
+interface IProviderIcon {
   Icon: IconType;
   bc: string;
   isAlreadyRound?: boolean;
@@ -18,7 +18,7 @@ const StyledIcon = styled('div', {
   },
 });
 
-export const ProviderIcon = ({ Icon, bc, isAlreadyRound, hasBorder }: ProviderIcon) => {
+export const ProviderIcon = ({ Icon, bc, isAlreadyRound, hasBorder }: IProviderIcon) => {
   return isAlreadyRound ? (
     <StyledIcon
       as={Icon}

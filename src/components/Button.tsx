@@ -42,13 +42,13 @@ const StyledButton = styled('button', {
   },
 });
 
-interface ButtonProps extends React.ComponentProps<typeof StyledButton> {
+interface IButton extends React.ComponentProps<typeof StyledButton> {
   loading?: boolean;
   Icon?: IconType;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ Icon, loading, ...props }: ButtonProps, forwardedRef) => {
+export const Button = forwardRef<HTMLButtonElement, IButton>(
+  ({ Icon, loading, ...props }: IButton, forwardedRef) => {
     return (
       <StyledButton type="button" {...props} ref={forwardedRef}>
         {loading && <Image src={Spinner} height={18} width={18} alt="" />}

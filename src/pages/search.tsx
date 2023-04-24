@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { trpc } from '../utils/trpc';
-import { Main, PostPaginator } from '@components';
+import { PostPaginator } from '@components';
 import { Box, Heading } from '@styles';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
@@ -52,29 +52,25 @@ export default function Search() {
 
   if (isError) {
     return (
-      <Main>
-        <Box as={'section'}>
-          <Heading size="2">Post não encontrado</Heading>
-        </Box>
-      </Main>
+      <Box as={'section'}>
+        <Heading size="2">Post não encontrado</Heading>
+      </Box>
     );
   }
 
   return (
     <>
       <NextSeo title={`Procurando por ${title}`} />
-      <Main>
-        <Box as={'section'}>
-          <Heading size="2">Procurando por {title}</Heading>
-        </Box>
+      <Box as={'section'}>
+        <Heading size="2">Procurando por {title}</Heading>
+      </Box>
 
-        <PostPaginator
-          posts={posts}
-          loading={isLoading}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-        />
-      </Main>
+      <PostPaginator
+        posts={posts}
+        loading={isLoading}
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+      />
     </>
   );
 }

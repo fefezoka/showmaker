@@ -118,7 +118,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
                               </Text>
                             )}
                             {
-                              <Text size={'1'} weight={600}>
+                              <Text size={'2'} weight={600}>
                                 {data.is_online ? 'Online' : 'Offline'}
                               </Text>
                             }

@@ -5,7 +5,7 @@ import { IoRemoveCircle } from 'react-icons/io5';
 import { IconType } from 'react-icons/lib';
 import { trpc } from 'src/utils/trpc';
 
-interface LoggedProviderProps {
+interface ILoggedProvider {
   account: {
     id: string;
     provider: string;
@@ -18,7 +18,7 @@ interface LoggedProviderProps {
   };
 }
 
-export const LoggedProvider = ({ provider, account }: LoggedProviderProps) => {
+export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
   const router = useRouter();
   const disconnectAccount = trpc.auth.disconnectAccount.useMutation();
 

@@ -2,10 +2,9 @@ import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import { signIn, useSession } from 'next-auth/react';
-import { styled } from '../../stitches.config';
-import axios from 'axios';
 import { IoAdd } from 'react-icons/io5';
 import { getVideoFrame } from '../utils/getVideoFrame';
+import { uploadVideo } from 'src/utils/uploadVideo';
 import { useIsDesktop, useCreatePost } from '@hooks';
 import { Button, Input, Select } from '@components';
 import {
@@ -22,8 +21,8 @@ import {
 } from '@styles';
 
 export default function CreatePost() {
-  const [file, setFile] = useState<File>();
   const [open, setOpen] = useState<boolean>(false);
+  const [file, setFile] = useState<File>();
   const [thumbnail, setThumbnail] = useState<string>();
   const [isSendingVideo, setIsSendingVideo] = useState<boolean>(false);
   const [uploadProgress, setUploadProgress] = useState<number>(0);
@@ -55,80 +54,12 @@ export default function CreatePost() {
     }
 
     setIsSendingVideo(true);
-    const XUniqueUploadId = +new Date();
 
-    const processThumbnail = async () => {
-      const formdata = new FormData();
-      formdata.append('cloud_name', 'dlgkvfmky');
-      formdata.append('file', thumbnail);
-      formdata.append('upload_preset', 'gjfsvh53');
-
-      const { data } = await axios.post(
-        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
-        formdata,
-        {
-          headers: {
-            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
-          },
-        }
-      );
-      return data;
-    };
-
-    const processVideo = async () => {
-      const size = file.size;
-      const sliceSize = 15000000;
-      var start = 0;
-
-      const loop: any = async () => {
-        var end = start + sliceSize;
-
-        if (end > size) {
-          end = size;
-        }
-
-        const piece = file.slice.bind(file)(start, end) as File;
-        const videoData = await sendVideoPiece(piece, start, end - 1, size);
-        if (end < size) {
-          start += sliceSize;
-          return loop();
-        }
-        return videoData;
-      };
-      return await loop();
-    };
-
-    const sendVideoPiece = async (
-      piece: File,
-      start: number,
-      end: number,
-      size: number
-    ) => {
-      const formdata = new FormData();
-      formdata.append('cloud_name', 'dlgkvfmky');
-      formdata.append('file', piece);
-      formdata.append('upload_preset', 'tamnuopz');
-
-      const { data } = await axios.post(
-        'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
-        formdata,
-        {
-          onUploadProgress(progressEvent) {
-            setUploadProgress((start + progressEvent.loaded) / size);
-          },
-          headers: {
-            'X-Unique-Upload-Id': `${XUniqueUploadId}`,
-            'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
-          },
-        }
-      );
-      return data;
-    };
-
-    const [videoData, thumbData] = await Promise.all([
-      processVideo(),
-      processThumbnail(),
-    ]);
+    const { thumbData, videoData } = await uploadVideo({
+      file,
+      thumbnail,
+      setUploadProgress,
+    });
 
     createPost.mutateAsync({
       game: game[0].value,

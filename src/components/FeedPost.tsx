@@ -24,12 +24,12 @@ import {
 } from '@styles';
 import { useDeletePost, useLikePost, useDislikePost } from '@hooks';
 
-interface FeedPostProps extends React.HTMLProps<HTMLDivElement> {
+interface IFeedPost extends React.HTMLProps<HTMLDivElement> {
   post: Post;
 }
 
 export const FeedPost = memo(
-  forwardRef(({ post, ...props }: FeedPostProps, forwardRef) => {
+  forwardRef(({ post, ...props }: IFeedPost, forwardRef) => {
     const { data: session } = useSession();
     const deletePost = useDeletePost();
     const likePost = useLikePost();

@@ -8,12 +8,12 @@ const StyledVideo = styled('video', {
   objectFit: 'fill',
 });
 
-interface VideoProps extends React.ComponentProps<typeof StyledVideo> {
+interface IVideo extends React.ComponentProps<typeof StyledVideo> {
   videoUrl: string;
   thumbnailUrl: string;
 }
 
-export const Video = ({ videoUrl, thumbnailUrl, ...props }: VideoProps) => {
+export const Video = ({ videoUrl, thumbnailUrl, ...props }: IVideo) => {
   const volume = useCallback((video: HTMLVideoElement) => {
     const lastVolume = window.localStorage.getItem('volume');
     if (video) {

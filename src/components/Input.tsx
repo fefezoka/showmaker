@@ -3,7 +3,7 @@ import React from 'react';
 import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
 
-interface InputProps extends React.ComponentProps<typeof StyledInput> {
+interface IInput extends React.ComponentProps<typeof StyledInput> {
   Icon?: IconType;
 }
 
@@ -23,8 +23,8 @@ const StyledInput = styled('input', {
   },
 });
 
-export const Input = React.forwardRef<React.ElementRef<typeof StyledInput>, InputProps>(
-  ({ Icon, ...props }: InputProps, forwardedRef) => {
+export const Input = React.forwardRef<React.ElementRef<typeof StyledInput>, IInput>(
+  ({ Icon, ...props }: IInput, forwardedRef) => {
     return (
       <Box css={{ size: '100%', position: 'relative' }}>
         <StyledInput {...props} ref={forwardedRef} />

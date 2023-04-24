@@ -15,13 +15,13 @@ import {
   Text,
 } from '@styles';
 
-interface SeeUserFollowProps {
+interface IUserFollowTabs {
   userId: string;
   children: ReactNode;
   defaultTab: 'following' | 'followers';
 }
 
-export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowProps) {
+export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs) {
   const [open, setOpen] = useState<boolean>(false);
   const [tab, setTab] = useState<typeof defaultTab>(defaultTab);
   const { data: session } = useSession();

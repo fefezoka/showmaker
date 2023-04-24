@@ -21,7 +21,7 @@ const Fade = keyframes({
   },
 });
 
-interface UserHoverCardProps {
+interface IUserHoverCard {
   user: User;
   children: ReactNode;
 }
@@ -37,7 +37,7 @@ export const Content = styled(HoverCard.Content, {
   boxShadow: '0px 0px 12px black',
 });
 
-export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
+export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState<boolean>(false);
   const utils = trpc.useContext();

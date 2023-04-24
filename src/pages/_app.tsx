@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app';
-import { global } from '../styles/global';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 import ogimage from '../assets/ogimage.jpeg';
 import { trpc } from '../utils/trpc';
+import { Main } from '@components';
+import { global } from '@styles';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   global();
@@ -24,7 +25,9 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
           twitter={{ cardType: 'summary_large_image' }}
           additionalMetaTags={[{ name: 'theme-color', content: '#000' }]}
         />
-        <Component {...pageProps} />
+        <Main>
+          <Component {...pageProps} />
+        </Main>
       </>
     </SessionProvider>
   );
