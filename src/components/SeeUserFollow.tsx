@@ -13,7 +13,6 @@ import {
   TabsList,
   Flex,
   Text,
-  SeeUserFollowItemSkeleton,
 } from '@styles';
 
 interface SeeUserFollowProps {
