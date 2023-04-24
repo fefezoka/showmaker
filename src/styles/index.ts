@@ -18,7 +18,6 @@ export {
   ProfileSkeleton,
   PostSkeleton,
   CommentSkeleton,
-  SeeUserFollowItemSkeleton,
   Circle,
   Line,
   Rectangle,
