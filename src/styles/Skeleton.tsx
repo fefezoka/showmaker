@@ -67,7 +67,7 @@ export const PostSkeleton = () => {
         <Line css={{ height: 22, width: 100 }} />
       </Flex>
       <Line css={{ height: 22, width: 240, mt: '$2' }} />
-      <Box css={{ mt: '$6' }}>
+      <Box css={{ mt: '$4' }}>
         <Rectangle css={{ pb: '56.25%', br: '$6' }} />
       </Box>
       <Flex align={'center'} justify={'center'} css={{ mt: '$4' }} gap={'4'}>
@@ -116,27 +116,6 @@ export const CommentSkeleton = ({ rows }: { rows?: number }) => {
             <Line css={{ width: 192, height: 16 }} />
           </Flex>
           <Line css={{ width: 96, height: 16 }} />
-        </Flex>
-      ))}
-    </>
-  );
-};
-
-export const SeeUserFollowItemSkeleton = ({ rows }: { rows?: number }) => {
-  return (
-    <>
-      {[...Array(rows)].map((_, index) => (
-        <Flex
-          justify={'between'}
-          align={'center'}
-          key={index}
-          css={{ px: '$3', pt: '$2' }}
-        >
-          <Flex gap={'2'} align={'center'}>
-            <Circle css={{ size: 44 }} />
-            <Line css={{ width: 120, height: 14 }} />
-          </Flex>
-          <Rectangle css={{ height: 32, width: 72 }} />
         </Flex>
       ))}
     </>

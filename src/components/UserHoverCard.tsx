@@ -8,7 +8,7 @@ import Spinner from '../assets/Spinner.svg';
 import { trpc } from '../utils/trpc';
 import { User } from '../@types/types';
 import { Button, ProfileIcon } from '@components';
-import { Box, Flex, Heading, Text } from '@styles';
+import { Box, Flex, Grid, Heading, Text } from '@styles';
 import { useFollow, useUnfollow } from '@hooks';
 import { useSession } from 'next-auth/react';
 
@@ -95,7 +95,11 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
           <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bg-2' }}>
             <Flex align={'center'} justify={'between'}>
               <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
-                <ProfileIcon src={user.image} css={{ size: '96px' }} alt="" />
+                <ProfileIcon
+                  src={user.image}
+                  css={{ size: '96px', border: '2px solid $bg-2' }}
+                  alt=""
+                />
               </Link>
               {user.id !== session?.user.id && (
                 <Button onClick={handleFollow}>
@@ -103,11 +107,16 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
                 </Button>
               )}
             </Flex>
-            <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
-              <Box css={{ mt: '$3' }}>
+            <Flex align={'center'} css={{ mt: '$3' }} gap={'1'}>
+              <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
                 <Heading>{user.name}</Heading>
-              </Box>
-            </Link>
+              </Link>
+              {friendshipStatus?.followed_by && (
+                <Text size={'2'} color={'secondary'}>
+                  {' • '} Segue você
+                </Text>
+              )}
+            </Flex>
             <Box>
               {posts && posts.posts[0] && (
                 <Text size={'2'}>
@@ -131,69 +140,66 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
               </Flex>
             </Box>
           </Box>
-          <Flex css={{ gap: '2px', minHeight: '140px' }}>
+
+          <Box css={{ height: 140, width: '100%' }}>
             {posts && posts.posts.length !== 0 ? (
-              posts.posts.map((post) => (
-                <Box
-                  as={'section'}
-                  key={post.id}
-                  css={{
-                    width: 'calc(100%/3)',
-                    overflow: 'hidden',
-                    textAlign: 'center',
+              <Grid columns={'3'} css={{ gap: '2px' }}>
+                {posts.posts.map((post) => (
+                  <Box
+                    as={'section'}
+                    key={post.id}
+                    css={{
+                      textAlign: 'center',
 
-                    '&:nth-of-type(1)': {
-                      borderBottomLeftRadius: '$2',
-                    },
+                      '&:nth-of-type(1)': {
+                        borderBottomLeftRadius: '$2',
+                      },
 
-                    '&:nth-of-type(3)': {
-                      borderBottomRightRadius: '$2',
-                    },
-                  }}
-                >
-                  <Link href={`/post/${post.id}`}>
-                    <Box
-                      css={{
-                        px: '4px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      <Text weight={600} css={{ lh: '1.875rem' }} size={'2'}>
-                        {post.title}
-                      </Text>
-                    </Box>
-                    <Box
-                      css={{
-                        mt: '$1',
-                        transition: 'all 100ms',
-                        overflow: 'hidden',
-                        pt: '75%',
-                        width: '100%',
-                        position: 'relative',
-                        cursor: 'pointer',
+                      '&:nth-of-type(3)': {
+                        borderBottomRightRadius: '$2',
+                      },
+                    }}
+                  >
+                    <Link href={`/post/${post.id}`}>
+                      <Box
+                        css={{
+                          px: '4px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                        }}
+                      >
+                        <Text weight={600} css={{ lh: '1.875rem' }} size={'2'}>
+                          {post.title}
+                        </Text>
+                      </Box>
+                      <Box
+                        css={{
+                          mt: '$1',
+                          transition: 'all 100ms',
+                          overflow: 'hidden',
+                          pt: '75%',
+                          width: '100%',
+                          position: 'relative',
+                          cursor: 'pointer',
 
-                        img: {
-                          objectFit: 'cover',
-                        },
+                          img: {
+                            objectFit: 'cover',
+                          },
 
-                        '&:hover': {
-                          opacity: '.7',
-                        },
-                      }}
-                    >
-                      <Image src={post.thumbnailUrl} alt="" fill sizes="" />
-                    </Box>
-                  </Link>
-                </Box>
-              ))
+                          '&:hover': {
+                            opacity: '.7',
+                          },
+                        }}
+                      >
+                        <Image src={post.thumbnailUrl} alt="" fill sizes="" />
+                      </Box>
+                    </Link>
+                  </Box>
+                ))}
+              </Grid>
             ) : (
-              <Flex
-                justify={'center'}
-                align={'center'}
-                css={{ minHeight: '140px', width: '100%' }}
-              >
+              <Flex justify={'center'} align={'center'} css={{ height: '100%' }}>
                 {isLoading ? (
                   <Flex justify={'center'}>
                     <Image src={Spinner} height={40} width={40} alt="" />
@@ -203,7 +209,7 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
                 )}
               </Flex>
             )}
-          </Flex>
+          </Box>
         </Content>
       </HoverCard.Portal>
     </HoverCard.Root>

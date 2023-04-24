@@ -18,11 +18,13 @@ export const Select = React.forwardRef<React.ElementRef<typeof SelectType>, Sele
           placeholder: (baseStyles) => ({
             ...baseStyles,
             color: 'var(--colors-text-secondary)',
+            fontSize: 'var(--fontSizes-2)',
+            marginLeft: '4px',
           }),
           singleValue: (baseStyles) => ({
             ...baseStyles,
             color: 'var(--colors-text-primary)',
-            marginLeft: '12px',
+            marginLeft: '4px',
           }),
           control: (baseStyles) => ({
             ...baseStyles,

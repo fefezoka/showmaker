@@ -13,8 +13,8 @@ import {
   TabsList,
   Flex,
   Text,
+  SeeUserFollowItemSkeleton,
 } from '@styles';
-import { SeeUserFollowItemSkeleton } from 'src/styles/Skeleton';
 
 interface SeeUserFollowProps {
   userId: string;
@@ -64,64 +64,59 @@ export function SeeUserFollow({ userId, children, defaultTab }: SeeUserFollowPro
               </TabsTrigger>
             </Flex>
           </TabsList>
-          {!(
-            followers.isLoading ||
-            following.isLoading ||
-            friendship_statuses.some((status) => status.isLoading)
-          ) ? (
-            [followers.data, following.data].map((tab, tabIndex) => (
-              <TabsContent
-                value={tabIndex === 0 ? 'followers' : 'following'}
-                key={tabIndex}
-              >
-                {tab &&
-                  tab.map((user, userIndex) => (
-                    <Flex
-                      css={{ px: '$3', pt: '$2' }}
-                      key={userIndex}
-                      justify={'between'}
-                      align={'center'}
-                    >
-                      <UserHoverCard user={user}>
-                        <Flex align={'center'} gap={'2'}>
-                          <ProfileIcon css={{ size: '44px' }} src={user.image} alt="" />
-                          <Text weight={600} color={'primary'} size={'5'}>
-                            {user.name}
-                          </Text>
-                          {tabIndex === 1 &&
-                            friendship_statuses[tabIndex].data?.[user.id].followed_by && (
-                              <Text size={'1'} color={'secondary'}>
-                                Segue você
-                              </Text>
-                            )}
-                        </Flex>
-                      </UserHoverCard>
-                      {session &&
-                        user.id !== session.user.id &&
-                        friendship_statuses[tabIndex].data?.[user.id] && (
-                          <Button
-                            css={{ p: '$2', height: '20px', fontSize: '$2' }}
-                            onClick={() =>
-                              friendship_statuses[tabIndex].data?.[user.id].following
-                                ? unfollow.mutate({ followingUser: user })
-                                : follow.mutate({ followingUser: user })
-                            }
-                            disabled={follow.isLoading || unfollow.isLoading}
-                          >
-                            {friendship_statuses[tabIndex].data?.[user.id].following
-                              ? 'Seguindo'
-                              : 'Seguir'}
-                          </Button>
-                        )}
-                    </Flex>
-                  ))}
-              </TabsContent>
-            ))
-          ) : (
-            <TabsContent value={tab}>
-              <SeeUserFollowItemSkeleton rows={8} />
+          {[followers.data, following.data].map((tab, tabIndex) => (
+            <TabsContent
+              value={tabIndex === 0 ? 'followers' : 'following'}
+              key={tabIndex}
+            >
+              {!(
+                followers.isLoading ||
+                following.isLoading ||
+                friendship_statuses.some((status) => status.isLoading)
+              ) &&
+                tab &&
+                tab.map((user, userIndex) => (
+                  <Flex
+                    css={{ px: '$3', pt: '$2' }}
+                    key={userIndex}
+                    justify={'between'}
+                    align={'center'}
+                  >
+                    <UserHoverCard user={user}>
+                      <Flex align={'center'} gap={'2'}>
+                        <ProfileIcon css={{ size: '44px' }} src={user.image} alt="" />
+                        <Text weight={600} color={'primary'} size={'5'}>
+                          {user.name}
+                        </Text>
+                        {tabIndex === 1 &&
+                          friendship_statuses[tabIndex].data?.[user.id].followed_by && (
+                            <Text size={'1'} color={'secondary'}>
+                              Segue você
+                            </Text>
+                          )}
+                      </Flex>
+                    </UserHoverCard>
+                    {session &&
+                      user.id !== session.user.id &&
+                      friendship_statuses[tabIndex].data?.[user.id] && (
+                        <Button
+                          css={{ p: '$2', height: '20px', fontSize: '$2' }}
+                          onClick={() =>
+                            friendship_statuses[tabIndex].data?.[user.id].following
+                              ? unfollow.mutate({ followingUser: user })
+                              : follow.mutate({ followingUser: user })
+                          }
+                          disabled={follow.isLoading || unfollow.isLoading}
+                        >
+                          {friendship_statuses[tabIndex].data?.[user.id].following
+                            ? 'Seguindo'
+                            : 'Seguir'}
+                        </Button>
+                      )}
+                  </Flex>
+                ))}
             </TabsContent>
-          )}
+          ))}
         </Tabs>
       </ModalContent>
     </Modal>

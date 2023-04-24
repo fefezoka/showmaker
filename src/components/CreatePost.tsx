@@ -172,7 +172,7 @@ export default function CreatePost() {
           <Text as={'label'} color={'primary'}>
             Título
           </Text>
-          <Input ref={titleRef} css={{ br: '$1' }} />
+          <Input ref={titleRef} css={{ br: '$1', px: '$3' }} />
 
           <Box css={{ mt: '$1' }}>
             <Text as={'label'} color={'primary'}>

@@ -126,7 +126,7 @@ export const FeedPostComments = ({ post }: FeedPostCommentsProps) => {
           </Flex>
         ))
       ) : (
-        <CommentSkeleton rows={2} />
+        <CommentSkeleton rows={post.commentsAmount} />
       )}
     </Box>
   );

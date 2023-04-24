@@ -14,4 +14,12 @@ export {
 } from './Modal';
 export { Tabs, TabsContent, TabsTrigger, TabsList } from './Tabs';
 export { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from './DropdownMenu';
-export { ProfileSkeleton, PostSkeleton, CommentSkeleton } from './Skeleton';
+export {
+  ProfileSkeleton,
+  PostSkeleton,
+  CommentSkeleton,
+  SeeUserFollowItemSkeleton,
+  Circle,
+  Line,
+  Rectangle,
+} from './Skeleton';
