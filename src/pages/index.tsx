@@ -13,7 +13,7 @@ const feedOptions = [
   { label: 'LOL', value: 'lol' },
   { label: 'Outros', value: 'other' },
 ] as const;
-type feed = typeof feedOptions[number];
+type feed = (typeof feedOptions)[number];
 
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);

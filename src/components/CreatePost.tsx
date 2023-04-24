@@ -159,23 +159,23 @@ export default function CreatePost() {
         }
       >
         <ModalTitle asChild>
-          <Heading size="3" color={'black-primary'} css={{ lh: 'unset' }}>
+          <Heading size="3" color={'primary'} css={{ lh: 'unset' }}>
             Postar vídeo
           </Heading>
         </ModalTitle>
         <ModalDescription asChild>
-          <Text color={'black-secondary'} size={'4'}>
+          <Text color={'secondary'} size={'4'}>
             Compartilhe suas jogadas favoritas com a comunidade!
           </Text>
         </ModalDescription>
         <Box css={{ mt: '$5' }}>
-          <Text as={'label'} color={'black-primary'}>
+          <Text as={'label'} color={'primary'}>
             Título
           </Text>
-          <Input ref={titleRef} theme={'light'} />
+          <Input ref={titleRef} css={{ br: '$1' }} />
 
           <Box css={{ mt: '$1' }}>
-            <Text as={'label'} color={'black-primary'}>
+            <Text as={'label'} color={'primary'}>
               Jogo
             </Text>
             <Box css={{ margin: '$1 0px' }}>
@@ -216,7 +216,7 @@ export default function CreatePost() {
                   width: '100%',
                   height: '120px',
                   border: '2px dashed $gray-2',
-                  margin: '$3 0',
+                  mt: '$4',
                   borderRadius: '$2',
                   padding: '$3',
                   cursor: 'pointer',
@@ -243,16 +243,11 @@ export default function CreatePost() {
                       justify={'between'}
                       css={{ width: '100%' }}
                     >
-                      <Text
-                        as={'p'}
-                        weight={600}
-                        color={'black-primary'}
-                        css={{ lineBreak: 'anywhere' }}
-                      >
+                      <Text as={'p'} weight={600} css={{ lineBreak: 'anywhere' }}>
                         {file.name}
                       </Text>
                       <Box>
-                        <Text size={'2'} color={'black-primary'}>
+                        <Text size={'2'} color={'primary'}>
                           {((file.size / 1048576) * uploadProgress).toFixed(0)} MB /{' '}
                           {(file.size / 1048576).toFixed(0)} MB
                         </Text>
@@ -264,6 +259,7 @@ export default function CreatePost() {
                               backgroundColor: '$bg-2',
                               br: '$1',
                               position: 'relative',
+                              border: '1px solid $bg-3',
                             }}
                           >
                             <Box
@@ -278,7 +274,7 @@ export default function CreatePost() {
                               }}
                             />
                           </Box>
-                          <Text size={'2'} color={'black-primary'}>
+                          <Text size={'2'} color={'primary'}>
                             {(uploadProgress * 100).toFixed(0)}%
                           </Text>
                         </Flex>
@@ -288,21 +284,21 @@ export default function CreatePost() {
                 ) : (
                   <Flex direction={'column'} align={'center'} gap={'1'}>
                     {fileRejections.length !== 0 && (
-                      <Text weight={600} color={'black-primary'}>
+                      <Text weight={600} color={'primary'}>
                         Arquivo muito grande
                       </Text>
                     )}
-                    <Text color={'black-secondary'}>
+                    <Text color={'secondary'}>
                       Arraste um vídeo ou clique para procurar
                     </Text>
-                    <Text color={'black-secondary'}>Limite de 100 MB</Text>
+                    <Text color={'secondary'}>Limite de 100 MB</Text>
                   </Flex>
                 )}
               </Flex>
             )}
           </Dropzone>
         </Box>
-        <Flex justify={'between'} align={'center'} css={{ mt: '$6' }}>
+        <Flex justify={'between'} align={'center'} css={{ mt: '$4' }}>
           <ModalClose asChild>
             <Button disabled={isSendingVideo} onClick={onClose} variant={'exit'}>
               Sair

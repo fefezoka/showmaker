@@ -64,7 +64,7 @@ export const FullProfileIcon = ({ src, css }: FullProfileIconProps) => {
         <ProfileIcon
           ref={profileIconRef}
           src={src}
-          css={{ size: '$7', cursor: 'pointer', ...css }}
+          css={{ size: '$7', border: '2px solid $bg-2', cursor: 'pointer', ...css }}
           alt=""
         />
       </Dialog.Trigger>

@@ -121,3 +121,24 @@ export const CommentSkeleton = ({ rows }: { rows?: number }) => {
     </>
   );
 };
+
+export const SeeUserFollowItemSkeleton = ({ rows }: { rows?: number }) => {
+  return (
+    <>
+      {[...Array(rows)].map((_, index) => (
+        <Flex
+          justify={'between'}
+          align={'center'}
+          key={index}
+          css={{ px: '$3', pt: '$2' }}
+        >
+          <Flex gap={'2'} align={'center'}>
+            <Circle css={{ size: 44 }} />
+            <Line css={{ width: 120, height: 14 }} />
+          </Flex>
+          <Rectangle css={{ height: 32, width: 72 }} />
+        </Flex>
+      ))}
+    </>
+  );
+};

@@ -29,7 +29,7 @@ export const Content = styled(HoverCard.Content, {
 
 export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { data, isLoading } = trpc.user.osu.useQuery({ username });
+  const { data, isLoading } = trpc.user.osu.useQuery({ username }, { enabled: open });
 
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen}>

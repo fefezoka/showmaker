@@ -15,13 +15,37 @@ export const Select = React.forwardRef<React.ElementRef<typeof SelectType>, Sele
             ...baseStyles,
             minHeight: '32px',
           }),
+          placeholder: (baseStyles) => ({
+            ...baseStyles,
+            color: 'var(--colors-text-secondary)',
+          }),
+          singleValue: (baseStyles) => ({
+            ...baseStyles,
+            color: 'var(--colors-text-primary)',
+            marginLeft: '12px',
+          }),
           control: (baseStyles) => ({
             ...baseStyles,
             fontSize: '14px',
+            backgroundColor: 'var(--colors-bg-2)',
+            boxShadow: 'unset',
+            border: 0,
           }),
           container: (baseStyles) => ({
             ...baseStyles,
             fontSize: '14px',
+          }),
+          menu: (baseStyles) => ({
+            ...baseStyles,
+            backgroundColor: 'var(--colors-bg-2)',
+          }),
+          option: (baseStyles) => ({
+            ...baseStyles,
+            backgroundColor: 'var(--colors-bg-2)',
+
+            ':hover': {
+              backgroundColor: 'var(--colors-bg-3)',
+            },
           }),
         }}
       />

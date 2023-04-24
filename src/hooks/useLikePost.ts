@@ -40,8 +40,8 @@ export const useLikePost = () => {
       );
 
       session &&
-        utils.posts.infinitePosts.user.profile.setInfiniteData(
-          { name: session.user.name, feed: 'favorites' },
+        utils.posts.infinitePosts.feed.setInfiniteData(
+          { username: session.user.name, feed: 'favorites' },
           (old) =>
             old &&
             produce(old, (draft) => {

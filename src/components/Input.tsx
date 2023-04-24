@@ -21,25 +21,6 @@ const StyledInput = styled('input', {
     color: '$text-secondary',
     fontSize: '$2',
   },
-
-  variants: {
-    theme: {
-      light: {
-        backgroundColor: 'white',
-        padding: '$3',
-        borderRadius: '$1',
-        border: '1px solid $gray-2',
-        transition: '100ms all',
-
-        '&:focus': {
-          border: '1px solid #2684ff',
-          boxShadow: '0 0 0 1px #2684ff',
-        },
-
-        color: '$text-black-secondary',
-      },
-    },
-  },
 });
 
 export const Input = React.forwardRef<React.ElementRef<typeof StyledInput>, InputProps>(

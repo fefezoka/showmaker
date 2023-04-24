@@ -1,9 +1,13 @@
 import { useSession } from 'next-auth/react';
 import { produce } from 'immer';
 import { trpc } from '../utils/trpc';
+import { useQueryClient } from '@tanstack/react-query';
+import { getQueryKey } from '@trpc/react-query';
+import { manyFriendshipStatus } from 'src/@types/types';
 
 export const useUnfollow = () => {
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
   const utils = trpc.useContext();
 
   return trpc.user.unfollow.useMutation({
@@ -12,50 +16,47 @@ export const useUnfollow = () => {
         return;
       }
 
-      utils.user.profile.setData(
-        { name: followingUser.name },
+      const queries = queryClient.getQueriesData(
+        getQueryKey(trpc.user.manyFriendshipStatus)
+      );
+
+      queries.forEach((query) =>
+        queryClient.setQueriesData<manyFriendshipStatus>(
+          query[0],
+          (old) =>
+            old &&
+            produce(old, (draft) => {
+              if (draft[followingUser.id]) {
+                draft[followingUser.id].following = false;
+              }
+            })
+        )
+      );
+
+      utils.user.friendshipStatus.setData(
+        { username: followingUser.name },
+        (old) =>
+          old &&
+          produce(old, (draft) => {
+            draft.following = false;
+          })
+      );
+
+      utils.user.friendshipCount.setData(
+        { username: followingUser.name },
         (old) =>
           old &&
           produce(old, (draft) => {
             draft.followersAmount -= 1;
-            draft.isFollowing = false;
           })
       );
 
-      utils.user.profile.setData(
-        { name: session.user.name },
+      utils.user.friendshipCount.setData(
+        { username: session.user.name },
         (old) =>
           old &&
           produce(old, (draft) => {
             draft.followingAmount -= 1;
-          })
-      );
-
-      utils.user.followingUsers.setData(
-        { userId: session?.user.id },
-        (old) =>
-          old &&
-          produce(old, (draft) => {
-            draft.forEach((user) => {
-              if (user.id === followingUser.id) {
-                user.isFollowing = false;
-                user.followingAmount -= 1;
-              }
-            });
-          })
-      );
-
-      utils.user.followerUsers.setData(
-        { userId: session?.user.id },
-        (old) =>
-          old &&
-          produce(old, (draft) => {
-            draft.forEach((user) => {
-              if (user.id === followingUser.id) {
-                user.isFollowing = false;
-                user.followingAmount -= 1;
-              }
-            });
           })
       );
     },

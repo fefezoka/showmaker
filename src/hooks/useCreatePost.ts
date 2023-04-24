@@ -5,7 +5,7 @@ export const useCreatePost = () => {
   const utils = trpc.useContext();
 
   return trpc.posts.create.useMutation({
-    onSuccess: (data, { game }) => {
+    onSuccess: (data) => {
       utils.posts.infinitePosts.feed.setInfiniteData(
         {},
         (old) =>
@@ -15,8 +15,8 @@ export const useCreatePost = () => {
           })
       );
 
-      utils.posts.infinitePosts.user.profile.setInfiniteData(
-        { name: data.user.name, feed: 'posts' },
+      utils.posts.infinitePosts.feed.setInfiniteData(
+        { username: data.user.name, feed: 'posts' },
         (old) =>
           old &&
           produce(old, (draft) => {

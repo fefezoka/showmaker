@@ -8,17 +8,36 @@ export const posts = router({
     feed: procedure
       .input(
         z.object({
+          username: z.string().optional(),
           game: z.string().optional(),
           cursor: z.string().optional(),
+          feed: z.string().optional(),
+          limit: z.number().optional().default(6),
         })
       )
       .query(async ({ input, ctx }) => {
         const posts = await ctx.prisma.post.findMany({
-          take: 7,
-          ...(input.game && { where: { game: input.game } }),
+          take: input.limit + 1,
           cursor: input.cursor ? { id: input.cursor } : undefined,
           orderBy: {
             createdAt: 'desc',
+          },
+          where: {
+            ...(input.game && { game: input.game }),
+            ...(input.username && {
+              user: {
+                name: input.username,
+              },
+            }),
+            ...(input.feed === 'favorites' && {
+              likedBy: {
+                some: {
+                  user: {
+                    name: input.username,
+                  },
+                },
+              },
+            }),
           },
           include: {
             user: {
@@ -26,8 +45,6 @@ export const posts = router({
                 id: true,
                 name: true,
                 image: true,
-                followersAmount: true,
-                followingAmount: true,
                 createdAt: true,
                 updatedAt: true,
               },
@@ -37,7 +54,7 @@ export const posts = router({
         });
 
         let nextCursor: typeof input.cursor | undefined = undefined;
-        if (posts.length > 6) {
+        if (posts.length > input.limit) {
           const nextItem = posts.pop();
           nextCursor = nextItem!.id;
         }
@@ -128,8 +145,6 @@ export const posts = router({
             user: {
               name: r.user[0].name,
               image: r.user[0].image,
-              followersAmount: r.user[0].followersAmount,
-              followingAmount: r.user[0].followingAmount,
               id: r.user[0]._id,
               createdAt: r.user[0].createdAt['$date'],
               updatedAt: r.user[0].updatedAt['$date'],
@@ -143,68 +158,6 @@ export const posts = router({
           posts: filter as Post[],
         };
       }),
-    user: router({
-      profile: procedure
-        .input(
-          z.object({
-            name: z.string(),
-            cursor: z.string().optional(),
-            feed: z.enum(['posts', 'favorites']),
-          })
-        )
-        .query(async ({ ctx, input }) => {
-          const posts = await ctx.prisma.post.findMany({
-            take: 7,
-            cursor: input.cursor ? { id: input.cursor } : undefined,
-            include: {
-              user: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  createdAt: true,
-                  updatedAt: true,
-                  followersAmount: true,
-                  followingAmount: true,
-                },
-              },
-              likedBy: true,
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-            where: {
-              ...(input.feed === 'posts' && { user: { name: input.name } }),
-              ...(input.feed === 'favorites' && {
-                likedBy: {
-                  some: {
-                    user: {
-                      name: input.name,
-                    },
-                  },
-                },
-              }),
-            },
-          });
-          let nextCursor: typeof input.cursor | undefined = undefined;
-          if (posts.length > 6) {
-            const nextItem = posts.pop();
-            nextCursor = nextItem!.id;
-          }
-
-          return {
-            posts: posts.map((post) => {
-              return {
-                ...post,
-                isLiked: post.likedBy.some(
-                  (like) => like.userId === ctx.session?.user.id
-                ),
-              };
-            }),
-            nextCursor,
-          };
-        }),
-    }),
   }),
   create: authenticatedProcedure
     .input(
@@ -255,7 +208,15 @@ export const posts = router({
           id: input.postId,
         },
         include: {
-          user: true,
+          user: {
+            select: {
+              id: true,
+              createdAt: true,
+              updatedAt: true,
+              name: true,
+              image: true,
+            },
+          },
           likedBy: true,
         },
       });
@@ -267,12 +228,10 @@ export const posts = router({
         });
       }
 
-      const { emailVerified, email, ...user } = post.user;
-
       return {
         ...post,
         user: {
-          ...user,
+          ...post.user,
         },
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
       };

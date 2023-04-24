@@ -25,7 +25,7 @@ export const Main = memo(({ children }: MainProps) => {
           }}
         >
           <h2>Show Maker</h2>
-          <Image src={Spinner} alt="" priority loading="eager" height={64} width={64} />
+          <Image src={Spinner} alt="" priority loading="eager" height={52} width={52} />
         </div>
       )}
       {status !== 'loading' && (

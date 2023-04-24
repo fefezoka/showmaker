@@ -7,8 +7,10 @@ import { keyframes, styled } from '../../stitches.config';
 import Spinner from '../assets/Spinner.svg';
 import { trpc } from '../utils/trpc';
 import { User } from '../@types/types';
-import { ProfileIcon } from '@components';
+import { Button, ProfileIcon } from '@components';
 import { Box, Flex, Heading, Text } from '@styles';
+import { useFollow, useUnfollow } from '@hooks';
+import { useSession } from 'next-auth/react';
 
 const Fade = keyframes({
   from: {
@@ -36,17 +38,53 @@ export const Content = styled(HoverCard.Content, {
 });
 
 export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
+  const { data: session } = useSession();
   const [open, setOpen] = useState<boolean>(false);
+  const utils = trpc.useContext();
+  const follow = useFollow();
+  const unfollow = useUnfollow();
 
-  const { data: posts, isLoading } = trpc.user.lastPosts.useQuery(
+  const { data: posts, isLoading } = trpc.posts.infinitePosts.feed.useQuery(
+    {
+      username: user.name,
+      limit: 3,
+    },
+    {
+      enabled: open,
+      onSuccess: (data) => {
+        data.posts.forEach((post) => {
+          utils.posts.byId.setData({ postId: post.id }, { ...post, user });
+        });
+      },
+    }
+  );
+
+  const { data: friendshipStatus } = trpc.user.friendshipStatus.useQuery(
     {
       username: user.name,
     },
-    { enabled: open }
+    {
+      enabled: open,
+      staleTime: 1,
+    }
   );
 
+  const { data: friendshipCount } = trpc.user.friendshipCount.useQuery({
+    username: user.name,
+  });
+
+  const handleFollow = () => {
+    if (!friendshipStatus) {
+      return;
+    }
+
+    friendshipStatus.following
+      ? unfollow.mutate({ followingUser: user })
+      : follow.mutate({ followingUser: user });
+  };
+
   return (
-    <HoverCard.Root open={open} onOpenChange={setOpen}>
+    <HoverCard.Root open={open} onOpenChange={setOpen} defaultOpen>
       <HoverCard.Trigger asChild>
         <Flex as={Link} href={`/${user.name}`}>
           {children}
@@ -55,41 +93,47 @@ export const UserHoverCard = ({ user, children }: UserHoverCardProps) => {
       <HoverCard.Portal>
         <Content>
           <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bg-2' }}>
-            <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
-              <Box>
+            <Flex align={'center'} justify={'between'}>
+              <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
                 <ProfileIcon src={user.image} css={{ size: '96px' }} alt="" />
-                <Box css={{ mt: '$3' }}>
-                  <Heading>{user.name}</Heading>
-                </Box>
+              </Link>
+              {user.id !== session?.user.id && (
+                <Button onClick={handleFollow}>
+                  {friendshipStatus?.following ? 'Seguindo' : 'Seguir'}
+                </Button>
+              )}
+            </Flex>
+            <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
+              <Box css={{ mt: '$3' }}>
+                <Heading>{user.name}</Heading>
               </Box>
             </Link>
-
             <Box>
-              {posts && posts[0] && (
+              {posts && posts.posts[0] && (
                 <Text size={'2'}>
-                  Última postagem {diffBetweenDates(new Date(posts[0].createdAt))}
+                  Última postagem {diffBetweenDates(new Date(posts.posts[0].createdAt))}
                 </Text>
               )}
 
               <Flex gap={'4'}>
                 <Text size={'2'}>
-                  Seguindo{' '}
+                  Seguidores{' '}
                   <Text weight={600} size={'2'}>
-                    {user.followingAmount}
+                    {friendshipCount?.followersAmount}
                   </Text>
                 </Text>
                 <Text size={'2'}>
-                  Seguidores{' '}
+                  Seguindo{' '}
                   <Text weight={600} size={'2'}>
-                    {user.followersAmount}
+                    {friendshipCount?.followingAmount}
                   </Text>
                 </Text>
               </Flex>
             </Box>
           </Box>
           <Flex css={{ gap: '2px', minHeight: '140px' }}>
-            {posts && posts.length !== 0 ? (
-              posts.map((post) => (
+            {posts && posts.posts.length !== 0 ? (
+              posts.posts.map((post) => (
                 <Box
                   as={'section'}
                   key={post.id}

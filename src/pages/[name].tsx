@@ -47,8 +47,8 @@ export default function Profile() {
     fetchNextPage,
     hasNextPage,
     isLoading: postsIsLoading,
-  } = trpc.posts.infinitePosts.user.profile.useInfiniteQuery(
-    { name: name as string, feed },
+  } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
+    { ...(feed === 'posts' && { username: name }), feed, limit: 6 },
     {
       getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
       onSuccess(data) {
@@ -60,6 +60,16 @@ export default function Profile() {
       },
       enabled: !!name,
     }
+  );
+
+  const { data: friendship_status } = trpc.user.friendshipStatus.useQuery(
+    { username: name },
+    { enabled: !!name }
+  );
+
+  const { data: friendship_count } = trpc.user.friendshipCount.useQuery(
+    { username: name },
+    { enabled: !!name }
   );
 
   if (isError) {
@@ -88,7 +98,7 @@ export default function Profile() {
     }
 
     user &&
-      (user.isFollowing
+      (friendship_status?.following
         ? unfollowSomeone.mutate({ followingUser: user })
         : followSomeone.mutate({ followingUser: user }));
   };
@@ -111,10 +121,16 @@ export default function Profile() {
                 />
                 <Box>
                   <Heading size={'3'}>{user.name}</Heading>
-                  {(user.followYou && user.isFollowing && (
-                    <Text size={'2'}>Segue um ao outro</Text>
+                  {(friendship_status?.followed_by && friendship_status.following && (
+                    <Text size={'2'} color={'secondary'}>
+                      Segue um ao outro
+                    </Text>
                   )) ||
-                    (user.followYou && <Text size={'2'}>Segue você</Text>)}
+                    (friendship_status?.followed_by && (
+                      <Text size={'2'} color={'secondary'}>
+                        Segue você
+                      </Text>
+                    ))}
                 </Box>
               </Flex>
 
@@ -124,7 +140,7 @@ export default function Profile() {
                   disabled={followSomeone.isLoading}
                   onClick={handleFollowClick}
                 >
-                  {user.isFollowing ? 'Seguindo' : 'Seguir'}
+                  {friendship_status?.following ? 'Seguindo' : 'Seguir'}
                 </Button>
               )}
             </Flex>
@@ -144,7 +160,7 @@ export default function Profile() {
                     <Box as={'button'}>
                       <Text size={'2'}>Seguidores </Text>
                       <Text size={'2'} weight={600}>
-                        {user.followersAmount}
+                        {friendship_count?.followersAmount}
                       </Text>
                     </Box>
                   </SeeUserFollow>
@@ -152,7 +168,7 @@ export default function Profile() {
                     <Box as={'button'}>
                       <Text size={'2'}>Seguindo </Text>
                       <Text size={'2'} weight={600}>
-                        {user.followingAmount}
+                        {friendship_count?.followingAmount}
                       </Text>
                     </Box>
                   </SeeUserFollow>

@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import axios from 'axios';
 import { TRPCError } from '@trpc/server';
+import { manyFriendshipStatus } from 'src/@types/types';
 
 export const user = router({
   profile: procedure
@@ -15,8 +16,6 @@ export const user = router({
           id: true,
           name: true,
           image: true,
-          followersAmount: true,
-          followingAmount: true,
           createdAt: true,
           updatedAt: true,
           followers: true,
@@ -54,12 +53,6 @@ export const user = router({
 
       return {
         ...user,
-        followYou: user.following.some(
-          (follower) => follower.followingId === ctx.session?.user.id
-        ),
-        isFollowing: user.followers.some(
-          (follower) => follower.followerId === ctx.session?.user.id
-        ),
         ...(osuAccount[0] && { osuAccountId: osuAccount[0].providerAccountId }),
         ...(twitchAccount[0] && {
           twitchAccountId: twitchAccount[0].providerAccountId,
@@ -112,32 +105,6 @@ export const user = router({
 
       return data;
     }),
-  lastPosts: procedure.input(z.object({ username: z.string() })).query(
-    async ({ ctx, input }) =>
-      await ctx.prisma.post.findMany({
-        where: {
-          user: {
-            name: input.username,
-          },
-        },
-        take: 3,
-        include: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-              followersAmount: true,
-              followingAmount: true,
-            },
-          },
-          likedBy: true,
-        },
-        orderBy: {
-          createdAt: 'desc',
-        },
-      })
-  ),
   follow: authenticatedProcedure
     .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
     .mutation(async ({ ctx, input }) => {
@@ -202,10 +169,9 @@ export const user = router({
         },
       });
     }),
-  followingUsers: procedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.user.findMany({
+  following: procedure.input(z.object({ userId: z.string() })).query(
+    async ({ ctx, input }) =>
+      await ctx.prisma.user.findMany({
         where: {
           followers: {
             some: {
@@ -213,19 +179,11 @@ export const user = router({
             },
           },
         },
-      });
-      return response.map((user) => {
-        return {
-          ...user,
-          isFollowing: true,
-          followYou: false,
-        };
-      });
-    }),
-  followerUsers: procedure
-    .input(z.object({ userId: z.string() }))
-    .query(async ({ ctx, input }) => {
-      const response = await ctx.prisma.user.findMany({
+      })
+  ),
+  followers: procedure.input(z.object({ userId: z.string() })).query(
+    async ({ ctx, input }) =>
+      await ctx.prisma.user.findMany({
         where: {
           following: {
             some: {
@@ -233,18 +191,79 @@ export const user = router({
             },
           },
         },
-        include: {
+      })
+  ),
+  friendshipStatus: authenticatedProcedure
+    .input(z.object({ username: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          name: input.username,
+        },
+        select: {
           followers: true,
+          following: true,
         },
       });
-      return response.map((user) => {
-        return {
-          ...user,
-          isFollowing: user.followers.some(
-            (follower) => follower.followerId === input.userId
-          ),
-          followYou: false,
-        };
-      });
+
+      if (!user) {
+        throw new TRPCError({ code: 'NOT_FOUND' });
+      }
+
+      return {
+        following: user.followers.some(
+          (follower) => follower.followerId === ctx.session.user.id
+        ),
+        followed_by: user.following.some(
+          (following) => following.followingId === ctx.session.user.id
+        ),
+      };
     }),
+  manyFriendshipStatus: authenticatedProcedure
+    .input(z.object({ users: z.array(z.object({ name: z.string() })).nullish() }))
+    .query(async ({ ctx, input }) => {
+      const users = await ctx.prisma.user.findMany({
+        where: {
+          name: {
+            in: input.users?.map((user) => user.name),
+          },
+        },
+        select: {
+          id: true,
+          followers: true,
+          following: true,
+        },
+      });
+
+      if (!users) {
+        throw new TRPCError({ code: 'NOT_FOUND' });
+      }
+
+      return users
+        .map((user) => {
+          return {
+            following: user.followers.some(
+              (follower) => follower.followerId === ctx.session.user.id
+            ),
+            followed_by: user.following.some(
+              (following) => following.followingId === ctx.session.user.id
+            ),
+            id: user.id,
+          };
+        })
+        .reduce(
+          (accumulator, current) => Object.assign(accumulator, { [current.id]: current }),
+          {}
+        ) as manyFriendshipStatus;
+    }),
+  friendshipCount: procedure.input(z.object({ username: z.string() })).query(
+    async ({ ctx, input }) =>
+      await ctx.prisma.user.findUnique({
+        where: { name: input.username },
+        select: {
+          followersAmount: true,
+          followingAmount: true,
+        },
+      })
+  ),
 });

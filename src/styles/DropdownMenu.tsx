@@ -11,6 +11,7 @@ const StyledMenuContent = styled(DropdownMenu.Content, {
   padding: '$2 0',
   borderRadius: '$2',
   border: '2px solid $bg-3',
+  minWidth: 0,
 });
 
 export const MenuItem = styled(DropdownMenu.Item, {
@@ -38,7 +39,6 @@ export const MenuItem = styled(DropdownMenu.Item, {
 export const MenuSeparator = styled(DropdownMenu.Separator, {
   height: '2px',
   backgroundColor: '$bg-3',
-  margin: '$1 0',
 });
 
 const MenuArrow = styled(DropdownMenu.Arrow, {

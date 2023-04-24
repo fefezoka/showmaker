@@ -30,9 +30,10 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
   width: 'calc(100% - 40px)',
   padding: '$6',
   willChange: 'transform',
-  color: '$black-1',
-  backgroundColor: '$modal',
-  borderRadius: '$2',
+  color: '$text-primary',
+  backgroundColor: '$bg-1',
+  borderRadius: '$3',
+  border: '2px solid $bg-2',
 
   '&[data-state="open"]': {
     animation: `${fade} 200ms`,

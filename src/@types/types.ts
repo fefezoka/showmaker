@@ -6,10 +6,6 @@ export const userSchema = z.object({
   image: z.string(),
   createdAt: z.string(),
   updatedAt: z.string(),
-  followersAmount: z.number(),
-  followingAmount: z.number(),
-  followYou: z.boolean().optional(),
-  isFollowing: z.boolean().optional(),
   osuAccountId: z.string().optional(),
   twitchAccountId: z.string().optional(),
 });
@@ -61,3 +57,7 @@ export type LikedPost = z.infer<typeof likedPostSchema>;
 export type PostComment = z.infer<typeof postCommentsSchema>;
 export type User = z.infer<typeof userSchema>;
 export type PostPagination = z.infer<typeof postPaginationSchema>;
+export type manyFriendshipStatus = Record<
+  string,
+  { id: string; following: boolean; followed_by: boolean }
+>;

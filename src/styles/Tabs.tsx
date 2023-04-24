@@ -8,16 +8,14 @@ export const TabsList = TabsPrimitive.List;
 
 export const StyledTabsContent = styled(TabsPrimitive.Content, {
   width: '100%',
-  height: '360px',
+  height: '400px',
+  overflowY: 'scroll',
 
-  '&::-webkit-scrollbar-track': {
-    backgroundColor: '$gray-1',
+  '&::-webkit-scrollbar-thumb': {
+    br: '$4',
   },
   '&::-webkit-scrollbar': {
     width: '$2',
-  },
-  '&::-webkit-scrollbar-thumb': {
-    br: '$4',
   },
 });
 

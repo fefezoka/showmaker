@@ -71,7 +71,7 @@ export const FeedPost = memo(
               {post.isLiked ? (
                 <Box
                   as={AiFillLike}
-                  css={{ color: '$blue-1', size: 22, '@bp2': { size: 28 } }}
+                  css={{ color: '$blue-2', size: 22, '@bp2': { size: 28 } }}
                 />
               ) : (
                 <Box
@@ -116,31 +116,34 @@ export const FeedPost = memo(
                 {post.user.id === session?.user.id && (
                   <>
                     <MenuSeparator />
-                    <MenuItem theme={'alert'} onSelect={(e: any) => e.preventDefault()}>
-                      <Modal>
-                        <ModalTrigger>Apagar vídeo</ModalTrigger>
-                        <ModalContent css={{ p: '$5' }}>
-                          <Box css={{ mb: '$3' }}>
-                            <Heading color={'black-primary'}>Excluir postagem</Heading>
-                          </Box>
-                          <Box css={{ mb: '$6' }}>
-                            <Text color={'black-secondary'}>
-                              Deseja realmente excluir o post &quot;{post.title}&quot;?
-                            </Text>
-                          </Box>
-                          <Flex justify={'between'}>
-                            <ModalClose asChild>
-                              <Button variant={'exit'}>Cancelar</Button>
-                            </ModalClose>
-                            <Button
-                              onClick={() => deletePost.mutate({ postId: post.id })}
-                            >
-                              Excluir
-                            </Button>
-                          </Flex>
-                        </ModalContent>
-                      </Modal>
-                    </MenuItem>
+                    <Modal>
+                      <ModalTrigger>
+                        <MenuItem
+                          theme={'alert'}
+                          onSelect={(e: any) => e.preventDefault()}
+                        >
+                          Apagar vídeo
+                        </MenuItem>
+                      </ModalTrigger>
+                      <ModalContent css={{ p: '$5' }}>
+                        <Box css={{ mb: '$3' }}>
+                          <Heading color={'primary'}>Excluir postagem</Heading>
+                        </Box>
+                        <Box css={{ mb: '$6' }}>
+                          <Text color={'secondary'}>
+                            Deseja realmente excluir o post &quot;{post.title}&quot;?
+                          </Text>
+                        </Box>
+                        <Flex justify={'between'}>
+                          <ModalClose asChild>
+                            <Button variant={'exit'}>Cancelar</Button>
+                          </ModalClose>
+                          <Button onClick={() => deletePost.mutate({ postId: post.id })}>
+                            Excluir
+                          </Button>
+                        </Flex>
+                      </ModalContent>
+                    </Modal>
                   </>
                 )}
               </MenuContent>

@@ -11,6 +11,10 @@ const StyledFeedButton = styled('button', {
   borderBottom: '2px solid transparent',
   fontWeight: 500,
 
+  '&:hover': {
+    borderBottomColor: '$gray-1',
+  },
+
   variants: {
     active: {
       true: {
@@ -22,24 +26,6 @@ const StyledFeedButton = styled('button', {
         },
       },
     },
-    theme: {
-      light: {
-        color: '$text-black-primary',
-
-        '&:hover': {
-          borderBottomColor: '$black-1',
-        },
-      },
-      dark: {
-        '&:hover': {
-          borderBottomColor: '$gray-1',
-        },
-      },
-    },
-  },
-
-  defaultVariants: {
-    theme: 'dark',
   },
 });
 
