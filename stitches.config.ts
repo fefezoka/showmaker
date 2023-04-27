@@ -32,6 +32,7 @@ export const {
       overlay: 'rgb(18, 27, 32, .75)',
       twitch: '#6b2598',
       osu: '#e4649d',
+      discord: '#5662f6',
     },
     fontSizes: {
       1: '11px',

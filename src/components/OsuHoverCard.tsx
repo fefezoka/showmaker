@@ -6,11 +6,10 @@ import { styled } from '../../stitches.config';
 import Link from 'next/link';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { trpc } from '../utils/trpc';
-import { SiOsu } from 'react-icons/si';
 import { Box, Flex, Text } from '@styles';
 import { ProviderIcon } from './ProviderIcon';
 
-interface OsuHoverCardProps {
+interface IOsuHoverCard {
   username: string;
   osuAccountId: string;
 }
@@ -27,7 +26,7 @@ export const Content = styled(HoverCard.Content, {
   fontWeight: 'bold',
 });
 
-export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
+export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, isLoading } = trpc.user.osu.useQuery({ username }, { enabled: open });
 
@@ -35,7 +34,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: OsuHoverCardProps) => {
     <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
         <Link href={`https://osu.ppy.sh/users/${osuAccountId}`} target={'_blank'}>
-          <ProviderIcon Icon={SiOsu} bc="$osu" isAlreadyRound hasBorder />
+          <ProviderIcon provider="osu" />
         </Link>
       </HoverCard.Trigger>
       <HoverCard.Portal>

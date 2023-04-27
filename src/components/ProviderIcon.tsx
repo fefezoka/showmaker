@@ -1,13 +1,43 @@
 import React from 'react';
 import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
+import { SiTwitch, SiOsu } from 'react-icons/si';
+import { FaDiscord } from 'react-icons/fa';
+import { Flex } from '@styles';
 
-interface IProviderIcon {
-  Icon: IconType;
+type Providers = 'discord' | 'twitch' | 'osu';
+
+interface IProviderIcon extends React.ComponentProps<typeof StyledIcon> {
+  provider: Providers;
+}
+
+interface IOptions {
+  icon: IconType;
   bc: string;
   isAlreadyRound?: boolean;
   hasBorder?: boolean;
+  sizeWrapperRatio: number;
 }
+
+const options: Record<Providers, IOptions> = {
+  discord: {
+    bc: '$discord',
+    icon: FaDiscord,
+    sizeWrapperRatio: 16 / 24,
+  },
+  osu: {
+    bc: '$osu',
+    icon: SiOsu,
+    hasBorder: true,
+    isAlreadyRound: true,
+    sizeWrapperRatio: 14 / 24,
+  },
+  twitch: {
+    bc: '$twitch',
+    icon: SiTwitch,
+    sizeWrapperRatio: 14 / 24,
+  },
+};
 
 const StyledIcon = styled('div', {
   transition: 'all 300ms ease-in',
@@ -18,34 +48,41 @@ const StyledIcon = styled('div', {
   },
 });
 
-export const ProviderIcon = ({ Icon, bc, isAlreadyRound, hasBorder }: IProviderIcon) => {
-  return isAlreadyRound ? (
+export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
+  return options[provider].isAlreadyRound ? (
     <StyledIcon
-      as={Icon}
+      as={options[provider].icon}
       css={{
         size: 24,
-        bc,
-        ...(hasBorder && { br: '$round' }),
+        bc: options[provider].bc,
+        ...(options[provider].hasBorder && { br: '$round' }),
         '@bp2': {
           size: 32,
         },
+        ...css,
       }}
     />
   ) : (
     <StyledIcon
+      {...props}
       css={{
         size: 24,
-        bc,
+        bc: options[provider].bc,
         br: '$round',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+
         '@bp2': {
           size: 32,
         },
+        ...css,
       }}
     >
-      <Icon size={18} />
+      <Flex
+        as={options[provider].icon}
+        css={{ size: Number(css?.size || 32) * options[provider].sizeWrapperRatio }}
+      />
     </StyledIcon>
   );
 };

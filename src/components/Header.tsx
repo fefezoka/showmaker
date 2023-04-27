@@ -2,8 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
-import discordIcon from '../assets/discord-icon.png';
-import { Input, ProfileIcon } from '@components';
+import { Input, ProfileIcon, ProviderIcon } from '@components';
 import { useIsDesktop } from '@hooks';
 import {
   Box,
@@ -16,7 +15,6 @@ import {
   MenuSeparator,
   MenuTrigger,
 } from '@styles';
-import Image from 'next/image';
 
 export const Header = () => {
   const { data: session, status } = useSession();
@@ -111,8 +109,8 @@ export const Header = () => {
             css={{ px: '$4', py: '$2', bc: '$bg-2', br: '$7', ml: '$3' }}
             onClick={() => signIn('discord')}
           >
-            <Image src={discordIcon} alt="" height={24} width={24} />
-            <Text weight={500}>{isDesktop ? 'Logar com Discord' : 'Logar'}</Text>
+            <ProviderIcon provider="discord" css={{ size: 24, '@bp2': { size: 24 } }} />
+            <Text weight={600}>{isDesktop ? 'Logar com Discord' : 'Logar'}</Text>
           </Flex>
         )}
       </Flex>

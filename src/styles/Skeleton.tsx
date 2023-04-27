@@ -87,7 +87,11 @@ export const ProfileSkeleton = () => {
         <Line css={{ height: 24, width: 192 }} />
       </Flex>
       <Line rows={2} css={{ height: 16, width: 200 }} />
-      <Flex css={{ mt: '$4' }} justify={'center'} gap={'4'}>
+      <Flex
+        css={{ mt: '$4', borderBottom: '2px solid $bg-2' }}
+        justify={'center'}
+        gap={'4'}
+      >
         <Rectangle css={{ height: 36, width: 110 }} />
         <Rectangle css={{ height: 36, width: 110 }} />
       </Flex>
