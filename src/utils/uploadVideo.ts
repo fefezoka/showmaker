@@ -2,13 +2,13 @@ import axios from 'axios';
 import { SetStateAction } from 'react';
 
 interface UploadVideo {
-  file: File;
+  video: File;
   thumbnail: string;
   setUploadProgress?: React.Dispatch<SetStateAction<number>>;
 }
 
 export const uploadVideo = async ({
-  file,
+  video,
   thumbnail,
   setUploadProgress,
 }: UploadVideo) => {
@@ -33,7 +33,7 @@ export const uploadVideo = async ({
   };
 
   const processVideo = async () => {
-    const size = file.size;
+    const size = video.size;
     const sliceSize = 15000000;
     var start = 0;
 
@@ -44,7 +44,7 @@ export const uploadVideo = async ({
         end = size;
       }
 
-      const piece = file.slice.bind(file)(start, end) as File;
+      const piece = video.slice.bind(video)(start, end) as File;
       const videoData = await sendVideoPiece(piece, start, end - 1, size);
       if (end < size) {
         start += sliceSize;

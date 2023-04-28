@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, CSS, keyframes } from '../../stitches.config';
+import { styled, keyframes } from '../../stitches.config';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { overlayStyles } from './Overlay';
 
@@ -44,20 +44,15 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
   },
 });
 
-type ModalContentPrimitiveProps = React.ComponentProps<typeof DialogPrimitive.Content>;
-type ModalContentProps = ModalContentPrimitiveProps & { css?: CSS };
+type ModalContentProps = DialogPrimitive.DialogContentProps &
+  React.ComponentProps<typeof StyledModalContent>;
 
-export const ModalContent = React.forwardRef<
-  React.ElementRef<typeof StyledModalContent>,
-  ModalContentProps
->(({ children, ...props }, forwardedRef) => (
+export const ModalContent = ({ children, ...props }: ModalContentProps) => (
   <DialogPrimitive.Portal>
     <ModalOverlay />
-    <StyledModalContent {...props} ref={forwardedRef}>
-      {children}
-    </StyledModalContent>
+    <StyledModalContent {...props}>{children}</StyledModalContent>
   </DialogPrimitive.Portal>
-));
+);
 
 ModalContent.displayName = 'Modal';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, CSS } from '../../stitches.config';
+import { styled } from '../../stitches.config';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 
 export const Tabs = TabsPrimitive.Root;
@@ -19,16 +19,11 @@ export const StyledTabsContent = styled(TabsPrimitive.Content, {
   },
 });
 
-type TabsContentPrimitiveProps = React.ComponentProps<typeof TabsPrimitive.Content>;
-type TabsContentProps = TabsContentPrimitiveProps & { css?: CSS };
+type TabsContentProps = TabsPrimitive.TabsContentProps &
+  React.ComponentProps<typeof StyledTabsContent>;
 
-export const TabsContent = React.forwardRef<
-  React.ElementRef<typeof StyledTabsContent>,
-  TabsContentProps
->(({ children, ...props }, forwardedRef) => (
-  <StyledTabsContent {...props} ref={forwardedRef}>
-    {children}
-  </StyledTabsContent>
-));
+export const TabsContent = ({ children, ...props }: TabsContentProps) => (
+  <StyledTabsContent {...props}>{children}</StyledTabsContent>
+);
 
 TabsContent.displayName = 'Tabs';

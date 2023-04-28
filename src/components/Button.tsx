@@ -33,12 +33,6 @@ const StyledButton = styled('button', {
         },
       },
     },
-    radius: {
-      full: {
-        borderRadius: '$round',
-        minWidth: 'unset',
-      },
-    },
   },
 });
 

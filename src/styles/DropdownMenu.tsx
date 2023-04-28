@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled, CSS } from '../../stitches.config';
+import { styled } from '../../stitches.config';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export const Menu = DropdownMenu.Root;
@@ -41,23 +41,20 @@ export const MenuSeparator = styled(DropdownMenu.Separator, {
   backgroundColor: '$bg-3',
 });
 
-const MenuArrow = styled(DropdownMenu.Arrow, {
+export const MenuArrow = styled(DropdownMenu.Arrow, {
   fill: '$bg-3',
 });
 
-type MenuContentPrimitiveProps = React.ComponentProps<typeof DropdownMenu.Content>;
-type MenuContentProps = MenuContentPrimitiveProps & { css?: CSS };
+type MenuContentProps = DropdownMenu.DropdownMenuProps &
+  React.ComponentProps<typeof StyledMenuContent>;
 
-export const MenuContent = React.forwardRef<
-  React.ElementRef<typeof StyledMenuContent>,
-  MenuContentProps
->(({ children, ...props }, forwardedRef) => (
+export const MenuContent = ({ children, ...props }: MenuContentProps) => (
   <DropdownMenu.Portal>
-    <StyledMenuContent {...props} ref={forwardedRef}>
+    <StyledMenuContent {...props}>
       {children}
       <MenuArrow />
     </StyledMenuContent>
   </DropdownMenu.Portal>
-));
+);
 
 MenuContent.displayName = 'Menu';

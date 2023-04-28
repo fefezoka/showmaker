@@ -2,6 +2,9 @@ import React, { FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
+import { diffBetweenDates } from '../utils/diffBetweenDates';
+import { trpc } from '../utils/trpc';
+import { Post } from '../@types/types';
 import {
   Box,
   Flex,
@@ -14,9 +17,6 @@ import {
 } from '@styles';
 import { Button, Input, ProfileIcon, UserHoverCard } from '@components';
 import { useDeletePostComment, useCreatePostComment } from '@hooks';
-import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { trpc } from '../utils/trpc';
-import { Post } from '../@types/types';
 
 interface IFeedPostComments {
   post: Post;

@@ -14,7 +14,14 @@ export {
   ModalTrigger,
 } from './Modal';
 export { Tabs, TabsContent, TabsTrigger, TabsList } from './Tabs';
-export { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from './DropdownMenu';
+export {
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+  MenuTrigger,
+  MenuArrow,
+} from './DropdownMenu';
 export {
   ProfileSkeleton,
   PostSkeleton,

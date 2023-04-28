@@ -1,7 +1,7 @@
 import React from 'react';
 import { keyframes, CSS } from '../../stitches.config';
-import { Box } from './Box';
-import { Flex } from './Flex';
+import { Box, Flex } from '@styles';
+import { useSession } from 'next-auth/react';
 
 const Glow = keyframes({
   '0%, 100%': {
@@ -57,6 +57,8 @@ export const Rectangle = ({ css }: { css: CSS }) => {
 };
 
 export const PostSkeleton = () => {
+  const { data: session } = useSession();
+
   return (
     <Box css={{ p: '$4', '@bp2': { p: '$6' }, borderBottom: '2px solid $bg-2' }}>
       <Flex align={'center'} justify={'between'}>
@@ -70,11 +72,13 @@ export const PostSkeleton = () => {
       <Box css={{ mt: '$4' }}>
         <Rectangle css={{ pb: '56.25%', br: '$6' }} />
       </Box>
-      <Flex align={'center'} justify={'center'} css={{ mt: '$4' }} gap={'4'}>
-        <Circle css={{ size: 40 }} />
-        <Line css={{ height: 40, width: '100%' }} />
-        <Rectangle css={{ height: 40, width: 88 }} />
-      </Flex>
+      {session && (
+        <Flex align={'center'} justify={'center'} css={{ mt: '$4' }} gap={'4'}>
+          <Circle css={{ size: 40 }} />
+          <Line css={{ height: 40, width: '100%' }} />
+          <Rectangle css={{ height: 40, width: 88 }} />
+        </Flex>
+      )}
     </Box>
   );
 };
@@ -92,8 +96,12 @@ export const ProfileSkeleton = () => {
         justify={'center'}
         gap={'4'}
       >
-        <Rectangle css={{ height: 36, width: 110 }} />
-        <Rectangle css={{ height: 36, width: 110 }} />
+        <Flex css={{ height: 36, width: 110 }} align={'center'}>
+          <Line css={{ height: 16, width: '100%' }} />
+        </Flex>
+        <Flex css={{ height: 36, width: 110 }} align={'center'}>
+          <Line css={{ height: 16, width: '100%' }} />
+        </Flex>
       </Flex>
     </Box>
   );
