@@ -34,7 +34,7 @@ export default function Profile() {
     isLoading,
     isError,
   } = trpc.user.profile.useQuery(
-    { name: name as string },
+    { name: name },
     {
       enabled: !!name,
     }
@@ -48,7 +48,7 @@ export default function Profile() {
   } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
     { ...(feed === 'posts' && { username: name }), feed, limit: 6 },
     {
-      getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
       onSuccess(data) {
         data.pages.forEach((page) =>
           page.posts.forEach((post) =>
@@ -152,7 +152,7 @@ export default function Profile() {
               </Box>
               <Flex gap={'3'}>
                 <UserFollowTabs userId={user.id} defaultTab="followers">
-                  <Box as={'button'}>
+                  <Box as={'button'} type="button">
                     <Text size={'2'}>Seguidores </Text>
                     <Text size={'2'} weight={600}>
                       {friendship_count?.followersAmount}
@@ -160,7 +160,7 @@ export default function Profile() {
                   </Box>
                 </UserFollowTabs>
                 <UserFollowTabs userId={user.id} defaultTab="following">
-                  <Box as={'button'}>
+                  <Box as={'button'} type="button">
                     <Text size={'2'}>Seguindo </Text>
                     <Text size={'2'} weight={600}>
                       {friendship_count?.followingAmount}

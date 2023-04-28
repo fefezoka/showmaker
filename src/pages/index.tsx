@@ -29,7 +29,7 @@ export default function Timeline() {
       ...(feed.value !== 'all' && { game: feed.value }),
     },
     {
-      getNextPageParam: (lastPage) => lastPage.posts.length === 6 && lastPage.posts[5].id,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
       onSuccess(data) {
         data.pages.forEach((page) =>
           page.posts.forEach((post) =>
