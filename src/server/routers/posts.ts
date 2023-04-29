@@ -192,7 +192,16 @@ export const posts = router({
         isLiked: false,
       };
     }),
-  delete: authenticatedProcedure.input(z.object({ postId: z.string() })).mutation(
+  edit: authenticatedProcedure
+    .input(z.object({ postId: z.string().uuid(), title: z.string() }))
+    .mutation(
+      async ({ ctx, input }) =>
+        await ctx.prisma.post.update({
+          data: { title: input.title },
+          where: { id: input.postId },
+        })
+    ),
+  delete: authenticatedProcedure.input(z.object({ postId: z.string().uuid() })).mutation(
     async ({ ctx, input }) =>
       await ctx.prisma.post.delete({
         where: {
@@ -201,7 +210,7 @@ export const posts = router({
       })
   ),
   byId: procedure
-    .input(z.object({ postId: z.string() }))
+    .input(z.object({ postId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
       const post = await ctx.prisma.post.findUnique({
         where: {
@@ -236,7 +245,7 @@ export const posts = router({
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
       };
     }),
-  comments: procedure.input(z.object({ postId: z.string() })).query(
+  comments: procedure.input(z.object({ postId: z.string().uuid() })).query(
     async ({ ctx, input }) =>
       await ctx.prisma.postComment.findMany({
         where: {
@@ -301,7 +310,7 @@ export const posts = router({
     .input(
       z.object({
         message: z.string(),
-        postId: z.string(),
+        postId: z.string().uuid(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -333,7 +342,7 @@ export const posts = router({
     .input(
       z.object({
         commentId: z.string(),
-        postId: z.string(),
+        postId: z.string().uuid(),
       })
     )
     .mutation(async ({ ctx, input }) => {

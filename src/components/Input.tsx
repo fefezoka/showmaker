@@ -1,11 +1,6 @@
 import { Box } from '@styles';
 import React from 'react';
-import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
-
-interface IInput extends React.ComponentProps<typeof StyledInput> {
-  Icon?: IconType;
-}
 
 const StyledInput = styled('input', {
   width: '100%',
@@ -23,21 +18,15 @@ const StyledInput = styled('input', {
   },
 });
 
-export const Input = React.forwardRef<React.ElementRef<typeof StyledInput>, IInput>(
-  ({ Icon, ...props }: IInput, forwardedRef) => {
-    return (
-      <Box css={{ size: '100%', position: 'relative' }}>
-        <StyledInput {...props} ref={forwardedRef} />
-        {Icon && (
-          <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
-            <Box as={'button'} type="submit">
-              <Icon color="white" />
-            </Box>
-          </Box>
-        )}
-      </Box>
-    );
-  }
-);
+export const Input = React.forwardRef<
+  React.ElementRef<typeof StyledInput>,
+  React.ComponentProps<typeof StyledInput>
+>(({ ...props }, forwardedRef) => {
+  return (
+    <Box css={{ size: '100%', position: 'relative' }}>
+      <StyledInput {...props} ref={forwardedRef} />
+    </Box>
+  );
+});
 
 Input.displayName = 'Input';

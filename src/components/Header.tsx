@@ -60,11 +60,16 @@ export const Header = () => {
           </Box>
         )}
         <Box
-          css={{ size: '100%', maxWidth: '360px' }}
+          css={{ size: '100%', maxWidth: '360px', position: 'relative' }}
           as="form"
           onSubmit={(e) => handleFindClick(e)}
         >
-          <Input placeholder="Procurar" Icon={IoSearchSharp} />
+          <Input placeholder="Procurar" />
+          <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
+            <Box as={'button'} type="submit">
+              <IoSearchSharp color="white" />
+            </Box>
+          </Box>
         </Box>
 
         {status === 'authenticated' ? (

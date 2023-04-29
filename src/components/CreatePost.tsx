@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import { signIn, useSession } from 'next-auth/react';
-import { IoAdd } from 'react-icons/io5';
 import { getVideoFrame } from '../utils/getVideoFrame';
 import { uploadVideo } from '../utils/uploadVideo';
 import { Controller, useForm, Control, FieldValues } from 'react-hook-form';

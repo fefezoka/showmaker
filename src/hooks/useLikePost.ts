@@ -27,7 +27,7 @@ export const useLikePost = () => {
           (old) =>
             old &&
             produce(old, (draft) => {
-              draft.pages.map((page) => {
+              draft.pages.forEach((page) => {
                 page.posts = page.posts.map((postcache) => {
                   if (postcache.id === post.id) {
                     return newPost;

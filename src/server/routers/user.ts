@@ -106,7 +106,9 @@ export const user = router({
       return data;
     }),
   follow: authenticatedProcedure
-    .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
+    .input(
+      z.object({ followingUser: z.object({ id: z.string().uuid(), name: z.string() }) })
+    )
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.follows.createMany({
         data: {
@@ -138,7 +140,9 @@ export const user = router({
       });
     }),
   unfollow: authenticatedProcedure
-    .input(z.object({ followingUser: z.object({ id: z.string(), name: z.string() }) }))
+    .input(
+      z.object({ followingUser: z.object({ id: z.string().uuid(), name: z.string() }) })
+    )
     .mutation(async ({ ctx, input }) => {
       await ctx.prisma.follows.deleteMany({
         where: {
@@ -169,7 +173,7 @@ export const user = router({
         },
       });
     }),
-  following: procedure.input(z.object({ userId: z.string() })).query(
+  following: procedure.input(z.object({ userId: z.string().uuid() })).query(
     async ({ ctx, input }) =>
       await ctx.prisma.user.findMany({
         where: {
@@ -181,7 +185,7 @@ export const user = router({
         },
       })
   ),
-  followers: procedure.input(z.object({ userId: z.string() })).query(
+  followers: procedure.input(z.object({ userId: z.string().uuid() })).query(
     async ({ ctx, input }) =>
       await ctx.prisma.user.findMany({
         where: {

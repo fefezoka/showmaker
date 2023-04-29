@@ -1,12 +1,19 @@
 import Link from 'next/link';
-import React, { memo, forwardRef } from 'react';
+import React, { memo, forwardRef, useState, FormEvent } from 'react';
 import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { AiFillLike, AiOutlineLike, AiOutlineClose } from 'react-icons/ai';
+import { BiDotsHorizontalRounded, BiCheck } from 'react-icons/bi';
 import { signIn, useSession } from 'next-auth/react';
 import { Post } from '../@types/types';
 import { downloadVideo } from 'src/utils/downloadVideo';
-import { Button, ProfileIcon, Video, UserHoverCard, FeedPostComments } from '@components';
+import {
+  Button,
+  ProfileIcon,
+  Video,
+  UserHoverCard,
+  FeedPostComments,
+  Input,
+} from '@components';
 import {
   Box,
   Flex,
@@ -23,15 +30,18 @@ import {
   MenuSeparator,
 } from '@styles';
 import { useDeletePost, useLikePost, useDislikePost } from '@hooks';
+import { useEditPost } from 'src/hooks/useEditPost';
 
-interface IFeedPost extends React.HTMLProps<HTMLDivElement> {
+interface IFeedPost extends React.ComponentProps<typeof Box> {
   post: Post;
 }
 
 export const FeedPost = memo(
-  forwardRef(({ post, ...props }: IFeedPost, forwardRef) => {
+  forwardRef<HTMLDivElement, IFeedPost>(({ post, ...props }, forwardRef) => {
+    const [editing, setEditing] = useState<boolean>();
     const { data: session } = useSession();
     const deletePost = useDeletePost();
+    const editPost = useEditPost();
     const likePost = useLikePost();
     const dislikePost = useDislikePost();
 
@@ -43,8 +53,16 @@ export const FeedPost = memo(
       post.isLiked ? dislikePost.mutate({ post }) : likePost.mutateAsync({ post });
     };
 
+    const handleEdit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      const title = (e.currentTarget[0] as HTMLInputElement).value;
+
+      title !== post.title && (await editPost.mutateAsync({ postId: post.id, title }));
+      setEditing(false);
+    };
+
     return (
-      <Box as={'section'} {...props} ref={forwardRef as React.RefObject<HTMLDivElement>}>
+      <Box as={'section'} {...props} ref={forwardRef}>
         <Flex justify={'between'}>
           <UserHoverCard user={post.user}>
             <Flex align={'center'} gap={'2'}>
@@ -110,6 +128,9 @@ export const FeedPost = memo(
                 </Flex>
               </MenuTrigger>
               <MenuContent>
+                {post.user.id === session?.user.id && (
+                  <MenuItem onClick={() => setEditing(true)}>Editar</MenuItem>
+                )}
                 <MenuItem onClick={() => downloadVideo(post.videoUrl, post.title)}>
                   Baixar vídeo
                 </MenuItem>
@@ -152,9 +173,41 @@ export const FeedPost = memo(
         </Flex>
 
         <Flex align={'center'} justify={'between'} css={{ mt: '$1', mb: '$3' }}>
-          <Link href={`/post/${post.id}`} prefetch={false}>
-            <Heading size={'2'}>{post.title}</Heading>
-          </Link>
+          {editing ? (
+            <Box
+              as={'form'}
+              onSubmit={(e) => handleEdit(e)}
+              css={{ width: '50%', position: 'relative' }}
+            >
+              <Input
+                placeholder={post.title}
+                css={{
+                  '&::placeholder': { fontSize: '$5' },
+                  fontSize: '$5',
+                  fontWeight: 600,
+                }}
+              />
+              <Box css={{ position: 'absolute', right: 40, top: 9 }}>
+                <Box as={'button'} type="submit">
+                  <BiCheck color="white" size={22} />
+                </Box>
+              </Box>
+              <Box css={{ position: 'absolute', right: 16, top: 12 }}>
+                <Box
+                  as={'button'}
+                  onClick={() => {
+                    setEditing(false);
+                  }}
+                >
+                  <AiOutlineClose color="white" size={18} />
+                </Box>
+              </Box>
+            </Box>
+          ) : (
+            <Link href={`/post/${post.id}`} prefetch={false}>
+              <Heading size={'2'}>{post.title}</Heading>
+            </Link>
+          )}
         </Flex>
 
         <Video videoUrl={post.videoUrl} thumbnailUrl={post.thumbnailUrl} />

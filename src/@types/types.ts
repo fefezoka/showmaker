@@ -20,7 +20,7 @@ export const postCommentsSchema = z.object({
 });
 
 export const likedPostSchema = z.object({
-  id: z.string(),
+  id: z.string().uuid(),
   userId: z.string(),
   postId: z.string(),
   createdAt: z.string().nullable(),
@@ -31,7 +31,7 @@ export const postSchema = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   game: z.string(),
-  id: z.string(),
+  id: z.string().uuid(),
   isLiked: z.boolean(),
   likes: z.number(),
   title: z.string(),
