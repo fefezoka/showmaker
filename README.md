@@ -4,7 +4,7 @@ Rede social focada na postagem de melhores momentos em jogos online.
 
 ## Rodando localmente
 
-Clone o projeto e instalar as dependências
+Clonando o projeto e instalando as dependências
 
 ```bash
   git clone https://github.com/fefezoka/showmaker
@@ -12,7 +12,7 @@ Clone o projeto e instalar as dependências
   npm install
 ```
 
-Configurar o arquivo .env.example e iniciar o projeto
+Configurando o arquivo .env.example e iniciando o projeto
 
 ```bash
   # Copiar o arquivo contendo as variáveis de ambiente e dados de conexão
@@ -33,7 +33,7 @@ Configurar o arquivo .env.example e iniciar o projeto
 
 - [tRPC](https://github.com/trpc/trpc) - Rotas API typesafe
 - [Stitches](https://github.com/stitchesjs/stitches) - CSS in JS
-- [React Hook Form](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project) - Validação de formulários
+- [React Hook Form](https://github.com/react-hook-form) - Validação de formulários
 - [Zod](https://github.com/colinhacks/zod) - Criação de schemas e validação
 - [Radix](https://github.com/radix-ui) - Componentes UI acessíveis
 - [Next Auth](https://github.com/nextauthjs/next-auth) - Autenticação
