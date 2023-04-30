@@ -17,7 +17,7 @@ export const ProfileIcon = forwardRef<HTMLImageElement, ProfileIconProps>(
         css={{
           size: '$7',
           br: '$round',
-          flexShrink: 0,
+          fs: 0,
           position: 'relative',
           overflow: 'hidden',
           ...css,

@@ -18,10 +18,10 @@ export const Content = styled(HoverCard.Content, {
   position: 'relative',
   width: 295,
   height: 130,
-  backgroundColor: '#000',
-  borderRadius: '$2',
+  bc: '#000',
+  br: '$2',
   fontSize: '$3',
-  padding: '10px',
+  p: '10px',
   overflow: 'hidden',
   fontWeight: 'bold',
 });

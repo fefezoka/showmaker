@@ -1,4 +1,4 @@
-import { FeedButton, PostPaginator } from '@components';
+import { FeedButton, Main, PostPaginator } from '@components';
 import { Box, Flex, Heading } from '@styles';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
@@ -41,7 +41,7 @@ export default function Timeline() {
   );
 
   return (
-    <>
+    <Main>
       <NextSeo title="Show Maker // Página inicial" />
       <Box as={'section'} css={{ pb: '0 !important' }}>
         <Heading size="2">Últimos posts</Heading>
@@ -71,6 +71,6 @@ export default function Timeline() {
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
       />
-    </>
+    </Main>
   );
 }

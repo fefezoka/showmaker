@@ -6,7 +6,7 @@ import { SiOsu } from 'react-icons/si';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
 import { IconType } from 'react-icons/lib';
-import { LoggedProvider } from '@components';
+import { LoggedProvider, Main } from '@components';
 import { Box, Flex, Grid, Heading, Text } from '@styles';
 
 type providers = 'osu' | 'twitch';
@@ -45,11 +45,11 @@ export default function Config() {
   const { data: accounts, isLoading } = trpc.auth.accounts.useQuery();
 
   if (isLoading) {
-    return <></>;
+    return <Main></Main>;
   }
 
   return (
-    <>
+    <Main>
       <NextSeo title="Show Maker // Configurações" />
       <Box as={'section'}>
         <Heading size="2">Configurações</Heading>
@@ -122,6 +122,6 @@ export default function Config() {
             </Box>
           ))}
       </Box>
-    </>
+    </Main>
   );
 }

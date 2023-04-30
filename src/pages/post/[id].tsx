@@ -59,14 +59,16 @@ export default function Post({ dehydratedState, id }: Props) {
             }
           : post && { title: `${post.title} // ${post.user.name}` })}
       />
-      {isLoading && <PostSkeleton />}
-      {post && !isLoading && <FeedPost post={post} />}
-      {!post && !isLoading && (
-        <Flex as={'section'} align={'center'} direction={'column'}>
-          <Heading>Post não encontrado</Heading>
-          <Image src={BlitzNotFound} alt="" height={256} width={256} />
-        </Flex>
-      )}
+      <Main>
+        {isLoading && <PostSkeleton />}
+        {post && !isLoading && <FeedPost post={post} />}
+        {!post && !isLoading && (
+          <Flex as={'section'} align={'center'} direction={'column'}>
+            <Heading>Post não encontrado</Heading>
+            <Image src={BlitzNotFound} alt="" height={256} width={256} />
+          </Flex>
+        )}
+      </Main>
     </>
   );
 }

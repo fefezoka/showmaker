@@ -2,9 +2,8 @@ import type { AppProps } from 'next/app';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import ogimage from '../assets/ogimage.jpeg';
+import ogimage from '../assets/ogimage.webp';
 import { trpc } from '../utils/trpc';
-import { Main } from '@components';
 import { global } from '@styles';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
@@ -12,23 +11,19 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
 
   return (
     <SessionProvider session={pageProps.session}>
-      <>
-        <DefaultSeo
-          title="Show Maker"
-          openGraph={{
-            images: [{ url: ogimage.src }],
-            siteName: 'Show Maker',
-            description: 'Posta ai',
-            url: 'https://show-maker.vercel.app',
-            type: 'website',
-          }}
-          twitter={{ cardType: 'summary_large_image' }}
-          additionalMetaTags={[{ name: 'theme-color', content: '#000' }]}
-        />
-        <Main>
-          <Component {...pageProps} />
-        </Main>
-      </>
+      <DefaultSeo
+        title="Show Maker"
+        openGraph={{
+          images: [{ url: ogimage.src }],
+          siteName: 'Show Maker',
+          description: 'Posta ai',
+          url: 'https://show-maker.vercel.app',
+          type: 'website',
+        }}
+        twitter={{ cardType: 'summary_large_image' }}
+        additionalMetaTags={[{ name: 'theme-color', content: '#000' }]}
+      />
+      <Component {...pageProps} />
     </SessionProvider>
   );
 };

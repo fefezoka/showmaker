@@ -19,8 +19,7 @@ const Fade = keyframes({
 });
 
 export const Content = styled(Dialog.Content, {
-  width: 'calc(100vw - 60px)',
-  height: 'calc(100vw - 60px)',
+  size: 'calc(100vw - 60px)',
   position: 'fixed',
   top: '50%',
   left: '50%',
@@ -30,14 +29,13 @@ export const Content = styled(Dialog.Content, {
   animation: `300ms ${Fade}`,
 
   '@bp2': {
-    width: '460px',
-    height: '460px',
+    size: '460px',
   },
 });
 
 export const Overlay = styled(Dialog.Overlay, {
   backdropFilter: 'blur(8px)',
-  backgroundColor: '$overlay',
+  bc: '$overlay',
   zIndex: '$overlay',
   position: 'fixed',
   inset: 0,

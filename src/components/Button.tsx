@@ -6,30 +6,30 @@ import { styled } from '../../stitches.config';
 
 const StyledButton = styled('button', {
   display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  ai: 'center',
+  jc: 'center',
   padding: '$3',
-  backgroundColor: '$blue-2',
+  bc: '$blue-2',
   minWidth: '64px',
   color: '$text-primary',
   fontSize: '$3',
   cursor: 'pointer',
-  borderRadius: '$2',
+  br: '$2',
   transition: 'background-color 200ms',
   fontWeight: 500,
 
   '&:hover': {
-    backgroundColor: '$blue-1',
+    bc: '$blue-1',
   },
 
   variants: {
     variant: {
       exit: {
-        backgroundColor: '$red-1',
+        bc: '$red-1',
         borderColor: '$white-1',
 
         '&:hover': {
-          backgroundColor: '$red-2',
+          bc: '$red-2',
         },
       },
     },

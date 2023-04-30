@@ -2,11 +2,11 @@ import { styled } from '../../stitches.config';
 
 export const FeedButton = styled('button', {
   fontSize: '$3',
-  padding: '$3 $4',
+  p: '$3 $4',
   transition: 'border-bottom-color 300ms ease-out, font-weight 200ms ease-in',
   color: '$text-secondary',
-  textAlign: 'center',
-  flexShrink: 0,
+  ta: 'center',
+  fs: 0,
   borderBottom: '2px solid transparent',
   fontWeight: 500,
 

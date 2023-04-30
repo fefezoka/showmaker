@@ -27,14 +27,14 @@ interface IUserHoverCard {
 }
 
 export const Content = styled(HoverCard.Content, {
-  backgroundColor: '$bg-1',
-  borderRadius: '$3',
+  bc: '$bg-1',
+  br: '$3',
   width: '440px',
   zIndex: '$modal',
   border: '2px solid $bg-2',
   transition: 'all 200ms ease-out',
   animation: `250ms ${Fade}`,
-  boxShadow: '0px 0px 12px black',
+  bs: '0px 0px 12px black',
 });
 
 export const UserHoverCard = ({ user, children }: IUserHoverCard) => {

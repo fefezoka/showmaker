@@ -14,6 +14,7 @@ import {
   PostPaginator,
   UserFollowTabs,
   ProviderIcon,
+  Main,
 } from '@components';
 import { useFollow, useUnfollow } from '@hooks';
 import { Box, Flex, Text, Heading, ProfileSkeleton } from '@styles';
@@ -72,7 +73,7 @@ export default function Profile() {
 
   if (isError) {
     return (
-      <>
+      <Main>
         <NextSeo title={`Usuário ${name ?? ''} não encontrado`} />
         <Flex as={'section'} direction={'column'} justify={'center'} align={'center'}>
           <Text size={'6'}>
@@ -84,7 +85,7 @@ export default function Profile() {
           </Text>
           <Image src={BlitzNotFound} alt="" height={256} width={256} />
         </Flex>
-      </>
+      </Main>
     );
   }
 
@@ -100,7 +101,7 @@ export default function Profile() {
   };
 
   return (
-    <>
+    <Main>
       {user && <NextSeo title={`Perfil de ${user.name}`} />}
       {!isLoading ? (
         <Box as={'section'} css={{ pb: '0 !important' }}>
@@ -214,6 +215,6 @@ export default function Profile() {
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
       />
-    </>
+    </Main>
   );
 }

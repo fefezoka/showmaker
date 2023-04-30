@@ -70,8 +70,8 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
         bc: options[provider].bc,
         br: '$round',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        jc: 'center',
+        ai: 'center',
 
         '@bp2': {
           size: 32,
