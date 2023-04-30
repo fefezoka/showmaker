@@ -1,6 +1,6 @@
-import { Box } from '@styles';
 import React from 'react';
 import { styled } from 'stitches.config';
+import { Box } from '@styles';
 
 const StyledInput = styled('input', {
   width: '100%',
@@ -11,6 +11,7 @@ const StyledInput = styled('input', {
   bc: '$bg-2',
   color: '$text-primary',
   minHeight: 40,
+  boxShadow: 'inset 0 0 0 1px $colors$bg-3',
 
   '&::placeholder': {
     color: '$text-secondary',
@@ -20,7 +21,7 @@ const StyledInput = styled('input', {
   variants: {
     radius: {
       '1': {
-        br: '$1',
+        br: '$2',
         px: '$3',
       },
       '2': {

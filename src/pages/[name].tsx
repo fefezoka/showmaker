@@ -3,21 +3,21 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import BlitzNotFound from '../assets/blitz.webp';
+import { blitz } from '@assets';
 import { NextSeo } from 'next-seo';
 import { trpc } from '../utils/trpc';
-import {
-  FullProfileIcon,
-  Button,
-  OsuHoverCard,
-  FeedButton,
-  PostPaginator,
-  UserFollowTabs,
-  ProviderIcon,
-  Main,
-} from '@components';
+import { OsuHoverCard, PostPaginator, UserFollowTabs, Main } from '@components';
 import { useFollow, useUnfollow } from '@hooks';
-import { Box, Flex, Text, Heading, ProfileSkeleton } from '@styles';
+import {
+  Box,
+  Flex,
+  Text,
+  Heading,
+  ProfileSkeleton,
+  FullProfileIcon,
+  ProviderIcon,
+  Button,
+} from '@styles';
 
 type Feed = 'posts' | 'favorites';
 
@@ -83,7 +83,7 @@ export default function Profile() {
             </Text>{' '}
             não encontrado
           </Text>
-          <Image src={BlitzNotFound} alt="" height={256} width={256} />
+          <Image src={blitz} alt="" height={256} width={256} />
         </Flex>
       </Main>
     );
@@ -189,20 +189,22 @@ export default function Profile() {
           </Flex>
 
           <Flex justify={'center'} css={{ pt: '$4' }}>
-            <FeedButton
+            <Button
+              ghost
               type="button"
               onClick={() => setFeed('posts')}
               active={feed === 'posts'}
             >
               Últimos posts
-            </FeedButton>
-            <FeedButton
+            </Button>
+            <Button
+              ghost
               type="button"
               onClick={() => setFeed('favorites')}
               active={feed === 'favorites'}
             >
               Posts curtidos
-            </FeedButton>
+            </Button>
           </Flex>
         </Box>
       ) : (

@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import React, { forwardRef, useState } from 'react';
-import { CSS } from '../../stitches.config';
+import { CSS } from 'stitches.config';
 import { Box } from '@styles';
 
 interface ProfileIconProps extends React.ComponentProps<typeof Image> {

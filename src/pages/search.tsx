@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
-import { trpc } from '../utils/trpc';
+import { trpc } from '@utils';
 import { Main, PostPaginator } from '@components';
 import { Box, Heading } from '@styles';
 

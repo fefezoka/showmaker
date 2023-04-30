@@ -2,7 +2,6 @@ import React, { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
-import { Input, ProfileIcon, ProviderIcon } from '@components';
 import { useIsDesktop } from '@hooks';
 import {
   Box,
@@ -14,6 +13,9 @@ import {
   MenuItem,
   MenuSeparator,
   MenuTrigger,
+  Input,
+  ProfileIcon,
+  ProviderIcon,
 } from '@styles';
 
 export const Header = () => {

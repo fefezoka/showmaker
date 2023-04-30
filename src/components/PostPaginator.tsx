@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { Box } from '../styles';
-import { PostSkeleton } from '../styles/Skeleton';
-import { FeedPost } from './FeedPost';
 import { InfiniteData } from '@tanstack/react-query';
-import { Post } from '../@types/types';
+import { Post } from '@types';
+import { FeedPost } from '@components';
+import { Box, PostSkeleton } from '@styles';
 
 interface IPostPaginator {
   hasNextPage: boolean | undefined;

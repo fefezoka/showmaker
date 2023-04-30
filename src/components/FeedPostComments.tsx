@@ -2,9 +2,8 @@ import React, { FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
-import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { trpc } from '../utils/trpc';
-import { Post } from '../@types/types';
+import { diffBetweenDates, trpc } from '@utils';
+import { Post } from '@types';
 import {
   Box,
   Flex,
@@ -14,8 +13,11 @@ import {
   MenuContent,
   MenuItem,
   CommentSkeleton,
+  Button,
+  Input,
+  ProfileIcon,
 } from '@styles';
-import { Button, Input, ProfileIcon, UserHoverCard } from '@components';
+import { UserHoverCard } from '@components';
 import { useDeletePostComment, useCreatePostComment } from '@hooks';
 
 interface IFeedPostComments {
@@ -65,7 +67,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
             <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
           </Link>
           <Input css={{ br: '$2', p: '$3' }} placeholder="Faça um comentário" />
-          <Button type="submit" css={{ minWidth: '52px' }}>
+          <Button type="submit" css={{ minWidth: '72px' }}>
             Enviar
           </Button>
         </Flex>

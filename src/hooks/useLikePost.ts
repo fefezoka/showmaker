@@ -1,9 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { getQueryKey } from '@trpc/react-query';
-import { trpc } from '../utils/trpc';
 import { useSession } from 'next-auth/react';
-import { PostPagination } from '../@types/types';
+import { trpc } from '@utils';
+import { PostPagination } from '@types';
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();

@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
-import { signIn, useSession } from 'next-auth/react';
-import { getVideoFrame } from '../utils/getVideoFrame';
-import { uploadVideo } from '../utils/uploadVideo';
-import { Controller, useForm, Control, FieldValues } from 'react-hook-form';
 import { z } from 'zod';
+import { signIn, useSession } from 'next-auth/react';
+import { Controller, useForm, Control, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { getVideoFrame, uploadVideo } from '@utils';
 import { useIsDesktop, useCreatePost } from '@hooks';
-import { Button, Input, Select } from '@components';
 import {
   Box,
   Flex,
@@ -20,6 +18,9 @@ import {
   ModalTitle,
   ModalTrigger,
   Heading,
+  Button,
+  Input,
+  Select,
 } from '@styles';
 
 const createPostSchema = z.object({
@@ -269,7 +270,7 @@ export default function CreatePost() {
               <Button
                 disabled={isSendingVideo}
                 onClick={() => setOpen(false)}
-                variant={'exit'}
+                variant={'red'}
               >
                 Sair
               </Button>

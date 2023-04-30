@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../../stitches.config';
+import { styled } from 'stitches.config';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 
 export const Tabs = TabsPrimitive.Root;

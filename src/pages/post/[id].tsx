@@ -4,10 +4,10 @@ import { appRouter } from '../../server/routers/_app';
 import { createContext } from '../../server/context';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
-import BlitzNotFound from '../../assets/blitz.webp';
 import Image from 'next/image';
-import { trpc } from '../../utils/trpc';
-import { Post as PostType } from '../../@types/types';
+import { trpc } from '@utils';
+import { blitz } from '@assets';
+import { Post as PostType } from '@types';
 import { Main, FeedPost } from '@components';
 import { Flex, Heading, PostSkeleton } from '@styles';
 
@@ -65,7 +65,7 @@ export default function Post({ dehydratedState, id }: Props) {
         {!post && !isLoading && (
           <Flex as={'section'} align={'center'} direction={'column'}>
             <Heading>Post não encontrado</Heading>
-            <Image src={BlitzNotFound} alt="" height={256} width={256} />
+            <Image src={blitz} alt="" height={256} width={256} />
           </Flex>
         )}
       </Main>

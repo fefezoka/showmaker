@@ -1,8 +1,8 @@
+import produce from 'immer';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import produce from 'immer';
 import { PostPagination } from 'src/@types/types';
-import { trpc } from 'src/utils/trpc';
+import { trpc } from '@utils';
 
 export const useEditPost = () => {
   const queryClient = useQueryClient();

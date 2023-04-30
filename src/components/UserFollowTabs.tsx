@@ -1,9 +1,11 @@
 import React, { ReactNode, useState } from 'react';
-import { trpc } from '../utils/trpc';
 import { useSession } from 'next-auth/react';
-import { ProfileIcon, FeedButton, UserHoverCard, Button } from '@components';
+import { trpc } from '@utils';
+import { UserHoverCard } from '@components';
 import { useFollow, useUnfollow } from '@hooks';
 import {
+  Button,
+  ProfileIcon,
   Modal,
   ModalContent,
   ModalTrigger,
@@ -56,10 +58,14 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
           <TabsList asChild>
             <Flex justify={'center'} css={{ borderBottom: '2px solid $bg-2' }}>
               <TabsTrigger value="followers" asChild>
-                <FeedButton active={tab === 'followers'}>Seguidores</FeedButton>
+                <Button ghost active={tab === 'followers'}>
+                  Seguidores
+                </Button>
               </TabsTrigger>
               <TabsTrigger value="following" asChild>
-                <FeedButton active={tab === 'following'}>Seguindo</FeedButton>
+                <Button ghost active={tab === 'following'}>
+                  Seguindo
+                </Button>
               </TabsTrigger>
             </Flex>
           </TabsList>
@@ -99,7 +105,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
                       user.id !== session.user.id &&
                       friendship_statuses[tabIndex].data?.[user.id] && (
                         <Button
-                          css={{ p: '$2', height: '20px', fontSize: '$2' }}
+                          css={{ p: '$2', height: '36px', fontSize: '$2' }}
                           onClick={() =>
                             friendship_statuses[tabIndex].data?.[user.id].following
                               ? unfollow.mutate({ followingUser: user })

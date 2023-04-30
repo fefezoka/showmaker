@@ -1,9 +1,9 @@
-import { Box, Flex, Heading, Text } from '@styles';
-import { useRouter } from 'next/router';
 import React from 'react';
+import { useRouter } from 'next/router';
 import { IoRemoveCircle } from 'react-icons/io5';
 import { IconType } from 'react-icons/lib';
-import { trpc } from 'src/utils/trpc';
+import { trpc } from '@utils';
+import { Box, Flex, Heading, Text } from '@styles';
 
 interface ILoggedProvider {
   account: {

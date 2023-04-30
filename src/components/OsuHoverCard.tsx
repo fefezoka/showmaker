@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import * as HoverCard from '@radix-ui/react-hover-card';
 import Image from 'next/image';
-import { ProfileIcon } from './ProfileIcon';
-import { styled } from '../../stitches.config';
 import Link from 'next/link';
-import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { trpc } from '../utils/trpc';
-import { Box, Flex, Text } from '@styles';
-import { ProviderIcon } from './ProviderIcon';
+import { trpc, diffBetweenDates } from '@utils';
+import { styled } from 'stitches.config';
+import { Box, Flex, Text, ProfileIcon, ProviderIcon } from '@styles';
 
 interface IOsuHoverCard {
   username: string;

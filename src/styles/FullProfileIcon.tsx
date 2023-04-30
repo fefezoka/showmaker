@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Image from 'next/image';
-import { keyframes, styled, CSS } from '../../stitches.config';
-import { ProfileIcon } from '@components';
+import { keyframes, styled, CSS } from 'stitches.config';
+import { ProfileIcon } from '@styles';
 
 interface IFullProfileIcon {
   src: string;

@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 import Image from 'next/image';
-import Spinner from '../assets/Spinner.svg';
-import { Header, Menu } from '@components';
-import { Box, Flex } from '@styles';
 import { useSession } from 'next-auth/react';
+import { spinner } from '@assets';
+import { Box, Flex } from '@styles';
+import { Header, Menu } from '@components';
 
 export const Main = memo(
   ({ children, ...props }: React.HtmlHTMLAttributes<HTMLDivElement>) => {
@@ -22,7 +22,7 @@ export const Main = memo(
             }}
           >
             <h2>Show Maker</h2>
-            <Image src={Spinner} alt="" priority loading="eager" height={52} width={52} />
+            <Image src={spinner} alt="" priority loading="eager" height={52} width={52} />
           </div>
         )}
         {status !== 'loading' && (

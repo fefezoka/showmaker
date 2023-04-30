@@ -26,7 +26,7 @@ export const {
       'gray-1': 'rgb(169, 172, 182)',
       'gray-2': 'rgb(192, 196, 199)',
       'red-1': '#e84d4d',
-      'red-2': '#ff5050',
+      'red-2': '#ff4422',
       'blue-1': '#148dde',
       'blue-2': '#18A0FB',
       overlay: 'rgb(18, 27, 32, .75)',

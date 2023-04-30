@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { produce } from 'immer';
-import { trpc } from '../utils/trpc';
+import { trpc } from '@utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import { manyFriendshipStatus } from 'src/@types/types';

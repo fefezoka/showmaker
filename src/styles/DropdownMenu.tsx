@@ -1,5 +1,5 @@
 import React from 'react';
-import { styled } from '../../stitches.config';
+import { styled } from 'stitches.config';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export const Menu = DropdownMenu.Root;

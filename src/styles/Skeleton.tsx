@@ -1,7 +1,7 @@
 import React from 'react';
-import { keyframes, CSS } from '../../stitches.config';
-import { Box, Flex } from '@styles';
 import { useSession } from 'next-auth/react';
+import { keyframes, CSS } from 'stitches.config';
+import { Box, Flex } from '@styles';
 
 const Glow = keyframes({
   '0%, 100%': {

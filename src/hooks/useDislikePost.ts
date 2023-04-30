@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
-import { trpc } from '../utils/trpc';
 import { PostPagination } from '../@types/types';
 import { getQueryKey } from '@trpc/react-query';
+import { trpc } from '@utils';
 
 export const useDislikePost = () => {
   const queryClient = useQueryClient();

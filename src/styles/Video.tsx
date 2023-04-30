@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { styled } from '../../stitches.config';
+import { styled } from 'stitches.config';
 import { Box } from '@styles';
 
 const StyledVideo = styled('video', {

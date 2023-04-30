@@ -1,8 +1,8 @@
-import { FeedButton, Main, PostPaginator } from '@components';
-import { Box, Flex, Heading } from '@styles';
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
-import { trpc } from '../utils/trpc';
+import { trpc } from '@utils';
+import { Main, PostPaginator } from '@components';
+import { Box, Flex, Heading, Button } from '@styles';
 
 const feedOptions = [
   { label: 'Todos', value: 'all' },
@@ -55,13 +55,14 @@ export default function Timeline() {
           }}
         >
           {feedOptions.map((option) => (
-            <FeedButton
+            <Button
+              ghost
               active={feed.value === option.value}
               key={option.value}
               onClick={() => setFeed(option)}
             >
               {option.label}
-            </FeedButton>
+            </Button>
           ))}
         </Flex>
       </Box>

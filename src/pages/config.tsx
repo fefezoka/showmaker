@@ -4,8 +4,8 @@ import { getSession, signIn } from 'next-auth/react';
 import { IoAddCircle, IoLogoTwitch, IoHelp } from 'react-icons/io5';
 import { SiOsu } from 'react-icons/si';
 import { NextSeo } from 'next-seo';
-import { trpc } from '../utils/trpc';
 import { IconType } from 'react-icons/lib';
+import { trpc } from '@utils';
 import { LoggedProvider, Main } from '@components';
 import { Box, Flex, Grid, Heading, Text } from '@styles';
 

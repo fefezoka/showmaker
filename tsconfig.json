@@ -18,7 +18,10 @@
     "paths": {
       "@components": ["src/components/index"],
       "@styles": ["src/styles/index"],
-      "@hooks": ["src/hooks/index"]
+      "@hooks": ["src/hooks/index"],
+      "@utils": ["src/utils/index"],
+      "@assets": ["src/assets/index"],
+      "@types": ["src/@types/types"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

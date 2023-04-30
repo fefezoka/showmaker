@@ -43,7 +43,9 @@ Configurando o arquivo .env.example e iniciando o projeto
 - **Autenticação**
 - **Criar, editar, excluir, comentar e favoritar posts**
 - **Feed de posts**
+- **Mecanismo de busca**
 - **Download dos vídeos**
 - **Perfil de usuário**
 - **Seguir usuários**
+- **Listagem de seguindo e seguidores**
 - **Página de configurações** Nessa aba é possível conectar sua conta com alguns providers (twitch e osu) que aparecerão no perfil do usuário

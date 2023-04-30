@@ -2,8 +2,8 @@ import type { AppProps } from 'next/app';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import ogimage from '../assets/ogimage.webp';
-import { trpc } from '../utils/trpc';
+import { ogimage } from '@assets';
+import { trpc } from '@utils';
 import { global } from '@styles';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {

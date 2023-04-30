@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { trpc } from '../utils/trpc';
+import { trpc } from '@utils';
 
 export const useCreatePost = () => {
   const utils = trpc.useContext();

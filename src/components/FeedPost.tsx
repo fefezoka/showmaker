@@ -1,23 +1,18 @@
 import Link from 'next/link';
 import React, { memo, forwardRef, useState, FormEvent } from 'react';
-import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { AiFillLike, AiOutlineLike, AiOutlineClose } from 'react-icons/ai';
 import { BiDotsHorizontalRounded, BiCheck } from 'react-icons/bi';
 import { signIn, useSession } from 'next-auth/react';
-import { downloadVideo } from 'src/utils/downloadVideo';
-import { useEditPost } from 'src/hooks/useEditPost';
-import { Post } from '../@types/types';
-import {
-  Button,
-  ProfileIcon,
-  Video,
-  UserHoverCard,
-  FeedPostComments,
-  Input,
-} from '@components';
+import { Post } from '@types';
+import { downloadVideo, diffBetweenDates } from '@utils';
+import { UserHoverCard, FeedPostComments } from '@components';
 import {
   Box,
   Flex,
+  Button,
+  ProfileIcon,
+  Input,
+  Video,
   Text,
   Heading,
   Modal,
@@ -30,7 +25,7 @@ import {
   MenuTrigger,
   MenuSeparator,
 } from '@styles';
-import { useDeletePost, useLikePost, useDislikePost } from '@hooks';
+import { useDeletePost, useLikePost, useDislikePost, useEditPost } from '@hooks';
 
 interface IFeedPost extends React.ComponentProps<typeof Box> {
   post: Post;
@@ -157,7 +152,7 @@ export const FeedPost = memo(
                         </Box>
                         <Flex justify={'between'}>
                           <ModalClose asChild>
-                            <Button variant={'exit'}>Cancelar</Button>
+                            <Button variant={'red'}>Cancelar</Button>
                           </ModalClose>
                           <Button onClick={() => deletePost.mutate({ postId: post.id })}>
                             Excluir

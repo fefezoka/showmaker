@@ -1,16 +1,14 @@
 import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import * as HoverCard from '@radix-ui/react-hover-card';
-import { diffBetweenDates } from '../utils/diffBetweenDates';
-import { keyframes, styled } from '../../stitches.config';
-import Spinner from '../assets/Spinner.svg';
-import { trpc } from '../utils/trpc';
-import { User } from '../@types/types';
-import { Button, ProfileIcon } from '@components';
-import { Box, Flex, Grid, Heading, Text } from '@styles';
-import { useFollow, useUnfollow } from '@hooks';
 import { useSession } from 'next-auth/react';
+import { keyframes, styled } from 'stitches.config';
+import * as HoverCard from '@radix-ui/react-hover-card';
+import { User } from '@types';
+import { spinner } from '@assets';
+import { diffBetweenDates, trpc } from '@utils';
+import { useFollow, useUnfollow } from '@hooks';
+import { Box, Flex, Grid, Heading, Text, Button, ProfileIcon } from '@styles';
 
 const Fade = keyframes({
   from: {
@@ -203,7 +201,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
               <Flex justify={'center'} align={'center'} css={{ height: '100%' }}>
                 {isLoading ? (
                   <Flex justify={'center'}>
-                    <Image src={Spinner} height={40} width={40} alt="" />
+                    <Image src={spinner} height={40} width={40} alt="" />
                   </Flex>
                 ) : (
                   <Text weight={600}>Sem posts</Text>
