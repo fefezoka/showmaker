@@ -4,8 +4,9 @@ import { diffBetweenDates } from '../utils/diffBetweenDates';
 import { AiFillLike, AiOutlineLike, AiOutlineClose } from 'react-icons/ai';
 import { BiDotsHorizontalRounded, BiCheck } from 'react-icons/bi';
 import { signIn, useSession } from 'next-auth/react';
-import { Post } from '../@types/types';
 import { downloadVideo } from 'src/utils/downloadVideo';
+import { useEditPost } from 'src/hooks/useEditPost';
+import { Post } from '../@types/types';
 import {
   Button,
   ProfileIcon,
@@ -30,7 +31,6 @@ import {
   MenuSeparator,
 } from '@styles';
 import { useDeletePost, useLikePost, useDislikePost } from '@hooks';
-import { useEditPost } from 'src/hooks/useEditPost';
 
 interface IFeedPost extends React.ComponentProps<typeof Box> {
   post: Post;
@@ -187,12 +187,12 @@ export const FeedPost = memo(
                   fontWeight: 600,
                 }}
               />
-              <Box css={{ position: 'absolute', right: 40, top: 9 }}>
+              <Box css={{ position: 'absolute', right: 36, top: 9 }}>
                 <Box as={'button'} type="submit">
                   <BiCheck color="white" size={22} />
                 </Box>
               </Box>
-              <Box css={{ position: 'absolute', right: 16, top: 12 }}>
+              <Box css={{ position: 'absolute', right: 12, top: 12 }}>
                 <Box
                   as={'button'}
                   onClick={() => {

@@ -44,7 +44,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
   const follow = useFollow();
   const unfollow = useUnfollow();
 
-  const { data: posts, isLoading } = trpc.posts.infinitePosts.feed.useQuery(
+  const { data: posts, isLoading } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
     {
       username: user.name,
       limit: 3,
@@ -52,7 +52,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
     {
       enabled: open,
       onSuccess: (data) => {
-        data.posts.forEach((post) => {
+        data.pages[0].posts.forEach((post) => {
           utils.posts.byId.setData({ postId: post.id }, { ...post, user });
         });
       },
@@ -118,9 +118,10 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
               )}
             </Flex>
             <Box>
-              {posts && posts.posts[0] && (
+              {posts && posts.pages[0].posts[0] && (
                 <Text size={'2'}>
-                  Última postagem {diffBetweenDates(new Date(posts.posts[0].createdAt))}
+                  Última postagem{' '}
+                  {diffBetweenDates(new Date(posts.pages[0].posts[0].createdAt))}
                 </Text>
               )}
 
@@ -142,9 +143,9 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
           </Box>
 
           <Box css={{ height: 140, width: '100%' }}>
-            {posts && posts.posts.length !== 0 ? (
+            {posts && posts.pages[0].posts.length !== 0 ? (
               <Grid columns={'3'} css={{ gap: '2px' }}>
-                {posts.posts.map((post) => (
+                {posts.pages[0].posts.map((post) => (
                   <Box
                     as={'section'}
                     key={post.id}

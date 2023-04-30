@@ -4,17 +4,34 @@ import { styled } from 'stitches.config';
 
 const StyledInput = styled('input', {
   width: '100%',
-  padding: '$3 $5',
+  px: '$5',
   border: 'none',
-  borderRadius: '$7',
+  br: '$7',
   fontSize: '$3',
-  backgroundColor: '$bg-2',
+  bc: '$bg-2',
   color: '$text-primary',
   minHeight: 40,
 
   '&::placeholder': {
     color: '$text-secondary',
     fontSize: '$2',
+  },
+
+  variants: {
+    radius: {
+      '1': {
+        br: '$1',
+        px: '$3',
+      },
+      '2': {
+        br: '$7',
+        px: '$5',
+      },
+    },
+  },
+
+  defaultVariants: {
+    radius: '1',
   },
 });
 
