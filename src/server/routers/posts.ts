@@ -1,3 +1,4 @@
+import { resolveTxt } from 'dns';
 import { Post, postSchema } from '../../@types/types';
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
@@ -46,7 +47,6 @@ export const posts = router({
                 name: true,
                 image: true,
                 createdAt: true,
-                updatedAt: true,
               },
             },
             likedBy: true,
@@ -61,8 +61,10 @@ export const posts = router({
 
         return {
           posts: posts.map((post) => {
+            const { updatedAt, ...rest } = post;
+
             return {
-              ...post,
+              ...rest,
               isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
             };
           }),
@@ -113,7 +115,6 @@ export const posts = router({
                 commentsAmount: 1,
                 userId: 1,
                 createdAt: 1,
-                updatedAt: 1,
                 game: 1,
                 user: 1,
                 likedBy: 1,
@@ -141,17 +142,13 @@ export const posts = router({
             commentsAmount: r.commentsAmount,
             game: r.game,
             createdAt: r.createdAt['$date'],
-            updatedAt: r.updatedAt['$date'],
             user: {
               name: r.user[0].name,
               image: r.user[0].image,
               id: r.user[0]._id,
               createdAt: r.user[0].createdAt['$date'],
-              updatedAt: r.user[0].updatedAt['$date'],
             },
-            isLiked:
-              r.likedBy.some((like: any) => like.userId === ctx.session?.user.id) ??
-              false,
+            isLiked: r.likedBy.some((like: any) => like.userId === ctx.session?.user.id),
           }));
 
         return {
@@ -221,7 +218,6 @@ export const posts = router({
             select: {
               id: true,
               createdAt: true,
-              updatedAt: true,
               name: true,
               image: true,
             },
@@ -237,8 +233,10 @@ export const posts = router({
         });
       }
 
+      const { updatedAt, ...rest } = post;
+
       return {
-        ...post,
+        ...rest,
         user: {
           ...post.user,
         },

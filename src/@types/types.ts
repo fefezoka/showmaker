@@ -5,7 +5,7 @@ export const userSchema = z.object({
   name: z.string(),
   image: z.string(),
   createdAt: z.string(),
-  updatedAt: z.string(),
+  updatedAt: z.string().optional(),
   osuAccountId: z.string().optional(),
   twitchAccountId: z.string().optional(),
 });
@@ -27,19 +27,19 @@ export const likedPostSchema = z.object({
 });
 
 export const postSchema = z.object({
-  commentsAmount: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
-  game: z.string(),
   id: z.string().uuid(),
-  isLiked: z.boolean(),
-  likes: z.number(),
+  userId: z.string().uuid(),
   title: z.string(),
-  userId: z.string(),
+  isLiked: z.boolean(),
+  game: z.string(),
+  likes: z.number(),
   thumbnailUrl: z.string(),
   postComments: z.array(postCommentsSchema).optional(),
   likedBy: z.array(likedPostSchema),
   videoUrl: z.string(),
+  commentsAmount: z.number(),
+  createdAt: z.string(),
+  updatedAt: z.string().optional(),
   user: userSchema,
 });
 

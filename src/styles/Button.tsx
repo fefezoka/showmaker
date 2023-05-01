@@ -21,11 +21,7 @@ const StyledButton = styled('button', {
   cursor: 'pointer',
 
   color: '$text-primary',
-  height: '$8',
-  minWidth: '80px',
-  px: '$3',
   br: '$1',
-  fontSize: '$3',
   fontWeight: 500,
   transition: 'background-color 200ms, border-bottom-color 300ms ease-out',
 
@@ -34,6 +30,20 @@ const StyledButton = styled('button', {
   },
 
   variants: {
+    size: {
+      1: {
+        minWidth: 52,
+        px: '$2',
+        fontSize: '$1',
+        height: '$7',
+      },
+      2: {
+        minWidth: 80,
+        fontSize: '$3',
+        px: '$3',
+        height: '$8',
+      },
+    },
     variant: {
       red: {
         bc: '$red-2',
@@ -104,6 +114,7 @@ const StyledButton = styled('button', {
   ],
 
   defaultVariants: {
+    size: 2,
     variant: 'blue',
     active: false,
     ghost: false,

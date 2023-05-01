@@ -67,9 +67,12 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
     }
   );
 
-  const { data: friendshipCount } = trpc.user.friendshipCount.useQuery({
-    username: user.name,
-  });
+  const { data: friendshipCount } = trpc.user.friendshipCount.useQuery(
+    {
+      username: user.name,
+    },
+    { enabled: open }
+  );
 
   const handleFollow = () => {
     if (!friendshipStatus) {

@@ -43,7 +43,7 @@ Configurando o arquivo .env.example e iniciando o projeto
 - **Autenticação**
 - **Criar, editar, excluir, comentar e favoritar posts**
 - **Feed de posts**
-- **Mecanismo de busca**
+- **Mecanismo de busca por posts e usuários**
 - **Download dos vídeos**
 - **Perfil de usuário**
 - **Seguir usuários**

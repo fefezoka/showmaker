@@ -1,10 +1,10 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { trpc } from '@utils';
-import { Main, PostPaginator } from '@components';
-import { Box, Heading } from '@styles';
+import { Main, PostPaginator, UserHoverCard } from '@components';
+import { Box, Button, Flex, Grid, Heading, ProfileIcon, Text } from '@styles';
+import { useFollow, useUnfollow } from '@hooks';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { q } = query;
@@ -19,25 +19,21 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   }
 
   return {
-    props: {},
+    props: {
+      q,
+    },
   };
 };
 
-export default function Search() {
-  const router = useRouter();
+export default function Search({ q }: { q: string }) {
   const utils = trpc.useContext();
-  const { q: title } = router.query;
+  const follow = useFollow();
+  const unfollow = useUnfollow();
 
-  const {
-    data: posts,
-    isLoading,
-    fetchNextPage,
-    hasNextPage,
-    isError,
-  } = trpc.posts.infinitePosts.search.useInfiniteQuery(
-    { q: title as string },
+  const posts = trpc.posts.infinitePosts.search.useInfiniteQuery(
+    { q },
     {
-      enabled: !!title,
+      enabled: !!q,
       getNextPageParam: (lastPage, pages) =>
         lastPage.posts.length === 6 && pages.length + 1,
       onSuccess(data) {
@@ -50,26 +46,76 @@ export default function Search() {
     }
   );
 
-  if (isError) {
+  const users = trpc.user.search.useQuery({ q });
+  const { data: friendshipStatuses } = trpc.user.manyFriendshipStatus.useQuery(
+    {
+      users: users.data,
+    },
+    {
+      enabled: !!(users.data && users.data.length !== 0),
+    }
+  );
+
+  if (posts.isError && users.isError) {
     return (
-      <Box as={'section'}>
-        <Heading size="2">Post não encontrado</Heading>
-      </Box>
+      <Main>
+        <Box as={'section'}>
+          <Heading size="2">Post não encontrado</Heading>
+        </Box>
+      </Main>
     );
   }
 
   return (
     <Main>
-      <NextSeo title={`Procurando por ${title}`} />
+      <NextSeo title={`Procurando por ${q}`} />
       <Box as={'section'}>
-        <Heading size="2">Procurando por {title}</Heading>
+        <Heading size="2">Procurando por &quot;{q}&quot;</Heading>
       </Box>
 
+      {users.data && users.data.length !== 0 && (
+        <Box as={'section'}>
+          <Heading>Usuários</Heading>
+          <Grid columns={'3'} gap={'2'} css={{ mt: '$1' }}>
+            {users.data.map((user, index) => (
+              <Box css={{ bc: '$bg-2', p: '$3', br: '$2' }} key={index}>
+                <Flex justify={'between'} css={{ mb: '$2' }}>
+                  <UserHoverCard user={user}>
+                    <ProfileIcon src={user.image} alt="" css={{ size: 52 }} />
+                  </UserHoverCard>
+                  {friendshipStatuses && (
+                    <Button
+                      size={1}
+                      onClick={() =>
+                        friendshipStatuses[user.id].following
+                          ? unfollow.mutate({ followingUser: user })
+                          : follow.mutate({ followingUser: user })
+                      }
+                    >
+                      {friendshipStatuses[user.id].following ? 'Seguindo' : 'Seguir'}
+                    </Button>
+                  )}
+                </Flex>
+                <UserHoverCard user={user}>
+                  <Flex align={'center'} gap={'1'}>
+                    <Text weight={600}>{user.name}</Text>
+                    {friendshipStatuses && friendshipStatuses[user.id].followed_by && (
+                      <Text color={'secondary'} size={'1'}>
+                        • Segue você
+                      </Text>
+                    )}
+                  </Flex>
+                </UserHoverCard>
+              </Box>
+            ))}
+          </Grid>
+        </Box>
+      )}
       <PostPaginator
-        posts={posts}
-        loading={isLoading}
-        fetchNextPage={fetchNextPage}
-        hasNextPage={hasNextPage}
+        posts={posts.data}
+        loading={posts.isLoading}
+        fetchNextPage={posts.fetchNextPage}
+        hasNextPage={posts.hasNextPage}
       />
     </Main>
   );

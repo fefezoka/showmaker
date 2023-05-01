@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import axios from 'axios';
 import { TRPCError } from '@trpc/server';
-import { manyFriendshipStatus } from 'src/@types/types';
+import { manyFriendshipStatus, User } from '@types';
 
 export const user = router({
   profile: procedure
@@ -59,6 +59,49 @@ export const user = router({
         }),
       };
     }),
+  search: procedure.input(z.object({ q: z.string() })).query(async ({ ctx, input }) => {
+    const response = (await ctx.prisma.user.aggregateRaw({
+      pipeline: [
+        {
+          $search: {
+            index: 'name',
+            text: {
+              query: input.q,
+              path: 'name',
+              fuzzy: {},
+            },
+          },
+        },
+        {
+          $project: {
+            _id: true,
+            name: true,
+            image: true,
+            createdAt: true,
+            updatedAt: true,
+            score: { $meta: 'searchScore' },
+          },
+        },
+      ],
+    })) as any;
+
+    if (response.length === 0 || !response) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Posts not found',
+      });
+    }
+
+    const filter = response.map((r: any) => ({
+      id: r._id,
+      name: r.name,
+      image: r.image,
+      createdAt: r.createdAt['$date'],
+      updatedAt: r.updatedAt['$date'],
+    }));
+
+    return filter as User[];
+  }),
   osu: procedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -224,7 +267,14 @@ export const user = router({
       };
     }),
   manyFriendshipStatus: authenticatedProcedure
-    .input(z.object({ users: z.array(z.object({ name: z.string() })).nullish() }))
+    .input(
+      z.object({
+        users: z
+          .array(z.object({ name: z.string() }))
+          .min(1)
+          .nullish(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       const users = await ctx.prisma.user.findMany({
         where: {
