@@ -9,9 +9,7 @@ export const useDeletePost = () => {
 
   return trpc.posts.delete.useMutation({
     onMutate: ({ postId }) => {
-      const infiniteQueries = queryClient.getQueriesData(
-        getQueryKey(trpc.posts.infinitePosts)
-      );
+      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(

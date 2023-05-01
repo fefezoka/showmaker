@@ -4,8 +4,8 @@ export const userSchema = z.object({
   id: z.string(),
   name: z.string(),
   image: z.string(),
-  createdAt: z.string(),
-  updatedAt: z.string().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date().optional(),
   osuAccountId: z.string().optional(),
   twitchAccountId: z.string().optional(),
 });
@@ -14,7 +14,7 @@ export const postCommentsSchema = z.object({
   id: z.string(),
   userId: z.string(),
   postId: z.string(),
-  createdAt: z.string(),
+  createdAt: z.date(),
   message: z.string(),
   user: userSchema,
 });
@@ -23,23 +23,23 @@ export const likedPostSchema = z.object({
   id: z.string().uuid(),
   userId: z.string(),
   postId: z.string(),
-  createdAt: z.string().nullable(),
+  createdAt: z.date().nullable(),
 });
 
 export const postSchema = z.object({
   id: z.string().uuid(),
-  userId: z.string().uuid(),
+  videoUrl: z.string(),
+  thumbnailUrl: z.string(),
   title: z.string(),
-  isLiked: z.boolean(),
+  commentsAmount: z.number(),
   game: z.string(),
   likes: z.number(),
-  thumbnailUrl: z.string(),
+  createdAt: z.date(),
+  userId: z.string().uuid(),
+  isLiked: z.boolean(),
   postComments: z.array(postCommentsSchema).optional(),
+  updatedAt: z.date().optional(),
   likedBy: z.array(likedPostSchema),
-  videoUrl: z.string(),
-  commentsAmount: z.number(),
-  createdAt: z.string(),
-  updatedAt: z.string().optional(),
   user: userSchema,
 });
 

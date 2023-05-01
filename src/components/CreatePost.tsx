@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { signIn, useSession } from 'next-auth/react';
 import { Controller, useForm, Control, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getVideoFrame, uploadVideo } from '@utils';
+import { getVideoFrame } from '@utils';
 import { useIsDesktop, useCreatePost } from '@hooks';
 import {
   Box,
@@ -44,7 +44,6 @@ type CreatePostData = z.infer<typeof createPostSchema>;
 
 export default function CreatePost() {
   const [open, setOpen] = useState<boolean>();
-  const [isSendingVideo, setIsSendingVideo] = useState<boolean>();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const { data: session } = useSession();
   const createPost = useCreatePost();
@@ -60,20 +59,7 @@ export default function CreatePost() {
   });
 
   const processFile = async (data: CreatePostData) => {
-    setIsSendingVideo(true);
-
-    const { thumbData, videoData } = await uploadVideo({
-      video: data.file.video,
-      thumbnail: data.file.thumbnail,
-      setUploadProgress,
-    });
-
-    await createPost.mutateAsync({
-      game: data.game,
-      thumbnailUrl: thumbData.secure_url,
-      title: data.title,
-      videoUrl: videoData.secure_url,
-    });
+    await createPost.mutateAsync({ ...data, setUploadProgress });
 
     setOpen(false);
   };
@@ -83,7 +69,6 @@ export default function CreatePost() {
       open={open}
       onOpenChange={(o) => {
         setOpen(o);
-        setIsSendingVideo(false);
         reset();
       }}
     >
@@ -93,7 +78,9 @@ export default function CreatePost() {
         )}
       </ModalTrigger>
       <ModalContent
-        onInteractOutside={(e) => (isSendingVideo ? e.preventDefault() : setOpen(false))}
+        onInteractOutside={(e) =>
+          createPost.isLoading ? e.preventDefault() : setOpen(false)
+        }
       >
         <Box as={'form'} onSubmit={handleSubmit(processFile)}>
           <ModalTitle asChild>
@@ -268,14 +255,14 @@ export default function CreatePost() {
           <Flex justify={'between'} align={'center'} css={{ mt: '$4' }}>
             <ModalClose asChild>
               <Button
-                disabled={isSendingVideo}
+                disabled={createPost.isLoading}
                 onClick={() => setOpen(false)}
                 variant={'red'}
               >
                 Sair
               </Button>
             </ModalClose>
-            <Button type="submit" loading={isSendingVideo}>
+            <Button type="submit" loading={createPost.isLoading}>
               Enviar
             </Button>
           </Flex>

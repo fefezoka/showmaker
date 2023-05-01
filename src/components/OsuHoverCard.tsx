@@ -101,7 +101,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                               <Text size={'1'}>
                                 Desde{' '}
                                 {Intl.DateTimeFormat('pt-BR').format(
-                                  new Date(data.join_date).getTime()
+                                  data.join_date.getTime()
                                 )}
                               </Text>
                             </Box>
@@ -109,8 +109,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                           <Box>
                             {!data.is_online && data.last_visit && (
                               <Text size={'1'} as={'p'}>
-                                Visto por último{' '}
-                                {diffBetweenDates(new Date(data.last_visit))}
+                                Visto por último {diffBetweenDates(data.last_visit)}
                               </Text>
                             )}
                             {

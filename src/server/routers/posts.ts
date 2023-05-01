@@ -1,76 +1,93 @@
-import { resolveTxt } from 'dns';
-import { Post, postSchema } from '../../@types/types';
+import { Post, postSchema } from '@types';
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
+import { infiniteQuery } from '../commons';
 
 export const posts = router({
-  infinitePosts: router({
-    feed: procedure
+  feed: router({
+    home: procedure
       .input(
         z.object({
-          username: z.string().optional(),
           game: z.string().optional(),
           cursor: z.string().optional(),
-          feed: z.string().optional(),
           limit: z.number().optional().default(6),
         })
       )
-      .query(async ({ input, ctx }) => {
-        const posts = await ctx.prisma.post.findMany({
-          take: input.limit + 1,
-          cursor: input.cursor ? { id: input.cursor } : undefined,
-          orderBy: {
-            createdAt: 'desc',
-          },
-          where: {
-            ...(input.game && { game: input.game }),
-            ...(input.username && {
+      .query(async ({ input, ctx }) =>
+        infiniteQuery(
+          await ctx.prisma.post.findMany({
+            take: input.limit + 1,
+            cursor: input.cursor ? { id: input.cursor } : undefined,
+            orderBy: {
+              createdAt: 'desc',
+            },
+            where: {
+              ...(input.game && { game: input.game }),
+            },
+            include: {
               user: {
-                name: input.username,
-              },
-            }),
-            ...(input.feed === 'favorites' && {
-              likedBy: {
-                some: {
-                  user: {
-                    name: input.username,
-                  },
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                  createdAt: true,
                 },
               },
-            }),
-          },
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                image: true,
-                createdAt: true,
-              },
+              likedBy: true,
             },
-            likedBy: true,
-          },
-        });
-
-        let nextCursor: typeof input.cursor | undefined = undefined;
-        if (posts.length > input.limit) {
-          const nextItem = posts.pop();
-          nextCursor = nextItem!.id;
-        }
-
-        return {
-          posts: posts.map((post) => {
-            const { updatedAt, ...rest } = post;
-
-            return {
-              ...rest,
-              isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
-            };
           }),
-          nextCursor,
-        };
-      }),
+          {
+            limit: input.limit,
+            session: ctx.session,
+            cursor: input.cursor,
+          }
+        )
+      ),
+    user: procedure
+      .input(
+        z.object({
+          username: z.string(),
+          feed: z.enum(['favorites', 'posts']).optional(),
+          limit: z.number().optional().default(6),
+          cursor: z.string().optional(),
+        })
+      )
+      .query(async ({ ctx, input }) =>
+        infiniteQuery(
+          await ctx.prisma.post.findMany({
+            take: input.limit + 1,
+            cursor: input.cursor ? { id: input.cursor } : undefined,
+            orderBy: {
+              createdAt: 'desc',
+            },
+            where: {
+              ...(input.feed !== 'favorites' && { user: { name: input.username } }),
+              ...(input.feed === 'favorites' && {
+                likedBy: {
+                  some: {
+                    user: {
+                      name: input.username,
+                    },
+                  },
+                },
+              }),
+            },
+            include: {
+              user: {
+                select: {
+                  id: true,
+                  name: true,
+                  image: true,
+                  createdAt: true,
+                },
+              },
+              likedBy: true,
+            },
+          }),
+          { limit: input.limit, session: ctx.session, cursor: input.cursor }
+        )
+      ),
     search: procedure
       .input(z.object({ q: z.string(), cursor: z.number().optional() }))
       .query(async ({ ctx, input }) => {

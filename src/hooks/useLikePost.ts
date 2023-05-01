@@ -17,9 +17,7 @@ export const useLikePost = () => {
         draft.likes += 1;
       });
 
-      const infiniteQueries = queryClient.getQueriesData(
-        getQueryKey(trpc.posts.infinitePosts)
-      );
+      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(
@@ -40,7 +38,7 @@ export const useLikePost = () => {
       );
 
       session &&
-        utils.posts.infinitePosts.feed.setInfiniteData(
+        utils.posts.feed.user.setInfiniteData(
           { username: session.user.name, feed: 'favorites' },
           (old) =>
             old &&

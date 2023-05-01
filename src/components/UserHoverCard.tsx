@@ -42,7 +42,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
   const follow = useFollow();
   const unfollow = useUnfollow();
 
-  const { data: posts, isLoading } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
+  const { data: posts, isLoading } = trpc.posts.feed.user.useInfiniteQuery(
     {
       username: user.name,
       limit: 3,
@@ -121,8 +121,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
             <Box>
               {posts && posts.pages[0].posts[0] && (
                 <Text size={'2'}>
-                  Última postagem{' '}
-                  {diffBetweenDates(new Date(posts.pages[0].posts[0].createdAt))}
+                  Última postagem {diffBetweenDates(posts.pages[0].posts[0].createdAt)}
                 </Text>
               )}
 

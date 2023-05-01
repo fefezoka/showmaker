@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
 import { ogimage } from '@assets';
 import { trpc } from '@utils';
-import { global } from '@styles';
+import { global } from 'src/styles';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   global();

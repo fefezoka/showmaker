@@ -2,6 +2,7 @@ import React from 'react';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { trpc } from '@utils';
+import { useSession } from 'next-auth/react';
 import { Main, PostPaginator, UserHoverCard } from '@components';
 import { Box, Button, Flex, Grid, Heading, ProfileIcon, Text } from '@styles';
 import { useFollow, useUnfollow } from '@hooks';
@@ -29,8 +30,9 @@ export default function Search({ q }: { q: string }) {
   const utils = trpc.useContext();
   const follow = useFollow();
   const unfollow = useUnfollow();
+  const { data: session } = useSession();
 
-  const posts = trpc.posts.infinitePosts.search.useInfiniteQuery(
+  const posts = trpc.posts.feed.search.useInfiniteQuery(
     { q },
     {
       enabled: !!q,
@@ -83,7 +85,7 @@ export default function Search({ q }: { q: string }) {
                   <UserHoverCard user={user}>
                     <ProfileIcon src={user.image} alt="" css={{ size: 52 }} />
                   </UserHoverCard>
-                  {friendshipStatuses && (
+                  {friendshipStatuses && user.id !== session?.user.id && (
                     <Button
                       size={1}
                       onClick={() =>

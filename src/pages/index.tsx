@@ -24,7 +24,7 @@ export default function Timeline() {
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
+  } = trpc.posts.feed.home.useInfiniteQuery(
     {
       ...(feed.value !== 'all' && { game: feed.value }),
     },
@@ -49,9 +49,9 @@ export default function Timeline() {
           justify={'between'}
           css={{
             mt: '$2',
-            overflowX: 'scroll',
+            ox: 'scroll',
             '&::-webkit-scrollbar': { display: 'none' },
-            '@bp2': { overflowX: 'unset' },
+            '@bp2': { ox: 'unset' },
           }}
         >
           {feedOptions.map((option) => (

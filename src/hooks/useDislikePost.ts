@@ -15,9 +15,7 @@ export const useDislikePost = () => {
         draft.isLiked = false;
       });
 
-      const infiniteQueries = queryClient.getQueriesData(
-        getQueryKey(trpc.posts.infinitePosts)
-      );
+      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
 
       utils.posts.byId.setData({ postId: post.id }, newPost);
 

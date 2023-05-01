@@ -1,5 +1,5 @@
-export const diffBetweenDates = (date: Date | number) => {
-  const timeMs = typeof date === 'number' ? date : date.getTime();
+export const diffBetweenDates = (date: Date) => {
+  const timeMs = date.getTime();
   const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
   const cutoffs = [60, 3600, 86400, 86400 * 30, 86400 * 365, Infinity];
   const units: Intl.RelativeTimeFormatUnit[] = [

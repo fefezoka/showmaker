@@ -5,7 +5,7 @@ import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { blitz } from '@assets';
 import { NextSeo } from 'next-seo';
-import { trpc } from '../utils/trpc';
+import { trpc } from '@utils';
 import { OsuHoverCard, PostPaginator, UserFollowTabs, Main } from '@components';
 import { useFollow, useUnfollow } from '@hooks';
 import {
@@ -46,8 +46,8 @@ export default function Profile() {
     fetchNextPage,
     hasNextPage,
     isLoading: postsIsLoading,
-  } = trpc.posts.infinitePosts.feed.useInfiniteQuery(
-    { ...(feed === 'posts' && { username: name }), feed, limit: 6 },
+  } = trpc.posts.feed.user.useInfiniteQuery(
+    { username: name, feed, limit: 6 },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
       onSuccess(data) {
@@ -146,9 +146,7 @@ export default function Profile() {
               <Box css={{ mb: '$1' }}>
                 <Text size={'2'}>Usuário desde </Text>
                 <Text size={'2'} weight={600}>
-                  {new Intl.DateTimeFormat('pt-BR').format(
-                    new Date(user.createdAt).getTime()
-                  )}
+                  {new Intl.DateTimeFormat('pt-BR').format(user.createdAt.getTime())}
                 </Text>
               </Box>
               <Flex gap={'3'}>

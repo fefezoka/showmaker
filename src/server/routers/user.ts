@@ -3,6 +3,7 @@ import { authenticatedProcedure, procedure, router } from '../trpc';
 import axios from 'axios';
 import { TRPCError } from '@trpc/server';
 import { manyFriendshipStatus, User } from '@types';
+import { infiniteQuery } from '../commons';
 
 export const user = router({
   profile: procedure
@@ -102,6 +103,7 @@ export const user = router({
 
     return filter as User[];
   }),
+
   osu: procedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
@@ -153,6 +155,10 @@ export const user = router({
       z.object({ followingUser: z.object({ id: z.string().uuid(), name: z.string() }) })
     )
     .mutation(async ({ ctx, input }) => {
+      if (ctx.session.user.id === input.followingUser.id) {
+        throw new TRPCError({ code: 'BAD_REQUEST' });
+      }
+
       await ctx.prisma.follows.createMany({
         data: {
           followingId: input.followingUser.id,

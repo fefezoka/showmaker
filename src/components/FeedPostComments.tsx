@@ -104,7 +104,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
             </Flex>
             <Flex gap={'2'} align={'center'}>
               <Text size={{ '@initial': '2', '@bp2': '3' }} css={{ fs: 0 }}>
-                {diffBetweenDates(new Date(comment.createdAt))}
+                {diffBetweenDates(comment.createdAt)}
               </Text>
               {session?.user.id === comment.user.id && (
                 <Menu>

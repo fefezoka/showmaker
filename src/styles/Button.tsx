@@ -21,7 +21,6 @@ const StyledButton = styled('button', {
   cursor: 'pointer',
 
   color: '$text-primary',
-  br: '$1',
   fontWeight: 500,
   transition: 'background-color 200ms, border-bottom-color 300ms ease-out',
 
@@ -32,12 +31,14 @@ const StyledButton = styled('button', {
   variants: {
     size: {
       1: {
+        br: '$1',
         minWidth: 52,
         px: '$2',
         fontSize: '$1',
         height: '$7',
       },
       2: {
+        br: '$2',
         minWidth: 80,
         fontSize: '$3',
         px: '$3',

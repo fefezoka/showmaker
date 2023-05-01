@@ -67,7 +67,7 @@ export const FeedPost = memo(
                   {post.user.name}
                 </Text>
                 <Text color={'secondary'} size={{ '@initial': '2', '@bp2': '3' }}>
-                  {' • '} {diffBetweenDates(new Date(post.createdAt))}
+                  {' • '} {diffBetweenDates(post.createdAt)}
                 </Text>
               </Box>
             </Flex>

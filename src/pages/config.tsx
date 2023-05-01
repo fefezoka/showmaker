@@ -45,7 +45,7 @@ export default function Config() {
   const { data: accounts, isLoading } = trpc.auth.accounts.useQuery();
 
   if (isLoading) {
-    return <Main></Main>;
+    return <Main />;
   }
 
   return (

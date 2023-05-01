@@ -10,9 +10,7 @@ export const useEditPost = () => {
 
   return trpc.posts.edit.useMutation({
     onMutate: ({ postId, title }) => {
-      const infiniteQueries = queryClient.getQueriesData(
-        getQueryKey(trpc.posts.infinitePosts)
-      );
+      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(
