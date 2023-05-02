@@ -1,18 +1,10 @@
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
 import { trpc } from '@utils';
-import { Main, PostPaginator } from '@components';
+import { Main, PostPaginator, gameOptions } from '@components';
 import { Box, Flex, Heading, Button } from '@styles';
 
-const feedOptions = [
-  { label: 'Todos', value: 'all' },
-  { label: 'Valorant', value: 'valorant' },
-  { label: 'FIFA', value: 'fifa' },
-  { label: 'CS:GO', value: 'csgo' },
-  { label: 'Rainbow Six', value: 'r6' },
-  { label: 'LOL', value: 'lol' },
-  { label: 'Outros', value: 'other' },
-] as const;
+const feedOptions = [{ label: 'Todos', value: 'all' }, ...gameOptions] as const;
 type feed = (typeof feedOptions)[number];
 
 export default function Timeline() {

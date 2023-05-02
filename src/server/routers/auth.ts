@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { authenticatedProcedure, procedure, router } from '../trpc';
-import axios from 'axios';
+import axios from '../axios';
 import { TRPCError } from '@trpc/server';
 
 export const auth = router({

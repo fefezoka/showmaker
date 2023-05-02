@@ -56,14 +56,8 @@ export const Text = styled('span', {
       secondary: {
         color: '$text-secondary',
       },
-      'black-primary': {
-        color: '$text-black-primary',
-      },
-      'black-secondary': {
-        color: '$text-black-secondary',
-      },
       'red-primary': {
-        color: '$red-2',
+        color: '$red9',
       },
     },
   },

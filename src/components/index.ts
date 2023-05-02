@@ -8,3 +8,6 @@ export { UserHoverCard } from './UserHoverCard';
 export { PostPaginator } from './PostPaginator';
 export { UserFollowTabs } from './UserFollowTabs';
 export { LoggedProvider } from './LoggedProvider';
+export { EditPost } from './EditPost';
+export { EditComment } from './EditComment';
+export { CreatePost, gameOptions } from './CreatePost';

@@ -7,10 +7,10 @@ export const MenuTrigger = DropdownMenu.Trigger;
 
 const StyledMenuContent = styled(DropdownMenu.Content, {
   zIndex: '$menu',
-  backgroundColor: '$bg-2',
+  backgroundColor: '$bg2',
   padding: '$2 0',
   borderRadius: '$2',
-  border: '2px solid $bg-3',
+  border: '2px solid $bg3',
   minWidth: 0,
 });
 
@@ -23,13 +23,13 @@ export const MenuItem = styled(DropdownMenu.Item, {
 
   '&:hover': {
     outline: 'none',
-    backgroundColor: '$bg-3',
+    backgroundColor: '$bg3',
   },
 
   variants: {
     theme: {
       alert: {
-        color: '$red-1',
+        color: '$red9',
         fontWeight: 600,
       },
     },
@@ -38,11 +38,11 @@ export const MenuItem = styled(DropdownMenu.Item, {
 
 export const MenuSeparator = styled(DropdownMenu.Separator, {
   height: '2px',
-  backgroundColor: '$bg-3',
+  backgroundColor: '$bg3',
 });
 
 export const MenuArrow = styled(DropdownMenu.Arrow, {
-  fill: '$bg-3',
+  fill: '$bg3',
 });
 
 type MenuContentProps = DropdownMenu.DropdownMenuProps &

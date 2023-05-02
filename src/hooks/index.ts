@@ -1,4 +1,5 @@
 export { useCreatePost } from './useCreatePost';
+export { useEditPostComment } from './useEditPostComment';
 export { useCreatePostComment } from './useCreatePostComment';
 export { useDeletePost } from './useDeletePost';
 export { useDeletePostComment } from './useDeletePostComment';

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 import { authenticatedProcedure, procedure, router } from '../trpc';
-import axios from 'axios';
+import axios from '../axios';
 import { TRPCError } from '@trpc/server';
-import { manyFriendshipStatus, User } from '@types';
-import { infiniteQuery } from '../commons';
+import { ManyFriendshipStatus, User } from '@types';
+import { OsuProfile } from 'next-auth/providers/osu';
 
 export const user = router({
   profile: procedure
@@ -18,7 +18,6 @@ export const user = router({
           name: true,
           image: true,
           createdAt: true,
-          updatedAt: true,
           followers: true,
           following: true,
         },
@@ -97,8 +96,8 @@ export const user = router({
       id: r._id,
       name: r.name,
       image: r.image,
-      createdAt: r.createdAt['$date'],
-      updatedAt: r.updatedAt['$date'],
+      createdAt: new Date(r.createdAt['$date']),
+      updatedAt: new Date(r.updatedAt['$date']),
     }));
 
     return filter as User[];
@@ -142,7 +141,9 @@ export const user = router({
         response[0].access_token = data.access_token;
       }
 
-      const { data } = await axios.get('https://osu.ppy.sh/api/v2/me', {
+      const { data } = await axios.get<
+        OsuProfile & { statistics: { global_rank: string; country_rank: string } }
+      >('https://osu.ppy.sh/api/v2/me', {
         headers: {
           Authorization: `Bearer ${response[0].access_token}`,
         },
@@ -314,7 +315,7 @@ export const user = router({
         .reduce(
           (accumulator, current) => Object.assign(accumulator, { [current.id]: current }),
           {}
-        ) as manyFriendshipStatus;
+        ) as ManyFriendshipStatus;
     }),
   friendshipCount: procedure.input(z.object({ username: z.string() })).query(
     async ({ ctx, input }) =>

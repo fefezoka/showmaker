@@ -29,6 +29,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
   const { data: session } = useSession();
   const follow = useFollow();
   const unfollow = useUnfollow();
+
   const following = trpc.user.following.useQuery({ userId }, { enabled: open });
   const followers = trpc.user.followers.useQuery({ userId }, { enabled: open });
   const friendship_statuses = [
@@ -56,7 +57,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
           onValueChange={(value) => setTab(value as typeof defaultTab)}
         >
           <TabsList asChild>
-            <Flex justify={'center'} css={{ borderBottom: '2px solid $bg-2' }}>
+            <Flex justify={'center'} css={{ borderBottom: '2px solid $bg2' }}>
               <TabsTrigger value="followers" asChild>
                 <Button ghost active={tab === 'followers'}>
                   Seguidores

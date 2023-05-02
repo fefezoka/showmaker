@@ -2,7 +2,7 @@ import { useSession } from 'next-auth/react';
 import { produce } from 'immer';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { manyFriendshipStatus } from 'src/@types/types';
+import { ManyFriendshipStatus } from '@types';
 import { trpc } from '@utils';
 
 export const useUnfollow = () => {
@@ -21,7 +21,7 @@ export const useUnfollow = () => {
       );
 
       queries.forEach((query) =>
-        queryClient.setQueriesData<manyFriendshipStatus>(
+        queryClient.setQueriesData<ManyFriendshipStatus>(
           query[0],
           (old) =>
             old &&

@@ -1,8 +1,8 @@
 import React from 'react';
 import { styled, keyframes } from 'stitches.config';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { overlayStyles } from '@styles';
-
+import { Box, Flex, overlayStyles } from '@styles';
+import { IoClose } from 'react-icons/io5';
 const fade = keyframes({
   from: {
     opacity: 0,
@@ -28,12 +28,12 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
   zIndex: '$modal',
   transform: 'translate(-50%, -50%)',
   width: 'calc(100% - 40px)',
-  padding: '$6',
+  p: '$6',
   willChange: 'transform',
   color: '$text-primary',
-  backgroundColor: '$bg-1',
-  borderRadius: '$3',
-  border: '2px solid $bg-2',
+  bc: '$bg1',
+  br: '$3',
+  border: '2px solid $bg2',
 
   '&[data-state="open"]': {
     animation: `${fade} 200ms`,
@@ -50,7 +50,27 @@ type ModalContentProps = DialogPrimitive.DialogContentProps &
 export const ModalContent = ({ children, ...props }: ModalContentProps) => (
   <DialogPrimitive.Portal>
     <ModalOverlay />
-    <StyledModalContent {...props}>{children}</StyledModalContent>
+    <StyledModalContent {...props}>
+      {children}
+      <ModalClose asChild>
+        <Flex
+          as={'button'}
+          justify={'center'}
+          align={'center'}
+          css={{
+            position: 'absolute',
+            top: -10,
+            right: -10,
+            size: 48,
+            br: '$round',
+            bc: '$bg1',
+            border: '2px solid $bg2',
+          }}
+        >
+          <IoClose size={24} />
+        </Flex>
+      </ModalClose>
+    </StyledModalContent>
   </DialogPrimitive.Portal>
 );
 

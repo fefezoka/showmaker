@@ -1,7 +1,7 @@
 import produce from 'immer';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { PostPagination } from 'src/@types/types';
+import { PostPagination, Post } from '@types';
 import { trpc } from '@utils';
 
 export const useEditPost = () => {
@@ -9,7 +9,7 @@ export const useEditPost = () => {
   const utils = trpc.useContext();
 
   return trpc.posts.edit.useMutation({
-    onMutate: ({ postId, title }) => {
+    onMutate: ({ postId, title, game }) => {
       const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
 
       infiniteQueries.forEach((query) =>
@@ -21,7 +21,13 @@ export const useEditPost = () => {
               draft.pages.forEach((page) => {
                 page.posts.forEach((postcache) => {
                   if (postcache.id === postId) {
-                    postcache.title = title;
+                    if (title) {
+                      postcache.title = title;
+                    }
+
+                    if (game) {
+                      postcache.game = game;
+                    }
                   }
                 });
               });
@@ -34,7 +40,13 @@ export const useEditPost = () => {
         (old) =>
           old &&
           produce(old, (draft) => {
-            draft.title = title;
+            if (title) {
+              draft.title = title;
+            }
+
+            if (game) {
+              draft.game = game;
+            }
           })
       );
     },

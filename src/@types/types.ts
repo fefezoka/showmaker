@@ -57,7 +57,7 @@ export type LikedPost = z.infer<typeof likedPostSchema>;
 export type PostComment = z.infer<typeof postCommentsSchema>;
 export type User = z.infer<typeof userSchema>;
 export type PostPagination = z.infer<typeof postPaginationSchema>;
-export type manyFriendshipStatus = Record<
+export type ManyFriendshipStatus = Record<
   string,
   { id: string; following: boolean; followed_by: boolean }
 >;

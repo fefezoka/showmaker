@@ -25,11 +25,11 @@ interface IUserHoverCard {
 }
 
 export const Content = styled(HoverCard.Content, {
-  bc: '$bg-1',
+  bc: '$bg1',
   br: '$3',
   width: '440px',
   zIndex: '$modal',
-  border: '2px solid $bg-2',
+  border: '2px solid $bg2',
   transition: 'all 200ms ease-out',
   animation: `250ms ${Fade}`,
   bs: '0px 0px 12px black',
@@ -93,12 +93,12 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
       </HoverCard.Trigger>
       <HoverCard.Portal>
         <Content>
-          <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bg-2' }}>
+          <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bg2' }}>
             <Flex align={'center'} justify={'between'}>
               <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
                 <ProfileIcon
                   src={user.image}
-                  css={{ size: '96px', border: '2px solid $bg-2' }}
+                  css={{ size: '96px', border: '2px solid $bg2' }}
                   alt=""
                 />
               </Link>
@@ -164,7 +164,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
                     <Link href={`/post/${post.id}`}>
                       <Box
                         css={{
-                          px: '4px',
+                          px: '$1',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',

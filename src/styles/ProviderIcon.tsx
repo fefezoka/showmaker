@@ -49,6 +49,8 @@ const StyledIcon = styled('div', {
 });
 
 export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
+  console.log({ provider, size: css?.size });
+
   return options[provider].isAlreadyRound ? (
     <StyledIcon
       as={options[provider].icon}
@@ -81,7 +83,10 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
     >
       <Flex
         as={options[provider].icon}
-        css={{ size: Number(css?.size || 32) * options[provider].sizeWrapperRatio }}
+        css={{
+          size: Number(css?.size) || 24 * options[provider].sizeWrapperRatio,
+          '@bp2': { size: Number(css?.size) || 32 * options[provider].sizeWrapperRatio },
+        }}
       />
     </StyledIcon>
   );

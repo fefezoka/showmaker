@@ -16,9 +16,10 @@ import {
   Button,
   Input,
   ProfileIcon,
+  MenuSeparator,
 } from '@styles';
-import { UserHoverCard } from '@components';
-import { useDeletePostComment, useCreatePostComment } from '@hooks';
+import { EditComment, UserHoverCard } from '@components';
+import { useDeletePostComment, useCreatePostComment, useEditPostComment } from '@hooks';
 
 interface IFeedPostComments {
   post: Post;
@@ -36,10 +37,9 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
     }
   );
 
-  const commentSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = (e.currentTarget[0] as HTMLInputElement).value;
-
     e.currentTarget.reset();
 
     if (!message) {
@@ -54,7 +54,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
       {session && (
         <Flex
           as="form"
-          onSubmit={commentSubmit}
+          onSubmit={handleSubmit}
           gap={{ '@initial': '2', '@bp2': '3' }}
           css={{
             mt: '$2',
@@ -102,19 +102,24 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
                 <Text size={{ '@initial': '3', '@bp2': '4' }}>{comment.message}</Text>
               </Flex>
             </Flex>
-            <Flex gap={'2'} align={'center'}>
-              <Text size={{ '@initial': '2', '@bp2': '3' }} css={{ fs: 0 }}>
+            <Flex gap={'2'} align={'center'} css={{ fs: 0 }}>
+              <Text size={{ '@initial': '2', '@bp2': '3' }}>
                 {diffBetweenDates(comment.createdAt)}
               </Text>
               {session?.user.id === comment.user.id && (
-                <Menu>
+                <Menu modal={false}>
                   <MenuTrigger asChild>
                     <Flex as={'button'}>
                       <IoSettingsSharp />
                     </Flex>
                   </MenuTrigger>
-                  <MenuContent css={{ minWidth: 110 }}>
+                  <MenuContent>
+                    <EditComment comment={comment} postId={post.id}>
+                      <MenuItem onSelect={(e) => e.preventDefault()}>Editar</MenuItem>
+                    </EditComment>
+                    <MenuSeparator />
                     <MenuItem
+                      theme={'alert'}
                       onClick={() =>
                         deleteComment.mutate({ commentId: comment.id, postId: post.id })
                       }

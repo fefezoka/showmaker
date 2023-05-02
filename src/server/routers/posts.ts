@@ -158,12 +158,12 @@ export const posts = router({
             videoUrl: r.videoUrl,
             commentsAmount: r.commentsAmount,
             game: r.game,
-            createdAt: r.createdAt['$date'],
+            createdAt: new Date(r.createdAt['$date']),
             user: {
               name: r.user[0].name,
               image: r.user[0].image,
               id: r.user[0]._id,
-              createdAt: r.user[0].createdAt['$date'],
+              createdAt: new Date(r.user[0].createdAt['$date']),
             },
             isLiked: r.likedBy.some((like: any) => like.userId === ctx.session?.user.id),
           }));
@@ -207,11 +207,20 @@ export const posts = router({
       };
     }),
   edit: authenticatedProcedure
-    .input(z.object({ postId: z.string().uuid(), title: z.string() }))
+    .input(
+      z.object({
+        postId: z.string().uuid(),
+        title: z.string().optional(),
+        game: z.string().optional(),
+      })
+    )
     .mutation(
       async ({ ctx, input }) =>
         await ctx.prisma.post.update({
-          data: { title: input.title },
+          data: {
+            ...(input.title && { title: input.title }),
+            ...(input.game && { game: input.game }),
+          },
           where: { id: input.postId },
         })
     ),
@@ -353,6 +362,17 @@ export const posts = router({
 
       return response;
     }),
+  editComment: authenticatedProcedure
+    .input(
+      z.object({ message: z.string(), commentId: z.string().uuid(), postId: z.string() })
+    )
+    .mutation(
+      async ({ ctx, input }) =>
+        await ctx.prisma.postComment.update({
+          data: { message: input.message },
+          where: { id: input.commentId },
+        })
+    ),
   deleteComment: authenticatedProcedure
     .input(
       z.object({

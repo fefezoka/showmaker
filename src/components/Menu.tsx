@@ -2,21 +2,20 @@ import React from 'react';
 import { IoHome, IoPerson } from 'react-icons/io5';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { styled } from 'stitches.config';
-const CreatePost = dynamic(() => import('./CreatePost'));
+import { CreatePost } from '@components';
 import { Box, Flex, Heading } from '@styles';
 import { useIsDesktop } from '@hooks';
 
 export const Line = styled('div', {
   display: 'flex',
   gap: '$4',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '$4 $2',
+  ai: 'center',
+  jc: 'center',
+  p: '$4 $2',
   color: '$text-secondary',
-  minHeight: '40px',
+  minHeight: '$8',
   transition: 'all 200ms',
 
   h1: {
@@ -61,21 +60,21 @@ export const Menu = () => {
       as={'aside'}
       css={{
         position: 'fixed',
-        backgroundColor: '$bg-1',
+        bc: '$bg1',
         bottom: 0,
         minWidth: '100vw',
         zIndex: '$menu',
-        padding: '0 $5',
-        borderTop: '2px solid $bg-2',
+        p: '0 $5',
+        borderTop: '2px solid $bg2',
 
         '@bp2': {
           borderTop: 'unset',
-          borderRight: '2px solid $bg-2',
+          borderRight: '2px solid $bg2',
           position: 'sticky',
           top: 0,
           height: '100vh',
           minWidth: '240px',
-          padding: 0,
+          p: 0,
         },
       }}
     >

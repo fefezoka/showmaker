@@ -24,10 +24,6 @@ const StyledButton = styled('button', {
   fontWeight: 500,
   transition: 'background-color 200ms, border-bottom-color 300ms ease-out',
 
-  '&:hover': {
-    bc: '$blue-1',
-  },
-
   variants: {
     size: {
       1: {
@@ -47,19 +43,19 @@ const StyledButton = styled('button', {
     },
     variant: {
       red: {
-        bc: '$red-2',
-        boxShadow: 'inset 0 0 0 1px $colors$red-1',
+        bc: '$red10',
+        boxShadow: 'inset 0 0 0 1px $colors$red8',
 
         '&:hover': {
-          bc: '$red-2',
+          bc: '$red9',
         },
       },
       blue: {
-        bc: '$blue-2',
-        boxShadow: 'inset 0 0 0 1px $colors$blue-1',
+        bc: '$blue10',
+        boxShadow: 'inset 0 0 0 1px $colors$blue8',
 
         '&:hover': {
-          bc: '$blue-1',
+          bc: '$blue9',
         },
       },
     },
@@ -74,7 +70,7 @@ const StyledButton = styled('button', {
 
         '&:hover': {
           bc: 'transparent',
-          borderBottomColor: '$gray-1',
+          borderBottomColor: '$gray6',
         },
       },
     },
@@ -91,11 +87,11 @@ const StyledButton = styled('button', {
       ghost: true,
       active: true,
       css: {
-        color: '$blue-2',
-        borderBottomColor: '$blue-2',
+        color: '$blue10',
+        borderBottomColor: '$blue10',
 
         '&:hover': {
-          borderBottomColor: '$blue-2 !important',
+          borderBottomColor: '$blue10 !important',
         },
       },
     },
@@ -104,11 +100,11 @@ const StyledButton = styled('button', {
       ghost: true,
       active: true,
       css: {
-        color: '$red-2',
-        borderBottomColor: '$red-2',
+        color: '$red10',
+        borderBottomColor: '$red10',
 
         '&:hover': {
-          borderBottomColor: '$red-2 !important',
+          borderBottomColor: '$red10 !important',
         },
       },
     },

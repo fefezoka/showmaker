@@ -8,7 +8,7 @@ export const TabsList = TabsPrimitive.List;
 
 export const StyledTabsContent = styled(TabsPrimitive.Content, {
   width: '100%',
-  height: '400px',
+  height: 400,
   overflowY: 'scroll',
 
   '&::-webkit-scrollbar-thumb': {

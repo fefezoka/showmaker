@@ -48,7 +48,7 @@ export const Header = () => {
         top: 0,
         p: '$3',
         zIndex: '$header',
-        bc: '$bg-1',
+        bc: '$bg1',
 
         '@bp2': {
           p: '$3 $5',
@@ -89,7 +89,7 @@ export const Header = () => {
                   cursor: 'pointer',
 
                   '&:hover': {
-                    backgroundColor: '$bg-2',
+                    backgroundColor: '$bg2',
                   },
                 }}
               >
@@ -120,7 +120,7 @@ export const Header = () => {
             align={'center'}
             gap={'2'}
             as={'button'}
-            css={{ px: '$4', py: '$2', bc: '$bg-2', br: '$7', ml: '$3' }}
+            css={{ px: '$4', py: '$2', bc: '$bg2', br: '$7', ml: '$3' }}
             onClick={() => signIn('discord')}
           >
             <ProviderIcon provider="discord" css={{ size: 24, '@bp2': { size: 24 } }} />

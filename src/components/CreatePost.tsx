@@ -23,6 +23,15 @@ import {
   Select,
 } from '@styles';
 
+export const gameOptions = [
+  { label: 'Valorant', value: 'valorant' },
+  { label: 'FIFA', value: 'fifa' },
+  { label: 'CS:GO', value: 'csgo' },
+  { label: 'LOL', value: 'lol' },
+  { label: 'Rainbow Six', value: 'r6' },
+  { label: 'Outros', value: 'other' },
+] as const;
+
 const createPostSchema = z.object({
   file: z.object(
     {
@@ -42,7 +51,7 @@ const createPostSchema = z.object({
 
 type CreatePostData = z.infer<typeof createPostSchema>;
 
-export default function CreatePost() {
+export const CreatePost = () => {
   const [open, setOpen] = useState<boolean>();
   const [uploadProgress, setUploadProgress] = useState<number>(0);
   const { data: session } = useSession();
@@ -105,7 +114,7 @@ export default function CreatePost() {
             <Input
               {...register('title')}
               placeholder="Escreva um título"
-              css={{ br: '$1', px: '$3', my: '$1' }}
+              css={{ px: '$3', my: '$1' }}
             />
 
             <Box css={{ mt: '$1' }}>
@@ -125,14 +134,7 @@ export default function CreatePost() {
                   control={control as unknown as Control<FieldValues>}
                   name="game"
                   placeholder={'Selecione um jogo'}
-                  options={[
-                    { label: 'Valorant', value: 'valorant' },
-                    { label: 'FIFA', value: 'fifa' },
-                    { label: 'CS:GO', value: 'csgo' },
-                    { label: 'LOL', value: 'lol' },
-                    { label: 'Rainbow Six Siege', value: 'r6' },
-                    { label: 'Outro', value: 'other' },
-                  ]}
+                  options={gameOptions}
                 />
               </Box>
             </Box>
@@ -163,13 +165,13 @@ export default function CreatePost() {
                       css={{
                         width: '100%',
                         height: '120px',
-                        border: '2px dashed $gray-2',
+                        border: '2px dashed $gray10',
                         mt: '$4',
                         br: '$2',
                         padding: '$3',
                         cursor: 'pointer',
                         ...((isDragActive || acceptedFiles.length !== 0) && {
-                          borderColor: '$blue-1',
+                          borderColor: '$blue9',
                         }),
                       }}
                       {...getRootProps()}
@@ -205,10 +207,10 @@ export default function CreatePost() {
                                   css={{
                                     height: '$2',
                                     width: '100%',
-                                    bc: '$bg-2',
+                                    bc: '$bg2',
                                     br: '$1',
                                     position: 'relative',
-                                    border: '1px solid $bg-3',
+                                    border: '1px solid $bg3',
                                   }}
                                 >
                                   <Box
@@ -218,7 +220,7 @@ export default function CreatePost() {
                                       position: 'absolute',
                                       top: 0,
                                       left: 0,
-                                      bc: '$blue-1',
+                                      bc: '$blue9',
                                       br: '$1',
                                     }}
                                   />
@@ -254,11 +256,7 @@ export default function CreatePost() {
           </Box>
           <Flex justify={'between'} align={'center'} css={{ mt: '$4' }}>
             <ModalClose asChild>
-              <Button
-                disabled={createPost.isLoading}
-                onClick={() => setOpen(false)}
-                variant={'red'}
-              >
+              <Button disabled={createPost.isLoading} variant={'red'}>
                 Sair
               </Button>
             </ModalClose>
@@ -270,4 +268,4 @@ export default function CreatePost() {
       </ModalContent>
     </Modal>
   );
-}
+};

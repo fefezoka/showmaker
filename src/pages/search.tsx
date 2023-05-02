@@ -49,6 +49,7 @@ export default function Search({ q }: { q: string }) {
   );
 
   const users = trpc.user.search.useQuery({ q });
+
   const { data: friendshipStatuses } = trpc.user.manyFriendshipStatus.useQuery(
     {
       users: users.data,
@@ -80,7 +81,7 @@ export default function Search({ q }: { q: string }) {
           <Heading>Usuários</Heading>
           <Grid columns={'3'} gap={'2'} css={{ mt: '$1' }}>
             {users.data.map((user, index) => (
-              <Box css={{ bc: '$bg-2', p: '$3', br: '$2' }} key={index}>
+              <Box css={{ bc: '$bg2', p: '$3', br: '$2' }} key={index}>
                 <Flex justify={'between'} css={{ mb: '$2' }}>
                   <UserHoverCard user={user}>
                     <ProfileIcon src={user.image} alt="" css={{ size: 52 }} />

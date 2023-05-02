@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { trpc } from '@utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
-import { manyFriendshipStatus } from 'src/@types/types';
+import { ManyFriendshipStatus } from '@types';
 
 export const useFollow = () => {
   const { data: session } = useSession();
@@ -21,7 +21,7 @@ export const useFollow = () => {
       );
 
       queries.forEach((query) =>
-        queryClient.setQueriesData<manyFriendshipStatus>(
+        queryClient.setQueriesData<ManyFriendshipStatus>(
           query[0],
           (old) =>
             old &&

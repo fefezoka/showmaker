@@ -32,6 +32,7 @@ export const Select = ({
               color: 'var(--colors-text-secondary)',
               fontSize: 'var(--fontSizes-2)',
               marginLeft: '4px',
+              fontWeight: 500,
             }),
             singleValue: (baseStyles) => ({
               ...baseStyles,
@@ -41,9 +42,10 @@ export const Select = ({
             control: (baseStyles) => ({
               ...baseStyles,
               fontSize: '14px',
-              backgroundColor: 'var(--colors-bg-2)',
-              boxShadow: 'inset 0 0 0 1px var(--colors-bg-3)',
+              backgroundColor: 'var(--colors-bg2)',
+              boxShadow: 'inset 0 0 0 1px var(--colors-bg3)',
               border: 0,
+              borderRadius: '4px',
             }),
             container: (baseStyles) => ({
               ...baseStyles,
@@ -51,14 +53,14 @@ export const Select = ({
             }),
             menu: (baseStyles) => ({
               ...baseStyles,
-              backgroundColor: 'var(--colors-bg-2)',
+              backgroundColor: 'var(--colors-bg2)',
             }),
             option: (baseStyles) => ({
               ...baseStyles,
-              backgroundColor: 'var(--colors-bg-2)',
+              backgroundColor: 'var(--colors-bg2)',
 
               ':hover': {
-                backgroundColor: 'var(--colors-bg-3)',
+                backgroundColor: 'var(--colors-bg3)',
               },
             }),
           }}

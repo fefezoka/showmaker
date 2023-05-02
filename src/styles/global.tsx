@@ -16,8 +16,8 @@ export const global = globalCss({
   },
 
   body: {
-    backgroundColor: '$bg-1',
-    color: '$white-1',
+    backgroundColor: '$bg1',
+    color: '$text-primary',
   },
 
   a: {
@@ -51,10 +51,10 @@ export const global = globalCss({
   },
 
   '::-webkit-scrollbar-track': {
-    backgroundColor: '$bg-2',
+    backgroundColor: '$bg2',
   },
 
   '::-webkit-scrollbar-thumb': {
-    backgroundColor: '$bg-3',
+    backgroundColor: '$bg3',
   },
 });

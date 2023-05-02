@@ -5,10 +5,10 @@ import { Box, Flex } from '@styles';
 
 const Glow = keyframes({
   '0%, 100%': {
-    backgroundColor: '$bg-2',
+    backgroundColor: '$bg2',
   },
   '50%': {
-    backgroundColor: '$bg-3',
+    backgroundColor: '$bg3',
   },
 });
 
@@ -60,7 +60,7 @@ export const PostSkeleton = () => {
   const { data: session } = useSession();
 
   return (
-    <Box css={{ p: '$4', '@bp2': { p: '$6' }, borderBottom: '2px solid $bg-2' }}>
+    <Box css={{ p: '$4', '@bp2': { p: '$6' }, borderBottom: '2px solid $bg2' }}>
       <Flex align={'center'} justify={'between'}>
         <Flex align={'center'} gap={'2'}>
           <Circle css={{ size: 32 }} />
@@ -92,7 +92,7 @@ export const ProfileSkeleton = () => {
       </Flex>
       <Line rows={2} css={{ height: 16, width: 200 }} />
       <Flex
-        css={{ mt: '$4', borderBottom: '2px solid $bg-2' }}
+        css={{ mt: '$4', borderBottom: '2px solid $bg2' }}
         justify={'center'}
         gap={'4'}
       >

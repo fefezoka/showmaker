@@ -34,20 +34,20 @@ export const Main = memo(
                 width: '100%',
 
                 '& > section': {
-                  padding: '$4',
+                  p: '$4',
                   borderBottom: '2px solid',
-                  borderColor: '$bg-2',
+                  borderColor: '$bg2',
                 },
 
                 '& section:first-of-type': {
-                  paddingTop: '$4',
+                  pt: '$4',
                 },
 
                 '@bp2': {
-                  borderRight: '2px solid $bg-2',
+                  borderRight: '2px solid $bg2',
 
                   '& > section': {
-                    padding: '$5',
+                    p: '$5',
                   },
                 },
               }}

@@ -34,7 +34,7 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
       css={{
         br: '$1',
         transition: 'all 200ms',
-        bc: '$bg-2',
+        bc: '$bg2',
       }}
       key={provider.name}
     >
