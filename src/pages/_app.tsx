@@ -29,7 +29,7 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
       <Component {...pageProps} />
       <NextNProgress
         color="linear-gradient(90deg, var(--colors-violet11), var(--colors-blue11))"
-        options={{ trickle: false, speed: 100 }}
+        options={{ trickle: false, speed: 100, showSpinner: false }}
         transformCSS={(css) => {
           css += `#nprogress {
             position: fixed;

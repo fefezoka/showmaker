@@ -16,10 +16,10 @@ export const Line = styled('div', {
   p: '$4 $2',
   color: '$text-secondary',
   minHeight: '$8',
-  transition: 'all 200ms',
+  transition: 'color 200ms',
 
   h1: {
-    transition: 'all 200ms',
+    transition: 'color 200ms',
     color: '$text-secondary',
   },
 
@@ -55,7 +55,7 @@ export const Menu = () => {
   const router = useRouter();
   const isDesktop = useIsDesktop();
 
-  return (
+  return isDesktop ? (
     <Box
       as={'aside'}
       css={{
@@ -109,5 +109,7 @@ export const Menu = () => {
         </Box>
       </Flex>
     </Box>
+  ) : (
+    <></>
   );
 };

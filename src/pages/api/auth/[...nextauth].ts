@@ -47,9 +47,11 @@ export default NextAuth({
       return true;
     },
     async session({ session, user }) {
+      const { id, image, name } = user;
+
       return {
         ...session,
-        user: { ...user } as User,
+        user: { id, image, name } as User,
       };
     },
   },

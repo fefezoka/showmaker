@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import Spinner from '../assets/Spinner.svg';
 import Image from 'next/image';
 import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
+import { spinner } from '@assets';
 
 const StyledButton = styled('button', {
   all: 'unset',
@@ -128,7 +128,7 @@ export const Button = forwardRef<HTMLButtonElement, IButton>(
   ({ Icon, loading, ...props }, forwardedRef) => {
     return (
       <StyledButton type="button" {...props} ref={forwardedRef}>
-        {loading && <Image src={Spinner} height={18} width={18} alt="" />}
+        {loading && <Image src={spinner} height={18} width={18} alt="" />}
         {Icon && <Icon size={18} />}
         {!loading && !Icon && props.children}
       </StyledButton>

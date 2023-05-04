@@ -6,7 +6,7 @@ import { signIn, useSession } from 'next-auth/react';
 import { Controller, useForm, Control, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getVideoFrame } from '@utils';
-import { useIsDesktop, useCreatePost } from '@hooks';
+import { useCreatePost } from '@hooks';
 import {
   Box,
   Flex,
@@ -55,7 +55,6 @@ export const CreatePost = () => {
   const [open, setOpen] = useState<boolean>();
   const { data: session } = useSession();
   const createPost = useCreatePost();
-  const isDesktop = useIsDesktop();
 
   const {
     register,
@@ -69,7 +68,6 @@ export const CreatePost = () => {
 
   const handleCreatePost = async (data: CreatePostData) => {
     await createPost.mutateAsync({ ...data });
-
     setOpen(false);
   };
 
@@ -82,9 +80,7 @@ export const CreatePost = () => {
       }}
     >
       <ModalTrigger asChild>
-        {isDesktop && (
-          <Button onClick={() => !session && signIn('discord')}>Postar vídeo</Button>
-        )}
+        <Button onClick={() => !session && signIn('discord')}>Postar vídeo</Button>
       </ModalTrigger>
       <ModalContent
         onInteractOutside={(e) =>

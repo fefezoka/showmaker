@@ -41,7 +41,6 @@ const options: Record<Providers, IOptions> = {
 
 const StyledIcon = styled('div', {
   transition: 'all 300ms ease-in',
-
   '&:hover': {
     filter: 'brightness(120%) saturate(120%)',
     transform: 'translateY(-4%)',
@@ -57,7 +56,7 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
         bc: options[provider].bc,
         ...(options[provider].hasBorder && { br: '$round' }),
         '@bp2': {
-          size: Number(css?.['@bp2']?.size) || 32,
+          size: Number(css?.['@bp2']?.size || css?.size) || 32,
         },
         ...css,
       }}
@@ -74,7 +73,7 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
         ai: 'center',
 
         '@bp2': {
-          size: Number(css?.['@bp2']?.size) || 32,
+          size: Number(css?.['@bp2']?.size || css?.size) || 32,
         },
         ...css,
       }}
@@ -85,7 +84,8 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
           size: Number(css?.size) || 24 * options[provider].sizeWrapperRatio,
           '@bp2': {
             size:
-              (Number(css?.['@bp2']?.size) || 32) * options[provider].sizeWrapperRatio,
+              (Number(css?.['@bp2']?.size || css?.size) || 32) *
+              options[provider].sizeWrapperRatio,
           },
         }}
       />

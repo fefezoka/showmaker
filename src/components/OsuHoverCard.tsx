@@ -20,7 +20,7 @@ export const Content = styled(HoverCard.Content, {
   fontSize: '$3',
   p: '10px',
   overflow: 'hidden',
-  fontWeight: 'bold',
+  fontWeight: 600,
 });
 
 export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {

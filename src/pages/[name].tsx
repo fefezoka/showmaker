@@ -93,7 +93,7 @@ export default function Profile() {
             <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">
               <FullProfileIcon
                 src={user.image}
-                css={{ size: '84px', '@bp2': { size: '144px' } }}
+                css={{ size: 84, '@bp2': { size: 144 } }}
               />
               <Box>
                 <Heading size={'3'}>{user.name}</Heading>

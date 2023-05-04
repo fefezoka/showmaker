@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { useRouter } from 'next/router';
-import { useIsDesktop } from '@hooks';
+import { useIsDesktop, useScrollDirection } from '@hooks';
 import {
   Box,
   Flex,
@@ -20,6 +20,7 @@ import {
 export const Header = () => {
   const { data: session, status } = useSession();
   const [open, setOpen] = useState<boolean>(false);
+  const scrollDirection = useScrollDirection();
   const router = useRouter();
   const isDesktop = useIsDesktop();
 
@@ -44,10 +45,11 @@ export const Header = () => {
       as={'header'}
       css={{
         position: 'sticky',
-        top: 0,
         p: '$3',
         zIndex: '$header',
         bc: '$bg1',
+        transition: 'top 400ms',
+        ...(scrollDirection === 'down' && !isDesktop ? { top: -64 } : { top: 0 }),
 
         '@bp2': {
           p: '$3 $5',

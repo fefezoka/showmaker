@@ -82,7 +82,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
               <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
                 <ProfileIcon
                   src={user.image}
-                  css={{ size: '96px', border: '2px solid $bg2' }}
+                  css={{ size: 96, border: '2px solid $bg2' }}
                   alt=""
                 />
               </Link>
