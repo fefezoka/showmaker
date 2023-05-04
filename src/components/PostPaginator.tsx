@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { InfiniteData } from '@tanstack/react-query';
-import { Post } from '@types';
+import { PostPagination } from '@types';
 import { FeedPost } from '@components';
 import { Box, PostSkeleton } from '@styles';
 
 interface IPostPaginator {
   hasNextPage: boolean | undefined;
   fetchNextPage: () => {};
-  posts: InfiniteData<{ posts: Post[]; nextCursor?: string | undefined }> | undefined;
+  posts: PostPagination | undefined;
   loading?: boolean;
 }
 

@@ -106,23 +106,21 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
                         </Flex>
                       </UserHoverCard>
                     </Box>
-                    {session &&
-                      user.id !== session.user.id &&
-                      friendshipStatuses[tabIndex].data?.[user.id] && (
-                        <Button
-                          css={{ p: '$2', height: '36px', fontSize: '$2' }}
-                          onClick={() =>
-                            friendshipStatuses[tabIndex].data?.[user.id].following
-                              ? unfollow.mutate({ followingUser: user })
-                              : follow.mutate({ followingUser: user })
-                          }
-                          disabled={follow.isLoading || unfollow.isLoading}
-                        >
-                          {friendshipStatuses[tabIndex].data?.[user.id].following
-                            ? 'Seguindo'
-                            : 'Seguir'}
-                        </Button>
-                      )}
+                    {user.id !== session?.user.id && (
+                      <Button
+                        css={{ p: '$2', height: '36px', fontSize: '$2' }}
+                        onClick={() =>
+                          friendshipStatuses[tabIndex].data?.[user.id].following
+                            ? unfollow.mutate({ followingUser: user })
+                            : follow.mutate({ followingUser: user })
+                        }
+                        disabled={follow.isLoading || unfollow.isLoading}
+                      >
+                        {friendshipStatuses[tabIndex].data?.[user.id].following
+                          ? 'Seguindo'
+                          : 'Seguir'}
+                      </Button>
+                    )}
                   </Flex>
                 ))}
             </TabsContent>

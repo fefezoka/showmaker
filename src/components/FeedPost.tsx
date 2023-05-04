@@ -2,7 +2,7 @@ import Link from 'next/link';
 import React, { forwardRef } from 'react';
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Post } from '@types';
 import { downloadVideo, diffBetweenDates } from '@utils';
 import { UserHoverCard, FeedPostComments, EditPost } from '@components';
@@ -37,14 +37,6 @@ export const FeedPost = forwardRef<
   const likePost = useLikePost();
   const dislikePost = useDislikePost();
 
-  const handleLikeClick = () => {
-    if (!session) {
-      return signIn('discord');
-    }
-
-    post.isLiked ? dislikePost.mutate({ post }) : likePost.mutateAsync({ post });
-  };
-
   return (
     <Box as={'section'} {...props} ref={forwardRef}>
       <Flex justify={'between'}>
@@ -67,7 +59,11 @@ export const FeedPost = forwardRef<
             as={'button'}
             gap={'1'}
             css={{ cursor: 'pointer' }}
-            onClick={handleLikeClick}
+            onClick={() => {
+              post.isLiked
+                ? dislikePost.mutate({ post })
+                : likePost.mutateAsync({ post });
+            }}
             disabled={likePost.isLoading}
           >
             {post.isLiked ? (

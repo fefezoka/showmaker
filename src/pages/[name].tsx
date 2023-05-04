@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { blitz } from '@assets';
 import { NextSeo } from 'next-seo';
@@ -80,17 +80,6 @@ export default function Profile() {
     );
   }
 
-  const handleFollowClick = async () => {
-    if (!session) {
-      return signIn('discord');
-    }
-
-    user &&
-      (friendshipStatus?.following
-        ? unfollow.mutate({ followingUser: user })
-        : follow.mutate({ followingUser: user }));
-  };
-
   return (
     <Main>
       {user && <NextSeo title={`Perfil de ${user.name}`} />}
@@ -125,7 +114,11 @@ export default function Profile() {
               <Button
                 type="button"
                 disabled={follow.isLoading}
-                onClick={handleFollowClick}
+                onClick={() => {
+                  friendshipStatus?.following
+                    ? unfollow.mutate({ followingUser: user })
+                    : follow.mutate({ followingUser: user });
+                }}
               >
                 {friendshipStatus?.following ? 'Seguindo' : 'Seguir'}
               </Button>

@@ -1,12 +1,18 @@
-import { TRPCError, initTRPC } from '@trpc/server';
+import { TRPCError, inferRouterInputs, inferRouterOutputs, initTRPC } from '@trpc/server';
 import { Context } from './context';
 import superjson from 'superjson';
+import { inferReactQueryProcedureOptions } from '@trpc/react-query';
+import { AppRouter } from './routers/_app';
+import { signIn } from 'next-auth/react';
 
 const t = initTRPC.context<Context>().create({ transformer: superjson });
-// Base router and procedure helpers
+
 export const router = t.router;
 export const procedure = t.procedure;
 export const middleware = t.middleware;
+export type ReactQueryOptions = inferReactQueryProcedureOptions<AppRouter>;
+export type RouterInputs = inferRouterInputs<AppRouter>;
+export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 const isAuthenticated = middleware(async ({ ctx, next }) => {
   if (!ctx.session) {

@@ -27,7 +27,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 };
 
 export default function Search({ q }: { q: string }) {
-  const utils = trpc.useContext();
   const follow = useFollow();
   const unfollow = useUnfollow();
   const { data: session } = useSession();
@@ -98,11 +97,6 @@ export default function Search({ q }: { q: string }) {
                     <Button
                       size={1}
                       onClick={() => {
-                        if (!session) {
-                          signIn('discord');
-                          return;
-                        }
-
                         friendshipStatuses?.[user.id].following
                           ? unfollow.mutate({ followingUser: user })
                           : follow.mutate({ followingUser: user });

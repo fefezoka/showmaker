@@ -68,16 +68,6 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
     { enabled: open }
   );
 
-  const handleFollow = () => {
-    if (!friendshipStatus) {
-      return;
-    }
-
-    friendshipStatus.following
-      ? unfollow.mutate({ followingUser: user })
-      : follow.mutate({ followingUser: user });
-  };
-
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen} defaultOpen>
       <HoverCard.Trigger asChild>
@@ -97,7 +87,13 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
                 />
               </Link>
               {user.id !== session?.user.id && (
-                <Button onClick={handleFollow}>
+                <Button
+                  onClick={() => {
+                    friendshipStatus?.following
+                      ? unfollow.mutate({ followingUser: user })
+                      : follow.mutate({ followingUser: user });
+                  }}
+                >
                   {friendshipStatus?.following ? 'Seguindo' : 'Seguir'}
                 </Button>
               )}

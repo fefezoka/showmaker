@@ -33,8 +33,8 @@ export const Line = styled('div', {
 
   '@bp2': {
     minHeight: '64px',
-    justifyContent: 'left',
-    padding: '$4',
+    jc: 'left',
+    p: '$4',
   },
 
   variants: {
@@ -102,14 +102,7 @@ export const Menu = () => {
         </Link>
         <Box
           css={{
-            position: 'fixed',
-            right: 16,
-            bottom: 84,
-
-            '@bp2': {
-              position: 'unset',
-              p: '$4',
-            },
+            p: '$4',
           }}
         >
           <CreatePost />

@@ -1,16 +1,20 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { getQueryKey } from '@trpc/react-query';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { trpc } from '@utils';
 import { PostPagination } from '@types';
+import { ReactQueryOptions, RouterInputs } from 'src/server/trpc';
+
+type LikeInputs = RouterInputs['posts']['like'];
+type LikeConfig = ReactQueryOptions['posts']['like'];
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();
   const utils = trpc.useContext();
   const { data: session } = useSession();
 
-  return trpc.posts.like.useMutation({
+  const like = trpc.posts.like.useMutation({
     onMutate: ({ post }) => {
       const newPost = produce(post, (draft) => {
         draft.isLiked = true;
@@ -50,4 +54,26 @@ export const useLikePost = () => {
       utils.posts.byId.setData({ postId: post.id }, newPost);
     },
   });
+
+  const mutateAsync = async (input: LikeInputs, config?: LikeConfig) => {
+    if (!session) {
+      signIn('discord');
+      return;
+    }
+    return await like.mutateAsync({ ...input }, { ...config });
+  };
+
+  const mutate = (input: LikeInputs, config?: LikeConfig) => {
+    if (!session) {
+      signIn('discord');
+      return;
+    }
+    return like.mutate({ ...input }, { ...config });
+  };
+
+  return {
+    ...like,
+    mutate,
+    mutateAsync,
+  };
 };
