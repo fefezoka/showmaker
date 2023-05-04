@@ -20,12 +20,12 @@ interface IEditComment extends React.ComponentProps<typeof Modal> {
 }
 
 export const EditComment = ({ comment, postId, children }: IEditComment) => {
-  const [editing, setEditing] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const editComment = useEditPostComment();
 
   const handleEdit = (e: FormEvent<HTMLFormElement>, commentId: string) => {
     e.preventDefault();
-    setEditing(false);
+    setOpen(false);
     const message = (e.currentTarget[0] as HTMLInputElement).value;
 
     if (!message) {
@@ -36,7 +36,7 @@ export const EditComment = ({ comment, postId, children }: IEditComment) => {
   };
 
   return (
-    <Modal open={editing} onOpenChange={setEditing}>
+    <Modal open={open} onOpenChange={setOpen}>
       <ModalTrigger asChild>{children}</ModalTrigger>
       <ModalContent>
         <Box as={'form'} onSubmit={(e) => handleEdit(e, comment.id)}>

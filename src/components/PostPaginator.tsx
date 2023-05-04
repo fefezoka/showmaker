@@ -41,7 +41,7 @@ export const PostPaginator = ({
         posts.pages.map((page) =>
           page.posts.map((post, index) => (
             <FeedPost
-              ref={page.posts.length - 1 === index ? ref : null}
+              ref={page.posts.length - 1 === index ? ref : undefined}
               post={post}
               key={post.id}
             />

@@ -15,6 +15,7 @@ import {
   TabsList,
   Flex,
   Text,
+  Box,
 } from '@styles';
 
 interface IUserFollowTabs {
@@ -32,7 +33,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
 
   const following = trpc.user.following.useQuery({ userId }, { enabled: open });
   const followers = trpc.user.followers.useQuery({ userId }, { enabled: open });
-  const friendship_statuses = [
+  const friendshipStatuses = [
     trpc.user.manyFriendshipStatus.useQuery(
       { users: followers.data },
       { enabled: !!followers.data }
@@ -45,6 +46,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
 
   return (
     <Modal
+      open={open}
       onOpenChange={(e) => {
         setOpen(e);
         setTab(defaultTab);
@@ -78,7 +80,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
               {!(
                 followers.isLoading ||
                 following.isLoading ||
-                friendship_statuses.some((status) => status.isLoading)
+                friendshipStatuses.some((status) => status.isLoading)
               ) &&
                 tab &&
                 tab.map((user, userIndex) => (
@@ -88,33 +90,35 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
                     justify={'between'}
                     align={'center'}
                   >
-                    <UserHoverCard user={user}>
-                      <Flex align={'center'} gap={'2'}>
-                        <ProfileIcon css={{ size: '44px' }} src={user.image} alt="" />
-                        <Text weight={600} color={'primary'} size={'5'}>
-                          {user.name}
-                        </Text>
-                        {tabIndex === 1 &&
-                          friendship_statuses[tabIndex].data?.[user.id].followed_by && (
-                            <Text size={'1'} color={'secondary'}>
-                              Segue você
-                            </Text>
-                          )}
-                      </Flex>
-                    </UserHoverCard>
+                    <Box onClick={() => setOpen(false)}>
+                      <UserHoverCard user={user}>
+                        <Flex align={'center'} gap={'2'}>
+                          <ProfileIcon css={{ size: '44px' }} src={user.image} alt="" />
+                          <Text weight={600} color={'primary'} size={'5'}>
+                            {user.name}
+                          </Text>
+                          {tabIndex === 1 &&
+                            friendshipStatuses[tabIndex].data?.[user.id].followed_by && (
+                              <Text size={'1'} color={'secondary'}>
+                                Segue você
+                              </Text>
+                            )}
+                        </Flex>
+                      </UserHoverCard>
+                    </Box>
                     {session &&
                       user.id !== session.user.id &&
-                      friendship_statuses[tabIndex].data?.[user.id] && (
+                      friendshipStatuses[tabIndex].data?.[user.id] && (
                         <Button
                           css={{ p: '$2', height: '36px', fontSize: '$2' }}
                           onClick={() =>
-                            friendship_statuses[tabIndex].data?.[user.id].following
+                            friendshipStatuses[tabIndex].data?.[user.id].following
                               ? unfollow.mutate({ followingUser: user })
                               : follow.mutate({ followingUser: user })
                           }
                           disabled={follow.isLoading || unfollow.isLoading}
                         >
-                          {friendship_statuses[tabIndex].data?.[user.id].following
+                          {friendshipStatuses[tabIndex].data?.[user.id].following
                             ? 'Seguindo'
                             : 'Seguir'}
                         </Button>

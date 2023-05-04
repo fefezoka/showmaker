@@ -5,8 +5,10 @@ import { DefaultSeo } from 'next-seo';
 import { ogimage } from '@assets';
 import { trpc } from '@utils';
 import { global } from 'src/styles';
+import { useQueryDefaults } from '@hooks';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
+  useQueryDefaults();
   global();
 
   return (

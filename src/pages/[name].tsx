@@ -26,9 +26,8 @@ export default function Profile() {
   const name = router.query.name as string;
   const [feed, setFeed] = useState<Feed>('posts');
   const { data: session } = useSession();
-  const followSomeone = useFollow();
-  const unfollowSomeone = useUnfollow();
-  const utils = trpc.useContext();
+  const follow = useFollow();
+  const unfollow = useUnfollow();
 
   const {
     data: user,
@@ -49,24 +48,16 @@ export default function Profile() {
   } = trpc.posts.feed.user.useInfiniteQuery(
     { username: name, feed, limit: 6 },
     {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onSuccess(data) {
-        data.pages.forEach((page) =>
-          page.posts.forEach((post) =>
-            utils.posts.byId.setData({ postId: post.id }, post)
-          )
-        );
-      },
       enabled: !!name,
     }
   );
 
-  const { data: friendship_status } = trpc.user.friendshipStatus.useQuery(
+  const { data: friendshipStatus } = trpc.user.friendshipStatus.useQuery(
     { username: name },
     { enabled: !!name }
   );
 
-  const { data: friendship_count } = trpc.user.friendshipCount.useQuery(
+  const { data: friendshipCount } = trpc.user.friendshipCount.useQuery(
     { username: name },
     { enabled: !!name }
   );
@@ -95,9 +86,9 @@ export default function Profile() {
     }
 
     user &&
-      (friendship_status?.following
-        ? unfollowSomeone.mutate({ followingUser: user })
-        : followSomeone.mutate({ followingUser: user }));
+      (friendshipStatus?.following
+        ? unfollow.mutate({ followingUser: user })
+        : follow.mutate({ followingUser: user }));
   };
 
   return (
@@ -117,12 +108,12 @@ export default function Profile() {
               />
               <Box>
                 <Heading size={'3'}>{user.name}</Heading>
-                {(friendship_status?.followed_by && friendship_status.following && (
+                {(friendshipStatus?.followed_by && friendshipStatus.following && (
                   <Text size={'2'} color={'secondary'}>
                     Segue um ao outro
                   </Text>
                 )) ||
-                  (friendship_status?.followed_by && (
+                  (friendshipStatus?.followed_by && (
                     <Text size={'2'} color={'secondary'}>
                       Segue você
                     </Text>
@@ -133,10 +124,10 @@ export default function Profile() {
             {session?.user.id !== user.id && (
               <Button
                 type="button"
-                disabled={followSomeone.isLoading}
+                disabled={follow.isLoading}
                 onClick={handleFollowClick}
               >
-                {friendship_status?.following ? 'Seguindo' : 'Seguir'}
+                {friendshipStatus?.following ? 'Seguindo' : 'Seguir'}
               </Button>
             )}
           </Flex>
@@ -154,7 +145,7 @@ export default function Profile() {
                   <Box as={'button'} type="button">
                     <Text size={'2'}>Seguidores </Text>
                     <Text size={'2'} weight={600}>
-                      {friendship_count?.followersAmount}
+                      {friendshipCount?.followersAmount}
                     </Text>
                   </Box>
                 </UserFollowTabs>
@@ -162,7 +153,7 @@ export default function Profile() {
                   <Box as={'button'} type="button">
                     <Text size={'2'}>Seguindo </Text>
                     <Text size={'2'} weight={600}>
-                      {friendship_count?.followingAmount}
+                      {friendshipCount?.followingAmount}
                     </Text>
                   </Box>
                 </UserFollowTabs>

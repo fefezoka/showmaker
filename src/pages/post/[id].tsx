@@ -9,7 +9,7 @@ import { trpc } from '@utils';
 import { blitz } from '@assets';
 import { Post as PostType } from '@types';
 import { Main, FeedPost } from '@components';
-import { Flex, Heading, PostSkeleton } from '@styles';
+import { Flex, PostSkeleton, Text } from '@styles';
 
 interface Props {
   dehydratedState: PostType;
@@ -64,7 +64,7 @@ export default function Post({ dehydratedState, id }: Props) {
         {post && !isLoading && <FeedPost post={post} />}
         {!post && !isLoading && (
           <Flex as={'section'} align={'center'} direction={'column'}>
-            <Heading>Post não encontrado</Heading>
+            <Text size={'6'}>Post não encontrado</Text>
             <Image src={blitz} alt="" height={256} width={256} />
           </Flex>
         )}

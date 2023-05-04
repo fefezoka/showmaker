@@ -2,7 +2,7 @@ import React from 'react';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { trpc } from '@utils';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { Main, PostPaginator, UserHoverCard } from '@components';
 import { Box, Button, Flex, Grid, Heading, ProfileIcon, Text } from '@styles';
 import { useFollow, useUnfollow } from '@hooks';
@@ -38,13 +38,6 @@ export default function Search({ q }: { q: string }) {
       enabled: !!q,
       getNextPageParam: (lastPage, pages) =>
         lastPage.posts.length === 6 && pages.length + 1,
-      onSuccess(data) {
-        data.pages.forEach((page) =>
-          page.posts.forEach((post) =>
-            utils.posts.byId.setData({ postId: post.id }, post)
-          )
-        );
-      },
     }
   );
 
@@ -79,36 +72,46 @@ export default function Search({ q }: { q: string }) {
       {users.data && users.data.length !== 0 && (
         <Box as={'section'}>
           <Heading>Usuários</Heading>
-          <Grid columns={'3'} gap={'2'} css={{ mt: '$1' }}>
+          <Grid columns={{ '@initial': '1', '@bp2': '3' }} gap={'2'} css={{ mt: '$1' }}>
             {users.data.map((user, index) => (
               <Box css={{ bc: '$bg2', p: '$3', br: '$2' }} key={index}>
-                <Flex justify={'between'} css={{ mb: '$2' }}>
+                <Flex justify={'between'} align={'center'}>
                   <UserHoverCard user={user}>
-                    <ProfileIcon src={user.image} alt="" css={{ size: 52 }} />
+                    <Flex gap={'2'} align={'center'}>
+                      <ProfileIcon src={user.image} alt="" css={{ size: 52 }} />
+                      <Flex
+                        direction={{ '@initial': 'row', '@bp2': 'column' }}
+                        align={{ '@initial': 'center', '@bp2': 'start' }}
+                        gap={'1'}
+                      >
+                        <Text weight={600}>{user.name}</Text>
+                        {friendshipStatuses &&
+                          friendshipStatuses[user.id].followed_by && (
+                            <Text color={'secondary'} size={'1'} as={'p'}>
+                              Segue você
+                            </Text>
+                          )}
+                      </Flex>
+                    </Flex>
                   </UserHoverCard>
-                  {friendshipStatuses && user.id !== session?.user.id && (
+                  {user.id !== session?.user.id && (
                     <Button
                       size={1}
-                      onClick={() =>
-                        friendshipStatuses[user.id].following
+                      onClick={() => {
+                        if (!session) {
+                          signIn('discord');
+                          return;
+                        }
+
+                        friendshipStatuses?.[user.id].following
                           ? unfollow.mutate({ followingUser: user })
-                          : follow.mutate({ followingUser: user })
-                      }
+                          : follow.mutate({ followingUser: user });
+                      }}
                     >
-                      {friendshipStatuses[user.id].following ? 'Seguindo' : 'Seguir'}
+                      {friendshipStatuses?.[user.id].following ? 'Seguindo' : 'Seguir'}
                     </Button>
                   )}
                 </Flex>
-                <UserHoverCard user={user}>
-                  <Flex align={'center'} gap={'1'}>
-                    <Text weight={600}>{user.name}</Text>
-                    {friendshipStatuses && friendshipStatuses[user.id].followed_by && (
-                      <Text color={'secondary'} size={'1'}>
-                        • Segue você
-                      </Text>
-                    )}
-                  </Flex>
-                </UserHoverCard>
               </Box>
             ))}
           </Grid>

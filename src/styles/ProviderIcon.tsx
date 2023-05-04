@@ -49,17 +49,15 @@ const StyledIcon = styled('div', {
 });
 
 export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
-  console.log({ provider, size: css?.size });
-
   return options[provider].isAlreadyRound ? (
     <StyledIcon
       as={options[provider].icon}
       css={{
-        size: 24,
+        size: Number(css?.size) || 24,
         bc: options[provider].bc,
         ...(options[provider].hasBorder && { br: '$round' }),
         '@bp2': {
-          size: 32,
+          size: Number(css?.['@bp2']?.size) || 32,
         },
         ...css,
       }}
@@ -68,7 +66,7 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
     <StyledIcon
       {...props}
       css={{
-        size: 24,
+        size: Number(css?.size) || 24,
         bc: options[provider].bc,
         br: '$round',
         display: 'flex',
@@ -76,7 +74,7 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
         ai: 'center',
 
         '@bp2': {
-          size: 32,
+          size: Number(css?.['@bp2']?.size) || 32,
         },
         ...css,
       }}
@@ -85,7 +83,10 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
         as={options[provider].icon}
         css={{
           size: Number(css?.size) || 24 * options[provider].sizeWrapperRatio,
-          '@bp2': { size: Number(css?.size) || 32 * options[provider].sizeWrapperRatio },
+          '@bp2': {
+            size:
+              (Number(css?.['@bp2']?.size) || 32) * options[provider].sizeWrapperRatio,
+          },
         }}
       />
     </StyledIcon>

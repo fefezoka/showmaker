@@ -23,6 +23,7 @@ const StyledButton = styled('button', {
   color: '$text-primary',
   fontWeight: 500,
   transition: 'background-color 200ms, border-bottom-color 300ms ease-out',
+  letterSpacing: '-.022em',
 
   variants: {
     size: {

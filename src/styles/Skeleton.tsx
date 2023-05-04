@@ -66,7 +66,7 @@ export const PostSkeleton = () => {
           <Circle css={{ size: 32 }} />
           <Line css={{ height: 22, width: 180 }} />
         </Flex>
-        <Line css={{ height: 22, width: 100 }} />
+        <Line css={{ height: 22, width: 80 }} />
       </Flex>
       <Line css={{ height: 22, width: 240, mt: '$2' }} />
       <Box css={{ mt: '$4' }}>

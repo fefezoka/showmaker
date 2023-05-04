@@ -45,31 +45,35 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
 });
 
 type ModalContentProps = DialogPrimitive.DialogContentProps &
-  React.ComponentProps<typeof StyledModalContent>;
+  React.ComponentProps<typeof StyledModalContent> & {
+    close?: boolean;
+  };
 
-export const ModalContent = ({ children, ...props }: ModalContentProps) => (
+export const ModalContent = ({ children, close = true, ...props }: ModalContentProps) => (
   <DialogPrimitive.Portal>
     <ModalOverlay />
     <StyledModalContent {...props}>
       {children}
-      <ModalClose asChild>
-        <Flex
-          as={'button'}
-          justify={'center'}
-          align={'center'}
-          css={{
-            position: 'absolute',
-            top: -10,
-            right: -10,
-            size: 48,
-            br: '$round',
-            bc: '$bg1',
-            border: '2px solid $bg2',
-          }}
-        >
-          <IoClose size={24} />
-        </Flex>
-      </ModalClose>
+      {close && (
+        <ModalClose asChild>
+          <Flex
+            as={'button'}
+            justify={'center'}
+            align={'center'}
+            css={{
+              position: 'absolute',
+              top: -10,
+              right: -10,
+              size: 48,
+              br: '$round',
+              bc: '$bg1',
+              border: '2px solid $bg2',
+            }}
+          >
+            <IoClose size={24} />
+          </Flex>
+        </ModalClose>
+      )}
     </StyledModalContent>
   </DialogPrimitive.Portal>
 );

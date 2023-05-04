@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import produce from 'immer';
 import { trpc } from '@utils';
@@ -7,11 +7,11 @@ interface UploadVideo {
   game: string;
   title: string;
   file: { video?: File; thumbnail: string };
-  setUploadProgress?: React.Dispatch<SetStateAction<number>>;
 }
 
 export const useCreatePost = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
   const utils = trpc.useContext();
 
   const sendToDB = trpc.posts.create.useMutation({
@@ -38,10 +38,7 @@ export const useCreatePost = () => {
     },
   });
 
-  const sendToCloud = async ({
-    file,
-    setUploadProgress,
-  }: Pick<UploadVideo, 'setUploadProgress' | 'file'>) => {
+  const sendToCloud = async ({ file }: Pick<UploadVideo, 'file'>) => {
     const XUniqueUploadId = +new Date();
 
     const processThumbnail = async () => {
@@ -100,11 +97,9 @@ export const useCreatePost = () => {
         'https://api.cloudinary.com/v1_1/dlgkvfmky/upload',
         formdata,
         {
-          ...(setUploadProgress && {
-            onUploadProgress(progressEvent) {
-              setUploadProgress((start + progressEvent.loaded) / size);
-            },
-          }),
+          onUploadProgress(progressEvent) {
+            setProgress((start + progressEvent.loaded) / size);
+          },
           headers: {
             'X-Unique-Upload-Id': `${XUniqueUploadId}`,
             'Content-Range': 'bytes ' + start + '-' + end + '/' + size,
@@ -117,10 +112,10 @@ export const useCreatePost = () => {
     return await Promise.all([processVideo(), processThumbnail()]);
   };
 
-  const mutateAsync = async ({ game, title, file, setUploadProgress }: UploadVideo) => {
+  const mutateAsync = async ({ game, title, file }: UploadVideo) => {
     setIsLoading(true);
 
-    const [thumbData, videoData] = await sendToCloud({ file, setUploadProgress });
+    const [thumbData, videoData] = await sendToCloud({ file });
 
     const post = await sendToDB.mutateAsync({
       game,
@@ -137,6 +132,7 @@ export const useCreatePost = () => {
 
   return {
     ...data,
+    progress,
     mutateAsync,
     isLoading,
   };

@@ -26,6 +26,10 @@ export const MenuItem = styled(DropdownMenu.Item, {
     backgroundColor: '$bg3',
   },
 
+  '&[data-disabled]': {
+    fontWeight: 600,
+  },
+
   variants: {
     theme: {
       alert: {

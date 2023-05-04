@@ -9,28 +9,15 @@ type feed = (typeof feedOptions)[number];
 
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0]);
-  const utils = trpc.useContext();
 
   const {
     data: posts,
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = trpc.posts.feed.home.useInfiniteQuery(
-    {
-      ...(feed.value !== 'all' && { game: feed.value }),
-    },
-    {
-      getNextPageParam: (lastPage) => lastPage.nextCursor,
-      onSuccess(data) {
-        data.pages.forEach((page) =>
-          page.posts.forEach((post) =>
-            utils.posts.byId.setData({ postId: post.id }, post)
-          )
-        );
-      },
-    }
-  );
+  } = trpc.posts.feed.home.useInfiniteQuery({
+    ...(feed.value !== 'all' && { game: feed.value }),
+  });
 
   return (
     <Main>

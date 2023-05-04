@@ -6,7 +6,6 @@ import { useIsDesktop } from '@hooks';
 import {
   Box,
   Flex,
-  Heading,
   Text,
   Menu,
   MenuContent,
@@ -56,15 +55,10 @@ export const Header = () => {
       }}
     >
       <Flex justify={'between'} align={'center'} css={{ minWidth: '100%' }}>
-        {!isDesktop && (
-          <Box as={'button'} css={{ mr: '$3' }} onClick={() => router.push('/')}>
-            <Heading>SM</Heading>
-          </Box>
-        )}
         <Box
           css={{ size: '100%', maxWidth: '360px', position: 'relative' }}
           as="form"
-          onSubmit={(e) => handleFindClick(e)}
+          onSubmit={handleFindClick}
         >
           <Input placeholder="Procurar" radius={'2'} />
           <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
@@ -104,6 +98,12 @@ export const Header = () => {
             </MenuTrigger>
 
             <MenuContent>
+              {!isDesktop && (
+                <>
+                  <MenuItem disabled>{session.user.name}</MenuItem>
+                  <MenuSeparator />
+                </>
+              )}
               <MenuItem onClick={() => router.push('/')}>Página inicial</MenuItem>
               <MenuItem onClick={() => router.push('/' + session.user.name)}>
                 Perfil

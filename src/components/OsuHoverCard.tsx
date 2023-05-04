@@ -27,8 +27,6 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
   const [open, setOpen] = useState<boolean>(false);
   const { data, isLoading } = trpc.user.osu.useQuery({ username }, { enabled: open });
 
-  console.log(typeof data?.join_date);
-
   return (
     <HoverCard.Root open={open} onOpenChange={setOpen}>
       <HoverCard.Trigger asChild>
@@ -115,7 +113,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                               </Text>
                             )}
                             {
-                              <Text size={'2'} weight={600}>
+                              <Text size={'1'}>
                                 {data.is_online ? 'Online' : 'Offline'}
                               </Text>
                             }

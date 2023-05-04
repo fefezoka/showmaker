@@ -19,7 +19,7 @@ import {
   MenuSeparator,
 } from '@styles';
 import { EditComment, UserHoverCard } from '@components';
-import { useDeletePostComment, useCreatePostComment, useEditPostComment } from '@hooks';
+import { useDeletePostComment, useCreatePostComment } from '@hooks';
 
 interface IFeedPostComments {
   post: Post;

@@ -38,7 +38,6 @@ export const Content = styled(HoverCard.Content, {
 export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState<boolean>(false);
-  const utils = trpc.useContext();
   const follow = useFollow();
   const unfollow = useUnfollow();
 
@@ -49,11 +48,6 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
     },
     {
       enabled: open,
-      onSuccess: (data) => {
-        data.pages[0].posts.forEach((post) => {
-          utils.posts.byId.setData({ postId: post.id }, { ...post, user });
-        });
-      },
     }
   );
 

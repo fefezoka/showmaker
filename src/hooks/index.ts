@@ -9,3 +9,4 @@ export { useUnfollow } from './useUnfollow';
 export { useIsDesktop } from './useIsDesktop';
 export { useLikePost } from './useLikePost';
 export { useEditPost } from './useEditPost';
+export { useQueryDefaults } from './useQueryDefaults';

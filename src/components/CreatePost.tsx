@@ -53,10 +53,10 @@ type CreatePostData = z.infer<typeof createPostSchema>;
 
 export const CreatePost = () => {
   const [open, setOpen] = useState<boolean>();
-  const [uploadProgress, setUploadProgress] = useState<number>(0);
   const { data: session } = useSession();
   const createPost = useCreatePost();
   const isDesktop = useIsDesktop();
+
   const {
     register,
     control,
@@ -67,8 +67,8 @@ export const CreatePost = () => {
     resolver: zodResolver(createPostSchema),
   });
 
-  const processFile = async (data: CreatePostData) => {
-    await createPost.mutateAsync({ ...data, setUploadProgress });
+  const handleCreatePost = async (data: CreatePostData) => {
+    await createPost.mutateAsync({ ...data });
 
     setOpen(false);
   };
@@ -91,7 +91,7 @@ export const CreatePost = () => {
           createPost.isLoading ? e.preventDefault() : setOpen(false)
         }
       >
-        <Box as={'form'} onSubmit={handleSubmit(processFile)}>
+        <Box as={'form'} onSubmit={handleSubmit(handleCreatePost)}>
           <ModalTitle asChild>
             <Heading size="3" color={'primary'} css={{ lh: 'unset' }}>
               Postar vídeo
@@ -107,7 +107,7 @@ export const CreatePost = () => {
               <Text as={'label'}>Título</Text>
               {errors.title && (
                 <Text color={'red-primary'} weight={600}>
-                  {' ' + errors.title.message}
+                  {errors.title.message}
                 </Text>
               )}
             </Flex>
@@ -124,7 +124,7 @@ export const CreatePost = () => {
                 </Text>
                 {errors.game && (
                   <Text color={'red-primary'} weight={600}>
-                    {' ' + errors.game.message}
+                    {errors.game.message}
                   </Text>
                 )}
               </Flex>
@@ -168,7 +168,7 @@ export const CreatePost = () => {
                         border: '2px dashed $gray10',
                         mt: '$4',
                         br: '$2',
-                        padding: '$3',
+                        p: '$3',
                         cursor: 'pointer',
                         ...((isDragActive || acceptedFiles.length !== 0) && {
                           borderColor: '$blue9',
@@ -198,7 +198,7 @@ export const CreatePost = () => {
                               <Text size={'2'} color={'primary'}>
                                 {(
                                   (field.value.video.size / 1048576) *
-                                  uploadProgress
+                                  createPost.progress
                                 ).toFixed(0)}{' '}
                                 MB / {(field.value.video.size / 1048576).toFixed(0)} MB
                               </Text>
@@ -215,7 +215,7 @@ export const CreatePost = () => {
                                 >
                                   <Box
                                     css={{
-                                      width: (uploadProgress * 100).toFixed(0) + '%',
+                                      width: (createPost.progress * 100).toFixed(0) + '%',
                                       height: '100%',
                                       position: 'absolute',
                                       top: 0,
@@ -226,7 +226,7 @@ export const CreatePost = () => {
                                   />
                                 </Box>
                                 <Text size={'2'} color={'primary'}>
-                                  {(uploadProgress * 100).toFixed(0)}%
+                                  {(createPost.progress * 100).toFixed(0)}%
                                 </Text>
                               </Flex>
                             </Box>
