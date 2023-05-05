@@ -4,20 +4,20 @@ import { PostPagination } from '../@types/types';
 import { getQueryKey } from '@trpc/react-query';
 import { trpc } from '@utils';
 
-export const useDislikePost = () => {
+export const useUnlikePost = () => {
   const queryClient = useQueryClient();
   const utils = trpc.useContext();
 
-  return trpc.posts.dislike.useMutation({
+  return trpc.posts.unlike.useMutation({
     onMutate: ({ post }) => {
       const newPost = produce(post, (draft) => {
         draft.likes -= 1;
         draft.isLiked = false;
       });
 
-      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
-
       utils.posts.byId.setData({ postId: post.id }, newPost);
+
+      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(

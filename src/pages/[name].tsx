@@ -46,10 +46,8 @@ export default function Profile() {
     hasNextPage,
     isLoading: postsIsLoading,
   } = trpc.posts.feed.user.useInfiniteQuery(
-    { username: name, feed, limit: 6 },
-    {
-      enabled: !!name,
-    }
+    { username: name, feed },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor, enabled: !!name }
   );
 
   const { data: friendshipStatus } = trpc.user.friendshipStatus.useQuery(

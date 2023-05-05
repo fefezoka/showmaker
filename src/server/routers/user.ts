@@ -78,7 +78,6 @@ export const user = router({
             name: true,
             image: true,
             createdAt: true,
-            updatedAt: true,
             score: { $meta: 'searchScore' },
           },
         },
@@ -97,7 +96,6 @@ export const user = router({
       name: r.name,
       image: r.image,
       createdAt: new Date(r.createdAt['$date']),
-      updatedAt: new Date(r.updatedAt['$date']),
     }));
 
     return filter as User[];
@@ -166,63 +164,20 @@ export const user = router({
           followerId: ctx.session.user.id,
         },
       });
-
-      await ctx.prisma.user.update({
-        data: {
-          followersAmount: {
-            increment: 1,
-          },
-        },
-        where: {
-          id: input.followingUser.id,
-        },
-      });
-
-      await ctx.prisma.user.update({
-        data: {
-          followingAmount: {
-            increment: 1,
-          },
-        },
-        where: {
-          id: ctx.session.user.id,
-        },
-      });
     }),
   unfollow: authenticatedProcedure
     .input(
       z.object({ followingUser: z.object({ id: z.string().uuid(), name: z.string() }) })
     )
-    .mutation(async ({ ctx, input }) => {
-      await ctx.prisma.follows.deleteMany({
-        where: {
-          followingId: input.followingUser.id,
-          followerId: ctx.session.user.id,
-        },
-      });
-
-      await ctx.prisma.user.update({
-        data: {
-          followersAmount: {
-            decrement: 1,
+    .mutation(
+      async ({ ctx, input }) =>
+        await ctx.prisma.follows.deleteMany({
+          where: {
+            followingId: input.followingUser.id,
+            followerId: ctx.session.user.id,
           },
-        },
-        where: {
-          id: input.followingUser.id,
-        },
-      });
-
-      await ctx.prisma.user.update({
-        data: {
-          followingAmount: {
-            decrement: 1,
-          },
-        },
-        where: {
-          id: ctx.session.user.id,
-        },
-      });
-    }),
+        })
+    ),
   following: procedure.input(z.object({ userId: z.string().uuid() })).query(
     async ({ ctx, input }) =>
       await ctx.prisma.user.findMany({
@@ -317,14 +272,19 @@ export const user = router({
           {}
         ) as ManyFriendshipStatus;
     }),
-  friendshipCount: procedure.input(z.object({ username: z.string() })).query(
-    async ({ ctx, input }) =>
-      await ctx.prisma.user.findUnique({
-        where: { name: input.username },
-        select: {
-          followersAmount: true,
-          followingAmount: true,
-        },
-      })
-  ),
+  friendshipCount: procedure
+    .input(z.object({ username: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const followersAmount = await ctx.prisma.follows.count({
+        where: { following: { name: input.username } },
+      });
+      const followingAmount = await ctx.prisma.follows.count({
+        where: { follower: { name: input.username } },
+      });
+
+      return {
+        followersAmount,
+        followingAmount,
+      };
+    }),
 });

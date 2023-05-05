@@ -33,8 +33,6 @@ export const useCreatePost = () => {
             draft.pages[0].posts.unshift(data);
           })
       );
-
-      utils.posts.byId.setData({ postId: data.id }, data);
     },
   });
 

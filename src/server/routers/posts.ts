@@ -128,7 +128,6 @@ export const posts = router({
                 title: 1,
                 videoUrl: 1,
                 thumbnailUrl: 1,
-                likes: 1,
                 commentsAmount: 1,
                 userId: 1,
                 createdAt: 1,
@@ -153,7 +152,7 @@ export const posts = router({
           .map((r: any) => ({
             id: r._id,
             title: r.title,
-            likes: r.likes,
+            likes: r.likedBy.length,
             thumbnailUrl: r.thumbnailUrl,
             videoUrl: r.videoUrl,
             commentsAmount: r.commentsAmount,
@@ -195,14 +194,12 @@ export const posts = router({
             },
           },
         },
-        include: {
-          likedBy: true,
-          user: true,
-        },
       });
 
       return {
         ...response,
+        user: ctx.session.user,
+        likes: 0,
         isLiked: false,
       };
     }),
@@ -259,13 +256,12 @@ export const posts = router({
         });
       }
 
-      const { updatedAt, ...rest } = post;
-
       return {
-        ...rest,
+        ...post,
         user: {
           ...post.user,
         },
+        likes: post.likedBy.length,
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
       };
     }),
@@ -288,48 +284,47 @@ export const posts = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.prisma.likedPost.create({
-        data: {
+      const isLiked = !!(await ctx.prisma.likedPost.findFirst({
+        where: {
           postId: input.post.id,
           userId: ctx.session.user.id,
         },
-      });
+      }));
 
-      await ctx.prisma.post.update({
-        where: {
-          id: input.post.id,
-        },
-        data: {
-          likes: {
-            increment: 1,
+      !isLiked &&
+        (await ctx.prisma.likedPost.create({
+          data: {
+            postId: input.post.id,
+            userId: ctx.session.user.id,
           },
-        },
-      });
-      return response;
+        }));
+
+      return {
+        message: 'ok',
+      };
     }),
-  dislike: authenticatedProcedure
+  unlike: authenticatedProcedure
     .input(z.object({ post: postSchema }))
     .mutation(async ({ ctx, input }) => {
-      const response = await ctx.prisma.likedPost.deleteMany({
+      const isLiked = !!(await ctx.prisma.likedPost.findFirst({
         where: {
           postId: input.post.id,
           userId: ctx.session.user.id,
         },
-      });
+      }));
 
-      await ctx.prisma.post.update({
-        where: {
-          id: input.post.id,
-        },
-        data: {
-          likes: {
-            decrement: 1,
+      isLiked &&
+        (await ctx.prisma.likedPost.deleteMany({
+          where: {
+            postId: input.post.id,
+            userId: ctx.session.user.id,
           },
-        },
-      });
-      return response;
-    }),
+        }));
 
+      return {
+        message: 'ok',
+      };
+    }),
   createComment: authenticatedProcedure
     .input(
       z.object({

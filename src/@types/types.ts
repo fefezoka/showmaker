@@ -5,7 +5,6 @@ export const userSchema = z.object({
   name: z.string(),
   image: z.string(),
   createdAt: z.date(),
-  updatedAt: z.date().optional(),
   osuAccountId: z.string().optional(),
   twitchAccountId: z.string().optional(),
 });
@@ -33,12 +32,11 @@ export const postSchema = z.object({
   title: z.string(),
   commentsAmount: z.number(),
   game: z.string(),
-  likes: z.number(),
   createdAt: z.date(),
   userId: z.string().uuid(),
   isLiked: z.boolean(),
+  likes: z.number(),
   postComments: z.array(postCommentsSchema).optional(),
-  updatedAt: z.date().optional(),
   likedBy: z.array(likedPostSchema),
   user: userSchema,
 });

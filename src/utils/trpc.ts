@@ -20,6 +20,7 @@ export const trpc = createTRPCNext<AppRouter>({
             retry: false,
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
+            refetchOnMount: false,
             staleTime: Infinity,
           },
         },
@@ -34,5 +35,4 @@ export const trpc = createTRPCNext<AppRouter>({
       ],
     };
   },
-  ssr: false,
 });

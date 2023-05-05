@@ -36,22 +36,19 @@ model Session {
 }
 
 model User {
-  id              String        @id @default(uuid()) @map("_id")
-  name            String        @unique
-  email           String        @unique
-  image           String
-  emailVerified   DateTime?
-  createdAt       DateTime      @default(now())
-  updatedAt       DateTime      @updatedAt
-  followersAmount Int           @default(0)
-  followingAmount Int           @default(0)
-  posts           Post[]
-  accounts        Account[]
-  comments        PostComment[]
-  sessions        Session[]
-  likedPosts      LikedPost[]
-  followers       Follows[]     @relation("following")
-  following       Follows[]     @relation("follower")
+  id            String        @id @default(uuid()) @map("_id")
+  name          String        @unique
+  email         String        @unique
+  image         String
+  emailVerified DateTime?
+  createdAt     DateTime      @default(now())
+  posts         Post[]
+  accounts      Account[]
+  comments      PostComment[]
+  sessions      Session[]
+  likedPosts    LikedPost[]
+  followers     Follows[]     @relation("following")
+  following     Follows[]     @relation("follower")
 }
 
 model Follows {
@@ -67,13 +64,11 @@ model Post {
   title          String
   videoUrl       String
   thumbnailUrl   String
-  likes          Int           @default(0)
   commentsAmount Int           @default(0)
   user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         String
   game           String
   createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
   likedBy        LikedPost[]
   postComments   PostComment[]
 }

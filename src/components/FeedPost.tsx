@@ -24,7 +24,7 @@ import {
   MenuTrigger,
   MenuSeparator,
 } from '@styles';
-import { useDeletePost, useLikePost, useDislikePost } from '@hooks';
+import { useDeletePost, useLikePost, useUnlikePost } from '@hooks';
 
 export const FeedPost = forwardRef<
   HTMLDivElement,
@@ -35,7 +35,7 @@ export const FeedPost = forwardRef<
   const { data: session } = useSession();
   const deletePost = useDeletePost();
   const likePost = useLikePost();
-  const dislikePost = useDislikePost();
+  const unlikePost = useUnlikePost();
 
   return (
     <Box as={'section'} {...props} ref={forwardRef}>
@@ -60,9 +60,7 @@ export const FeedPost = forwardRef<
             gap={'1'}
             css={{ cursor: 'pointer' }}
             onClick={() => {
-              post.isLiked
-                ? dislikePost.mutate({ post })
-                : likePost.mutateAsync({ post });
+              post.isLiked ? unlikePost.mutate({ post }) : likePost.mutateAsync({ post });
             }}
             disabled={likePost.isLoading}
           >

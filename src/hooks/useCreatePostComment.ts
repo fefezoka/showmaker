@@ -13,15 +13,6 @@ export const useCreatePostComment = () => {
             })
           : [data]
       );
-
-      utils.posts.byId.setData(
-        { postId },
-        (old) =>
-          old &&
-          produce(old, (draft) => {
-            draft.commentsAmount += 1;
-          })
-      );
     },
   });
 };

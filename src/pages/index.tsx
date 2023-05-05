@@ -15,9 +15,12 @@ export default function Timeline() {
     isLoading,
     fetchNextPage,
     hasNextPage,
-  } = trpc.posts.feed.home.useInfiniteQuery({
-    ...(feed.value !== 'all' && { game: feed.value }),
-  });
+  } = trpc.posts.feed.home.useInfiniteQuery(
+    {
+      ...(feed.value !== 'all' && { game: feed.value }),
+    },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor }
+  );
 
   return (
     <Main>

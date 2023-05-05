@@ -2,7 +2,7 @@ import { LikedPost, Post } from '@types';
 import { Session } from 'next-auth';
 
 export const infiniteQuery = (
-  posts: (Omit<Post, 'isLiked'> & {
+  posts: (Omit<Post, 'isLiked' | 'likes'> & {
     user: { id: string; name: string; image: string; createdAt: Date };
     likedBy: LikedPost[];
   })[],
@@ -16,10 +16,9 @@ export const infiniteQuery = (
 
   return {
     posts: posts.map((post) => {
-      const { updatedAt, ...rest } = post;
-
       return {
-        ...rest,
+        ...post,
+        likes: post.likedBy.length,
         isLiked: post.likedBy.some((like) => like.userId === session?.user.id),
       };
     }),

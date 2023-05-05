@@ -6,10 +6,8 @@ import NextNProgress from 'nextjs-progressbar';
 import { ogimage } from '@assets';
 import { trpc } from '@utils';
 import { global } from '@styles';
-import { useQueryDefaults } from '@hooks';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
-  useQueryDefaults();
   global();
 
   return (

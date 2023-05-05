@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { getQueryKey } from '@trpc/react-query';
 import { signIn, useSession } from 'next-auth/react';
 import { trpc } from '@utils';
-import { PostPagination } from '@types';
+import { Post, PostPagination } from '@types';
 import { ReactQueryOptions, RouterInputs } from 'src/server/trpc';
 
 type LikeInputs = RouterInputs['posts']['like'];
