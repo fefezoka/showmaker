@@ -23,6 +23,7 @@ export default NextAuth({
           email: profile.email,
           image: profile.picture,
           name: profile.preferred_username,
+          createdAt: new Date(),
         };
       },
       clientId: process.env.TWITCH_ID!,
@@ -47,11 +48,11 @@ export default NextAuth({
       return true;
     },
     async session({ session, user }) {
-      const { id, image, name } = user;
+      const { id, image, name, createdAt } = user;
 
       return {
         ...session,
-        user: { id, image, name } as User,
+        user: { id, image, name, createdAt } as User,
       };
     },
   },

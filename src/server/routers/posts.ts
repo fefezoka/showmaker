@@ -199,6 +199,7 @@ export const posts = router({
       return {
         ...response,
         user: ctx.session.user,
+        likedBy: [],
         likes: 0,
         isLiked: false,
       };
