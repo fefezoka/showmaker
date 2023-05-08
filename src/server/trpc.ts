@@ -3,7 +3,6 @@ import { Context } from './context';
 import superjson from 'superjson';
 import { inferReactQueryProcedureOptions } from '@trpc/react-query';
 import { AppRouter } from './routers/_app';
-import { signIn } from 'next-auth/react';
 
 const t = initTRPC.context<Context>().create({ transformer: superjson });
 

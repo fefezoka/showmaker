@@ -4,7 +4,7 @@ import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useSession } from 'next-auth/react';
 import { Post } from '@types';
-import { downloadVideo, diffBetweenDates } from '@utils';
+import { downloadVideo, diffBetweenDates, getBaseUrl } from '@utils';
 import { UserHoverCard, FeedPostComments, EditPost } from '@components';
 import {
   Box,
@@ -41,7 +41,7 @@ export const FeedPost = forwardRef<
     <Box as={'section'} {...props} ref={forwardRef}>
       <Flex justify={'between'}>
         <UserHoverCard user={post.user}>
-          <Flex align={'center'} gap={'2'}>
+          <Flex align={'center'} gap={'2'} css={{ us: 'none' }}>
             <ProfileIcon css={{ size: 36 }} src={post.user.image} alt="" />
             <Box>
               <Text weight={600} size={{ '@initial': '3', '@bp2': '5' }}>
@@ -58,7 +58,6 @@ export const FeedPost = forwardRef<
             align={'center'}
             as={'button'}
             gap={'1'}
-            css={{ cursor: 'pointer' }}
             onClick={() => {
               post.isLiked ? unlikePost.mutate({ post }) : likePost.mutateAsync({ post });
             }}
@@ -111,6 +110,13 @@ export const FeedPost = forwardRef<
                   <MenuItem onSelect={(e) => e.preventDefault()}>Editar</MenuItem>
                 </EditPost>
               )}
+              <MenuItem
+                onClick={() =>
+                  navigator.clipboard.writeText(getBaseUrl() + '/post/' + post.id)
+                }
+              >
+                Copiar link
+              </MenuItem>
               <MenuItem onClick={() => downloadVideo(post)}>Baixar vídeo</MenuItem>
               {post.user.id === session?.user.id && (
                 <>
@@ -149,9 +155,14 @@ export const FeedPost = forwardRef<
 
       <Flex css={{ mt: '$1', mb: '$3' }}>
         {post.title && (
-          <Link href={`/post/${post.id}`} prefetch={false}>
+          <Box
+            css={{ width: '100%' }}
+            as={Link}
+            href={`/post/${post.id}`}
+            prefetch={false}
+          >
             <Heading size={'2'}>{post.title}</Heading>
-          </Link>
+          </Box>
         )}
       </Flex>
 
