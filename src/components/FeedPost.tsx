@@ -147,10 +147,12 @@ export const FeedPost = forwardRef<
         </Flex>
       </Flex>
 
-      <Flex align={'center'} justify={'between'} css={{ mt: '$1', mb: '$3' }}>
-        <Link href={`/post/${post.id}`} prefetch={false}>
-          <Heading size={'2'}>{post.title}</Heading>
-        </Link>
+      <Flex css={{ mt: '$1', mb: '$3' }}>
+        {post.title && (
+          <Link href={`/post/${post.id}`} prefetch={false}>
+            <Heading size={'2'}>{post.title}</Heading>
+          </Link>
+        )}
       </Flex>
 
       <Video videoUrl={post.videoUrl} thumbnailUrl={post.thumbnailUrl} />

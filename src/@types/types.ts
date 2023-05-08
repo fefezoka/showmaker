@@ -29,7 +29,7 @@ export const postSchema = z.object({
   id: z.string().uuid(),
   videoUrl: z.string(),
   thumbnailUrl: z.string(),
-  title: z.string(),
+  title: z.string().nullable(),
   commentsAmount: z.number(),
   game: z.string(),
   createdAt: z.date(),

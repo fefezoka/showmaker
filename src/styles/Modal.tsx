@@ -1,8 +1,9 @@
 import React from 'react';
 import { styled, keyframes } from 'stitches.config';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Box, Flex, overlayStyles } from '@styles';
+import { Flex, overlayStyles } from '@styles';
 import { IoClose } from 'react-icons/io5';
+
 const fade = keyframes({
   from: {
     opacity: 0,

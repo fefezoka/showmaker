@@ -26,19 +26,7 @@ const editPostSchema = z
       .object({ value: z.string(), label: z.string() })
       .transform((game) => game.value),
   })
-  .partial()
-  .superRefine((data, ctx) => {
-    if (!data.game && !data.title) {
-      ctx.addIssue({
-        code: 'too_small',
-        message: 'Preencha ao menos um campo',
-        type: 'string',
-        inclusive: true,
-        minimum: 1,
-        path: ['title'],
-      });
-    }
-  });
+  .partial();
 
 type EditPostData = z.infer<typeof editPostSchema>;
 
@@ -62,6 +50,10 @@ export const EditPost = ({
   });
 
   const handleEdit = (data: EditPostData) => {
+    if (data.game === post.game && data.title === post.title) {
+      return;
+    }
+
     editPost.mutate({ postId: post.id, title: data.title, game: data.game });
     setOpen(false);
   };
@@ -83,8 +75,8 @@ export const EditPost = ({
             )}
           </Flex>
           <Input
+            defaultValue={post.title || ''}
             {...register('title')}
-            placeholder={post.title}
             css={{ px: '$3', my: '$1' }}
           />
 
@@ -99,12 +91,10 @@ export const EditPost = ({
             </Flex>
             <Box css={{ my: '$1' }}>
               <Select
+                options={gameOptions}
                 control={control as unknown as Control<FieldValues>}
                 name="game"
-                placeholder={
-                  gameOptions.find((option) => option.value === post.game)?.label
-                }
-                options={gameOptions}
+                defaultValue={gameOptions.find((option) => option.value === post.game)}
               />
             </Box>
           </Box>

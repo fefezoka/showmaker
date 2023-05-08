@@ -21,9 +21,7 @@ export const useEditPost = () => {
               draft.pages.forEach((page) => {
                 page.posts.forEach((postcache) => {
                   if (postcache.id === postId) {
-                    if (title) {
-                      postcache.title = title;
-                    }
+                    postcache.title = title ? title : '';
 
                     if (game) {
                       postcache.game = game;
@@ -40,9 +38,7 @@ export const useEditPost = () => {
         (old) =>
           old &&
           produce(old, (draft) => {
-            if (title) {
-              draft.title = title;
-            }
+            draft.title = title ? title : '';
 
             if (game) {
               draft.game = game;

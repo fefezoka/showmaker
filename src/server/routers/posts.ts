@@ -1,4 +1,4 @@
-import { Post, postSchema } from '@types';
+import { LikedPost, Post, postSchema } from '@types';
 import { authenticatedProcedure, procedure, router } from '../trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
@@ -199,7 +199,7 @@ export const posts = router({
       return {
         ...response,
         user: ctx.session.user,
-        likedBy: [],
+        likedBy: [] as LikedPost[],
         likes: 0,
         isLiked: false,
       };
@@ -216,7 +216,7 @@ export const posts = router({
       async ({ ctx, input }) =>
         await ctx.prisma.post.update({
           data: {
-            ...(input.title && { title: input.title }),
+            title: input.title,
             ...(input.game && { game: input.game }),
           },
           where: { id: input.postId },

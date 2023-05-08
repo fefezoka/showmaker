@@ -61,7 +61,7 @@ model Follows {
 
 model Post {
   id             String        @id @default(uuid()) @map("_id")
-  title          String
+  title          String?
   videoUrl       String
   thumbnailUrl   String
   commentsAmount Int           @default(0)

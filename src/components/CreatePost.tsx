@@ -40,7 +40,7 @@ const createPostSchema = z.object({
     },
     { required_error: 'Selecione um vídeo' }
   ),
-  title: z.string().nonempty('O título é obrigatório'),
+  title: z.string(),
   game: z
     .object(
       { value: z.string(), label: z.string() },
@@ -99,17 +99,12 @@ export const CreatePost = () => {
             </Text>
           </ModalDescription>
           <Box css={{ mt: '$5' }}>
-            <Flex justify={'between'}>
+            <Flex>
               <Text as={'label'}>Título</Text>
-              {errors.title && (
-                <Text color={'red-primary'} weight={600}>
-                  {errors.title.message}
-                </Text>
-              )}
             </Flex>
             <Input
               {...register('title')}
-              placeholder="Escreva um título"
+              placeholder="Escreva um título - Opcional"
               css={{ px: '$3', my: '$1' }}
             />
 

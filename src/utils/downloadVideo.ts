@@ -8,7 +8,7 @@ export const downloadVideo = (post: Post) => {
     link.href = urlObject;
     link.setAttribute(
       'download',
-      post.title.replace(' ', '_') + '_' + post.user.name + '.mp4'
+      (post.title || 'video').replace(' ', '_') + '_' + post.user.name + '.mp4'
     );
     document.body.appendChild(link);
     link.click();
