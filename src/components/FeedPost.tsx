@@ -4,7 +4,7 @@ import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useSession } from 'next-auth/react';
 import { Post } from '@types';
-import { downloadVideo, diffBetweenDates, getBaseUrl } from '@utils';
+import { downloadVideo, diffBetweenDates } from '@utils';
 import { UserHoverCard, FeedPostComments, EditPost } from '@components';
 import {
   Box,
@@ -112,7 +112,9 @@ export const FeedPost = forwardRef<
               )}
               <MenuItem
                 onClick={() =>
-                  navigator.clipboard.writeText(getBaseUrl() + '/post/' + post.id)
+                  navigator.clipboard.writeText(
+                    window.location.origin + '/post/' + post.id
+                  )
                 }
               >
                 Copiar link
