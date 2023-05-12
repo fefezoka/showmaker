@@ -9,12 +9,12 @@ const StyledInput = styled('input', {
   br: '$7',
   fontSize: '$3',
   bc: '$bg2',
-  color: '$text-primary',
+  color: '$slate12',
   minHeight: 40,
   boxShadow: 'inset 0 0 0 1px $colors$bg3',
 
   '&::placeholder': {
-    color: '$text-secondary',
+    color: '$slate11',
     fontWeight: 500,
     fontSize: '$2',
   },

@@ -29,7 +29,12 @@ export {
   MenuTrigger,
   MenuArrow,
 } from './DropdownMenu';
-export { HoverCard, HoverCardContent, HoverCardTrigger } from './HoverCard';
+export {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  HoverCardArrow,
+} from './HoverCard';
 export {
   ProfileSkeleton,
   PostSkeleton,

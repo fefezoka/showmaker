@@ -14,20 +14,20 @@ export const Line = styled('div', {
   ai: 'center',
   jc: 'center',
   p: '$4 $2',
-  color: '$text-secondary',
+  color: '$slate11',
   minHeight: '$8',
   transition: 'color 200ms',
 
   h1: {
     transition: 'color 200ms',
-    color: '$text-secondary',
+    color: '$slate11',
   },
 
   '&:hover': {
-    color: '$text-primary',
+    color: '$slate12',
 
     h1: {
-      color: '$text-primary',
+      color: '$slate12',
     },
   },
 
@@ -40,10 +40,10 @@ export const Line = styled('div', {
   variants: {
     active: {
       true: {
-        color: '$text-primary',
+        color: '$slate12',
 
         h1: {
-          color: '$text-primary',
+          color: '$slate12',
         },
       },
     },

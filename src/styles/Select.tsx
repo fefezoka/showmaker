@@ -29,14 +29,14 @@ export const Select = ({
             }),
             placeholder: (baseStyles) => ({
               ...baseStyles,
-              color: 'var(--colors-text-secondary)',
+              color: 'var(--colors-slate11)',
               fontSize: 'var(--fontSizes-2)',
               marginLeft: '4px',
               fontWeight: 500,
             }),
             singleValue: (baseStyles) => ({
               ...baseStyles,
-              color: 'var(--colors-text-primary)',
+              color: 'var(--colors-slate12)',
               marginLeft: '4px',
             }),
             control: (baseStyles) => ({

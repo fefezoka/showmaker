@@ -20,7 +20,7 @@ const StyledButton = styled('button', {
   flexShrink: 0,
   cursor: 'pointer',
 
-  color: '$text-primary',
+  color: '$slate12',
   fontWeight: 500,
   transition: 'background-color 200ms, border-bottom-color 300ms ease-out',
   letterSpacing: '-.022em',
@@ -66,7 +66,7 @@ const StyledButton = styled('button', {
         bc: 'transparent',
         borderBottom: '2px solid transparent',
         px: '$4',
-        color: '$text-secondary',
+        color: '$slate11',
         boxShadow: 'none',
 
         '&:hover': {

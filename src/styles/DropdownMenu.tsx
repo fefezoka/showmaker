@@ -15,7 +15,7 @@ const StyledMenuContent = styled(DropdownMenu.Content, {
 });
 
 export const MenuItem = styled(DropdownMenu.Item, {
-  color: '$text-primary',
+  color: '$slate12',
   fontSize: '$3',
   padding: '$2 $4',
   cursor: 'pointer',

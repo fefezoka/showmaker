@@ -2,7 +2,7 @@ import React from 'react';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
 import { trpc } from '@utils';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { Main, PostPaginator, UserHoverCard } from '@components';
 import { Box, Button, Flex, Grid, Heading, ProfileIcon, Text } from '@styles';
 import { useFollow, useUnfollow } from '@hooks';
@@ -73,7 +73,7 @@ export default function Search({ q }: { q: string }) {
           <Heading>Usuários</Heading>
           <Grid columns={{ '@initial': '1', '@bp2': '3' }} gap={'2'} css={{ mt: '$1' }}>
             {users.data.map((user, index) => (
-              <Box css={{ bc: '$bg2', p: '$3', br: '$2' }} key={index}>
+              <Box css={{ bc: '$bg2', p: '$3 $2', br: '$2' }} key={index}>
                 <Flex justify={'between'} align={'center'}>
                   <UserHoverCard user={user}>
                     <Flex gap={'2'} align={'center'}>
@@ -86,7 +86,7 @@ export default function Search({ q }: { q: string }) {
                         <Text weight={600}>{user.name}</Text>
                         {friendshipStatuses &&
                           friendshipStatuses[user.id].followed_by && (
-                            <Text color={'secondary'} size={'1'} as={'p'}>
+                            <Text color={'gray'} size={'1'} as={'p'}>
                               Segue você
                             </Text>
                           )}

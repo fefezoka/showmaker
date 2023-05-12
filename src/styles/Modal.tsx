@@ -47,15 +47,19 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
 
 type ModalContentProps = DialogPrimitive.DialogContentProps &
   React.ComponentProps<typeof StyledModalContent> & {
-    close?: boolean;
+    closeButton?: boolean;
   };
 
-export const ModalContent = ({ children, close = true, ...props }: ModalContentProps) => (
+export const ModalContent = ({
+  children,
+  closeButton = true,
+  ...props
+}: ModalContentProps) => (
   <DialogPrimitive.Portal>
     <ModalOverlay />
     <StyledModalContent {...props}>
       {children}
-      {close && (
+      {closeButton && (
         <ModalClose asChild>
           <Flex
             as={'button'}

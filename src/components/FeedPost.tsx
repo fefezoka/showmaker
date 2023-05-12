@@ -47,7 +47,7 @@ export const FeedPost = forwardRef<
               <Text weight={600} size={{ '@initial': '3', '@bp2': '5' }}>
                 {post.user.name}
               </Text>
-              <Text color={'secondary'} size={{ '@initial': '2', '@bp2': '3' }}>
+              <Text color={'gray'} size={{ '@initial': '2', '@bp2': '3' }}>
                 {' • '} {diffBetweenDates(post.createdAt)}
               </Text>
             </Box>
@@ -71,10 +71,10 @@ export const FeedPost = forwardRef<
             ) : (
               <Box
                 as={AiOutlineLike}
-                css={{ color: '$text-secondary', size: 22, '@bp2': { size: 28 } }}
+                css={{ color: '$slate11', size: 22, '@bp2': { size: 28 } }}
               />
             )}
-            <Text size={{ '@initial': '3', '@bp2': '5' }} color={'secondary'}>
+            <Text size={{ '@initial': '3', '@bp2': '5' }} color={'gray'}>
               {post.likes}
             </Text>
           </Flex>
@@ -89,7 +89,7 @@ export const FeedPost = forwardRef<
                     p: '2px',
                     br: '$round',
                     transition: 'all 300ms ease-out',
-                    color: '$text-secondary',
+                    color: '$slate11',
 
                     '&:hover': {
                       transition: 'all 300ms ease-in',
@@ -131,10 +131,10 @@ export const FeedPost = forwardRef<
                     </ModalTrigger>
                     <ModalContent css={{ p: '$5' }}>
                       <Box css={{ mb: '$3' }}>
-                        <Heading color={'primary'}>Excluir postagem</Heading>
+                        <Heading>Excluir postagem</Heading>
                       </Box>
                       <Box css={{ mb: '$6' }}>
-                        <Text color={'secondary'}>
+                        <Text color={'gray'}>
                           Deseja realmente excluir o post &quot;{post.title}&quot;?
                         </Text>
                       </Box>

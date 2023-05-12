@@ -96,12 +96,12 @@ export default function Profile() {
               <Box>
                 <Heading size={'3'}>{user.name}</Heading>
                 {(friendshipStatus?.followed_by && friendshipStatus.following && (
-                  <Text size={'2'} color={'secondary'}>
+                  <Text size={'2'} color={'gray'}>
                     Segue um ao outro
                   </Text>
                 )) ||
                   (friendshipStatus?.followed_by && (
-                    <Text size={'2'} color={'secondary'}>
+                    <Text size={'2'} color={'gray'}>
                       Segue você
                     </Text>
                   ))}

@@ -89,12 +89,12 @@ export const CreatePost = () => {
       >
         <Box as={'form'} onSubmit={handleSubmit(handleCreatePost)}>
           <ModalTitle asChild>
-            <Heading size="3" color={'primary'} css={{ lh: 'unset' }}>
+            <Heading size="3" css={{ lh: 'unset' }}>
               Postar vídeo
             </Heading>
           </ModalTitle>
           <ModalDescription asChild>
-            <Text color={'secondary'} size={'4'}>
+            <Text color={'gray'} size={'4'}>
               Compartilhe suas jogadas favoritas com a comunidade!
             </Text>
           </ModalDescription>
@@ -110,11 +110,9 @@ export const CreatePost = () => {
 
             <Box css={{ mt: '$1' }}>
               <Flex justify={'between'}>
-                <Text as={'label'} color={'primary'}>
-                  Jogo
-                </Text>
+                <Text as={'label'}>Jogo</Text>
                 {errors.game && (
-                  <Text color={'red-primary'} weight={600}>
+                  <Text color={'red'} weight={600}>
                     {errors.game.message}
                   </Text>
                 )}
@@ -186,7 +184,7 @@ export const CreatePost = () => {
                               {field.value.video.name}
                             </Text>
                             <Box>
-                              <Text size={'2'} color={'primary'}>
+                              <Text size={'2'}>
                                 {(
                                   (field.value.video.size / 1048576) *
                                   createPost.progress
@@ -216,7 +214,7 @@ export const CreatePost = () => {
                                     }}
                                   />
                                 </Box>
-                                <Text size={'2'} color={'primary'}>
+                                <Text size={'2'}>
                                   {(createPost.progress * 100).toFixed(0)}%
                                 </Text>
                               </Flex>
@@ -229,14 +227,14 @@ export const CreatePost = () => {
                             <Text weight={600}>Arquivo muito grande</Text>
                           )}
                           {errors.file && (
-                            <Text weight={600} color={'red-primary'}>
+                            <Text weight={600} color={'red'}>
                               {errors.file.message}
                             </Text>
                           )}
-                          <Text color={'secondary'}>
+                          <Text color={'gray'}>
                             Arraste um vídeo ou clique para procurar
                           </Text>
-                          <Text color={'secondary'}>Limite de 100 MB</Text>
+                          <Text color={'gray'}>Limite de 100 MB</Text>
                         </Flex>
                       )}
                     </Flex>

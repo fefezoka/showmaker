@@ -53,7 +53,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
       }}
     >
       <ModalTrigger asChild>{children}</ModalTrigger>
-      <ModalContent css={{ p: 0 }}>
+      <ModalContent css={{ p: 0 }} closeButton={false}>
         <Tabs
           defaultValue={defaultTab}
           onValueChange={(value) => setTab(value as typeof defaultTab)}
@@ -94,12 +94,12 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
                       <UserHoverCard user={user}>
                         <Flex align={'center'} gap={'2'}>
                           <ProfileIcon css={{ size: '44px' }} src={user.image} alt="" />
-                          <Text weight={600} color={'primary'} size={'5'}>
+                          <Text weight={600} size={'5'}>
                             {user.name}
                           </Text>
                           {tabIndex === 1 &&
                             friendshipStatuses[tabIndex].data?.[user.id].followed_by && (
-                              <Text size={'1'} color={'secondary'}>
+                              <Text size={'1'} color={'gray'}>
                                 Segue você
                               </Text>
                             )}

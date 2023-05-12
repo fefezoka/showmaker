@@ -17,16 +17,12 @@ export const global = globalCss({
 
   body: {
     backgroundColor: '$bg1',
-    color: '$text-primary',
+    color: '$slate12',
   },
 
   a: {
     all: 'unset',
     cursor: 'pointer',
-  },
-
-  fieldset: {
-    border: 'none',
   },
 
   button: {

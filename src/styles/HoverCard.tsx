@@ -13,6 +13,7 @@ const fade = keyframes({
 
 export const HoverCard = HoverCardPrimitive.Root;
 export const HoverCardTrigger = HoverCardPrimitive.Trigger;
+export const HoverCardArrow = HoverCardPrimitive.Arrow;
 
 export const StyledHoverCardContent = styled(HoverCardPrimitive.Content, {
   bc: '$bg1',
@@ -22,7 +23,7 @@ export const StyledHoverCardContent = styled(HoverCardPrimitive.Content, {
   border: '2px solid $bg2',
   transition: 'all 200ms ease-out',
   animation: `250ms ${fade}`,
-  bs: '0px 0px 12px black',
+  bs: '0px 0px 16px black',
 });
 
 type HoverCardContentProps = HoverCardPrimitive.HoverCardContentProps &

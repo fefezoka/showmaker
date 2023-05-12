@@ -54,8 +54,8 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
         <Heading css={{ lh: 'unset' }}>
           {provider.name.charAt(0).toUpperCase() + provider.name.slice(1)}
         </Heading>
-        <Text css={{ color: '$text-secondary' }}>Logado como </Text>
-        <Text css={{ color: '$text-secondary' }} weight={600}>
+        <Text color={'gray'}>Logado como </Text>
+        <Text color={'gray'} weight={600}>
           {account.providerAccountId}
         </Text>
       </Box>
@@ -65,7 +65,7 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
         css={{ mr: '$4' }}
         onClick={() => handleDisconnectAccount(provider.name)}
       >
-        <Box as={IoRemoveCircle} size={24} css={{ color: '$text-primary' }} />
+        <Box as={IoRemoveCircle} size={24} css={{ color: '$slate12' }} />
       </Box>
     </Flex>
   );

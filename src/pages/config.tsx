@@ -73,7 +73,7 @@ export default function Config() {
                         (provider) => provider.name === account.provider
                       ) || {
                         name: account.provider,
-                        bc: '$bgalt',
+                        bc: '$bg2',
                         logo: IoHelp,
                       }
                     }

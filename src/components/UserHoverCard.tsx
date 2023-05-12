@@ -91,7 +91,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
               <Heading>{user.name}</Heading>
             </Link>
             {friendshipStatus?.followed_by && (
-              <Text size={'2'} color={'secondary'}>
+              <Text size={'2'} color={'gray'}>
                 {' • '} Segue você
               </Text>
             )}
@@ -128,8 +128,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
                   as={'section'}
                   key={post.id}
                   css={{
-                    textAlign: 'center',
-
+                    overflow: 'hidden',
                     '&:nth-of-type(1)': {
                       borderBottomLeftRadius: '$2',
                     },
@@ -140,13 +139,14 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
                   }}
                 >
                   <Link href={`/post/${post.id}`}>
-                    <Flex
-                      justify={'center'}
-                      align={'center'}
+                    <Box
                       css={{
                         height: 28,
+                        px: '$2',
+                        ta: 'center',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
+                        lineHeight: '1.75rem',
                         whiteSpace: 'nowrap',
                       }}
                     >
@@ -155,7 +155,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
                           {post.title}
                         </Text>
                       )}
-                    </Flex>
+                    </Box>
                     <Box
                       css={{
                         mt: '$1',

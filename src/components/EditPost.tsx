@@ -69,7 +69,7 @@ export const EditPost = ({
           <Flex justify={'between'}>
             <Text as={'label'}>Título</Text>
             {errors.title && (
-              <Text color={'red-primary'} weight={600}>
+              <Text color={'red'} weight={600}>
                 {errors.title.message}
               </Text>
             )}
@@ -84,7 +84,7 @@ export const EditPost = ({
             <Flex justify={'between'}>
               <Text as={'label'}>Jogo</Text>
               {errors.title && (
-                <Text color={'red-primary'} weight={600}>
+                <Text color={'red'} weight={600}>
                   {errors.title.message}
                 </Text>
               )}
