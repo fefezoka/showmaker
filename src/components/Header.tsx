@@ -57,18 +57,30 @@ export const Header = () => {
       }}
     >
       <Flex justify={'between'} align={'center'} css={{ minWidth: '100%' }}>
-        <Box
-          css={{ size: '100%', maxWidth: '360px', position: 'relative' }}
-          as="form"
-          onSubmit={handleFindClick}
-        >
-          <Input placeholder="Procurar" radius={'2'} />
-          <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
-            <Box as={'button'} type="submit">
-              <IoSearchSharp color="white" />
+        <Flex align={'center'} css={{ flex: 1 }} gap={'3'}>
+          {!isDesktop && (
+            <Text
+              weight={600}
+              size={'5'}
+              css={{ cursor: 'pointer' }}
+              onClick={() => router.push('/')}
+            >
+              SM
+            </Text>
+          )}
+          <Box
+            css={{ size: '100%', maxWidth: '360px', position: 'relative' }}
+            as="form"
+            onSubmit={handleFindClick}
+          >
+            <Input placeholder="Procurar" radius={'2'} />
+            <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
+              <Box as={'button'} type="submit">
+                <IoSearchSharp color="white" />
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </Flex>
 
         {status === 'authenticated' ? (
           <Menu open={open} onOpenChange={setOpen} modal={false}>
@@ -92,7 +104,7 @@ export const Header = () => {
                 <ProfileIcon src={session.user.image as string} alt="" />
                 {isDesktop && (
                   <Text weight={600} size={'4'}>
-                    {session.user.name}
+                    {session.user.name.slice(0, 10)}
                   </Text>
                 )}
                 {open ? <IoCaretUp /> : <IoCaretDown />}

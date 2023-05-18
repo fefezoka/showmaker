@@ -11,3 +11,4 @@ export { LoggedProvider } from './LoggedProvider';
 export { EditPost } from './EditPost';
 export { EditComment } from './EditComment';
 export { CreatePost, gameOptions } from './CreatePost';
+export { PostLikedByUsers } from './PostLikedByUsers';

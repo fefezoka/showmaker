@@ -5,7 +5,7 @@ import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { useSession } from 'next-auth/react';
 import { Post } from '@types';
 import { downloadVideo, diffBetweenDates } from '@utils';
-import { UserHoverCard, FeedPostComments, EditPost } from '@components';
+import { UserHoverCard, FeedPostComments, EditPost, PostLikedByUsers } from '@components';
 import {
   Box,
   Flex,
@@ -54,29 +54,35 @@ export const FeedPost = forwardRef<
           </Flex>
         </UserHoverCard>
         <Flex align={'center'} gap={{ '@initial': '2', '@bp2': '4' }}>
-          <Flex
-            align={'center'}
-            as={'button'}
-            gap={'1'}
-            onClick={() => {
-              post.isLiked ? unlikePost.mutate({ post }) : likePost.mutateAsync({ post });
-            }}
-            disabled={likePost.isLoading}
-          >
-            {post.isLiked ? (
-              <Box
-                as={AiFillLike}
-                css={{ color: '$blue10', size: 22, '@bp2': { size: 28 } }}
-              />
-            ) : (
-              <Box
-                as={AiOutlineLike}
-                css={{ color: '$slate11', size: 22, '@bp2': { size: 28 } }}
-              />
-            )}
-            <Text size={{ '@initial': '3', '@bp2': '5' }} color={'gray'}>
-              {post.likes}
-            </Text>
+          <Flex align={'center'} gap={'1'}>
+            <Flex
+              as={'button'}
+              onClick={() => {
+                post.isLiked
+                  ? unlikePost.mutate({ post })
+                  : likePost.mutateAsync({ post });
+              }}
+              disabled={likePost.isLoading}
+            >
+              {post.isLiked ? (
+                <Box
+                  as={AiFillLike}
+                  css={{ color: '$blue10', size: 22, '@bp2': { size: 28 } }}
+                />
+              ) : (
+                <Box
+                  as={AiOutlineLike}
+                  css={{ color: '$slate11', size: 22, '@bp2': { size: 28 } }}
+                />
+              )}
+            </Flex>
+            <PostLikedByUsers postId={post.id}>
+              <Box as={'button'} disabled={post.likes === 0}>
+                <Text size={{ '@initial': '3', '@bp2': '5' }} color={'gray'} weight={600}>
+                  {post.likes}
+                </Text>
+              </Box>
+            </PostLikedByUsers>
           </Flex>
 
           <Menu modal={false}>

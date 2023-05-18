@@ -398,4 +398,17 @@ export const posts = router({
         message: 'ok',
       };
     }),
+  likedBy: procedure.input(z.object({ postId: z.string() })).query(
+    async ({ input, ctx }) =>
+      await ctx.prisma.likedPost
+        .findMany({
+          where: {
+            postId: input.postId,
+          },
+          select: {
+            user: true,
+          },
+        })
+        .then((response) => response.map((user) => user.user))
+  ),
 });
