@@ -67,7 +67,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
             <ProfileIcon src={session.user.image} css={{ size: '$8' }} alt="" />
           </Link>
           <Input css={{ br: '$2', p: '$3' }} placeholder="Faça um comentário" />
-          <Button type="submit" variant={'gray'} css={{ minWidth: '72px' }}>
+          <Button type="submit" css={{ minWidth: '72px' }}>
             Enviar
           </Button>
         </Flex>
