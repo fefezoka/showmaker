@@ -59,47 +59,50 @@ export const user = router({
         }),
       };
     }),
-  search: procedure.input(z.object({ q: z.string() })).query(async ({ ctx, input }) => {
-    const response = (await ctx.prisma.user.aggregateRaw({
-      pipeline: [
-        {
-          $search: {
-            index: 'name',
-            text: {
-              query: input.q,
-              path: 'name',
-              fuzzy: {},
+  search: procedure
+    .input(z.object({ q: z.string(), limit: z.number().optional().default(6) }))
+    .query(async ({ ctx, input }) => {
+      const response = (await ctx.prisma.user.aggregateRaw({
+        pipeline: [
+          {
+            $search: {
+              index: 'name',
+              text: {
+                query: input.q,
+                path: 'name',
+                fuzzy: {},
+              },
             },
           },
-        },
-        {
-          $project: {
-            _id: true,
-            name: true,
-            image: true,
-            createdAt: true,
-            score: { $meta: 'searchScore' },
+          { $limit: input.limit },
+          {
+            $project: {
+              _id: true,
+              name: true,
+              image: true,
+              createdAt: true,
+              score: { $meta: 'searchScore' },
+            },
           },
-        },
-      ],
-    })) as any;
+        ],
+      })) as any;
 
-    if (response.length === 0 || !response) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Posts not found',
-      });
-    }
+      if (response.length === 0 || !response) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Posts not found',
+        });
+      }
 
-    const filter = response.map((r: any) => ({
-      id: r._id,
-      name: r.name,
-      image: r.image,
-      createdAt: new Date(r.createdAt['$date']),
-    }));
+      const filter = response.map((r: any) => ({
+        id: r._id,
+        name: r.name,
+        image: r.image,
+        createdAt: new Date(r.createdAt['$date']),
+      }));
 
-    return filter as User[];
-  }),
+      return filter as User[];
+    }),
 
   osu: procedure
     .input(z.object({ username: z.string() }))

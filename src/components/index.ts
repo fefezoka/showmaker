@@ -12,3 +12,4 @@ export { EditPost } from './EditPost';
 export { EditComment } from './EditComment';
 export { CreatePost, gameOptions } from './CreatePost';
 export { PostLikedByUsers } from './PostLikedByUsers';
+export { ListUsers } from './ListUsers';

@@ -28,11 +28,11 @@ const StyledButton = styled('button', {
   variants: {
     size: {
       1: {
-        br: '$1',
-        minWidth: 52,
+        br: '$2',
+        minWidth: 56,
         px: '$2',
         fontSize: '$1',
-        height: '$7',
+        height: 36,
       },
       2: {
         br: '$2',
@@ -45,7 +45,7 @@ const StyledButton = styled('button', {
     variant: {
       red: {
         bc: '$red10',
-        boxShadow: 'inset 0 0 0 1px $colors$red8',
+        bs: 'inset 0 0 0 1px $colors$red8',
 
         '&:hover': {
           bc: '$red9',
@@ -53,7 +53,7 @@ const StyledButton = styled('button', {
       },
       blue: {
         bc: '$blue10',
-        boxShadow: 'inset 0 0 0 1px $colors$blue8',
+        bs: 'inset 0 0 0 1px $colors$blue8',
 
         '&:hover': {
           bc: '$blue9',
@@ -67,7 +67,7 @@ const StyledButton = styled('button', {
         borderBottom: '2px solid transparent',
         px: '$4',
         color: '$slate11',
-        boxShadow: 'none',
+        bs: 'none',
 
         '&:hover': {
           bc: 'transparent',
