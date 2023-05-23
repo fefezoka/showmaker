@@ -68,12 +68,17 @@ export const PostSkeleton = () => {
         </Flex>
         <Line css={{ height: 22, width: 80 }} />
       </Flex>
-      <Line css={{ height: 22, width: 240, mt: '$2' }} />
-      <Box css={{ mt: '$4' }}>
-        <Rectangle css={{ pb: '56.25%', br: '$6' }} />
+      <Line css={{ height: 22, width: 240, mt: '$1' }} />
+      <Box css={{ mt: '$3', '@bp2': { mt: '$4' } }}>
+        <Rectangle css={{ pb: '56.25%', br: '$4' }} />
       </Box>
       {session && (
-        <Flex align={'center'} justify={'center'} css={{ mt: '$4' }} gap={'4'}>
+        <Flex
+          align={'center'}
+          justify={'center'}
+          css={{ mt: '$2', '@bp2': { mt: '$4' } }}
+          gap={{ '@initial': '2', '@bp2': '4' }}
+        >
           <Circle css={{ size: 40 }} />
           <Line css={{ height: 40, width: '100%' }} />
           <Rectangle css={{ height: 40, width: 88 }} />
@@ -85,17 +90,13 @@ export const PostSkeleton = () => {
 
 export const ProfileSkeleton = () => {
   return (
-    <Box css={{ p: '$6', '@bp2': { p: '$4' }, pb: 0 }}>
-      <Flex gap={'4'} css={{ mb: '$6' }} align={'center'}>
+    <Box css={{ p: '$4', borderBottom: '2px solid $bg2', pb: 0 }}>
+      <Flex gap={'4'} css={{ mb: '$4' }} align={'center'}>
         <Circle css={{ size: 84, '@bp2': { size: 144 } }} />
         <Line css={{ height: 24, width: 192 }} />
       </Flex>
       <Line rows={2} css={{ height: 16, width: 200 }} />
-      <Flex
-        css={{ mt: '$4', borderBottom: '2px solid $bg2' }}
-        justify={'center'}
-        gap={'4'}
-      >
+      <Flex css={{ mt: '$4' }} justify={'center'} gap={'4'}>
         <Flex css={{ height: 36, width: 110 }} align={'center'}>
           <Line css={{ height: 16, width: '100%' }} />
         </Flex>
