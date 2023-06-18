@@ -31,7 +31,13 @@ export const ListUsers = ({
       {friendshipStatuses &&
         users?.map((user) => (
           <Flex
-            css={{ px: '$3', mt: '$2', ...(!transparent && { bc: '$bg2', br: '$2' }) }}
+            css={{
+              px: '$3',
+              py: '$1',
+              transition: 'all 100ms',
+              '&:hover': { bc: '$bg2' },
+              ...(!transparent && { bc: '$bg2', br: '$2' }),
+            }}
             key={user.id}
             justify={'between'}
             align={'center'}
@@ -54,7 +60,7 @@ export const ListUsers = ({
             {user.id !== session?.user.id && (
               <Button
                 size={'1'}
-                css={{ p: '$2', fontSize: '$2' }}
+                css={{ fontSize: '$2' }}
                 onClick={() =>
                   friendshipStatuses[user.id].following
                     ? unfollow.mutate({ followingUser: user })

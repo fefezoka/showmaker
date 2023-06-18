@@ -47,10 +47,10 @@ export const global = globalCss({
   },
 
   '::-webkit-scrollbar-track': {
-    backgroundColor: '$bg2',
+    backgroundColor: '$bg3',
   },
 
   '::-webkit-scrollbar-thumb': {
-    backgroundColor: '$bg3',
+    backgroundColor: '$bg4',
   },
 });

@@ -1,5 +1,6 @@
 import React from 'react';
 import { IoHome, IoPerson } from 'react-icons/io5';
+import { BsGearFill } from 'react-icons/bs';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -65,11 +66,11 @@ export const Menu = () => {
         minWidth: '100vw',
         zIndex: '$menu',
         p: '0 $5',
-        borderTop: '2px solid $bg2',
+        borderTop: '1px solid $bg4',
 
         '@bp2': {
           borderTop: 'unset',
-          borderRight: '2px solid $bg2',
+          borderRight: '1px solid $bg4',
           position: 'sticky',
           top: 0,
           height: '100vh',
@@ -100,9 +101,15 @@ export const Menu = () => {
             {isDesktop && <Heading size="2">Perfil</Heading>}
           </Line>
         </Link>
+        <Link href={session ? `/config` : '#'} prefetch={false}>
+          <Line active={router.asPath === `/config`}>
+            <BsGearFill size={20} />
+            {isDesktop && <Heading size="2">Configurações</Heading>}
+          </Line>
+        </Link>
         <Box
           css={{
-            p: '$4',
+            p: '$2 $7 $4 0',
           }}
         >
           <CreatePost />

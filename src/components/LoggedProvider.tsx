@@ -34,7 +34,7 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
       css={{
         br: '$1',
         transition: 'all 200ms',
-        bc: '$bg2',
+        bc: '$bg3',
       }}
       key={provider.name}
     >
@@ -43,12 +43,12 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
         justify={'center'}
         css={{
           br: '$1',
-          height: 72,
-          width: 72,
+          height: 76,
+          width: 76,
           bc: provider.bc,
         }}
       >
-        <provider.logo size={32} />
+        <provider.logo size={32} color="white" />
       </Flex>
       <Box css={{ ta: 'center' }}>
         <Heading css={{ lh: 'unset' }}>
@@ -65,7 +65,7 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
         css={{ mr: '$4' }}
         onClick={() => handleDisconnectAccount(provider.name)}
       >
-        <Box as={IoRemoveCircle} size={24} css={{ color: '$slate12' }} />
+        <Box as={IoRemoveCircle} size={24} />
       </Box>
     </Flex>
   );

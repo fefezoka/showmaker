@@ -19,27 +19,25 @@ const StyledButton = styled('button', {
   jc: 'center',
   flexShrink: 0,
   cursor: 'pointer',
-
-  color: '$slate12',
-  fontWeight: 500,
+  br: '$pill',
+  color: 'white',
+  fontWeight: 600,
   transition: 'background-color 200ms, border-bottom-color 300ms ease-out',
   letterSpacing: '-.022em',
 
   variants: {
     size: {
       1: {
-        br: '$2',
-        minWidth: 56,
-        px: '$2',
+        minWidth: 72,
+        px: '$3',
         fontSize: '$1',
         height: 36,
       },
       2: {
-        br: '$2',
-        minWidth: 80,
+        minWidth: 88,
         fontSize: '$3',
-        px: '$3',
-        height: '$8',
+        px: '$4',
+        height: 40,
       },
     },
     variant: {

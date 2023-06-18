@@ -34,7 +34,7 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
   color: '$text-primary',
   bc: '$bg1',
   br: '$3',
-  border: '2px solid $bg2',
+  border: '1px solid $bg4',
 
   '&[data-state="open"]': {
     animation: `${fade} 200ms`,
@@ -72,7 +72,7 @@ export const ModalContent = ({
               size: 48,
               br: '$round',
               bc: '$bg1',
-              border: '2px solid $bg2',
+              border: '1px solid $bg4',
             }}
           >
             <IoClose size={24} />

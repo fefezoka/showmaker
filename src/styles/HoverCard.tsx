@@ -20,10 +20,11 @@ export const StyledHoverCardContent = styled(HoverCardPrimitive.Content, {
   br: '$3',
   width: '440px',
   zIndex: '$modal',
-  border: '2px solid $bg2',
+  border: '1px solid $bg4',
   transition: 'all 200ms ease-out',
   animation: `250ms ${fade}`,
-  bs: '0px 0px 16px black',
+  bs: '0px 0px 8px black',
+  overflow: 'hidden',
 });
 
 type HoverCardContentProps = HoverCardPrimitive.HoverCardContentProps &

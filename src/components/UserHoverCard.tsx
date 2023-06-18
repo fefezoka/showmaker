@@ -65,7 +65,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
         </Flex>
       </HoverCardTrigger>
       <HoverCardContent>
-        <Box css={{ p: '$5 $5 $3 $5', borderBottom: '2px solid $bg2' }}>
+        <Box css={{ p: '$5 $5 $3 $5', borderBottom: '1px solid $bg4' }}>
           <Flex align={'center'} justify={'between'}>
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <ProfileIcon

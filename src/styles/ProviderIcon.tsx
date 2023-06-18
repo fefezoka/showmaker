@@ -40,6 +40,7 @@ const options: Record<Providers, IOptions> = {
 };
 
 const StyledIcon = styled('div', {
+  color: 'white',
   transition: 'all 300ms ease-in',
   '&:hover': {
     filter: 'brightness(120%) saturate(120%)',
@@ -81,7 +82,7 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
       <Flex
         as={options[provider].icon}
         css={{
-          size: Number(css?.size) || 24 * options[provider].sizeWrapperRatio,
+          size: (Number(css?.size) || 24) * options[provider].sizeWrapperRatio,
           '@bp2': {
             size:
               (Number(css?.['@bp2']?.size || css?.size) || 32) *

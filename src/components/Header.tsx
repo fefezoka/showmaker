@@ -76,7 +76,7 @@ export const Header = () => {
             <Input placeholder="Procurar" radius={'2'} />
             <Box css={{ position: 'absolute', right: '$4', top: '$3' }}>
               <Box as={'button'} type="submit">
-                <IoSearchSharp color="white" />
+                <IoSearchSharp color="var(--colors-slate12)" />
               </Box>
             </Box>
           </Box>

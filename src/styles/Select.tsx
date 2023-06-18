@@ -43,9 +43,9 @@ export const Select = ({
               ...baseStyles,
               fontSize: '14px',
               backgroundColor: 'var(--colors-bg2)',
-              boxShadow: 'inset 0 0 0 1px var(--colors-bg3)',
+              boxShadow: 'inset 0 0 0 1px var(--colors-bg4)',
               border: 0,
-              borderRadius: '4px',
+              borderRadius: '8px',
             }),
             container: (baseStyles) => ({
               ...baseStyles,

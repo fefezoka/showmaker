@@ -11,7 +11,7 @@ const StyledInput = styled('input', {
   bc: '$bg2',
   color: '$slate12',
   minHeight: 40,
-  boxShadow: 'inset 0 0 0 1px $colors$bg3',
+  boxShadow: 'inset 0 0 0 1px $colors$bg4',
 
   '&::placeholder': {
     color: '$slate11',
@@ -26,7 +26,7 @@ const StyledInput = styled('input', {
         px: '$3',
       },
       '2': {
-        br: '$7',
+        br: '$pill',
         px: '$5',
       },
     },

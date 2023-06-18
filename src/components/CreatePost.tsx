@@ -80,7 +80,18 @@ export const CreatePost = () => {
       }}
     >
       <ModalTrigger asChild>
-        <Button onClick={() => !session && signIn('discord')}>Postar vídeo</Button>
+        <Button
+          css={{
+            width: '100%',
+            br: '$pill',
+            height: 48,
+            fontSize: '$4',
+            fontWeight: 600,
+          }}
+          onClick={() => !session && signIn('discord')}
+        >
+          Postar vídeo
+        </Button>
       </ModalTrigger>
       <ModalContent
         onInteractOutside={(e) =>
@@ -154,7 +165,8 @@ export const CreatePost = () => {
                       css={{
                         width: '100%',
                         height: '120px',
-                        border: '2px dashed $gray10',
+                        border: '2px dashed $bg4',
+                        bc: '$bg2',
                         mt: '$4',
                         br: '$2',
                         p: '$3',

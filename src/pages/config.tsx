@@ -1,13 +1,21 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { getSession, signIn } from 'next-auth/react';
-import { IoAddCircle, IoLogoTwitch, IoHelp } from 'react-icons/io5';
+import {
+  IoAddCircle,
+  IoLogoTwitch,
+  IoHelp,
+  IoCheckmarkCircleOutline,
+  IoCheckmarkCircle,
+} from 'react-icons/io5';
 import { SiOsu } from 'react-icons/si';
 import { NextSeo } from 'next-seo';
 import { IconType } from 'react-icons/lib';
 import { trpc } from '@utils';
 import { LoggedProvider, Main } from '@components';
 import { Box, Flex, Grid, Heading, Text } from '@styles';
+import { useTheme } from 'next-themes';
+import { lightTheme, theme } from 'stitches.config';
 
 type providers = 'osu' | 'twitch';
 
@@ -43,6 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function Config() {
   const { data: accounts, isLoading } = trpc.auth.accounts.useQuery();
+  const { setTheme, theme: activeTheme } = useTheme();
 
   if (isLoading) {
     return <Main />;
@@ -121,6 +130,100 @@ export default function Config() {
               </Flex>
             </Box>
           ))}
+      </Box>
+      <Box as={'section'}>
+        <Heading size="2">Temas</Heading>
+        <Flex gap={'4'} css={{ '& > div': { border: '2px solid $blue9' }, mt: '$2' }}>
+          <Grid
+            css={{
+              width: '100%',
+              height: 100,
+              position: 'relative',
+              br: '$3',
+              overflow: 'hidden',
+            }}
+            className={theme}
+            onClick={() => {
+              document.documentElement.classList.replace('light-theme', 'dark-theme');
+              document.documentElement.style.setProperty('color-scheme', 'dark');
+              setTheme('dark');
+            }}
+          >
+            <Box css={{ bc: theme.colors.bg1.value }} />
+            <Box css={{ bc: theme.colors.bg2.value }} />
+            <Box css={{ bc: theme.colors.bg3.value }} />
+            <Box css={{ bc: theme.colors.bg4.value }} />
+
+            <Box
+              css={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <Flex align={'center'} gap={'4'}>
+                {activeTheme === 'dark' ? (
+                  <IoCheckmarkCircle size={24} color="var(--colors-blue9)" />
+                ) : (
+                  <Box
+                    css={{
+                      bc: theme.colors.bg4.value,
+                      size: 22,
+                      br: '$round',
+                    }}
+                  />
+                )}
+                <Heading>Escuro</Heading>
+              </Flex>
+            </Box>
+          </Grid>
+          <Grid
+            css={{
+              width: '100%',
+              height: 100,
+              position: 'relative',
+              br: '$3',
+              overflow: 'hidden',
+            }}
+            className={lightTheme}
+            onClick={() => {
+              document.documentElement.classList.replace('dark-theme', 'light-theme');
+              document.documentElement.style.setProperty('color-scheme', 'light');
+              setTheme('light');
+            }}
+          >
+            <Box css={{ bc: lightTheme.colors.bg1.value }} />
+            <Box css={{ bc: lightTheme.colors.bg2.value }} />
+            <Box css={{ bc: lightTheme.colors.bg3.value }} />
+            <Box css={{ bc: lightTheme.colors.bg4.value }} />
+
+            <Box
+              css={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              <Flex align={'center'} gap={'4'}>
+                {activeTheme === 'light' ? (
+                  <IoCheckmarkCircle size={24} color="var(--colors-blue9)" />
+                ) : (
+                  <Box
+                    css={{
+                      bc: lightTheme.colors.bg4.value,
+                      size: 22,
+                      br: '$round',
+                    }}
+                  />
+                )}
+
+                <Heading>Claro</Heading>
+              </Flex>
+            </Box>
+          </Grid>
+        </Flex>
       </Box>
     </Main>
   );

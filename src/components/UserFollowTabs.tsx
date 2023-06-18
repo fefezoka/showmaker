@@ -41,7 +41,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
           onValueChange={(value) => setTab(value as typeof defaultTab)}
         >
           <TabsList asChild>
-            <Flex justify={'center'} css={{ borderBottom: '2px solid $bg2' }}>
+            <Flex justify={'center'} css={{ borderBottom: '1px solid $bg4' }}>
               <TabsTrigger value="followers" asChild>
                 <Button ghost active={tab === 'followers'}>
                   Seguidores

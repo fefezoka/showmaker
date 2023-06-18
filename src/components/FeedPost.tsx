@@ -38,7 +38,12 @@ export const FeedPost = forwardRef<
   const unlikePost = useUnlikePost();
 
   return (
-    <Box as={'section'} {...props} ref={forwardRef}>
+    <Box
+      as={'section'}
+      {...props}
+      ref={forwardRef}
+      css={{ transition: 'all 200ms', '&:hover': { bc: '$bg2' } }}
+    >
       <Flex justify={'between'}>
         <UserHoverCard user={post.user}>
           <Flex align={'center'} gap={'2'} css={{ us: 'none' }}>

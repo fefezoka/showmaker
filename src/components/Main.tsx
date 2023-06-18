@@ -35,7 +35,7 @@ export const Main = memo(
 
                 '& > section': {
                   p: '$4',
-                  borderBottom: '2px solid $bg2',
+                  borderBottom: '1px solid $bg4',
                 },
 
                 '& section:first-of-type': {
@@ -43,7 +43,7 @@ export const Main = memo(
                 },
 
                 '@bp2': {
-                  borderRight: '2px solid $bg2',
+                  borderRight: '1px solid $bg4',
 
                   '& > section': {
                     p: '$5',
