@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
+import { GoSignOut } from 'react-icons/go';
 import { useRouter } from 'next/router';
 import { useIsDesktop, useScrollDirection } from '@hooks';
 import {
@@ -118,14 +119,10 @@ export const Header = () => {
                   <MenuSeparator />
                 </>
               )}
-              <MenuItem onClick={() => router.push('/')}>Página inicial</MenuItem>
-              <MenuItem onClick={() => router.push('/' + session.user.name)}>
-                Perfil
-              </MenuItem>
-              <MenuItem onClick={() => router.push('/config')}>Configurações</MenuItem>
               <MenuSeparator />
               <MenuItem theme={'alert'} onClick={() => signOut()}>
-                Sair
+                <GoSignOut />
+                Desconectar
               </MenuItem>
             </MenuContent>
           </Menu>

@@ -2,11 +2,11 @@ import React from 'react';
 import { IoHome, IoPerson } from 'react-icons/io5';
 import { BsGearFill } from 'react-icons/bs';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { styled } from 'stitches.config';
 import { CreatePost } from '@components';
-import { Box, Flex, Heading } from '@styles';
+import { Box, Button, Flex, Heading, Text } from '@styles';
 import { useIsDesktop } from '@hooks';
 
 export const Line = styled('div', {
@@ -56,7 +56,7 @@ export const Menu = () => {
   const router = useRouter();
   const isDesktop = useIsDesktop();
 
-  return isDesktop ? (
+  return (
     <Box
       as={'aside'}
       css={{
@@ -84,11 +84,14 @@ export const Menu = () => {
         direction={{ '@initial': 'row', '@bp2': 'column' }}
         justify={{ '@initial': 'between' }}
       >
-        <Link href={'/'} prefetch={false}>
-          <Line active>
-            {isDesktop ? <Heading size="2">Show Maker</Heading> : <Heading>SM</Heading>}
-          </Line>
-        </Link>
+        {isDesktop && (
+          <Link href={'/'} prefetch={false}>
+            <Line active>
+              <Heading size="2">Show Maker</Heading>
+            </Line>
+          </Link>
+        )}
+
         <Link href={'/'} prefetch={false}>
           <Line active={router.pathname === '/'}>
             <IoHome size={20} />
@@ -107,16 +110,29 @@ export const Menu = () => {
             {isDesktop && <Heading size="2">Configurações</Heading>}
           </Line>
         </Link>
-        <Box
-          css={{
-            p: '$2 $7 $4 0',
-          }}
-        >
-          <CreatePost />
-        </Box>
+        {isDesktop && (
+          <Box
+            css={{
+              p: '$2 $7 $4 0',
+            }}
+          >
+            <CreatePost>
+              <Button
+                css={{
+                  width: '100%',
+                  br: '$pill',
+                  height: 48,
+                  fontSize: '$4',
+                  fontWeight: 600,
+                }}
+                onClick={() => !session && signIn('discord')}
+              >
+                Postar vídeo
+              </Button>
+            </CreatePost>
+          </Box>
+        )}
       </Flex>
     </Box>
-  ) : (
-    <></>
   );
 };

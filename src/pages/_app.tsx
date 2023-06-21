@@ -5,7 +5,7 @@ import { DefaultSeo } from 'next-seo';
 import NextNProgress from 'nextjs-progressbar';
 import { ogimage } from '@assets';
 import { trpc } from '@utils';
-import { global } from '@styles';
+import { ToastContainer, global } from '@styles';
 import { ThemeProvider } from 'next-themes';
 import { lightTheme } from '../../stitches.config';
 
@@ -33,6 +33,7 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
           additionalMetaTags={[{ name: 'theme-color', content: '#000' }]}
         />
         <Component {...pageProps} />
+        <ToastContainer />
         <NextNProgress
           color="linear-gradient(90deg, var(--colors-violet11), var(--colors-blue11))"
           options={{ trickle: false, speed: 100, showSpinner: false }}

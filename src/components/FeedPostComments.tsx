@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
+import { FiDelete, FiEdit } from 'react-icons/fi';
 import { diffBetweenDates, trpc } from '@utils';
 import { Post } from '@types';
 import {
@@ -115,7 +116,10 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
                   </MenuTrigger>
                   <MenuContent>
                     <EditComment comment={comment} postId={post.id}>
-                      <MenuItem onSelect={(e) => e.preventDefault()}>Editar</MenuItem>
+                      <MenuItem onSelect={(e) => e.preventDefault()}>
+                        <FiEdit />
+                        Editar
+                      </MenuItem>
                     </EditComment>
                     <MenuSeparator />
                     <MenuItem
@@ -124,6 +128,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
                         deleteComment.mutate({ commentId: comment.id, postId: post.id })
                       }
                     >
+                      <FiDelete />
                       Apagar
                     </MenuItem>
                   </MenuContent>

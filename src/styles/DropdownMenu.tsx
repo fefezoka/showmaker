@@ -17,13 +17,15 @@ const StyledMenuContent = styled(DropdownMenu.Content, {
 export const MenuItem = styled(DropdownMenu.Item, {
   color: '$slate12',
   fontSize: '$3',
-  padding: '$2 $4',
+  padding: '$3 $4',
   cursor: 'pointer',
   width: '100%',
+  display: 'flex',
+  gap: '$2',
 
   '&:hover': {
     outline: 'none',
-    backgroundColor: '$bg3',
+    backgroundColor: '$bg4',
   },
 
   '&[data-disabled]': {

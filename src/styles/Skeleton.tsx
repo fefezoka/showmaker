@@ -5,10 +5,10 @@ import { Box, Flex } from '@styles';
 
 const Glow = keyframes({
   '0%, 100%': {
-    backgroundColor: '$bg2',
+    backgroundColor: '$bg3',
   },
   '50%': {
-    backgroundColor: '$bg3',
+    backgroundColor: '$bg4',
   },
 });
 
@@ -80,8 +80,8 @@ export const PostSkeleton = () => {
           gap={{ '@initial': '2', '@bp2': '4' }}
         >
           <Circle css={{ size: 40 }} />
-          <Line css={{ height: 40, width: '100%' }} />
-          <Rectangle css={{ height: 40, width: 88 }} />
+          <Line css={{ height: 40, width: '100%', br: '$pill' }} />
+          <Rectangle css={{ height: 40, width: 88, br: '$pill' }} />
         </Flex>
       )}
     </Box>

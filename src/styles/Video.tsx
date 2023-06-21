@@ -30,6 +30,7 @@ export const Video = ({ videoUrl, thumbnailUrl, ...props }: IVideo) => {
         cursor: 'pointer',
         position: 'relative',
         pb: '56.25%',
+        bs: '0px 0px 0px 1px var(--colors-bg4)',
       }}
     >
       <StyledVideo

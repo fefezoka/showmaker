@@ -2,6 +2,7 @@ import Link from 'next/link';
 import React, { forwardRef } from 'react';
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
+import { FiEdit, FiCopy, FiDelete, FiDownload } from 'react-icons/fi';
 import { useSession } from 'next-auth/react';
 import { Post } from '@types';
 import { downloadVideo, diffBetweenDates } from '@utils';
@@ -23,6 +24,7 @@ import {
   MenuItem,
   MenuTrigger,
   MenuSeparator,
+  toast,
 } from '@styles';
 import { useDeletePost, useLikePost, useUnlikePost } from '@hooks';
 
@@ -99,13 +101,13 @@ export const FeedPost = forwardRef<
                     size: 24,
                     p: '2px',
                     br: '$round',
-                    transition: 'all 300ms ease-out',
+                    transition: 'all 200ms ease-out',
                     color: '$slate11',
 
                     '&:hover': {
-                      transition: 'all 300ms ease-in',
+                      transition: 'all 200ms ease-in',
                       color: '$blue10',
-                      bc: '$bg2',
+                      bc: '$bg4',
                     },
 
                     '@bp2': {
@@ -118,25 +120,34 @@ export const FeedPost = forwardRef<
             <MenuContent>
               {post.user.id === session?.user.id && (
                 <EditPost post={post}>
-                  <MenuItem onSelect={(e) => e.preventDefault()}>Editar</MenuItem>
+                  <MenuItem onSelect={(e) => e.preventDefault()}>
+                    <FiEdit />
+                    Editar
+                  </MenuItem>
                 </EditPost>
               )}
               <MenuItem
-                onClick={() =>
+                onClick={() => {
                   navigator.clipboard.writeText(
                     window.location.origin + '/post/' + post.id
-                  )
-                }
+                  );
+                  toast.success('Link copiado com sucesso');
+                }}
               >
+                <FiCopy />
                 Copiar link
               </MenuItem>
-              <MenuItem onClick={() => downloadVideo(post)}>Baixar vídeo</MenuItem>
+              <MenuItem onClick={() => downloadVideo(post)}>
+                <FiDownload />
+                Baixar vídeo
+              </MenuItem>
               {post.user.id === session?.user.id && (
                 <>
                   <MenuSeparator />
                   <Modal>
                     <ModalTrigger>
                       <MenuItem theme={'alert'} onSelect={(e: any) => e.preventDefault()}>
+                        <FiDelete />
                         Apagar vídeo
                       </MenuItem>
                     </ModalTrigger>

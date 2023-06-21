@@ -43,3 +43,4 @@ export {
   Line,
   Rectangle,
 } from './Skeleton';
+export { ToastContainer, toast } from './Toast';

@@ -14,6 +14,7 @@ import {
   ModalTrigger,
   Select,
   Text,
+  toast,
 } from '@styles';
 import { Post } from '@types';
 import { useEditPost } from '@hooks';
@@ -56,6 +57,7 @@ export const EditPost = ({
 
     editPost.mutate({ postId: post.id, title: data.title, game: data.game });
     setOpen(false);
+    toast.success('Post editado com sucesso!');
   };
 
   return (

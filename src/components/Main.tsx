@@ -22,7 +22,7 @@ export const Main = memo(
             }}
           >
             <h2>Show Maker</h2>
-            <Image src={spinner} alt="" priority loading="eager" height={52} width={52} />
+            <Image src={spinner} alt="" priority loading="eager" height={44} width={44} />
           </div>
         )}
         {status !== 'loading' && (

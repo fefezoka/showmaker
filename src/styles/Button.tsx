@@ -17,7 +17,7 @@ const StyledButton = styled('button', {
   },
   display: 'inline-flex',
   jc: 'center',
-  flexShrink: 0,
+  fs: 0,
   cursor: 'pointer',
   br: '$pill',
   color: 'white',
@@ -43,7 +43,7 @@ const StyledButton = styled('button', {
     variant: {
       red: {
         bc: '$red10',
-        bs: 'inset 0 0 0 1px $colors$red8',
+        bs: 'inset 0 0 0 1px $colors$red9',
 
         '&:hover': {
           bc: '$red9',
@@ -51,7 +51,7 @@ const StyledButton = styled('button', {
       },
       blue: {
         bc: '$blue10',
-        bs: 'inset 0 0 0 1px $colors$blue8',
+        bs: 'inset 0 0 0 1px $colors$blue9',
 
         '&:hover': {
           bc: '$blue9',
@@ -69,7 +69,7 @@ const StyledButton = styled('button', {
 
         '&:hover': {
           bc: 'transparent',
-          borderBottomColor: '$gray6',
+          borderBottomColor: '$bg4',
         },
       },
     },

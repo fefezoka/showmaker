@@ -32,9 +32,10 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
       justify={'between'}
       align={'center'}
       css={{
-        br: '$1',
+        br: '$2',
         transition: 'all 200ms',
         bc: '$bg3',
+        overflow: 'hidden',
       }}
       key={provider.name}
     >
@@ -42,9 +43,8 @@ export const LoggedProvider = ({ provider, account }: ILoggedProvider) => {
         align={'center'}
         justify={'center'}
         css={{
-          br: '$1',
-          height: 76,
-          width: 76,
+          height: 80,
+          width: 80,
           bc: provider.bc,
         }}
       >

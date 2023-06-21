@@ -133,14 +133,16 @@ export default function Config() {
       </Box>
       <Box as={'section'}>
         <Heading size="2">Temas</Heading>
-        <Flex gap={'4'} css={{ '& > div': { border: '2px solid $blue9' }, mt: '$2' }}>
+        <Flex gap={'4'} css={{ mt: '$2' }}>
           <Grid
+            columns={'4'}
             css={{
               width: '100%',
-              height: 100,
+              height: 80,
               position: 'relative',
               br: '$3',
               overflow: 'hidden',
+              cursor: 'pointer',
             }}
             className={theme}
             onClick={() => {
@@ -162,7 +164,7 @@ export default function Config() {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              <Flex align={'center'} gap={'4'}>
+              <Flex align={'center'} gap={'2'}>
                 {activeTheme === 'dark' ? (
                   <IoCheckmarkCircle size={24} color="var(--colors-blue9)" />
                 ) : (
@@ -179,12 +181,14 @@ export default function Config() {
             </Box>
           </Grid>
           <Grid
+            columns={'4'}
             css={{
               width: '100%',
-              height: 100,
+              height: 80,
               position: 'relative',
               br: '$3',
               overflow: 'hidden',
+              cursor: 'pointer',
             }}
             className={lightTheme}
             onClick={() => {
@@ -206,7 +210,7 @@ export default function Config() {
                 transform: 'translate(-50%, -50%)',
               }}
             >
-              <Flex align={'center'} gap={'4'}>
+              <Flex align={'center'} gap={'2'}>
                 {activeTheme === 'light' ? (
                   <IoCheckmarkCircle size={24} color="var(--colors-blue9)" />
                 ) : (

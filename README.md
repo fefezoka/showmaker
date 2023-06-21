@@ -48,4 +48,4 @@ Configurando o arquivo .env.example e iniciando o projeto
 - **Perfil de usuário**
 - **Seguir usuários**
 - **Listagem de seguindo e seguidores**
-- **Página de configurações** Nessa aba é possível conectar sua conta com alguns providers (twitch e osu) que aparecerão no perfil do usuário
+- **Página de configurações** Nessa aba é possível alterar o tema (claro e escuro) e conectar sua conta com alguns providers (twitch e osu) que aparecerão no perfil do usuário.

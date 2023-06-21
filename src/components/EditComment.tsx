@@ -10,6 +10,7 @@ import {
   ModalTitle,
   ModalTrigger,
   Text,
+  toast,
 } from '@styles';
 import { PostComment } from '@types';
 import React, { FormEvent, useState } from 'react';
@@ -33,6 +34,7 @@ export const EditComment = ({ comment, postId, children }: IEditComment) => {
     }
 
     editComment.mutate({ postId: postId, message, commentId });
+    toast.success('Comentário editado com sucesso!');
   };
 
   return (

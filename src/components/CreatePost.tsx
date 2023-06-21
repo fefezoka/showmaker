@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import { z } from 'zod';
@@ -51,7 +51,7 @@ const createPostSchema = z.object({
 
 type CreatePostData = z.infer<typeof createPostSchema>;
 
-export const CreatePost = () => {
+export const CreatePost = ({ children }: { children: ReactNode }) => {
   const [open, setOpen] = useState<boolean>();
   const { data: session } = useSession();
   const createPost = useCreatePost();
@@ -79,20 +79,7 @@ export const CreatePost = () => {
         reset();
       }}
     >
-      <ModalTrigger asChild>
-        <Button
-          css={{
-            width: '100%',
-            br: '$pill',
-            height: 48,
-            fontSize: '$4',
-            fontWeight: 600,
-          }}
-          onClick={() => !session && signIn('discord')}
-        >
-          Postar vídeo
-        </Button>
-      </ModalTrigger>
+      <ModalTrigger asChild>{children}</ModalTrigger>
       <ModalContent
         onInteractOutside={(e) =>
           createPost.isLoading ? e.preventDefault() : setOpen(false)
