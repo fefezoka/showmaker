@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function Config() {
   const { data: accounts, isLoading } = trpc.auth.accounts.useQuery();
-  const { setTheme, theme: activeTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
 
   if (isLoading) {
     return <Main />;
@@ -159,7 +159,7 @@ export default function Config() {
               }}
             >
               <Flex align={'center'} gap={'2'}>
-                {activeTheme === 'dark' ? (
+                {resolvedTheme === 'dark' ? (
                   <IoCheckmarkCircle size={24} color="var(--colors-blue9)" />
                 ) : (
                   <Box
@@ -205,7 +205,7 @@ export default function Config() {
               }}
             >
               <Flex align={'center'} gap={'2'}>
-                {activeTheme === 'light' ? (
+                {resolvedTheme === 'light' ? (
                   <IoCheckmarkCircle size={24} color="var(--colors-blue9)" />
                 ) : (
                   <Box
