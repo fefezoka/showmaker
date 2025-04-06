@@ -88,7 +88,7 @@ export default function Profile() {
             align={'center'}
             css={{ mb: '$3', '@bp2': { mb: '$5' } }}
           >
-            <Flex gap={{ '@initial': '3', '@bp2': '6' }} align="center">
+            <Flex gap={{ '@initial': '3', '@bp2': '5' }} align="center">
               <FullProfileIcon
                 src={user.image}
                 css={{ size: 84, '@bp2': { size: 144 } }}
