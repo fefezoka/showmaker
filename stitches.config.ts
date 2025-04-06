@@ -107,9 +107,9 @@ export const {
       ...blackA,
 
       bg1: 'rgb(14, 31, 47)',
-      bg2: 'rgb(27, 43, 54)',
-      bg3: 'rgb(33, 52, 67)',
-      bg4: 'rgb(37, 67, 77)',
+      bg2: 'rgb(26, 42, 60)',
+      bg3: 'rgb(33, 52, 73)',
+      bg4: 'rgb(37, 67, 85)',
       overlay: 'rgb(18, 27, 32, .75)',
       twitch: '#6b2598',
       osu: '#e4649d',
