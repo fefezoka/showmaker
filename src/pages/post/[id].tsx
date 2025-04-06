@@ -71,6 +71,8 @@ export default function Post({ id }: Props) {
           title={post.title || ''}
           openGraph={{
             images: [{ url: post.thumbnailUrl }],
+            siteName: '',
+            description: '',
             videos: [{ url: post.videoUrl }],
             type: 'video.other',
           }}
