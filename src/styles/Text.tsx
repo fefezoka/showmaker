@@ -103,6 +103,9 @@ export const Text = styled('span', {
       gray: {
         color: '$slate11',
       },
+      white: {
+        color: 'White',
+      },
       contrast: {
         color: '$slate12',
       },
