@@ -9,6 +9,7 @@ const nextConfig = {
       'res.cloudinary.com',
       'osu.ppy.sh',
       'a.ppy.sh',
+      'assets.ppy.sh',
     ],
   },
 };
