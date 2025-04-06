@@ -14,5 +14,9 @@ export const diffBetweenDates = (date: Date) => {
   const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
   const rtf = new Intl.RelativeTimeFormat('pt-BR', { numeric: 'auto' });
 
+  if (unitIndex === 5) {
+    return date.toLocaleDateString('br').slice(0, 10).replace(/-/g, '/');
+  }
+
   return rtf.format(Math.ceil(deltaSeconds / divisor), units[unitIndex]);
 };
