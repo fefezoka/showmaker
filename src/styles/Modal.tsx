@@ -1,8 +1,7 @@
 import React from 'react';
 import { styled, keyframes } from 'stitches.config';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { Flex, overlayStyles } from '@styles';
-import { IoClose } from 'react-icons/io5';
+import { overlayStyles } from '@styles';
 
 const fade = keyframes({
   from: {
@@ -46,40 +45,12 @@ export const StyledModalContent = styled(DialogPrimitive.Content, {
 });
 
 type ModalContentProps = DialogPrimitive.DialogContentProps &
-  React.ComponentProps<typeof StyledModalContent> & {
-    closeButton?: boolean;
-  };
+  React.ComponentProps<typeof StyledModalContent>;
 
-export const ModalContent = ({
-  children,
-  closeButton = true,
-  ...props
-}: ModalContentProps) => (
+export const ModalContent = ({ children, ...props }: ModalContentProps) => (
   <DialogPrimitive.Portal>
     <ModalOverlay />
-    <StyledModalContent {...props}>
-      {children}
-      {closeButton && (
-        <ModalClose asChild>
-          <Flex
-            as={'button'}
-            justify={'center'}
-            align={'center'}
-            css={{
-              position: 'absolute',
-              top: -10,
-              right: -10,
-              size: 48,
-              br: '$round',
-              bc: '$bg1',
-              border: '1px solid $bg4',
-            }}
-          >
-            <IoClose size={24} />
-          </Flex>
-        </ModalClose>
-      )}
-    </StyledModalContent>
+    <StyledModalContent {...props}>{children}</StyledModalContent>
   </DialogPrimitive.Portal>
 );
 
