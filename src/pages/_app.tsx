@@ -2,7 +2,6 @@ import type { AppProps } from 'next/app';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import NextNProgress from 'nextjs-progressbar';
 import { ogimage } from '@assets';
 import { trpc } from '@utils';
 import { ToastContainer, global } from '@styles';
@@ -34,17 +33,6 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
         />
         <Component {...pageProps} />
         <ToastContainer />
-        <NextNProgress
-          color="linear-gradient(90deg, var(--colors-violet11), var(--colors-blue11))"
-          options={{ trickle: false, speed: 100, showSpinner: false }}
-          transformCSS={(css) => {
-            css += `#nprogress {
-            position: fixed;
-            z-index: 9999;
-          }`;
-            return <style>{css}</style>;
-          }}
-        />
       </ThemeProvider>
     </SessionProvider>
   );

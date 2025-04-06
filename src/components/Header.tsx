@@ -115,7 +115,9 @@ export const Header = () => {
             <MenuContent>
               {!isDesktop && (
                 <>
-                  <MenuItem disabled>{session.user.name}</MenuItem>
+                  <MenuItem onClick={() => router.push('/' + session.user.name)}>
+                    {session.user.name}
+                  </MenuItem>
                   <MenuSeparator />
                 </>
               )}

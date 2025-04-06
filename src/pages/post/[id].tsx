@@ -68,7 +68,7 @@ export default function Post({ id }: Props) {
     <>
       {post && (
         <NextSeo
-          title={`${post.title ? post.title + ' //' : 'Post de'} ${post.user.name}`}
+          title={undefined}
           openGraph={{
             images: [{ url: post.thumbnailUrl }],
             videos: [{ url: post.videoUrl }],

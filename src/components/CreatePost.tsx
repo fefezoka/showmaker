@@ -51,8 +51,8 @@ const createPostSchema = z.object({
 
 type CreatePostData = z.infer<typeof createPostSchema>;
 
-export const CreatePost = ({ children }: { children: ReactNode }) => {
-  const [open, setOpen] = useState<boolean>();
+export const CreatePost = () => {
+  const [open, setOpen] = useState<boolean>(false);
   const { data: session } = useSession();
   const createPost = useCreatePost();
 
@@ -74,12 +74,28 @@ export const CreatePost = ({ children }: { children: ReactNode }) => {
   return (
     <Modal
       open={open}
-      onOpenChange={(o) => {
-        setOpen(o);
+      onOpenChange={(open) => {
+        if (open && !session) {
+          return signIn('discord');
+        }
+
+        setOpen(open);
         reset();
       }}
     >
-      <ModalTrigger asChild>{children}</ModalTrigger>
+      <ModalTrigger asChild>
+        <Button
+          css={{
+            width: '100%',
+            br: '$pill',
+            height: 48,
+            fontSize: '$4',
+            fontWeight: 600,
+          }}
+        >
+          Postar vídeo
+        </Button>
+      </ModalTrigger>
       <ModalContent
         onInteractOutside={(e) =>
           createPost.isLoading ? e.preventDefault() : setOpen(false)
