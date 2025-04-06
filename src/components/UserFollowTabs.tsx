@@ -35,7 +35,7 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
       }}
     >
       <ModalTrigger asChild>{children}</ModalTrigger>
-      <ModalContent css={{ p: 0 }} closeButton={false}>
+      <ModalContent css={{ p: 0 }}>
         <Tabs
           defaultValue={defaultTab}
           onValueChange={(value) => setTab(value as typeof defaultTab)}
