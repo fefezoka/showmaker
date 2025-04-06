@@ -54,7 +54,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                     position: 'absolute',
                     size: '100%',
                     inset: 0,
-                    opacity: '60%',
+                    opacity: '45%',
                   }}
                 >
                   <Image
@@ -90,20 +90,21 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
 
                       <Flex direction={'column'} justify={'between'}>
                         <Box>
-                          <Box css={{ mb: '2px' }}>
-                            <Image
+                          <Box>
+                            <Box
+                              as={Image}
+                              css={{ mb: '2px', br: '$1', overflow: 'hidden' }}
                               src={`https://flagicons.lipis.dev/flags/4x3/${data.country_code.toLowerCase()}.svg`}
                               alt=""
                               width={36}
                               height={27}
                             />
                           </Box>
-
-                          <Text size={'4'} weight={600}>
+                          <Text color={'white'} size={'4'} weight={600}>
                             {data.username}
                           </Text>
                           <Box>
-                            <Text size={'1'}>
+                            <Text color={'white'} size={'1'}>
                               Desde{' '}
                               {Intl.DateTimeFormat('pt-BR').format(
                                 data.join_date.getTime()
@@ -113,12 +114,12 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                         </Box>
                         <Box>
                           {!data.is_online && data.last_visit && (
-                            <Text size={'1'} as={'p'}>
+                            <Text color={'white'} size={'1'} as={'p'}>
                               Visto por último {diffBetweenDates(data.last_visit)}
                             </Text>
                           )}
                           {
-                            <Text size={'1'}>
+                            <Text color={'white'} size={'1'}>
                               {data.is_online ? 'Online' : 'Offline'}
                             </Text>
                           }
@@ -129,7 +130,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                       {data.statistics.global_rank && (
                         <Box css={{ ta: 'right' }}>
                           <Flex direction={'column'}>
-                            <Text weight={600} size={'1'}>
+                            <Text color={'white'} weight={600} size={'1'}>
                               Global
                             </Text>
                             <Text size={'2'}>#{data.statistics.global_rank}</Text>
@@ -142,7 +143,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                             }}
                           />
                           <Flex direction={'column'}>
-                            <Text weight={600} size={'1'}>
+                            <Text color={'white'} weight={600} size={'1'}>
                               {data.country.name}
                             </Text>
                             <Text size={'2'}>#{data.statistics.country_rank}</Text>
@@ -156,7 +157,9 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
             )
           ) : (
             <Flex justify={'center'} css={{ mt: '$1' }}>
-              <Text weight={600}>Carregando...</Text>
+              <Text color={'white'} weight={600}>
+                Carregando...
+              </Text>
             </Flex>
           )}
         </HoverCardContent>

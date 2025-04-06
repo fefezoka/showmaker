@@ -74,12 +74,12 @@ export const FeedPost = forwardRef<
               {post.isLiked ? (
                 <Box
                   as={AiFillLike}
-                  css={{ color: '$blue10', size: 22, '@bp2': { size: 28 } }}
+                  css={{ color: '$blue10', size: 20, '@bp2': { size: 24 } }}
                 />
               ) : (
                 <Box
                   as={AiOutlineLike}
-                  css={{ color: '$slate11', size: 22, '@bp2': { size: 28 } }}
+                  css={{ color: '$slate11', size: 20, '@bp2': { size: 24 } }}
                 />
               )}
             </Flex>

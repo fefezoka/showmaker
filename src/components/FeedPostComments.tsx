@@ -104,13 +104,13 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
               </Flex>
             </Flex>
             <Flex gap={'2'} align={'center'} css={{ fs: 0 }}>
-              <Text size={{ '@initial': '2', '@bp2': '3' }}>
+              <Text css={{ color: '$slate11' }} size={{ '@initial': '2', '@bp2': '3' }}>
                 {diffBetweenDates(comment.createdAt)}
               </Text>
               {session?.user.id === comment.user.id && (
                 <Menu modal={false}>
                   <MenuTrigger asChild>
-                    <Flex as={'button'}>
+                    <Flex as={'button'} css={{ color: '$slate11' }}>
                       <IoSettingsSharp />
                     </Flex>
                   </MenuTrigger>
