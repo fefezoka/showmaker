@@ -2,11 +2,11 @@ import React from 'react';
 import { IoHome, IoPerson } from 'react-icons/io5';
 import { BsGearFill } from 'react-icons/bs';
 import Link from 'next/link';
-import { signIn, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { styled } from 'stitches.config';
 import { CreatePost } from '@components';
-import { Box, Button, Flex, Heading, Text } from '@styles';
+import { Box, Flex, Heading } from '@styles';
 import { useIsDesktop } from '@hooks';
 
 export const Line = styled('div', {
