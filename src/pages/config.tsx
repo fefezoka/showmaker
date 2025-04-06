@@ -1,13 +1,7 @@
 import React from 'react';
 import { GetServerSideProps } from 'next';
 import { getSession, signIn } from 'next-auth/react';
-import {
-  IoAddCircle,
-  IoLogoTwitch,
-  IoHelp,
-  IoCheckmarkCircleOutline,
-  IoCheckmarkCircle,
-} from 'react-icons/io5';
+import { IoAddCircle, IoLogoTwitch, IoHelp, IoCheckmarkCircle } from 'react-icons/io5';
 import { SiOsu } from 'react-icons/si';
 import { NextSeo } from 'next-seo';
 import { IconType } from 'react-icons/lib';
