@@ -116,20 +116,7 @@ export const Menu = () => {
               p: '$2 $7 $4 0',
             }}
           >
-            <CreatePost>
-              <Button
-                css={{
-                  width: '100%',
-                  br: '$pill',
-                  height: 48,
-                  fontSize: '$4',
-                  fontWeight: 600,
-                }}
-                onClick={() => !session && signIn('discord')}
-              >
-                Postar vídeo
-              </Button>
-            </CreatePost>
+            <CreatePost />
           </Box>
         )}
       </Flex>
