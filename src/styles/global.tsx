@@ -41,16 +41,4 @@ export const global = globalCss({
   'input:focus': {
     outline: 'none',
   },
-
-  '::-webkit-scrollbar': {
-    width: '1rem',
-  },
-
-  '::-webkit-scrollbar-track': {
-    backgroundColor: '$bg3',
-  },
-
-  '::-webkit-scrollbar-thumb': {
-    backgroundColor: '$bg4',
-  },
 });
