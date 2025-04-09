@@ -40,7 +40,6 @@ export const auth = router({
       z.object({
         client_id: z.string(),
         client_secret: z.string(),
-        access_token: z.string(),
         refresh_token: z.string(),
         username: z.string(),
         provider: z.enum(['osu', 'twitch']),
@@ -58,9 +57,6 @@ export const auth = router({
           client_secret: input.client_secret,
           refresh_token: input.refresh_token,
           grant_type: 'refresh_token',
-          ...(input.provider === 'osu' && {
-            access_token: input.access_token,
-          }),
         });
 
         await ctx.prisma.account.updateMany({
@@ -78,9 +74,8 @@ export const auth = router({
             expires_at: data.expires_in + Math.floor(Date.now() / 1000),
           },
         });
-        return {
-          access_token: data.access_token,
-        };
+
+        return data;
       } catch (error) {
         throw new TRPCError({
           code: 'BAD_REQUEST',

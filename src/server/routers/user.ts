@@ -4,6 +4,7 @@ import axios from '../axios';
 import { TRPCError } from '@trpc/server';
 import { ManyFriendshipStatus, User } from '@types';
 import { OsuProfile } from 'next-auth/providers/osu';
+import { auth } from 'src/server/routers/auth';
 
 export const user = router({
   profile: procedure
@@ -127,19 +128,16 @@ export const user = router({
         response[0].expires_at &&
         Math.floor(Date.now() / 1000) > response[0].expires_at
       ) {
-        const { data } = await axios.post(
-          `${process.env.SITE_URL}/api/auth/refresh-token`,
-          {
-            client_id: process.env.OSU_ID,
-            client_secret: process.env.OSU_SECRET,
-            refresh_token: response[0].refresh_token,
-            username: input.username,
-            provider: 'osu',
-            access_token: response[0].access_token,
-          }
-        );
+        const caller = auth.createCaller(ctx);
+        const refresh = await caller.refreshToken({
+          client_id: process.env.OSU_ID!,
+          client_secret: process.env.OSU_SECRET!,
+          refresh_token: response[0].refresh_token!,
+          provider: 'osu',
+          username: input.username,
+        });
 
-        response[0].access_token = data.access_token;
+        response[0].access_token = refresh.access_token;
       }
 
       const { data } = await axios.get<
