@@ -19,7 +19,7 @@ export const getVideoThumbnail = (file: File) => {
       canvas.height = 540;
       canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
       const image = canvas.toDataURL('image/jpeg');
-      const success = image.length > 100000;
+      const success = image.length > 10000;
       if (success) {
         URL.revokeObjectURL(fileURL);
         resolve(image);

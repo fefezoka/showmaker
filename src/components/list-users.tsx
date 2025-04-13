@@ -14,12 +14,14 @@ interface IListUsers {
   users: User[];
   transparent?: boolean;
   showIfUserFollowYou?: boolean;
+  onClickOnUser?: () => void;
 }
 
 export const ListUsers = ({
   users,
   transparent = true,
   showIfUserFollowYou = true,
+  onClickOnUser,
 }: IListUsers) => {
   const { data: session } = useSession();
   const follow = useFollow();
@@ -47,7 +49,7 @@ export const ListUsers = ({
             align={'center'}
           >
             <Box>
-              <UserHoverCard user={user}>
+              <UserHoverCard onClickOnUser={onClickOnUser} user={user}>
                 <Flex align={'center'} gap={'3'}>
                   <ProfileIcon css={{ size: '44px' }} src={user.image} alt="" />
                   <Text weight={600} size={'5'}>

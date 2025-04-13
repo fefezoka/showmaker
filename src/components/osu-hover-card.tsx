@@ -36,8 +36,8 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
           css={{
             border: 0,
             position: 'relative',
-            width: 295,
-            height: 130,
+            width: 290,
+            height: 120,
             bc: '#000',
             br: '$2',
             fontSize: '$3',
@@ -83,7 +83,6 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                               border: `4px solid ${
                                 data.is_online ? '#b3d944' : '$gray3'
                               }`,
-                              mb: '$1',
                             }}
                           />
                         </Flex>
@@ -104,23 +103,15 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                           <Text color={'white'} size={'4'} weight={600}>
                             {data.username}
                           </Text>
-                          <Box>
-                            <Text color={'white'} size={'1'}>
-                              Desde{' '}
-                              {Intl.DateTimeFormat('pt-BR').format(
-                                data.join_date.getTime()
-                              )}
-                            </Text>
-                          </Box>
                         </Box>
-                        <Box>
+                        <Box css={{ mb: '$1' }}>
                           {!data.is_online && data.last_visit && (
-                            <Text color={'white'} size={'1'} as={'p'}>
+                            <Text weight={'500'} color={'white'} size={'2'} as={'p'}>
                               Visto por último {diffBetweenDates(data.last_visit)}
                             </Text>
                           )}
                           {
-                            <Text color={'white'} size={'1'}>
+                            <Text weight={'500'} color={'white'} size={'2'}>
                               {data.is_online ? 'Online' : 'Offline'}
                             </Text>
                           }
