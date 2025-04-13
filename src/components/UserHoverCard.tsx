@@ -22,9 +22,10 @@ import {
 interface IUserHoverCard {
   user: User;
   children: ReactNode;
+  onClickOnUser?: () => void;
 }
 
-export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
+export const UserHoverCard = ({ user, children, onClickOnUser }: IUserHoverCard) => {
   const { data: session } = useSession();
   const [open, setOpen] = useState<boolean>(false);
   const follow = useFollow();
@@ -60,7 +61,7 @@ export const UserHoverCard = ({ user, children }: IUserHoverCard) => {
   return (
     <HoverCard open={open} onOpenChange={setOpen}>
       <HoverCardTrigger asChild>
-        <Flex as={Link} href={`/${user.name}`}>
+        <Flex onClick={onClickOnUser} as={Link} href={`/${user.name}`}>
           {children}
         </Flex>
       </HoverCardTrigger>

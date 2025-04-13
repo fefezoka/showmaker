@@ -54,13 +54,14 @@ export function UserFollowTabs({ userId, children, defaultTab }: IUserFollowTabs
               </TabsTrigger>
             </Flex>
           </TabsList>
-          {[followers.data, following.data].map((tab, tabIndex) => (
-            <TabsContent
-              value={tabIndex === 0 ? 'followers' : 'following'}
-              key={tabIndex}
-            >
-              {!(followers.isLoading || following.isLoading) && tab && (
-                <ListUsers users={tab} showIfUserFollowYou={tabIndex === 1} />
+          {[followers.data, following.data].map((users, index) => (
+            <TabsContent value={index === 0 ? 'followers' : 'following'} key={index}>
+              {!(followers.isLoading || following.isLoading) && users && (
+                <ListUsers
+                  users={users}
+                  onClickOnUser={() => setOpen(false)}
+                  showIfUserFollowYou={index === 1}
+                />
               )}
             </TabsContent>
           ))}
