@@ -1,8 +1,13 @@
 import { NextSeo } from 'next-seo';
 import { useState } from 'react';
-import { trpc } from '@utils';
-import { Main, PostPaginator, gameOptions } from '@components';
-import { Box, Flex, Heading, Button } from '@styles';
+import { trpc } from '@/utils/trpc';
+import { Main } from '@/components/main';
+import { Box } from '@/styles/box';
+import { Heading } from '@/styles/heading';
+import { Flex } from '@/styles/flex';
+import { Button } from '@/styles/button';
+import { PostPaginator } from '@/components/post-paginator';
+import { gameOptions } from '@/components/create-post';
 
 const feedOptions = [{ label: 'Todos', value: 'all' }, ...gameOptions] as const;
 type feed = (typeof feedOptions)[number];

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { styled } from 'stitches.config';
-import { Box } from '@styles';
+import { Box } from '@/styles/box';
 
 const StyledVideo = styled('video', {
   position: 'absolute',

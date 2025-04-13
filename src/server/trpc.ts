@@ -1,8 +1,8 @@
 import { TRPCError, inferRouterInputs, inferRouterOutputs, initTRPC } from '@trpc/server';
-import { Context } from './context';
+import { Context } from '@/server/context';
 import superjson from 'superjson';
 import { inferReactQueryProcedureOptions } from '@trpc/react-query';
-import { AppRouter } from './routers/_app';
+import { AppRouter } from '@/server/routers/_app';
 
 const t = initTRPC.context<Context>().create({ transformer: superjson });
 

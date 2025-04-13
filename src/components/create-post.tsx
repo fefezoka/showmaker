@@ -1,27 +1,27 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Dropzone from 'react-dropzone';
 import { z } from 'zod';
 import { signIn, useSession } from 'next-auth/react';
 import { Controller, useForm, Control, FieldValues } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getVideoFrame } from '@utils';
-import { useCreatePost } from '@hooks';
+import { useCreatePost } from '@/hooks/post';
+import { Box } from '@/styles/box';
+import { Button } from '@/styles/button';
+import { Flex } from '@/styles/flex';
+import { Heading } from '@/styles/heading';
+import { Input } from '@/styles/input';
 import {
-  Box,
-  Flex,
-  Text,
   Modal,
-  ModalClose,
-  ModalContent,
-  ModalDescription,
-  ModalTitle,
   ModalTrigger,
-  Heading,
-  Button,
-  Input,
-  Select,
-} from '@styles';
+  ModalContent,
+  ModalTitle,
+  ModalDescription,
+  ModalClose,
+} from '@/styles/modal';
+import { Select } from '@/styles/select';
+import { Text } from '@/styles/text';
+import { getVideoThumbnail } from '@/utils/get-video-thumbnail';
 
 export const gameOptions = [
   { label: 'Valorant', value: 'valorant' },
@@ -152,7 +152,7 @@ export const CreatePost = () => {
                   onDropAccepted={async (files) => {
                     field.onChange({
                       video: files[0],
-                      thumbnail: await getVideoFrame(files[0]),
+                      thumbnail: await getVideoThumbnail(files[0]),
                     });
                   }}
                   onDropRejected={() => {

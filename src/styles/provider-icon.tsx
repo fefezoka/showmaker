@@ -3,7 +3,7 @@ import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
 import { SiTwitch, SiOsu } from 'react-icons/si';
 import { FaDiscord } from 'react-icons/fa';
-import { Flex } from '@styles';
+import { Flex } from '@/styles/flex';
 
 type Providers = 'discord' | 'twitch' | 'osu';
 

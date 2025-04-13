@@ -1,5 +1,4 @@
 import { globalCss } from 'stitches.config';
-
 import { Raleway } from 'next/font/google';
 
 const raleway = Raleway({

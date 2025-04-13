@@ -1,9 +1,13 @@
 import React from 'react';
 import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next';
-import { trpc } from '@utils';
-import { ListUsers, Main, PostPaginator } from '@components';
-import { Box, Grid, Heading } from '@styles';
+import { trpc } from '@/utils/trpc';
+import { Main } from '@/components/main';
+import { Box } from '@/styles/box';
+import { Heading } from '@/styles/heading';
+import { Grid } from '@/styles/grid';
+import { ListUsers } from '@/components/list-users';
+import { PostPaginator } from '@/components/post-paginator';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const { q } = query;

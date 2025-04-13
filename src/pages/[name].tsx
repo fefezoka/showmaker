@@ -3,21 +3,22 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { blitz } from '@assets';
+import { blitz } from '@/assets';
 import { NextSeo } from 'next-seo';
-import { trpc } from '@utils';
-import { OsuHoverCard, PostPaginator, UserFollowTabs, Main } from '@components';
-import { useFollow, useUnfollow } from '@hooks';
-import {
-  Box,
-  Flex,
-  Text,
-  Heading,
-  ProfileSkeleton,
-  FullProfileIcon,
-  ProviderIcon,
-  Button,
-} from '@styles';
+import { trpc } from '@/utils/trpc';
+import { Main } from '@/components/main';
+import { Flex } from '@/styles/flex';
+import { Text } from '@/styles/text';
+import { Box } from '@/styles/box';
+import { FullProfileIcon } from '@/styles/full-profile-icon';
+import { Heading } from '@/styles/heading';
+import { UserFollowTabs } from '@/components/user-follow-tabs';
+import { OsuHoverCard } from '@/components/osu-hover-card';
+import { ProviderIcon } from '@/styles/provider-icon';
+import { Button } from '@/styles/button';
+import { PostPaginator } from '@/components/post-paginator';
+import { ProfileSkeleton } from '@/styles/skeleton';
+import { useFollow, useUnfollow } from '@/hooks/follow';
 
 type Feed = 'posts' | 'favorites';
 

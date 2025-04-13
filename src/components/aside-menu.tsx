@@ -5,9 +5,11 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import { styled } from 'stitches.config';
-import { CreatePost } from '@components';
-import { Box, Flex, Heading } from '@styles';
-import { useIsDesktop } from '@hooks';
+import { useIsDesktop } from '@/hooks/utils';
+import { Box } from '@/styles/box';
+import { Flex } from '@/styles/flex';
+import { Heading } from '@/styles/heading';
+import { CreatePost } from '@/components/create-post';
 
 export const Line = styled('div', {
   display: 'flex',
@@ -51,7 +53,7 @@ export const Line = styled('div', {
   },
 });
 
-export const Menu = () => {
+export const AsideMenu = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const isDesktop = useIsDesktop();

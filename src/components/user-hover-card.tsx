@@ -2,22 +2,23 @@ import React, { ReactNode, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { User } from '@types';
-import { spinner } from '@assets';
-import { diffBetweenDates, trpc } from '@utils';
-import { useFollow, useUnfollow } from '@hooks';
+import { spinner } from '@/assets';
+import { useFollow, useUnfollow } from '@/hooks/follow';
+import { Box } from '@/styles/box';
+import { Button } from '@/styles/button';
+import { Flex } from '@/styles/flex';
+import { Grid } from '@/styles/grid';
+import { Heading } from '@/styles/heading';
+import { ProfileIcon } from '@/styles/profile-icon';
+import { diffBetweenDates } from '@/utils/diff-between-dates';
+import { trpc } from '@/utils/trpc';
 import {
-  Box,
-  Flex,
-  Grid,
-  Heading,
-  Text,
-  Button,
-  ProfileIcon,
   HoverCard,
-  HoverCardContent,
   HoverCardTrigger,
-} from '@styles';
+  HoverCardContent,
+} from '@radix-ui/react-hover-card';
+import { User } from 'next-auth';
+import { Text } from '@/styles/text';
 
 interface IUserHoverCard {
   user: User;

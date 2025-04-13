@@ -1,6 +1,8 @@
-import { Box, Heading, Modal, ModalContent, ModalTrigger } from '@styles';
-import { ListUsers } from '@components';
-import { trpc } from '@utils';
+import { ListUsers } from '@/components/list-users';
+import { Box } from '@/styles/box';
+import { Heading } from '@/styles/heading';
+import { Modal, ModalContent, ModalTrigger } from '@/styles/modal';
+import { trpc } from '@/utils/trpc';
 import React, { ReactNode, useState } from 'react';
 
 interface IPostLikedByUsers {

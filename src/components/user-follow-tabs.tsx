@@ -1,17 +1,10 @@
+import { ListUsers } from '@/components/list-users';
+import { Button } from '@/styles/button';
+import { Flex } from '@/styles/flex';
+import { Modal, ModalContent, ModalTrigger } from '@/styles/modal';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/styles/tabs';
+import { trpc } from '@/utils/trpc';
 import React, { ReactNode, useState } from 'react';
-import { trpc } from '@utils';
-import { ListUsers } from '@components';
-import {
-  Button,
-  Modal,
-  ModalContent,
-  ModalTrigger,
-  Tabs,
-  TabsContent,
-  TabsTrigger,
-  TabsList,
-  Flex,
-} from '@styles';
 
 interface IUserFollowTabs {
   userId: string;

@@ -3,22 +3,22 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, Control, FieldValues } from 'react-hook-form';
 import { z } from 'zod';
 import {
-  Box,
-  Button,
-  Flex,
-  Input,
   Modal,
   ModalClose,
   ModalContent,
   ModalTitle,
   ModalTrigger,
-  Select,
-  Text,
-  toast,
-} from '@styles';
-import { Post } from '@types';
-import { useEditPost } from '@hooks';
-import { gameOptions } from '@components';
+} from '@/styles/modal';
+import { useEditPost } from '@/hooks/post';
+import { Post } from '@/types/types';
+import { toast } from '@/styles/toast';
+import { Box } from '@/styles/box';
+import { Flex } from '@/styles/flex';
+import { Text } from '@/styles/text';
+import { Input } from '@/styles/input';
+import { Select } from '@/styles/select';
+import { gameOptions } from '@/components/create-post';
+import { Button } from '@/styles/button';
 
 const editPostSchema = z
   .object({

@@ -1,7 +1,7 @@
 import React from 'react';
 import { VariantProps, CSS } from 'stitches.config';
 import merge from 'lodash.merge';
-import { Text } from '@styles';
+import { Text } from '@/styles/text';
 
 const DEFAULT_TAG = 'h1';
 

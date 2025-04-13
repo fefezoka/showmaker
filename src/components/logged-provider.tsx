@@ -2,8 +2,11 @@ import React from 'react';
 import { useRouter } from 'next/router';
 import { IoRemoveCircle } from 'react-icons/io5';
 import { IconType } from 'react-icons/lib';
-import { trpc } from '@utils';
-import { Box, Flex, Heading, Text } from '@styles';
+import { Flex } from '@/styles/flex';
+import { Box } from '@/styles/box';
+import { Heading } from '@/styles/heading';
+import { Text } from '@/styles/text';
+import { trpc } from '@/utils/trpc';
 
 interface ILoggedProvider {
   account: {

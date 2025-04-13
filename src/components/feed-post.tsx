@@ -4,29 +4,30 @@ import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
 import { BiDotsHorizontalRounded } from 'react-icons/bi';
 import { FiEdit, FiCopy, FiDelete, FiDownload } from 'react-icons/fi';
 import { useSession } from 'next-auth/react';
-import { Post } from '@types';
-import { downloadVideo, diffBetweenDates } from '@utils';
-import { UserHoverCard, FeedPostComments, EditPost, PostLikedByUsers } from '@components';
+import { EditPost } from '@/components/edit-post';
+import { FeedPostComments } from '@/components/feed-post-comments';
+import { PostLikedByUsers } from '@/components/post-liked-by';
+import { UserHoverCard } from '@/components/user-hover-card';
+import { useDeletePost, useLikePost, useUnlikePost } from '@/hooks/post';
+import { Box } from '@/styles/box';
+import { Button } from '@/styles/button';
 import {
-  Box,
-  Flex,
-  Button,
-  ProfileIcon,
-  Video,
-  Text,
-  Heading,
-  Modal,
-  ModalTrigger,
-  ModalContent,
-  ModalClose,
   Menu,
+  MenuTrigger,
   MenuContent,
   MenuItem,
-  MenuTrigger,
   MenuSeparator,
-  toast,
-} from '@styles';
-import { useDeletePost, useLikePost, useUnlikePost } from '@hooks';
+} from '@/styles/dropdown-menu';
+import { Flex } from '@/styles/flex';
+import { Heading } from '@/styles/heading';
+import { Modal, ModalTrigger, ModalContent, ModalClose } from '@/styles/modal';
+import { ProfileIcon } from '@/styles/profile-icon';
+import { Video } from '@/styles/video';
+import { diffBetweenDates } from '@/utils/diff-between-dates';
+import { downloadVideo } from '@/utils/download-video';
+import { Post } from '@/types/types';
+import { toast } from 'react-toastify';
+import { Text } from '@/styles/text';
 
 export const FeedPost = forwardRef<
   HTMLDivElement,
