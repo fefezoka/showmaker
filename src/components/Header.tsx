@@ -3,20 +3,20 @@ import { signIn, signOut, useSession } from 'next-auth/react';
 import { IoSearchSharp, IoCaretDown, IoCaretUp } from 'react-icons/io5';
 import { GoSignOut } from 'react-icons/go';
 import { useRouter } from 'next/router';
-import { useIsDesktop, useScrollDirection } from '@hooks';
+import { useScrollDirection, useIsDesktop } from '@/hooks/utils';
+import { Box } from '@/styles/box';
 import {
-  Box,
-  Flex,
-  Text,
   Menu,
+  MenuTrigger,
   MenuContent,
   MenuItem,
   MenuSeparator,
-  MenuTrigger,
-  Input,
-  ProfileIcon,
-  ProviderIcon,
-} from '@styles';
+} from '@/styles/dropdown-menu';
+import { Flex } from '@/styles/flex';
+import { Input } from '@/styles/input';
+import { ProfileIcon } from '@/styles/profile-icon';
+import { ProviderIcon } from '@/styles/provider-icon';
+import { Text } from '@/styles/text';
 
 export const Header = () => {
   const { data: session, status } = useSession();

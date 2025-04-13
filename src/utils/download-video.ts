@@ -1,4 +1,4 @@
-import { Post } from '@types';
+import { Post } from '@/types/types';
 import axios from 'axios';
 
 export const downloadVideo = (post: Post) => {

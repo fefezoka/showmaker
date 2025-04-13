@@ -1,8 +1,9 @@
+import { FeedPost } from '@/components/feed-post';
+import { Box } from '@/styles/box';
+import { PostSkeleton } from '@/styles/skeleton';
+import { PostPagination } from '@/types/types';
 import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { PostPagination } from '@types';
-import { FeedPost } from '@components';
-import { Box, PostSkeleton } from '@styles';
 
 interface IPostPaginator {
   hasNextPage: boolean | undefined;

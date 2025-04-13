@@ -1,5 +1,17 @@
 import { useEffect, useState } from 'react';
 
+export const useIsDesktop = () => {
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
+  useEffect(() => {
+    const handleResizeWindow = () => setIsDesktop(window.innerWidth >= 768);
+    window.addEventListener('resize', handleResizeWindow);
+    return () => window.removeEventListener('resize', handleResizeWindow);
+  }, []);
+
+  return isDesktop;
+};
+
 export const useScrollDirection = () => {
   const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>();
 

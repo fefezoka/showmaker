@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled, keyframes } from 'stitches.config';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { overlayStyles } from '@styles';
+import { overlayStyles } from '@/styles/overlay';
 
 const fade = keyframes({
   from: {

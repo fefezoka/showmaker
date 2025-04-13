@@ -1,4 +1,4 @@
-import { LikedPost, Post } from '@types';
+import { LikedPost, Post } from '@/types/types';
 import { Session } from 'next-auth';
 
 export const infiniteQuery = (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'stitches.config';
-import { Box } from '@styles';
+import { Box } from '@/styles/box';
 
 const StyledInput = styled('input', {
   width: '100%',

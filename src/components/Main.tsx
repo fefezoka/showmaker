@@ -1,9 +1,11 @@
 import React, { memo } from 'react';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-import { spinner } from '@assets';
-import { Box, Flex } from '@styles';
-import { Header, Menu } from '@components';
+import { spinner } from '@/assets';
+import { Flex } from '@/styles/flex';
+import { AsideMenu } from '@/components/aside-menu';
+import { Box } from '@/styles/box';
+import { Header } from '@/components/header';
 
 export const Main = memo(
   ({ children, ...props }: React.HtmlHTMLAttributes<HTMLDivElement>) => {
@@ -27,7 +29,7 @@ export const Main = memo(
         )}
         {status !== 'loading' && (
           <Flex css={{ maxWidth: '960px', m: '0 auto' }} {...props}>
-            <Menu />
+            <AsideMenu />
             <Box
               as={'main'}
               css={{

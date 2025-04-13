@@ -1,18 +1,18 @@
-import { useEditPostComment } from '@hooks';
+import { useEditPostComment } from '@/hooks/post-comment';
+import { Box } from '@/styles/box';
+import { Button } from '@/styles/button';
+import { Flex } from '@/styles/flex';
+import { Input } from '@/styles/input';
 import {
-  Box,
-  Button,
-  Flex,
-  Input,
   Modal,
   ModalClose,
   ModalContent,
   ModalTitle,
   ModalTrigger,
-  Text,
-  toast,
-} from '@styles';
-import { PostComment } from '@types';
+} from '@/styles/modal';
+import { Text } from '@/styles/text';
+import { toast } from '@/styles/toast';
+import { PostComment } from '@/types/types';
 import React, { FormEvent, useState } from 'react';
 
 interface IEditComment extends React.ComponentProps<typeof Modal> {

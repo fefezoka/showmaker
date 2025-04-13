@@ -1,8 +1,8 @@
-import { LikedPost, Post, postSchema } from '@types';
-import { authenticatedProcedure, procedure, router } from '../trpc';
+import { LikedPost, Post, postSchema } from '@/types/types';
+import { authenticatedProcedure, procedure, router } from '@/server/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
-import { infiniteQuery } from '../commons';
+import { infiniteQuery } from '@/server/commons';
 
 export const posts = router({
   feed: router({

@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import Image from 'next/image';
 import { IconType } from 'react-icons/lib';
 import { styled } from 'stitches.config';
-import { spinner } from '@assets';
+import { spinner } from '@/assets';
 
 const StyledButton = styled('button', {
   all: 'unset',

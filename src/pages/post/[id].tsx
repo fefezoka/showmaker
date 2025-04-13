@@ -1,18 +1,21 @@
 import React from 'react';
 import { createServerSideHelpers } from '@trpc/react-query/server';
-import { appRouter } from '../../server/routers/_app';
-import { createContext } from '../../server/context';
+import { appRouter } from '@/server/routers/_app';
+import { createContext } from '@/server/context';
 import { GetServerSideProps } from 'next';
 import { NextSeo } from 'next-seo';
 import Image from 'next/image';
 import superjson from 'superjson';
-import { trpc } from '@utils';
-import { blitz } from '@assets';
-import { PostPagination } from '@types';
-import { Main, FeedPost } from '@components';
-import { Flex, PostSkeleton, Text } from '@styles';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
+import { PostPagination } from '@/types/types';
+import { trpc } from '@/utils/trpc';
+import { Main } from '@/components/main';
+import { PostSkeleton } from '@/styles/skeleton';
+import { FeedPost } from '@/components/feed-post';
+import { Flex } from '@/styles/flex';
+import { Text } from '@/styles/text';
+import { blitz } from '@/assets';
 
 interface Props {
   dehydratedState: any;

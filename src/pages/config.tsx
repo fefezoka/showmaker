@@ -5,11 +5,16 @@ import { IoAddCircle, IoLogoTwitch, IoHelp, IoCheckmarkCircle } from 'react-icon
 import { SiOsu } from 'react-icons/si';
 import { NextSeo } from 'next-seo';
 import { IconType } from 'react-icons/lib';
-import { trpc } from '@utils';
-import { LoggedProvider, Main } from '@components';
-import { Box, Flex, Grid, Heading, Text } from '@styles';
+import { trpc } from '@/utils/trpc';
 import { useTheme } from 'next-themes';
 import { lightTheme, theme } from 'stitches.config';
+import { Main } from '@/components/main';
+import { Box } from '@/styles/box';
+import { Heading } from '@/styles/heading';
+import { Grid } from '@/styles/grid';
+import { LoggedProvider } from '@/components/logged-provider';
+import { Text } from '@/styles/text';
+import { Flex } from '@/styles/flex';
 
 type providers = 'osu' | 'twitch';
 

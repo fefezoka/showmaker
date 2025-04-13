@@ -1,6 +1,5 @@
 import { getSession } from 'next-auth/react';
-import { prisma } from '../lib/prisma';
-import type { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { prisma } from '@/lib/prisma';
 import { inferAsyncReturnType } from '@trpc/server';
 
 export const createContext = async (opts: any) => {

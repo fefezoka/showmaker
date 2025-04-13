@@ -1,10 +1,14 @@
-import { Box, Button, Flex, ProfileIcon, Text } from '@styles';
-import React from 'react';
-import { UserHoverCard } from './UserHoverCard';
-import { User } from '@types';
-import { trpc } from '@utils';
+import { UserHoverCard } from '@/components/user-hover-card';
+import { useFollow, useUnfollow } from '@/hooks/follow';
+import { Box } from '@/styles/box';
+import { Button } from '@/styles/button';
+import { Flex } from '@/styles/flex';
+import { ProfileIcon } from '@/styles/profile-icon';
+import { Text } from '@/styles/text';
+import { User } from '@/types/types';
+import { trpc } from '@/utils/trpc';
 import { useSession } from 'next-auth/react';
-import { useFollow, useUnfollow } from '@hooks';
+import React from 'react';
 
 interface IListUsers {
   users: User[];

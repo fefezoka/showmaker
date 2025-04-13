@@ -2,11 +2,12 @@ import type { AppProps } from 'next/app';
 import { Session } from 'next-auth/core/types';
 import { SessionProvider } from 'next-auth/react';
 import { DefaultSeo } from 'next-seo';
-import { ogimage } from '@assets';
-import { trpc } from '@utils';
-import { ToastContainer, global } from '@styles';
+import { ogimage } from '@/assets';
+import { trpc } from '@/utils/trpc';
 import { ThemeProvider } from 'next-themes';
-import { lightTheme } from '../../stitches.config';
+import { lightTheme } from 'stitches.config';
+import { ToastContainer } from '@/styles/toast';
+import { global } from '@/styles/global';
 
 const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
   global();

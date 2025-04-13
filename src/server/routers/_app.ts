@@ -1,7 +1,7 @@
-import { router } from '../trpc';
-import { posts } from './posts';
-import { user } from './user';
-import { auth } from './auth';
+import { router } from '@/server/trpc';
+import { posts } from '@/server/routers/posts';
+import { user } from '@/server/routers/user';
+import { auth } from '@/server/routers/auth';
 
 export const appRouter = router({
   posts,

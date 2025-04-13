@@ -3,24 +3,26 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { IoSettingsSharp } from 'react-icons/io5';
 import { FiDelete, FiEdit } from 'react-icons/fi';
-import { diffBetweenDates, trpc } from '@utils';
-import { Post } from '@types';
+import { useCreatePostComment, useDeletePostComment } from '@/hooks/post-comment';
+import { trpc } from '@/utils/trpc';
+import { EditComment } from '@/components/edit-comment';
+import { UserHoverCard } from '@/components/user-hover-card';
+import { Box } from '@/styles/box';
+import { Button } from '@/styles/button';
 import {
-  Box,
-  Flex,
-  Text,
   Menu,
   MenuTrigger,
   MenuContent,
   MenuItem,
-  CommentSkeleton,
-  Button,
-  Input,
-  ProfileIcon,
   MenuSeparator,
-} from '@styles';
-import { EditComment, UserHoverCard } from '@components';
-import { useDeletePostComment, useCreatePostComment } from '@hooks';
+} from '@/styles/dropdown-menu';
+import { Flex } from '@/styles/flex';
+import { Input } from '@/styles/input';
+import { ProfileIcon } from '@/styles/profile-icon';
+import { CommentSkeleton } from '@/styles/skeleton';
+import { diffBetweenDates } from '@/utils/diff-between-dates';
+import { Post } from '@prisma/client';
+import { Text } from '@/styles/text';
 
 interface IFeedPostComments {
   post: Post;

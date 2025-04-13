@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { trpc, diffBetweenDates } from '@utils';
+import { trpc } from '@/utils/trpc';
+import { Box } from '@/styles/box';
+import { Flex } from '@/styles/flex';
+import { ProfileIcon } from '@/styles/profile-icon';
+import { ProviderIcon } from '@/styles/provider-icon';
+import { diffBetweenDates } from '@/utils/diff-between-dates';
 import {
-  Box,
-  Flex,
-  Text,
-  ProfileIcon,
-  ProviderIcon,
   HoverCard,
+  HoverCardArrow,
   HoverCardContent,
   HoverCardTrigger,
-  HoverCardArrow,
-} from '@styles';
+} from '@/styles/hover-card';
+import { Text } from '@/styles/text';
 
 interface IOsuHoverCard {
   username: string;

@@ -1,4 +1,4 @@
-export const getVideoFrame = (file: File) => {
+export const getVideoThumbnail = (file: File) => {
   return new Promise<string>((resolve) => {
     const fileURL = URL.createObjectURL(file);
     const video = document.createElement('video');

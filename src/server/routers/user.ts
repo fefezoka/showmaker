@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { authenticatedProcedure, procedure, router } from '../trpc';
-import axios from '../axios';
+import axios from '@/server/axios';
 import { TRPCError } from '@trpc/server';
-import { ManyFriendshipStatus, User } from '@types';
+import { ManyFriendshipStatus, User } from '@/types/types';
 import { OsuProfile } from 'next-auth/providers/osu';
-import { auth } from 'src/server/routers/auth';
+import { authenticatedProcedure, procedure, router } from '@/server/trpc';
+import { auth } from '@/server/routers/auth';
 
 export const user = router({
   profile: procedure
