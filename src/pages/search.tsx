@@ -34,7 +34,7 @@ export default function Search({ q }: { q: string }) {
     {
       enabled: !!q,
       getNextPageParam: (lastPage, pages) =>
-        lastPage.posts.length === 6 && pages.length + 1,
+        (lastPage.posts.length === 6 && pages.length + 1) || undefined,
     }
   );
 

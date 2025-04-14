@@ -1,11 +1,11 @@
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import NextAuth, { User } from 'next-auth';
+import NextAuth, { AuthOptions, User } from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import OsuProvider from 'next-auth/providers/osu';
 import TwitchProvider from 'next-auth/providers/twitch';
 import { prisma } from '@/lib/prisma';
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     DiscordProvider({
@@ -57,4 +57,6 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
+
+export default NextAuth(authOptions);

@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const helpers = createServerSideHelpers({
     router: appRouter,
-    ctx: await createContext(ctx),
+    ctx: await createContext({ req: ctx.req, res: ctx.res }),
     transformer: superjson,
   });
 
@@ -54,8 +54,9 @@ export default function Post({ id }: Props) {
     { postId: id },
     {
       initialData: () => {
-        const queryKeys = getQueryKey(trpc.posts.feed);
-        const routers = queryClient.getQueriesData<PostPagination>(queryKeys);
+        const routers = queryClient.getQueriesData<PostPagination>({
+          queryKey: getQueryKey(trpc.posts.feed),
+        });
 
         return routers
           .filter((route) => route[1])

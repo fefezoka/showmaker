@@ -29,12 +29,7 @@ export const posts = router({
             },
             include: {
               user: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  createdAt: true,
-                },
+                omit: { email: true, emailVerified: true },
               },
               likedBy: true,
             },
@@ -77,11 +72,9 @@ export const posts = router({
             },
             include: {
               user: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  createdAt: true,
+                omit: {
+                  email: true,
+                  emailVerified: true,
                 },
               },
               likedBy: true,
@@ -93,6 +86,8 @@ export const posts = router({
     search: procedure
       .input(z.object({ q: z.string(), cursor: z.number().optional() }))
       .query(async ({ ctx, input }) => {
+        console.log(ctx.session);
+
         const response = (await ctx.prisma.post.aggregateRaw({
           pipeline: [
             {
@@ -267,11 +262,9 @@ export const posts = router({
         },
         include: {
           user: {
-            select: {
-              id: true,
-              createdAt: true,
-              name: true,
-              image: true,
+            omit: {
+              email: true,
+              emailVerified: true,
             },
           },
           likedBy: true,
@@ -302,7 +295,12 @@ export const posts = router({
         },
         orderBy: { createdAt: 'desc' },
         include: {
-          user: true,
+          user: {
+            omit: {
+              email: true,
+              emailVerified: true,
+            },
+          },
         },
       })
   ),
@@ -369,7 +367,12 @@ export const posts = router({
           userId: ctx.session.user.id,
         },
         include: {
-          user: true,
+          user: {
+            omit: {
+              email: true,
+              emailVerified: true,
+            },
+          },
         },
       });
 
@@ -434,7 +437,12 @@ export const posts = router({
             postId: input.postId,
           },
           select: {
-            user: true,
+            user: {
+              omit: {
+                email: true,
+                emailVerified: true,
+              },
+            },
           },
         })
         .then((response) => response.map((user) => user.user))

@@ -12,9 +12,9 @@ const getBaseUrl = () => {
 };
 
 export const trpc = createTRPCNext<AppRouter>({
-  config({ ctx }) {
+  transformer: superjson,
+  config() {
     return {
-      transformer: superjson,
       queryClientConfig: {
         defaultOptions: {
           queries: {
@@ -28,6 +28,7 @@ export const trpc = createTRPCNext<AppRouter>({
       },
       links: [
         httpBatchLink({
+          transformer: superjson,
           url: `${getBaseUrl()}/api/trpc`,
           async headers() {
             return {};

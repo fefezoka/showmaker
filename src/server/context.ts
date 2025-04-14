@@ -1,9 +1,17 @@
-import { getSession } from 'next-auth/react';
 import { prisma } from '@/lib/prisma';
-import { inferAsyncReturnType } from '@trpc/server';
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { NextApiResponse } from '@trpc/server/adapters/next';
+import { GetServerSidePropsContext, NextApiRequest } from 'next';
+import { getServerSession } from 'next-auth';
 
-export const createContext = async (opts: any) => {
-  const session = await getSession({ req: opts.req });
+export const createContext = async ({
+  req,
+  res,
+}: {
+  req: NextApiRequest | GetServerSidePropsContext['req'];
+  res: NextApiResponse | GetServerSidePropsContext['res'];
+}) => {
+  const session = await getServerSession(req, res, authOptions);
 
   return {
     session,
@@ -11,4 +19,4 @@ export const createContext = async (opts: any) => {
   };
 };
 
-export type Context = inferAsyncReturnType<typeof createContext>;
+export type Context = Awaited<ReturnType<typeof createContext>>;

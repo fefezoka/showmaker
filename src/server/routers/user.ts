@@ -14,13 +14,9 @@ export const user = router({
         where: {
           name: input.name,
         },
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          createdAt: true,
-          followers: true,
-          following: true,
+        omit: {
+          email: true,
+          emailVerified: true,
         },
       });
 

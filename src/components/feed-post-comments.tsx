@@ -36,7 +36,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
   const { data: comments, isFetching } = trpc.posts.comments.useQuery(
     { postId: post.id },
     {
-      enabled: post.commentsAmount > 0 && !createComment.isLoading,
+      enabled: post.commentsAmount > 0 && !createComment.isPending,
     }
   );
 

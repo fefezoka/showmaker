@@ -12,11 +12,7 @@ import { Heading } from '@/styles/heading';
 import { ProfileIcon } from '@/styles/profile-icon';
 import { diffBetweenDates } from '@/utils/diff-between-dates';
 import { trpc } from '@/utils/trpc';
-import {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-} from '@radix-ui/react-hover-card';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/styles/hover-card';
 import { User } from 'next-auth';
 import { Text } from '@/styles/text';
 
@@ -39,6 +35,7 @@ export const UserHoverCard = ({ user, children, onClickOnUser }: IUserHoverCard)
     },
     {
       enabled: open,
+      getNextPageParam: () => undefined,
     }
   );
 

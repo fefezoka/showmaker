@@ -23,9 +23,7 @@ import { Button } from '@/styles/button';
 const editPostSchema = z
   .object({
     title: z.string(),
-    game: z
-      .object({ value: z.string(), label: z.string() })
-      .transform((game) => game.value),
+    game: z.object({ value: z.string(), label: z.string() }),
   })
   .partial();
 
@@ -51,11 +49,11 @@ export const EditPost = ({
   });
 
   const handleEdit = (data: EditPostData) => {
-    if (data.game === post.game && data.title === post.title) {
+    if (data.game?.value === post.game && data.title === post.title) {
       return;
     }
 
-    editPost.mutate({ postId: post.id, title: data.title, game: data.game });
+    editPost.mutate({ postId: post.id, title: data.title, game: data.game?.value });
     setOpen(false);
     toast.success('Post editado com sucesso!');
   };

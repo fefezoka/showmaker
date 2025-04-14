@@ -41,12 +41,10 @@ const createPostSchema = z.object({
     { required_error: 'Selecione um vídeo' }
   ),
   title: z.string(),
-  game: z
-    .object(
-      { value: z.string(), label: z.string() },
-      { required_error: 'O jogo é obrigatório' }
-    )
-    .transform((game) => game.value),
+  game: z.object(
+    { value: z.string(), label: z.string() },
+    { required_error: 'O jogo é obrigatório' }
+  ),
 });
 
 type CreatePostData = z.infer<typeof createPostSchema>;
@@ -67,7 +65,7 @@ export const CreatePost = () => {
   });
 
   const handleCreatePost = async (data: CreatePostData) => {
-    await createPost.mutateAsync({ ...data });
+    await createPost.mutateAsync({ ...data, game: data.game.value });
     setOpen(false);
   };
 

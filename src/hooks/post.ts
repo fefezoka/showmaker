@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import axios from 'axios';
-import produce from 'immer';
 import { trpc } from '@/utils/trpc';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKey } from '@trpc/react-query';
 import { PostPagination } from '@/types/types';
 import { signIn, useSession } from 'next-auth/react';
 import { ReactQueryOptions, RouterInputs } from '@/server/trpc';
+import { produce } from 'immer';
 
 interface UploadVideo {
   game: string;
@@ -17,7 +17,7 @@ interface UploadVideo {
 export const useCreatePost = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const createPostMutation = trpc.posts.create.useMutation({
     onSuccess: (newPost) => {
@@ -138,11 +138,13 @@ export const useDeletePost = () => {
 
   return trpc.posts.delete.useMutation({
     onMutate: ({ postId }) => {
-      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
+      const infiniteQueries = queryClient.getQueriesData<PostPagination>({
+        queryKey: getQueryKey(trpc.posts.feed),
+      });
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(
-          query[0],
+          { queryKey: query[0] },
           (old) =>
             old &&
             produce(old, (draft) => {
@@ -158,15 +160,17 @@ export const useDeletePost = () => {
 
 export const useEditPost = () => {
   const queryClient = useQueryClient();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   return trpc.posts.edit.useMutation({
     onMutate: ({ postId, title, game }) => {
-      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
+      const infiniteQueries = queryClient.getQueriesData<PostPagination>({
+        queryKey: getQueryKey(trpc.posts.feed),
+      });
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(
-          query[0],
+          { queryKey: query[0] },
           (old) =>
             old &&
             produce(old, (draft) => {
@@ -203,7 +207,7 @@ export const useEditPost = () => {
 
 export const useUnlikePost = () => {
   const queryClient = useQueryClient();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   return trpc.posts.unlike.useMutation({
     onMutate: ({ post }) => {
@@ -214,11 +218,13 @@ export const useUnlikePost = () => {
 
       utils.posts.byId.setData({ postId: post.id }, newPost);
 
-      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
+      const infiniteQueries = queryClient.getQueriesData<PostPagination>({
+        queryKey: getQueryKey(trpc.posts.feed),
+      });
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(
-          query[0],
+          { queryKey: query[0] },
           (old) =>
             old &&
             produce(old, (draft) => {
@@ -242,7 +248,7 @@ type LikeConfig = ReactQueryOptions['posts']['like'];
 
 export const useLikePost = () => {
   const queryClient = useQueryClient();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
   const { data: session } = useSession();
 
   const like = trpc.posts.like.useMutation({
@@ -252,11 +258,13 @@ export const useLikePost = () => {
         draft.likes += 1;
       });
 
-      const infiniteQueries = queryClient.getQueriesData(getQueryKey(trpc.posts.feed));
+      const infiniteQueries = queryClient.getQueriesData<PostPagination>({
+        queryKey: getQueryKey(trpc.posts.feed),
+      });
 
       infiniteQueries.forEach((query) =>
         queryClient.setQueriesData<PostPagination>(
-          query[0],
+          { queryKey: query[0] },
           (old) =>
             old &&
             produce(old, (draft) => {

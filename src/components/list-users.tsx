@@ -72,7 +72,7 @@ export const ListUsers = ({
                     ? unfollow.mutate({ followingUser: user })
                     : follow.mutate({ followingUser: user })
                 }
-                disabled={follow.isLoading || unfollow.isLoading}
+                disabled={follow.isPending || unfollow.isPending}
               >
                 {friendshipStatuses[user.id].following ? 'Seguindo' : 'Seguir'}
               </Button>

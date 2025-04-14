@@ -70,7 +70,7 @@ export const FeedPost = forwardRef<
                   ? unlikePost.mutate({ post })
                   : likePost.mutateAsync({ post });
               }}
-              disabled={likePost.isLoading}
+              disabled={likePost.isPending}
             >
               {post.isLiked ? (
                 <Box

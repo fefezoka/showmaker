@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { trpc } from '@/utils/trpc';
 
 export const useCreatePostComment = () => {
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   return trpc.posts.createComment.useMutation({
     onSuccess: (data, { postId }) => {
@@ -18,7 +18,7 @@ export const useCreatePostComment = () => {
 };
 
 export const useDeletePostComment = () => {
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   return trpc.posts.deleteComment.useMutation({
     onMutate: ({ commentId, postId }) => {
@@ -31,7 +31,7 @@ export const useDeletePostComment = () => {
 };
 
 export const useEditPostComment = () => {
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   return trpc.posts.editComment.useMutation({
     onMutate: ({ commentId, message, postId }) => {

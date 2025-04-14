@@ -82,7 +82,7 @@ export default function Profile() {
   return (
     <Main>
       {user && <NextSeo title={`Perfil de ${user.name}`} />}
-      {!isLoading ? (
+      {!isLoading && user ? (
         <Box as={'section'} css={{ pb: '0 !important' }}>
           <Flex
             justify={'between'}
@@ -112,7 +112,7 @@ export default function Profile() {
             {session?.user.id !== user.id && (
               <Button
                 type="button"
-                disabled={follow.isLoading}
+                disabled={follow.isPending}
                 onClick={() => {
                   friendshipStatus?.following
                     ? unfollow.mutate({ followingUser: user })
