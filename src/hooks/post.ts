@@ -118,13 +118,13 @@ export const useCreatePost = () => {
   const mutateAsync = async ({ game, title, file }: UploadVideo) => {
     setIsLoading(true);
 
-    const [thumbData, videoData] = await sendToCloud({ file });
+    const [videoData, thumbData] = await sendToCloud({ file });
 
     const post = await sendToDB.mutateAsync({
       game,
-      thumbnailUrl: videoData.secure_url,
       title,
-      videoUrl: thumbData.secure_url,
+      thumbnailUrl: thumbData.secure_url,
+      videoUrl: videoData.secure_url,
     });
 
     setIsLoading(false);
