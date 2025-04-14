@@ -41,7 +41,6 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
             bc: '#000',
             br: '$2',
             fontSize: '$3',
-            p: '10px',
             overflow: 'hidden',
             fontWeight: 600,
           }}
@@ -65,61 +64,54 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                     fill
                   />
                 </Box>
-                <Box css={{ position: 'inherit', height: '100%' }}>
-                  <Flex justify={'between'} css={{ height: '100%' }}>
-                    <Flex gap={'2'}>
-                      <Flex direction={'column'} justify={'between'}>
-                        <ProfileIcon
-                          src={data.avatar_url}
-                          css={{ size: '64px', br: '$2' }}
+                <Flex direction={'column'} css={{ position: 'inherit', height: '100%' }}>
+                  <Flex css={{ p: 10 }}>
+                    <ProfileIcon
+                      src={data.avatar_url}
+                      css={{ size: 60, br: '$2' }}
+                      alt=""
+                    />
+                    <Box css={{ ml: 10 }}>
+                      <Box>
+                        <Box
+                          as={Image}
+                          css={{ mb: '2px', br: '$1', overflow: 'hidden' }}
+                          src={`https://flagicons.lipis.dev/flags/4x3/${data.country_code.toLowerCase()}.svg`}
                           alt=""
+                          width={36}
+                          height={27}
                         />
-
-                        <Flex justify={'center'} align={'center'}>
-                          <Box
-                            css={{
-                              size: '$6',
-                              br: '$round',
-                              border: `4px solid ${
-                                data.is_online ? '#b3d944' : '$gray3'
-                              }`,
-                            }}
-                          />
-                        </Flex>
-                      </Flex>
-
-                      <Flex direction={'column'} justify={'between'}>
-                        <Box>
-                          <Box>
-                            <Box
-                              as={Image}
-                              css={{ mb: '2px', br: '$1', overflow: 'hidden' }}
-                              src={`https://flagicons.lipis.dev/flags/4x3/${data.country_code.toLowerCase()}.svg`}
-                              alt=""
-                              width={36}
-                              height={27}
-                            />
-                          </Box>
-                          <Text color={'white'} size={'4'} weight={600}>
-                            {data.username}
-                          </Text>
-                        </Box>
-                        <Box css={{ mb: '$1' }}>
-                          {!data.is_online && data.last_visit && (
-                            <Text weight={'500'} color={'white'} size={'1'} as={'p'}>
-                              Visto por último {diffBetweenDates(data.last_visit)}
-                            </Text>
-                          )}
-                          {
-                            <Text weight={'500'} color={'white'} size={'2'}>
-                              {data.is_online ? 'Online' : 'Offline'}
-                            </Text>
-                          }
-                        </Box>
-                      </Flex>
-                    </Flex>
+                      </Box>
+                      <Text color={'white'} size={'4'} weight={600}>
+                        {data.username}
+                      </Text>
+                    </Box>
                   </Flex>
-                </Box>
+
+                  <Flex align={'center'} css={{ p: 10, pt: 0 }}>
+                    <Flex css={{ width: 60 }} justify={'center'} align={'center'}>
+                      <Box
+                        css={{
+                          size: '$6',
+                          br: '$round',
+                          border: `4px solid ${data.is_online ? '#b3d944' : '$gray3'}`,
+                        }}
+                      />
+                    </Flex>
+                    <Box css={{ ml: 10 }}>
+                      {!data.is_online && data.last_visit && (
+                        <Text weight={'500'} color={'white'} size={'1'} as={'p'}>
+                          Visto por último {diffBetweenDates(data.last_visit)}
+                        </Text>
+                      )}
+                      {
+                        <Text weight={'500'} color={'white'} size={'2'}>
+                          {data.is_online ? 'Online' : 'Offline'}
+                        </Text>
+                      }
+                    </Box>
+                  </Flex>
+                </Flex>
               </>
             )
           ) : (
