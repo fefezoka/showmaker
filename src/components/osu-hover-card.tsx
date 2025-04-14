@@ -106,7 +106,7 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                         </Box>
                         <Box css={{ mb: '$1' }}>
                           {!data.is_online && data.last_visit && (
-                            <Text weight={'500'} color={'white'} size={'2'} as={'p'}>
+                            <Text weight={'500'} color={'white'} size={'1'} as={'p'}>
                               Visto por último {diffBetweenDates(data.last_visit)}
                             </Text>
                           )}
@@ -118,31 +118,6 @@ export const OsuHoverCard = ({ username, osuAccountId }: IOsuHoverCard) => {
                         </Box>
                       </Flex>
                     </Flex>
-                    <>
-                      {data.statistics.global_rank && (
-                        <Box css={{ ta: 'right' }}>
-                          <Flex direction={'column'}>
-                            <Text color={'white'} weight={600} size={'1'}>
-                              Global
-                            </Text>
-                            <Text size={'2'}>#{data.statistics.global_rank}</Text>
-                          </Flex>
-                          <Box
-                            css={{
-                              my: '6px',
-                              height: '1px',
-                              bc: 'white',
-                            }}
-                          />
-                          <Flex direction={'column'}>
-                            <Text color={'white'} weight={600} size={'1'}>
-                              {data.country.name}
-                            </Text>
-                            <Text size={'2'}>#{data.statistics.country_rank}</Text>
-                          </Flex>
-                        </Box>
-                      )}
-                    </>
                   </Flex>
                 </Box>
               </>
