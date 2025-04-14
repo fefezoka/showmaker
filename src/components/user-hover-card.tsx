@@ -89,7 +89,7 @@ export const UserHoverCard = ({ user, children, onClickOnUser }: IUserHoverCard)
             <Link href={`/${user.name}`} style={{ cursor: 'pointer' }}>
               <Heading>{user.name}</Heading>
             </Link>
-            {friendshipStatus?.followed_by && (
+            {friendshipStatus?.followedBy && (
               <Text size={'2'} color={'gray'}>
                 {' • '} Segue você
               </Text>
