@@ -55,7 +55,7 @@ export const ListUsers = ({
                   <Text weight={600} size={'5'}>
                     {user.name}
                   </Text>
-                  {showIfUserFollowYou && friendshipStatuses[user.id].followed_by && (
+                  {showIfUserFollowYou && friendshipStatuses[user.id].followedBy && (
                     <Text size={'1'} color={'gray'}>
                       Segue você
                     </Text>
@@ -72,7 +72,7 @@ export const ListUsers = ({
                     ? unfollow.mutate({ followingUser: user })
                     : follow.mutate({ followingUser: user })
                 }
-                disabled={follow.isLoading || unfollow.isLoading}
+                disabled={follow.isPending || unfollow.isPending}
               >
                 {friendshipStatuses[user.id].following ? 'Seguindo' : 'Seguir'}
               </Button>

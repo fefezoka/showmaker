@@ -3,6 +3,8 @@ import { authenticatedProcedure, procedure, router } from '@/server/trpc';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { infiniteQuery } from '@/server/commons';
+import axios from '@/server/axios';
+import crypto from 'crypto';
 
 export const posts = router({
   feed: router({
@@ -27,12 +29,7 @@ export const posts = router({
             },
             include: {
               user: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  createdAt: true,
-                },
+                omit: { email: true, emailVerified: true },
               },
               likedBy: true,
             },
@@ -75,11 +72,9 @@ export const posts = router({
             },
             include: {
               user: {
-                select: {
-                  id: true,
-                  name: true,
-                  image: true,
-                  createdAt: true,
+                omit: {
+                  email: true,
+                  emailVerified: true,
                 },
               },
               likedBy: true,
@@ -91,6 +86,8 @@ export const posts = router({
     search: procedure
       .input(z.object({ q: z.string(), cursor: z.number().optional() }))
       .query(async ({ ctx, input }) => {
+        console.log(ctx.session);
+
         const response = (await ctx.prisma.post.aggregateRaw({
           pipeline: [
             {
@@ -222,14 +219,40 @@ export const posts = router({
           where: { id: input.postId },
         })
     ),
-  delete: authenticatedProcedure.input(z.object({ postId: z.string().uuid() })).mutation(
-    async ({ ctx, input }) =>
-      await ctx.prisma.post.delete({
-        where: {
-          id: input.postId,
-        },
-      })
-  ),
+  delete: authenticatedProcedure
+    .input(z.object({ postId: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.delete({
+        where: { id: input.postId },
+      });
+
+      const timestamp = Math.floor(Date.now() / 1000);
+
+      const deleteFromCloudinary = async (
+        url: string,
+        resourceType: 'image' | 'video'
+      ) => {
+        const publicId = url.slice(url.indexOf('showmaker'), url.lastIndexOf('.'));
+
+        const signatureString = `public_id=${publicId}&timestamp=${timestamp}${process.env
+          .CLOUDINARY_SECRET!}`;
+        const signature = crypto.createHash('sha1').update(signatureString).digest('hex');
+
+        const formData = new FormData();
+        formData.append('public_id', publicId);
+        formData.append('api_key', process.env.CLOUDINARY_API_KEY!);
+        formData.append('signature', signature);
+        formData.append('timestamp', timestamp.toString());
+
+        await axios.post(
+          `https://api.cloudinary.com/v1_1/dlgkvfmky/${resourceType}/destroy`,
+          formData
+        );
+      };
+
+      await deleteFromCloudinary(post.videoUrl, 'video');
+      await deleteFromCloudinary(post.thumbnailUrl, 'image');
+    }),
   byId: procedure
     .input(z.object({ postId: z.string().uuid() }))
     .query(async ({ ctx, input }) => {
@@ -239,11 +262,9 @@ export const posts = router({
         },
         include: {
           user: {
-            select: {
-              id: true,
-              createdAt: true,
-              name: true,
-              image: true,
+            omit: {
+              email: true,
+              emailVerified: true,
             },
           },
           likedBy: true,
@@ -274,7 +295,12 @@ export const posts = router({
         },
         orderBy: { createdAt: 'desc' },
         include: {
-          user: true,
+          user: {
+            omit: {
+              email: true,
+              emailVerified: true,
+            },
+          },
         },
       })
   ),
@@ -341,7 +367,12 @@ export const posts = router({
           userId: ctx.session.user.id,
         },
         include: {
-          user: true,
+          user: {
+            omit: {
+              email: true,
+              emailVerified: true,
+            },
+          },
         },
       });
 
@@ -406,7 +437,12 @@ export const posts = router({
             postId: input.postId,
           },
           select: {
-            user: true,
+            user: {
+              omit: {
+                email: true,
+                emailVerified: true,
+              },
+            },
           },
         })
         .then((response) => response.map((user) => user.user))

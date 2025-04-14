@@ -12,7 +12,7 @@ type FollowConfig = ReactQueryOptions['user']['follow'];
 export const useFollow = () => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   const follow = trpc.user.follow.useMutation({
     onMutate: ({ followingUser }) => {
@@ -20,13 +20,13 @@ export const useFollow = () => {
         return;
       }
 
-      const queries = queryClient.getQueriesData(
-        getQueryKey(trpc.user.manyFriendshipStatus)
-      );
+      const queries = queryClient.getQueriesData({
+        queryKey: getQueryKey(trpc.user.manyFriendshipStatus),
+      });
 
       queries.forEach((query) =>
         queryClient.setQueriesData<ManyFriendshipStatus>(
-          query[0],
+          { queryKey: query[0] },
           (old) =>
             old &&
             produce(old, (draft) => {
@@ -92,7 +92,7 @@ export const useFollow = () => {
 export const useUnfollow = () => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
-  const utils = trpc.useContext();
+  const utils = trpc.useUtils();
 
   return trpc.user.unfollow.useMutation({
     onMutate: ({ followingUser }) => {
@@ -100,13 +100,13 @@ export const useUnfollow = () => {
         return;
       }
 
-      const queries = queryClient.getQueriesData(
-        getQueryKey(trpc.user.manyFriendshipStatus)
-      );
+      const queries = queryClient.getQueriesData({
+        queryKey: getQueryKey(trpc.user.manyFriendshipStatus),
+      });
 
       queries.forEach((query) =>
         queryClient.setQueriesData<ManyFriendshipStatus>(
-          query[0],
+          { queryKey: query[0] },
           (old) =>
             old &&
             produce(old, (draft) => {

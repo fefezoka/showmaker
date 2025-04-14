@@ -14,13 +14,9 @@ export const user = router({
         where: {
           name: input.name,
         },
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          createdAt: true,
-          followers: true,
-          following: true,
+        omit: {
+          email: true,
+          emailVerified: true,
         },
       });
 
@@ -203,7 +199,7 @@ export const user = router({
         },
       })
   ),
-  friendshipStatus: authenticatedProcedure
+  friendshipStatus: procedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
       const user = await ctx.prisma.user.findUnique({
@@ -220,16 +216,25 @@ export const user = router({
         throw new TRPCError({ code: 'NOT_FOUND' });
       }
 
+      if (!ctx.session) {
+        return {
+          followedBy: false,
+          following: false,
+        };
+      }
+
+      const sessionUserId = ctx.session.user.id;
+
       return {
         following: user.followers.some(
-          (follower) => follower.followerId === ctx.session.user.id
+          (follower) => follower.followerId === sessionUserId
         ),
-        followed_by: user.following.some(
-          (following) => following.followingId === ctx.session.user.id
+        followedBy: user.following.some(
+          (following) => following.followingId === sessionUserId
         ),
       };
     }),
-  manyFriendshipStatus: authenticatedProcedure
+  manyFriendshipStatus: procedure
     .input(
       z.object({
         users: z
@@ -258,12 +263,22 @@ export const user = router({
 
       return users
         .map((user) => {
+          if (!ctx.session) {
+            return {
+              followedBy: false,
+              following: false,
+              id: user.id,
+            };
+          }
+
+          const sessionUserId = ctx.session.user.id;
+
           return {
             following: user.followers.some(
-              (follower) => follower.followerId === ctx.session.user.id
+              (follower) => follower.followerId === sessionUserId
             ),
-            followed_by: user.following.some(
-              (following) => following.followingId === ctx.session.user.id
+            followedBy: user.following.some(
+              (following) => following.followingId === sessionUserId
             ),
             id: user.id,
           };
