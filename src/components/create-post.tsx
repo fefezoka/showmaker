@@ -67,6 +67,7 @@ export const CreatePost = () => {
   const handleCreatePost = async (data: CreatePostData) => {
     await createPost.mutateAsync({ ...data, game: data.game.value });
     setOpen(false);
+    createPost.reset();
   };
 
   return (
