@@ -108,7 +108,7 @@ export const CreatePost = () => {
           </ModalTitle>
           <ModalDescription asChild>
             <Text color={'gray'} size={'4'}>
-              Compartilhe suas jogadas favoritas com a comunidade!
+              Posta alguma play ai mano
             </Text>
           </ModalDescription>
           <Box css={{ mt: '$5' }}>
@@ -147,7 +147,7 @@ export const CreatePost = () => {
               control={control}
               render={({ field }) => (
                 <Dropzone
-                  accept={{ 'video/mp4': [] }}
+                  accept={{ 'video/*': [] }}
                   onDropAccepted={async (files) => {
                     field.onChange({
                       video: files[0],
@@ -159,7 +159,13 @@ export const CreatePost = () => {
                   }}
                   maxSize={104857600}
                 >
-                  {({ getRootProps, fileRejections, isDragActive, acceptedFiles }) => (
+                  {({
+                    getRootProps,
+                    getInputProps,
+                    fileRejections,
+                    isDragActive,
+                    acceptedFiles,
+                  }) => (
                     <Flex
                       justify={'center'}
                       direction={'column'}
@@ -179,6 +185,7 @@ export const CreatePost = () => {
                       }}
                       {...getRootProps()}
                     >
+                      <Box as={'input'} {...getInputProps()} />
                       {field.value ? (
                         <Flex gap={'3'} justify={'between'} css={{ width: '100%' }}>
                           <Box
