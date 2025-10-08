@@ -1,15 +1,15 @@
-import { FeedPost } from '@/components/feed-post';
-import { Box } from '@/styles/box';
-import { PostSkeleton } from '@/styles/skeleton';
-import { PostPagination } from '@/types/types';
-import React, { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { FeedPost } from "@/components/feed-post"
+import { Box } from "@/styles/box"
+import { PostSkeleton } from "@/styles/skeleton"
+import { PostPagination } from "@/types/types"
+import React, { useEffect } from "react"
+import { useInView } from "react-intersection-observer"
 
 interface IPostPaginator {
-  hasNextPage: boolean | undefined;
-  fetchNextPage: () => {};
-  posts: PostPagination | undefined;
-  loading?: boolean;
+  hasNextPage: boolean | undefined
+  fetchNextPage: () => {}
+  posts: PostPagination | undefined
+  loading?: boolean
 }
 
 export const PostPaginator = ({
@@ -18,13 +18,13 @@ export const PostPaginator = ({
   posts,
   loading = true,
 }: IPostPaginator) => {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView()
 
   useEffect(() => {
     if (inView && hasNextPage) {
-      fetchNextPage();
+      fetchNextPage()
     }
-  }, [inView, fetchNextPage, hasNextPage]);
+  }, [inView, fetchNextPage, hasNextPage])
 
   if (loading) {
     return (
@@ -32,7 +32,7 @@ export const PostPaginator = ({
         <PostSkeleton />
         <PostSkeleton />
       </Box>
-    );
+    )
   }
 
   return (
@@ -48,5 +48,5 @@ export const PostPaginator = ({
           ))
         )}
     </>
-  );
-};
+  )
+}

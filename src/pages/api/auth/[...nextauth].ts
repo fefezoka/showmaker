@@ -1,9 +1,9 @@
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import NextAuth, { AuthOptions, User } from 'next-auth';
-import DiscordProvider from 'next-auth/providers/discord';
-import OsuProvider from 'next-auth/providers/osu';
-import TwitchProvider from 'next-auth/providers/twitch';
-import { prisma } from '@/lib/prisma';
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import NextAuth, { AuthOptions, User } from "next-auth"
+import DiscordProvider from "next-auth/providers/discord"
+import OsuProvider from "next-auth/providers/osu"
+import TwitchProvider from "next-auth/providers/twitch"
+import { prisma } from "@/lib/prisma"
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -24,7 +24,7 @@ export const authOptions: AuthOptions = {
           image: profile.picture,
           name: profile.preferred_username,
           createdAt: new Date(),
-        };
+        }
       },
       clientId: process.env.TWITCH_ID!,
       clientSecret: process.env.TWITCH_SECRET!,
@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      if (account?.provider === 'discord' && profile && user) {
+      if (account?.provider === "discord" && profile && user) {
         if (profile.image_url !== user.image || profile.username !== user.name) {
           await prisma.user.update({
             where: {
@@ -42,21 +42,21 @@ export const authOptions: AuthOptions = {
               name: profile.username,
               image: profile.image_url,
             },
-          });
+          })
         }
       }
-      return true;
+      return true
     },
     async session({ session, user }) {
-      const { id, image, name, createdAt } = user;
+      const { id, image, name, createdAt } = user
 
       return {
         ...session,
         user: { id, image, name, createdAt } as User,
-      };
+      }
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+}
 
-export default NextAuth(authOptions);
+export default NextAuth(authOptions)

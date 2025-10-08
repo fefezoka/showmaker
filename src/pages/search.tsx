@@ -1,32 +1,32 @@
-import React from 'react';
-import { NextSeo } from 'next-seo';
-import { GetServerSideProps } from 'next';
-import { trpc } from '@/utils/trpc';
-import { Main } from '@/components/main';
-import { Box } from '@/styles/box';
-import { Heading } from '@/styles/heading';
-import { Grid } from '@/styles/grid';
-import { ListUsers } from '@/components/list-users';
-import { PostPaginator } from '@/components/post-paginator';
+import React from "react"
+import { NextSeo } from "next-seo"
+import { GetServerSideProps } from "next"
+import { trpc } from "@/utils/trpc"
+import { Main } from "@/components/main"
+import { Box } from "@/styles/box"
+import { Heading } from "@/styles/heading"
+import { Grid } from "@/styles/grid"
+import { ListUsers } from "@/components/list-users"
+import { PostPaginator } from "@/components/post-paginator"
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  const { q } = query;
+  const { q } = query
 
   if (!q) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
-    };
+    }
   }
 
   return {
     props: {
       q,
     },
-  };
-};
+  }
+}
 
 export default function Search({ q }: { q: string }) {
   const posts = trpc.posts.feed.search.useInfiniteQuery(
@@ -36,34 +36,34 @@ export default function Search({ q }: { q: string }) {
       getNextPageParam: (lastPage, pages) =>
         (lastPage.posts.length === 6 && pages.length + 1) || undefined,
     }
-  );
+  )
 
-  const users = trpc.user.search.useQuery({ q, limit: 2 });
+  const users = trpc.user.search.useQuery({ q, limit: 2 })
 
   if (posts.isError && users.isError) {
     return (
       <Main>
-        <Box as={'section'}>
+        <Box as={"section"}>
           <Heading size="2">Post não encontrado</Heading>
         </Box>
       </Main>
-    );
+    )
   }
 
   return (
     <Main>
       <NextSeo title={`Procurando por ${q}`} />
-      <Box as={'section'}>
+      <Box as={"section"}>
         <Heading size="2">Procurando por &quot;{q}&quot;</Heading>
       </Box>
 
       {users.data && users.data.length !== 0 && (
-        <Box as={'section'}>
+        <Box as={"section"}>
           <Heading>Usuários</Heading>
           <Grid
-            columns={{ '@initial': '1', '@bp2': '2' }}
-            gap={'2'}
-            css={{ mt: '$1', height: 76 }}
+            columns={{ "@initial": "1", "@bp2": "2" }}
+            gap={"2"}
+            css={{ mt: "$1", height: 76 }}
           >
             <ListUsers users={users.data} transparent={false} />
           </Grid>
@@ -76,5 +76,5 @@ export default function Search({ q }: { q: string }) {
         hasNextPage={posts.hasNextPage}
       />
     </Main>
-  );
+  )
 }

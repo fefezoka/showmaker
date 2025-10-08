@@ -1,10 +1,10 @@
-import { LikedPost, Post, postSchema } from '@/types/types';
-import { authenticatedProcedure, procedure, router } from '@/server/trpc';
-import { TRPCError } from '@trpc/server';
-import { z } from 'zod';
-import { infiniteQuery } from '@/server/commons';
-import axios from '@/server/axios';
-import crypto from 'crypto';
+import { LikedPost, Post, postSchema } from "@/types/types"
+import { authenticatedProcedure, procedure, router } from "@/server/trpc"
+import { TRPCError } from "@trpc/server"
+import { z } from "zod"
+import { infiniteQuery } from "@/server/commons"
+import axios from "@/server/axios"
+import crypto from "crypto"
 
 export const posts = router({
   feed: router({
@@ -22,7 +22,7 @@ export const posts = router({
             take: input.limit + 1,
             cursor: input.cursor ? { id: input.cursor } : undefined,
             orderBy: {
-              createdAt: 'desc',
+              createdAt: "desc",
             },
             where: {
               ...(input.game && { game: input.game }),
@@ -45,7 +45,7 @@ export const posts = router({
       .input(
         z.object({
           username: z.string(),
-          feed: z.enum(['favorites', 'posts']).optional(),
+          feed: z.enum(["favorites", "posts"]).optional(),
           limit: z.number().optional().default(6),
           cursor: z.string().optional(),
         })
@@ -56,11 +56,11 @@ export const posts = router({
             take: input.limit + 1,
             cursor: input.cursor ? { id: input.cursor } : undefined,
             orderBy: {
-              createdAt: 'desc',
+              createdAt: "desc",
             },
             where: {
-              ...(input.feed !== 'favorites' && { user: { name: input.username } }),
-              ...(input.feed === 'favorites' && {
+              ...(input.feed !== "favorites" && { user: { name: input.username } }),
+              ...(input.feed === "favorites" && {
                 likedBy: {
                   some: {
                     user: {
@@ -86,34 +86,34 @@ export const posts = router({
     search: procedure
       .input(z.object({ q: z.string(), cursor: z.number().optional() }))
       .query(async ({ ctx, input }) => {
-        console.log(ctx.session);
+        console.log(ctx.session)
 
         const response = (await ctx.prisma.post.aggregateRaw({
           pipeline: [
             {
               $search: {
-                index: 'title',
+                index: "title",
                 text: {
                   query: input.q,
-                  path: 'title',
+                  path: "title",
                   fuzzy: {},
                 },
               },
             },
             {
               $lookup: {
-                from: 'User',
-                localField: 'userId',
-                foreignField: '_id',
-                as: 'user',
+                from: "User",
+                localField: "userId",
+                foreignField: "_id",
+                as: "user",
               },
             },
             {
               $lookup: {
-                from: 'LikedPost',
-                localField: '_id',
-                foreignField: 'postId',
-                as: 'likedBy',
+                from: "LikedPost",
+                localField: "_id",
+                foreignField: "postId",
+                as: "likedBy",
               },
             },
             {
@@ -131,17 +131,17 @@ export const posts = router({
                 game: 1,
                 user: 1,
                 likedBy: 1,
-                score: { $meta: 'searchScore' },
+                score: { $meta: "searchScore" },
               },
             },
           ],
-        })) as any;
+        })) as any
 
         if (response.length === 0 || !response) {
           throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: 'Posts not found',
-          });
+            code: "NOT_FOUND",
+            message: "Posts not found",
+          })
         }
 
         const filter = response
@@ -154,19 +154,19 @@ export const posts = router({
             videoUrl: r.videoUrl,
             commentsAmount: r.commentsAmount,
             game: r.game,
-            createdAt: new Date(r.createdAt['$date']),
+            createdAt: new Date(r.createdAt["$date"]),
             user: {
               name: r.user[0].name,
               image: r.user[0].image,
               id: r.user[0]._id,
-              createdAt: new Date(r.user[0].createdAt['$date']),
+              createdAt: new Date(r.user[0].createdAt["$date"]),
             },
             isLiked: r.likedBy.some((like: any) => like.userId === ctx.session?.user.id),
-          }));
+          }))
 
         return {
           posts: filter as Post[],
-        };
+        }
       }),
   }),
   create: authenticatedProcedure
@@ -191,7 +191,7 @@ export const posts = router({
             },
           },
         },
-      });
+      })
 
       return {
         ...response,
@@ -199,7 +199,7 @@ export const posts = router({
         likedBy: [] as LikedPost[],
         likes: 0,
         isLiked: false,
-      };
+      }
     }),
   edit: authenticatedProcedure
     .input(
@@ -224,34 +224,34 @@ export const posts = router({
     .mutation(async ({ ctx, input }) => {
       const post = await ctx.prisma.post.delete({
         where: { id: input.postId },
-      });
+      })
 
-      const timestamp = Math.floor(Date.now() / 1000);
+      const timestamp = Math.floor(Date.now() / 1000)
 
       const deleteFromCloudinary = async (
         url: string,
-        resourceType: 'image' | 'video'
+        resourceType: "image" | "video"
       ) => {
-        const publicId = url.slice(url.indexOf('showmaker'), url.lastIndexOf('.'));
+        const publicId = url.slice(url.indexOf("showmaker"), url.lastIndexOf("."))
 
         const signatureString = `public_id=${publicId}&timestamp=${timestamp}${process.env
-          .CLOUDINARY_SECRET!}`;
-        const signature = crypto.createHash('sha1').update(signatureString).digest('hex');
+          .CLOUDINARY_SECRET!}`
+        const signature = crypto.createHash("sha1").update(signatureString).digest("hex")
 
-        const formData = new FormData();
-        formData.append('public_id', publicId);
-        formData.append('api_key', process.env.CLOUDINARY_API_KEY!);
-        formData.append('signature', signature);
-        formData.append('timestamp', timestamp.toString());
+        const formData = new FormData()
+        formData.append("public_id", publicId)
+        formData.append("api_key", process.env.CLOUDINARY_API_KEY!)
+        formData.append("signature", signature)
+        formData.append("timestamp", timestamp.toString())
 
         await axios.post(
           `https://api.cloudinary.com/v1_1/dlgkvfmky/${resourceType}/destroy`,
           formData
-        );
-      };
+        )
+      }
 
-      await deleteFromCloudinary(post.videoUrl, 'video');
-      await deleteFromCloudinary(post.thumbnailUrl, 'image');
+      await deleteFromCloudinary(post.videoUrl, "video")
+      await deleteFromCloudinary(post.thumbnailUrl, "image")
     }),
   byId: procedure
     .input(z.object({ postId: z.string().uuid() }))
@@ -269,13 +269,13 @@ export const posts = router({
           },
           likedBy: true,
         },
-      });
+      })
 
       if (!post) {
         throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'Post not found',
-        });
+          code: "NOT_FOUND",
+          message: "Post not found",
+        })
       }
 
       return {
@@ -285,7 +285,7 @@ export const posts = router({
         },
         likes: post.likedBy.length,
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
-      };
+      }
     }),
   comments: procedure.input(z.object({ postId: z.string().uuid() })).query(
     async ({ ctx, input }) =>
@@ -293,7 +293,7 @@ export const posts = router({
         where: {
           postId: input.postId,
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
         include: {
           user: {
             omit: {
@@ -316,7 +316,7 @@ export const posts = router({
           postId: input.post.id,
           userId: ctx.session.user.id,
         },
-      }));
+      }))
 
       !isLiked &&
         (await ctx.prisma.likedPost.create({
@@ -324,11 +324,11 @@ export const posts = router({
             postId: input.post.id,
             userId: ctx.session.user.id,
           },
-        }));
+        }))
 
       return {
-        message: 'ok',
-      };
+        message: "ok",
+      }
     }),
   unlike: authenticatedProcedure
     .input(z.object({ post: postSchema }))
@@ -338,7 +338,7 @@ export const posts = router({
           postId: input.post.id,
           userId: ctx.session.user.id,
         },
-      }));
+      }))
 
       isLiked &&
         (await ctx.prisma.likedPost.deleteMany({
@@ -346,11 +346,11 @@ export const posts = router({
             postId: input.post.id,
             userId: ctx.session.user.id,
           },
-        }));
+        }))
 
       return {
-        message: 'ok',
-      };
+        message: "ok",
+      }
     }),
   createComment: authenticatedProcedure
     .input(
@@ -374,7 +374,7 @@ export const posts = router({
             },
           },
         },
-      });
+      })
 
       await ctx.prisma.post.update({
         where: {
@@ -385,9 +385,9 @@ export const posts = router({
             increment: 1,
           },
         },
-      });
+      })
 
-      return response;
+      return response
     }),
   editComment: authenticatedProcedure
     .input(
@@ -412,7 +412,7 @@ export const posts = router({
         where: {
           id: input.commentId,
         },
-      });
+      })
 
       await ctx.prisma.post.update({
         data: {
@@ -423,11 +423,11 @@ export const posts = router({
         where: {
           id: input.postId,
         },
-      });
+      })
 
       return {
-        message: 'ok',
-      };
+        message: "ok",
+      }
     }),
   likedBy: procedure.input(z.object({ postId: z.string() })).query(
     async ({ input, ctx }) =>
@@ -447,4 +447,4 @@ export const posts = router({
         })
         .then((response) => response.map((user) => user.user))
   ),
-});
+})

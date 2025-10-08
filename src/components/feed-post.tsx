@@ -1,92 +1,92 @@
-import Link from 'next/link';
-import React, { forwardRef } from 'react';
-import { AiFillLike, AiOutlineLike } from 'react-icons/ai';
-import { BiDotsHorizontalRounded } from 'react-icons/bi';
-import { FiEdit, FiCopy, FiDelete, FiDownload } from 'react-icons/fi';
-import { useSession } from 'next-auth/react';
-import { EditPost } from '@/components/edit-post';
-import { FeedPostComments } from '@/components/feed-post-comments';
-import { PostLikedByUsers } from '@/components/post-liked-by';
-import { UserHoverCard } from '@/components/user-hover-card';
-import { useDeletePost, useLikePost, useUnlikePost } from '@/hooks/post';
-import { Box } from '@/styles/box';
-import { Button } from '@/styles/button';
+import Link from "next/link"
+import React, { forwardRef } from "react"
+import { AiFillLike, AiOutlineLike } from "react-icons/ai"
+import { BiDotsHorizontalRounded } from "react-icons/bi"
+import { FiEdit, FiCopy, FiDelete, FiDownload } from "react-icons/fi"
+import { useSession } from "next-auth/react"
+import { EditPost } from "@/components/edit-post"
+import { FeedPostComments } from "@/components/feed-post-comments"
+import { PostLikedByUsers } from "@/components/post-liked-by"
+import { UserHoverCard } from "@/components/user-hover-card"
+import { useDeletePost, useLikePost, useUnlikePost } from "@/hooks/post"
+import { Box } from "@/styles/box"
+import { Button } from "@/styles/button"
 import {
   Menu,
   MenuTrigger,
   MenuContent,
   MenuItem,
   MenuSeparator,
-} from '@/styles/dropdown-menu';
-import { Flex } from '@/styles/flex';
-import { Heading } from '@/styles/heading';
-import { Modal, ModalTrigger, ModalContent, ModalClose } from '@/styles/modal';
-import { ProfileIcon } from '@/styles/profile-icon';
-import { Video } from '@/styles/video';
-import { diffBetweenDates } from '@/utils/diff-between-dates';
-import { downloadVideo } from '@/utils/download-video';
-import { Post } from '@/types/types';
-import { toast } from 'react-toastify';
-import { Text } from '@/styles/text';
+} from "@/styles/dropdown-menu"
+import { Flex } from "@/styles/flex"
+import { Heading } from "@/styles/heading"
+import { Modal, ModalTrigger, ModalContent, ModalClose } from "@/styles/modal"
+import { ProfileIcon } from "@/styles/profile-icon"
+import { Video } from "@/styles/video"
+import { diffBetweenDates } from "@/utils/diff-between-dates"
+import { downloadVideo } from "@/utils/download-video"
+import { Post } from "@/types/types"
+import { toast } from "react-toastify"
+import { Text } from "@/styles/text"
 
 export const FeedPost = forwardRef<
   HTMLDivElement,
   React.ComponentProps<typeof Box> & {
-    post: Post;
+    post: Post
   }
 >(({ post, ...props }, forwardRef) => {
-  const { data: session } = useSession();
-  const deletePost = useDeletePost();
-  const likePost = useLikePost();
-  const unlikePost = useUnlikePost();
+  const { data: session } = useSession()
+  const deletePost = useDeletePost()
+  const likePost = useLikePost()
+  const unlikePost = useUnlikePost()
 
   return (
     <Box
-      as={'section'}
+      as={"section"}
       {...props}
       ref={forwardRef}
-      css={{ transition: 'all 200ms', '&:hover': { bc: '$bg2' } }}
+      css={{ transition: "all 200ms", "&:hover": { bc: "$bg2" } }}
     >
-      <Flex justify={'between'}>
+      <Flex justify={"between"}>
         <UserHoverCard user={post.user}>
-          <Flex align={'center'} gap={'2'} css={{ us: 'none' }}>
+          <Flex align={"center"} gap={"2"} css={{ us: "none" }}>
             <ProfileIcon css={{ size: 36 }} src={post.user.image} alt="" />
             <Box>
-              <Text weight={600} size={{ '@initial': '3', '@bp2': '5' }}>
+              <Text weight={600} size={{ "@initial": "3", "@bp2": "5" }}>
                 {post.user.name}
               </Text>
-              <Text color={'gray'} size={{ '@initial': '2', '@bp2': '3' }}>
-                {' • '} {diffBetweenDates(post.createdAt)}
+              <Text color={"gray"} size={{ "@initial": "2", "@bp2": "3" }}>
+                {" • "} {diffBetweenDates(post.createdAt)}
               </Text>
             </Box>
           </Flex>
         </UserHoverCard>
-        <Flex align={'center'} gap={{ '@initial': '2', '@bp2': '4' }}>
-          <Flex align={'center'} gap={'1'}>
+        <Flex align={"center"} gap={{ "@initial": "2", "@bp2": "4" }}>
+          <Flex align={"center"} gap={"1"}>
             <Flex
-              as={'button'}
+              as={"button"}
               onClick={() => {
                 post.isLiked
                   ? unlikePost.mutate({ post })
-                  : likePost.mutateAsync({ post });
+                  : likePost.mutateAsync({ post })
               }}
               disabled={likePost.isPending}
             >
               {post.isLiked ? (
                 <Box
                   as={AiFillLike}
-                  css={{ color: '$blue10', size: 20, '@bp2': { size: 24 } }}
+                  css={{ color: "$blue10", size: 20, "@bp2": { size: 24 } }}
                 />
               ) : (
                 <Box
                   as={AiOutlineLike}
-                  css={{ color: '$slate11', size: 20, '@bp2': { size: 24 } }}
+                  css={{ color: "$slate11", size: 20, "@bp2": { size: 24 } }}
                 />
               )}
             </Flex>
             <PostLikedByUsers postId={post.id}>
-              <Box as={'button'} disabled={post.likes === 0}>
-                <Text size={{ '@initial': '3', '@bp2': '5' }} color={'gray'} weight={600}>
+              <Box as={"button"} disabled={post.likes === 0}>
+                <Text size={{ "@initial": "3", "@bp2": "5" }} color={"gray"} weight={600}>
                   {post.likes}
                 </Text>
               </Box>
@@ -95,23 +95,23 @@ export const FeedPost = forwardRef<
 
           <Menu modal={false}>
             <MenuTrigger asChild>
-              <Flex as={'button'}>
+              <Flex as={"button"}>
                 <Flex
                   as={BiDotsHorizontalRounded}
                   css={{
                     size: 24,
-                    p: '2px',
-                    br: '$round',
-                    transition: 'all 200ms ease-out',
-                    color: '$slate11',
+                    p: "2px",
+                    br: "$round",
+                    transition: "all 200ms ease-out",
+                    color: "$slate11",
 
-                    '&:hover': {
-                      transition: 'all 200ms ease-in',
-                      color: '$blue10',
-                      bc: '$bg4',
+                    "&:hover": {
+                      transition: "all 200ms ease-in",
+                      color: "$blue10",
+                      bc: "$bg4",
                     },
 
-                    '@bp2': {
+                    "@bp2": {
                       size: 30,
                     },
                   }}
@@ -130,9 +130,9 @@ export const FeedPost = forwardRef<
               <MenuItem
                 onClick={() => {
                   navigator.clipboard.writeText(
-                    window.location.origin + '/post/' + post.id
-                  );
-                  toast.success('Link copiado com sucesso');
+                    window.location.origin + "/post/" + post.id
+                  )
+                  toast.success("Link copiado com sucesso")
                 }}
               >
                 <FiCopy />
@@ -147,23 +147,23 @@ export const FeedPost = forwardRef<
                   <MenuSeparator />
                   <Modal>
                     <ModalTrigger>
-                      <MenuItem theme={'alert'} onSelect={(e: any) => e.preventDefault()}>
+                      <MenuItem theme={"alert"} onSelect={(e: any) => e.preventDefault()}>
                         <FiDelete />
                         Apagar vídeo
                       </MenuItem>
                     </ModalTrigger>
-                    <ModalContent css={{ p: '$5' }}>
-                      <Box css={{ mb: '$3' }}>
+                    <ModalContent css={{ p: "$5" }}>
+                      <Box css={{ mb: "$3" }}>
                         <Heading>Excluir postagem</Heading>
                       </Box>
-                      <Box css={{ mb: '$6' }}>
-                        <Text color={'gray'}>
+                      <Box css={{ mb: "$6" }}>
+                        <Text color={"gray"}>
                           Deseja realmente excluir o post &quot;{post.title}&quot;?
                         </Text>
                       </Box>
-                      <Flex justify={'between'}>
+                      <Flex justify={"between"}>
                         <ModalClose asChild>
-                          <Button variant={'red'}>Cancelar</Button>
+                          <Button variant={"red"}>Cancelar</Button>
                         </ModalClose>
                         <Button onClick={() => deletePost.mutate({ postId: post.id })}>
                           Excluir
@@ -178,15 +178,15 @@ export const FeedPost = forwardRef<
         </Flex>
       </Flex>
 
-      <Flex css={{ mt: '$1', mb: '$3' }}>
+      <Flex css={{ mt: "$1", mb: "$3" }}>
         {post.title && (
           <Box
-            css={{ width: '100%' }}
+            css={{ width: "100%" }}
             as={Link}
             href={`/post/${post.id}`}
             prefetch={false}
           >
-            <Heading size={'2'}>{post.title}</Heading>
+            <Heading size={"2"}>{post.title}</Heading>
           </Box>
         )}
       </Flex>
@@ -195,7 +195,7 @@ export const FeedPost = forwardRef<
 
       <FeedPostComments post={post} />
     </Box>
-  );
-});
+  )
+})
 
-FeedPost.displayName = 'FeedPost';
+FeedPost.displayName = "FeedPost"

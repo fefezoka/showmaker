@@ -1,52 +1,52 @@
-import React from 'react';
-import { IconType } from 'react-icons/lib';
-import { styled } from 'stitches.config';
-import { SiTwitch, SiOsu } from 'react-icons/si';
-import { FaDiscord } from 'react-icons/fa';
-import { Flex } from '@/styles/flex';
+import React from "react"
+import { IconType } from "react-icons/lib"
+import { styled } from "stitches.config"
+import { SiTwitch, SiOsu } from "react-icons/si"
+import { FaDiscord } from "react-icons/fa"
+import { Flex } from "@/styles/flex"
 
-type Providers = 'discord' | 'twitch' | 'osu';
+type Providers = "discord" | "twitch" | "osu"
 
 interface IProviderIcon extends React.ComponentProps<typeof StyledIcon> {
-  provider: Providers;
+  provider: Providers
 }
 
 interface IOptions {
-  icon: IconType;
-  bc: string;
-  isAlreadyRound?: boolean;
-  hasBorder?: boolean;
-  sizeWrapperRatio: number;
+  icon: IconType
+  bc: string
+  isAlreadyRound?: boolean
+  hasBorder?: boolean
+  sizeWrapperRatio: number
 }
 
 const options: Record<Providers, IOptions> = {
   discord: {
-    bc: '$discord',
+    bc: "$discord",
     icon: FaDiscord,
     sizeWrapperRatio: 16 / 24,
   },
   osu: {
-    bc: '$osu',
+    bc: "$osu",
     icon: SiOsu,
     hasBorder: true,
     isAlreadyRound: true,
     sizeWrapperRatio: 14 / 24,
   },
   twitch: {
-    bc: '$twitch',
+    bc: "$twitch",
     icon: SiTwitch,
     sizeWrapperRatio: 14 / 24,
   },
-};
+}
 
-const StyledIcon = styled('div', {
-  color: 'white',
-  transition: 'all 300ms ease-in',
-  '&:hover': {
-    filter: 'brightness(120%) saturate(120%)',
-    transform: 'translateY(-4%)',
+const StyledIcon = styled("div", {
+  color: "white",
+  transition: "all 300ms ease-in",
+  "&:hover": {
+    filter: "brightness(120%) saturate(120%)",
+    transform: "translateY(-4%)",
   },
-});
+})
 
 export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
   return options[provider].isAlreadyRound ? (
@@ -55,9 +55,9 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
       css={{
         size: Number(css?.size) || 24,
         bc: options[provider].bc,
-        ...(options[provider].hasBorder && { br: '$round' }),
-        '@bp2': {
-          size: Number(css?.['@bp2']?.size || css?.size) || 32,
+        ...(options[provider].hasBorder && { br: "$round" }),
+        "@bp2": {
+          size: Number(css?.["@bp2"]?.size || css?.size) || 32,
         },
         ...css,
       }}
@@ -68,13 +68,13 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
       css={{
         size: Number(css?.size) || 24,
         bc: options[provider].bc,
-        br: '$round',
-        display: 'flex',
-        jc: 'center',
-        ai: 'center',
+        br: "$round",
+        display: "flex",
+        jc: "center",
+        ai: "center",
 
-        '@bp2': {
-          size: Number(css?.['@bp2']?.size || css?.size) || 32,
+        "@bp2": {
+          size: Number(css?.["@bp2"]?.size || css?.size) || 32,
         },
         ...css,
       }}
@@ -83,13 +83,13 @@ export const ProviderIcon = ({ provider, css, ...props }: IProviderIcon) => {
         as={options[provider].icon}
         css={{
           size: (Number(css?.size) || 24) * options[provider].sizeWrapperRatio,
-          '@bp2': {
+          "@bp2": {
             size:
-              (Number(css?.['@bp2']?.size || css?.size) || 32) *
+              (Number(css?.["@bp2"]?.size || css?.size) || 32) *
               options[provider].sizeWrapperRatio,
           },
         }}
       />
     </StyledIcon>
-  );
-};
+  )
+}

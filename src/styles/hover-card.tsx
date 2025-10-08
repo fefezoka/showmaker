@@ -1,6 +1,6 @@
-import React from 'react';
-import { styled, keyframes } from 'stitches.config';
-import * as HoverCardPrimitive from '@radix-ui/react-hover-card';
+import React from "react"
+import { styled, keyframes } from "stitches.config"
+import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
 
 const fade = keyframes({
   from: {
@@ -9,31 +9,31 @@ const fade = keyframes({
   to: {
     opacity: 1,
   },
-});
+})
 
-export const HoverCard = HoverCardPrimitive.Root;
-export const HoverCardTrigger = HoverCardPrimitive.Trigger;
-export const HoverCardArrow = HoverCardPrimitive.Arrow;
+export const HoverCard = HoverCardPrimitive.Root
+export const HoverCardTrigger = HoverCardPrimitive.Trigger
+export const HoverCardArrow = HoverCardPrimitive.Arrow
 
 export const StyledHoverCardContent = styled(HoverCardPrimitive.Content, {
-  bc: '$bg1',
-  br: '$3',
-  width: '440px',
-  zIndex: '$modal',
-  border: '1px solid $bg4',
-  transition: 'all 200ms ease-out',
+  bc: "$bg1",
+  br: "$3",
+  width: "440px",
+  zIndex: "$modal",
+  border: "1px solid $bg4",
+  transition: "all 200ms ease-out",
   animation: `250ms ${fade}`,
-  bs: '0px 0px 8px black',
-  overflow: 'hidden',
-});
+  bs: "0px 0px 8px black",
+  overflow: "hidden",
+})
 
 type HoverCardContentProps = HoverCardPrimitive.HoverCardContentProps &
-  React.ComponentProps<typeof StyledHoverCardContent>;
+  React.ComponentProps<typeof StyledHoverCardContent>
 
 export const HoverCardContent = ({ children, ...props }: HoverCardContentProps) => (
   <HoverCardPrimitive.Portal>
     <StyledHoverCardContent {...props}>{children}</StyledHoverCardContent>
   </HoverCardPrimitive.Portal>
-);
+)
 
-HoverCardContent.displayName = 'Modal';
+HoverCardContent.displayName = "Modal"

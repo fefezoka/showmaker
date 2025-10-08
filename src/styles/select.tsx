@@ -1,10 +1,10 @@
-import React from 'react';
-import { Controller, Control } from 'react-hook-form';
-import ReactSelect from 'react-select';
+import React from "react"
+import { Controller, Control } from "react-hook-form"
+import ReactSelect from "react-select"
 
 interface Props {
-  control: Control;
-  name: string;
+  control: Control
+  name: string
 }
 
 export const Select = ({
@@ -25,49 +25,49 @@ export const Select = ({
           styles={{
             input: (baseStyles) => ({
               ...baseStyles,
-              minHeight: '32px',
+              minHeight: "32px",
             }),
             placeholder: (baseStyles) => ({
               ...baseStyles,
-              color: 'var(--colors-slate11)',
-              fontSize: 'var(--fontSizes-2)',
-              marginLeft: '4px',
+              color: "var(--colors-slate11)",
+              fontSize: "var(--fontSizes-2)",
+              marginLeft: "4px",
               fontWeight: 500,
             }),
             singleValue: (baseStyles) => ({
               ...baseStyles,
-              color: 'var(--colors-slate12)',
-              marginLeft: '4px',
+              color: "var(--colors-slate12)",
+              marginLeft: "4px",
             }),
             control: (baseStyles) => ({
               ...baseStyles,
-              fontSize: '14px',
-              backgroundColor: 'var(--colors-bg2)',
-              boxShadow: 'inset 0 0 0 1px var(--colors-bg4)',
+              fontSize: "14px",
+              backgroundColor: "var(--colors-bg2)",
+              boxShadow: "inset 0 0 0 1px var(--colors-bg4)",
               border: 0,
-              borderRadius: '8px',
+              borderRadius: "8px",
             }),
             container: (baseStyles) => ({
               ...baseStyles,
-              fontSize: '14px',
+              fontSize: "14px",
             }),
             menu: (baseStyles) => ({
               ...baseStyles,
-              backgroundColor: 'var(--colors-bg2)',
+              backgroundColor: "var(--colors-bg2)",
             }),
             option: (baseStyles) => ({
               ...baseStyles,
-              backgroundColor: 'var(--colors-bg2)',
+              backgroundColor: "var(--colors-bg2)",
 
-              ':hover': {
-                backgroundColor: 'var(--colors-bg3)',
+              ":hover": {
+                backgroundColor: "var(--colors-bg3)",
               },
             }),
           }}
         />
       )}
     />
-  );
-};
+  )
+}
 
-Select.displayName = 'Select';
+Select.displayName = "Select"

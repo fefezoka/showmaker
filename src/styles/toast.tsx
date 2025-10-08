@@ -1,8 +1,8 @@
 import {
   ToastContainer as ToastContainerPrimitive,
   toast as ToastPrimitive,
-} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+} from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 export const ToastContainer = () => (
   <ToastContainerPrimitive
@@ -16,6 +16,6 @@ export const ToastContainer = () => (
     pauseOnHover
     theme="light"
   />
-);
+)
 
-export const toast = ToastPrimitive;
+export const toast = ToastPrimitive

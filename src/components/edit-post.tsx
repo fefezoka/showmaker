@@ -1,43 +1,37 @@
-import React, { useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm, Control, FieldValues } from 'react-hook-form';
-import { z } from 'zod';
-import {
-  Modal,
-  ModalClose,
-  ModalContent,
-  ModalTitle,
-  ModalTrigger,
-} from '@/styles/modal';
-import { useEditPost } from '@/hooks/post';
-import { Post } from '@/types/types';
-import { toast } from '@/styles/toast';
-import { Box } from '@/styles/box';
-import { Flex } from '@/styles/flex';
-import { Text } from '@/styles/text';
-import { Input } from '@/styles/input';
-import { Select } from '@/styles/select';
-import { gameOptions } from '@/components/create-post';
-import { Button } from '@/styles/button';
+import React, { useState } from "react"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm, Control, FieldValues } from "react-hook-form"
+import { z } from "zod"
+import { Modal, ModalClose, ModalContent, ModalTitle, ModalTrigger } from "@/styles/modal"
+import { useEditPost } from "@/hooks/post"
+import { Post } from "@/types/types"
+import { toast } from "@/styles/toast"
+import { Box } from "@/styles/box"
+import { Flex } from "@/styles/flex"
+import { Text } from "@/styles/text"
+import { Input } from "@/styles/input"
+import { Select } from "@/styles/select"
+import { gameOptions } from "@/components/create-post"
+import { Button } from "@/styles/button"
 
 const editPostSchema = z
   .object({
     title: z.string(),
     game: z.object({ value: z.string(), label: z.string() }),
   })
-  .partial();
+  .partial()
 
-type EditPostData = z.infer<typeof editPostSchema>;
+type EditPostData = z.infer<typeof editPostSchema>
 
 export const EditPost = ({
   post,
   children,
   ...props
 }: React.ComponentProps<typeof ModalContent> & {
-  post: Post;
+  post: Post
 }) => {
-  const [open, setOpen] = useState<boolean>();
-  const editPost = useEditPost();
+  const [open, setOpen] = useState<boolean>()
+  const editPost = useEditPost()
 
   const {
     register,
@@ -46,50 +40,50 @@ export const EditPost = ({
     formState: { errors },
   } = useForm<EditPostData>({
     resolver: zodResolver(editPostSchema),
-  });
+  })
 
   const handleEdit = (data: EditPostData) => {
     if (data.game?.value === post.game && data.title === post.title) {
-      return;
+      return
     }
 
-    editPost.mutate({ postId: post.id, title: data.title, game: data.game?.value });
-    setOpen(false);
-    toast.success('Post editado com sucesso!');
-  };
+    editPost.mutate({ postId: post.id, title: data.title, game: data.game?.value })
+    setOpen(false)
+    toast.success("Post editado com sucesso!")
+  }
 
   return (
     <Modal open={open} onOpenChange={setOpen}>
       <ModalTrigger asChild>{children}</ModalTrigger>
       <ModalContent {...props}>
-        <Box as={'form'} onSubmit={handleSubmit(handleEdit)}>
-          <Box css={{ mb: '$6' }}>
+        <Box as={"form"} onSubmit={handleSubmit(handleEdit)}>
+          <Box css={{ mb: "$6" }}>
             <ModalTitle>Editar postagem</ModalTitle>
           </Box>
-          <Flex justify={'between'}>
-            <Text as={'label'}>Título</Text>
+          <Flex justify={"between"}>
+            <Text as={"label"}>Título</Text>
             {errors.title && (
-              <Text color={'red'} weight={600}>
+              <Text color={"red"} weight={600}>
                 {errors.title.message}
               </Text>
             )}
           </Flex>
           <Input
-            defaultValue={post.title || ''}
-            {...register('title')}
-            css={{ px: '$3', my: '$1' }}
+            defaultValue={post.title || ""}
+            {...register("title")}
+            css={{ px: "$3", my: "$1" }}
           />
 
-          <Box css={{ mt: '$1' }}>
-            <Flex justify={'between'}>
-              <Text as={'label'}>Jogo</Text>
+          <Box css={{ mt: "$1" }}>
+            <Flex justify={"between"}>
+              <Text as={"label"}>Jogo</Text>
               {errors.title && (
-                <Text color={'red'} weight={600}>
+                <Text color={"red"} weight={600}>
                   {errors.title.message}
                 </Text>
               )}
             </Flex>
-            <Box css={{ my: '$1' }}>
+            <Box css={{ my: "$1" }}>
               <Select
                 options={gameOptions}
                 control={control as unknown as Control<FieldValues>}
@@ -99,14 +93,14 @@ export const EditPost = ({
             </Box>
           </Box>
 
-          <Flex justify={'between'} css={{ mt: '$6' }}>
+          <Flex justify={"between"} css={{ mt: "$6" }}>
             <ModalClose>
-              <Button variant={'red'}>Sair</Button>
+              <Button variant={"red"}>Sair</Button>
             </ModalClose>
             <Button type="submit">Enviar</Button>
           </Flex>
         </Box>
       </ModalContent>
     </Modal>
-  );
-};
+  )
+}

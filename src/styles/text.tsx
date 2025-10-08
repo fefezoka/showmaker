@@ -1,46 +1,46 @@
-import { styled } from 'stitches.config';
+import { styled } from "stitches.config"
 
-export const Text = styled('span', {
-  lineHeight: '1',
-  margin: '0',
-  fontVariantNumeric: 'tabular-nums',
+export const Text = styled("span", {
+  lineHeight: "1",
+  margin: "0",
+  fontVariantNumeric: "tabular-nums",
 
   variants: {
     size: {
-      '1': {
-        fontSize: '$1',
+      "1": {
+        fontSize: "$1",
       },
-      '2': {
-        fontSize: '$2',
+      "2": {
+        fontSize: "$2",
       },
-      '3': {
-        fontSize: '$3',
+      "3": {
+        fontSize: "$3",
       },
-      '4': {
-        fontSize: '$4',
+      "4": {
+        fontSize: "$4",
       },
-      '5': {
-        fontSize: '$5',
-        letterSpacing: '-.022em',
+      "5": {
+        fontSize: "$5",
+        letterSpacing: "-.022em",
       },
-      '6': {
-        fontSize: '$6',
-        letterSpacing: '-.024em',
+      "6": {
+        fontSize: "$6",
+        letterSpacing: "-.024em",
       },
-      '7': {
-        fontSize: '$7',
-        letterSpacing: '-.027em',
-        textIndent: '-.005em',
+      "7": {
+        fontSize: "$7",
+        letterSpacing: "-.027em",
+        textIndent: "-.005em",
       },
-      '8': {
-        fontSize: '$8',
-        letterSpacing: '-.028em',
-        textIndent: '-.018em',
+      "8": {
+        fontSize: "$8",
+        letterSpacing: "-.028em",
+        textIndent: "-.018em",
       },
-      '9': {
-        fontSize: '$9',
-        letterSpacing: '-.032em',
-        textIndent: '-.020em',
+      "9": {
+        fontSize: "$9",
+        letterSpacing: "-.032em",
+        textIndent: "-.020em",
       },
     },
     weight: {
@@ -56,193 +56,193 @@ export const Text = styled('span', {
     },
     color: {
       red: {
-        color: '$red11',
+        color: "$red11",
       },
       crimson: {
-        color: '$crimson11',
+        color: "$crimson11",
       },
       pink: {
-        color: '$pink11',
+        color: "$pink11",
       },
       purple: {
-        color: '$purple11',
+        color: "$purple11",
       },
       violet: {
-        color: '$violet11',
+        color: "$violet11",
       },
       indigo: {
-        color: '$indigo11',
+        color: "$indigo11",
       },
       blue: {
-        color: '$blue11',
+        color: "$blue11",
       },
       cyan: {
-        color: '$cyan11',
+        color: "$cyan11",
       },
       teal: {
-        color: '$teal11',
+        color: "$teal11",
       },
       green: {
-        color: '$green11',
+        color: "$green11",
       },
       lime: {
-        color: '$lime11',
+        color: "$lime11",
       },
       yellow: {
-        color: '$yellow11',
+        color: "$yellow11",
       },
       orange: {
-        color: '$orange11',
+        color: "$orange11",
       },
       gold: {
-        color: '$gold11',
+        color: "$gold11",
       },
       bronze: {
-        color: '$bronze11',
+        color: "$bronze11",
       },
       gray: {
-        color: '$slate11',
+        color: "$slate11",
       },
       white: {
-        color: 'White',
+        color: "White",
       },
       contrast: {
-        color: '$slate12',
+        color: "$slate12",
       },
     },
     gradient: {
       true: {
-        WebkitBackgroundClip: 'text !important',
-        WebkitTextFillColor: 'transparent',
+        WebkitBackgroundClip: "text !important",
+        WebkitTextFillColor: "transparent",
       },
     },
   },
 
   compoundVariants: [
     {
-      color: 'red',
-      gradient: 'true',
+      color: "red",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $red11, $crimson11)',
+        background: "linear-gradient(to right, $red11, $crimson11)",
       },
     },
     {
-      color: 'crimson',
-      gradient: 'true',
+      color: "crimson",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $crimson11, $pink11)',
+        background: "linear-gradient(to right, $crimson11, $pink11)",
       },
     },
     {
-      color: 'pink',
-      gradient: 'true',
+      color: "pink",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $pink11, $purple11)',
+        background: "linear-gradient(to right, $pink11, $purple11)",
       },
     },
     {
-      color: 'purple',
-      gradient: 'true',
+      color: "purple",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $purple11, $violet11)',
+        background: "linear-gradient(to right, $purple11, $violet11)",
       },
     },
     {
-      color: 'violet',
-      gradient: 'true',
+      color: "violet",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $violet11, $indigo11)',
+        background: "linear-gradient(to right, $violet11, $indigo11)",
       },
     },
     {
-      color: 'indigo',
-      gradient: 'true',
+      color: "indigo",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $indigo11, $blue11)',
+        background: "linear-gradient(to right, $indigo11, $blue11)",
       },
     },
     {
-      color: 'blue',
-      gradient: 'true',
+      color: "blue",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $blue11, $cyan11)',
+        background: "linear-gradient(to right, $blue11, $cyan11)",
       },
     },
     {
-      color: 'cyan',
-      gradient: 'true',
+      color: "cyan",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $cyan11, $teal11)',
+        background: "linear-gradient(to right, $cyan11, $teal11)",
       },
     },
     {
-      color: 'teal',
-      gradient: 'true',
+      color: "teal",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $teal11, $green11)',
+        background: "linear-gradient(to right, $teal11, $green11)",
       },
     },
     {
-      color: 'green',
-      gradient: 'true',
+      color: "green",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $green11, $lime11)',
+        background: "linear-gradient(to right, $green11, $lime11)",
       },
     },
     {
-      color: 'lime',
-      gradient: 'true',
+      color: "lime",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $lime11, $yellow11)',
+        background: "linear-gradient(to right, $lime11, $yellow11)",
       },
     },
     {
-      color: 'yellow',
-      gradient: 'true',
+      color: "yellow",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $yellow11, $orange11)',
+        background: "linear-gradient(to right, $yellow11, $orange11)",
       },
     },
     {
-      color: 'orange',
-      gradient: 'true',
+      color: "orange",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $orange11, $red11)',
+        background: "linear-gradient(to right, $orange11, $red11)",
       },
     },
     {
-      color: 'gold',
-      gradient: 'true',
+      color: "gold",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $gold11, $gold9)',
+        background: "linear-gradient(to right, $gold11, $gold9)",
       },
     },
     {
-      color: 'bronze',
-      gradient: 'true',
+      color: "bronze",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $bronze11, $bronze9)',
+        background: "linear-gradient(to right, $bronze11, $bronze9)",
       },
     },
     {
-      color: 'gray',
-      gradient: 'true',
+      color: "gray",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $gray11, $gray12)',
+        background: "linear-gradient(to right, $gray11, $gray12)",
       },
     },
     {
-      color: 'contrast',
-      gradient: 'true',
+      color: "contrast",
+      gradient: "true",
       css: {
-        background: 'linear-gradient(to right, $slate12, $gray12)',
+        background: "linear-gradient(to right, $slate12, $gray12)",
       },
     },
   ],
 
   defaultVariants: {
-    size: '3',
+    size: "3",
     weight: 400,
-    color: 'contrast',
+    color: "contrast",
   },
-});
+})

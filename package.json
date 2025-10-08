@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "format": "prettier \"**/*.{ts,tsx}\" --write"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
@@ -50,5 +51,8 @@
     "superjson": "^2.2.2",
     "typescript": "5.8.3",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
   }
 }

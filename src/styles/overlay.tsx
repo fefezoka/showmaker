@@ -1,10 +1,10 @@
-import { css, styled } from 'stitches.config';
+import { css, styled } from "stitches.config"
 
 export const overlayStyles = css({
-  backgroundColor: '$overlay',
-  position: 'fixed',
+  backgroundColor: "$overlay",
+  position: "fixed",
   inset: 0,
-  zIndex: '$overlay',
-});
+  zIndex: "$overlay",
+})
 
-export const Overlay = styled('div', overlayStyles);
+export const Overlay = styled("div", overlayStyles)
