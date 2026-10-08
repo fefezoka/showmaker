@@ -1,5 +1,4 @@
 import React, { useState } from "react"
-import Image from "next/image"
 import Dropzone from "react-dropzone"
 import { z } from "zod"
 import { signIn, useSession } from "next-auth/react"
@@ -21,7 +20,13 @@ import {
 } from "@/styles/modal"
 import { Select } from "@/styles/select"
 import { Text } from "@/styles/text"
-import { getVideoThumbnail } from "@/utils/get-video-thumbnail"
+import { trimVideo } from "@/utils/trim-video"
+import { TrimRange, VideoTrimmer } from "@/components/video-trimmer"
+
+// Cloudinary's per-file limit; applies to the trimmed clip, not the original
+const MAX_UPLOAD_SIZE = 100 * 1024 * 1024
+// The original is only read locally, so it can be much bigger
+const MAX_SOURCE_SIZE = 4 * 1024 * 1024 * 1024
 
 export const gameOptions = [
   { label: "Valorant", value: "valorant" },
@@ -36,10 +41,10 @@ const createPostSchema = z.object({
   file: z.object(
     {
       video: typeof window === "undefined" ? z.any() : z.instanceof(File),
-      thumbnail: z.string(),
     },
     { required_error: "Selecione um vídeo" }
   ),
+  trim: z.object({ start: z.number(), end: z.number() }).optional(),
   title: z.string(),
   game: z.object(
     { value: z.string(), label: z.string() },
@@ -51,6 +56,10 @@ type CreatePostData = z.infer<typeof createPostSchema>
 
 export const CreatePost = () => {
   const [open, setOpen] = useState<boolean>(false)
+  const [duration, setDuration] = useState<number>()
+  const [isTrimming, setIsTrimming] = useState(false)
+  const [trimProgress, setTrimProgress] = useState(0)
+  const [uploadSize, setUploadSize] = useState(0)
   const { data: session } = useSession()
   const createPost = useCreatePost()
 
@@ -59,16 +68,56 @@ export const CreatePost = () => {
     control,
     handleSubmit,
     reset,
+    setValue,
+    setError,
     formState: { errors },
   } = useForm<CreatePostData>({
     resolver: zodResolver(createPostSchema),
   })
 
-  const handleCreatePost = async (data: CreatePostData) => {
-    await createPost.mutateAsync({ ...data, game: data.game.value })
+  const handleCreatePost = async ({ file, trim, ...data }: CreatePostData) => {
+    let video: File = file.video
+    const isTrimmed =
+      trim && duration && (trim.start > 0.05 || trim.end < duration - 0.05)
+
+    if (isTrimmed || video.size > MAX_UPLOAD_SIZE) {
+      setIsTrimming(true)
+      setTrimProgress(0)
+      try {
+        video = await trimVideo(video, trim ?? { start: 0 }, {
+          maxSize: MAX_UPLOAD_SIZE,
+          onProgress: setTrimProgress,
+        })
+      } catch (error) {
+        console.error(error)
+        return setError("file", {
+          type: "trim",
+          message:
+            error instanceof Error ? error.message : "Não foi possível cortar esse vídeo",
+        })
+      } finally {
+        setIsTrimming(false)
+      }
+    }
+
+    if (video.size > MAX_UPLOAD_SIZE) {
+      return setError("file", {
+        type: "trim",
+        message: `O trecho tem ${(video.size / 1048576).toFixed(0)} MB, corte para menos de 100 MB`,
+      })
+    }
+
+    setUploadSize(video.size)
+    await createPost.mutateAsync({
+      ...data,
+      file: { ...file, video },
+      game: data.game.value,
+    })
     setOpen(false)
     createPost.reset()
   }
+
+  const isBusy = isTrimming || createPost.isLoading
 
   return (
     <Modal
@@ -80,6 +129,7 @@ export const CreatePost = () => {
 
         setOpen(open)
         reset()
+        setDuration(undefined)
       }}
     >
       <ModalTrigger asChild>
@@ -96,9 +146,7 @@ export const CreatePost = () => {
         </Button>
       </ModalTrigger>
       <ModalContent
-        onInteractOutside={(e) =>
-          createPost.isLoading ? e.preventDefault() : setOpen(false)
-        }
+        onInteractOutside={(e) => (isBusy ? e.preventDefault() : setOpen(false))}
       >
         <Box as={"form"} onSubmit={handleSubmit(handleCreatePost)}>
           <ModalTitle asChild>
@@ -141,35 +189,76 @@ export const CreatePost = () => {
               </Box>
             </Box>
           </Box>
-          <Box>
-            <Controller
-              name="file"
-              control={control}
-              render={({ field }) => (
+          <Controller
+            name="file"
+            control={control}
+            render={({ field: fileField }) =>
+              fileField.value?.video ? (
+                <Box>
+                  <Controller
+                    name="trim"
+                    control={control}
+                    render={({ field }) => (
+                      <VideoTrimmer
+                        file={fileField.value.video}
+                        value={field.value}
+                        duration={duration}
+                        disabled={isBusy}
+                        maxSize={MAX_UPLOAD_SIZE}
+                        onDurationChange={(duration) => {
+                          setDuration(duration)
+                          field.onChange({ start: 0, end: duration } as TrimRange)
+                        }}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                  <Flex justify={"between"} align={"center"} gap={"2"} css={{ mt: "$2" }}>
+                    <Text
+                      size={"2"}
+                      color={"gray"}
+                      css={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {fileField.value.video.name}
+                    </Text>
+                    {!isBusy && (
+                      <Text
+                        as={"button"}
+                        type="button"
+                        size={"2"}
+                        weight={600}
+                        css={{ all: "unset", cursor: "pointer", color: "$blue11", fs: 0 }}
+                        onClick={() => {
+                          fileField.onChange(undefined)
+                          setValue("trim", undefined)
+                          setDuration(undefined)
+                        }}
+                      >
+                        Trocar vídeo
+                      </Text>
+                    )}
+                  </Flex>
+                </Box>
+              ) : (
                 <Dropzone
                   accept={{ "video/*": [] }}
-                  onDropAccepted={async (files) => {
-                    field.onChange({
-                      video: files[0],
-                      thumbnail: await getVideoThumbnail(files[0]),
-                    })
+                  onDropAccepted={(files) => {
+                    setDuration(undefined)
+                    setValue("trim", undefined)
+                    fileField.onChange({ video: files[0] })
                   }}
-                  onDropRejected={() => {
-                    field.onChange(null)
-                  }}
-                  maxSize={104857600}
+                  maxSize={MAX_SOURCE_SIZE}
                 >
-                  {({
-                    getRootProps,
-                    getInputProps,
-                    fileRejections,
-                    isDragActive,
-                    acceptedFiles,
-                  }) => (
+                  {({ getRootProps, getInputProps, fileRejections, isDragActive }) => (
                     <Flex
                       justify={"center"}
                       direction={"column"}
                       align={"center"}
+                      gap={"1"}
                       css={{
                         width: "100%",
                         height: "120px",
@@ -179,98 +268,74 @@ export const CreatePost = () => {
                         br: "$2",
                         p: "$3",
                         cursor: "pointer",
-                        ...((isDragActive || acceptedFiles.length !== 0) && {
-                          borderColor: "$blue9",
-                        }),
+                        ...(isDragActive && { borderColor: "$blue9" }),
                       }}
                       {...getRootProps()}
                     >
                       <Box as={"input"} {...getInputProps()} />
-                      {field.value ? (
-                        <Flex gap={"3"} justify={"between"} css={{ width: "100%" }}>
-                          <Box
-                            as={Image}
-                            src={field.value.thumbnail}
-                            alt=""
-                            width={110}
-                            height={90}
-                            css={{ objectFit: "cover" }}
-                          />
-                          <Flex
-                            direction={"column"}
-                            justify={"between"}
-                            css={{ width: "100%" }}
-                          >
-                            <Text as={"p"} weight={600} css={{ lineBreak: "anywhere" }}>
-                              {field.value.video.name}
-                            </Text>
-                            <Box>
-                              <Text size={"2"}>
-                                {(
-                                  (field.value.video.size / 1048576) *
-                                  createPost.progress
-                                ).toFixed(0)}{" "}
-                                MB / {(field.value.video.size / 1048576).toFixed(0)} MB
-                              </Text>
-                              <Flex align={"center"} gap={"2"} css={{ mt: "2px" }}>
-                                <Box
-                                  css={{
-                                    height: "$2",
-                                    width: "100%",
-                                    bc: "$bg2",
-                                    br: "$1",
-                                    position: "relative",
-                                    border: "1px solid $bg3",
-                                  }}
-                                >
-                                  <Box
-                                    css={{
-                                      width: (createPost.progress * 100).toFixed(0) + "%",
-                                      height: "100%",
-                                      position: "absolute",
-                                      top: 0,
-                                      left: 0,
-                                      bc: "$blue9",
-                                      br: "$1",
-                                    }}
-                                  />
-                                </Box>
-                                <Text size={"2"}>
-                                  {(createPost.progress * 100).toFixed(0)}%
-                                </Text>
-                              </Flex>
-                            </Box>
-                          </Flex>
-                        </Flex>
-                      ) : (
-                        <Flex direction={"column"} align={"center"} gap={"1"}>
-                          {fileRejections.length !== 0 && (
-                            <Text weight={600}>Arquivo muito grande</Text>
-                          )}
-                          {errors.file && (
-                            <Text weight={600} color={"red"}>
-                              {errors.file.message}
-                            </Text>
-                          )}
-                          <Text color={"gray"}>
-                            Arraste um vídeo ou clique para procurar
-                          </Text>
-                          <Text color={"gray"}>Limite de 100 MB</Text>
-                        </Flex>
+                      {fileRejections.length !== 0 && (
+                        <Text weight={600}>Arquivo inválido ou muito grande</Text>
                       )}
+                      {errors.file && (
+                        <Text weight={600} color={"red"}>
+                          {errors.file.message}
+                        </Text>
+                      )}
+                      <Text color={"gray"}>Arraste um vídeo ou clique para procurar</Text>
+                      <Text color={"gray"}>Limite de 100 MB depois do corte</Text>
                     </Flex>
                   )}
                 </Dropzone>
-              )}
-            />
-          </Box>
+              )
+            }
+          />
+          {errors.file?.type === "trim" && (
+            <Text as={"p"} color={"red"} weight={600} css={{ mt: "$2" }}>
+              {errors.file.message}
+            </Text>
+          )}
+          {isBusy && (
+            <Box css={{ mt: "$3" }}>
+              <Flex justify={"between"}>
+                <Text size={"2"} weight={600}>
+                  {isTrimming ? "Cortando vídeo..." : "Enviando..."}
+                </Text>
+                <Text
+                  size={"2"}
+                  color={"gray"}
+                  css={{ fontVariantNumeric: "tabular-nums" }}
+                >
+                  {isTrimming
+                    ? `${(trimProgress * 100).toFixed(0)}%`
+                    : `${((uploadSize / 1048576) * createPost.progress).toFixed(0)} / ${(
+                        uploadSize / 1048576
+                      ).toFixed(0)} MB · ${(createPost.progress * 100).toFixed(0)}%`}
+                </Text>
+              </Flex>
+              <Box
+                css={{ mt: "$1", height: 6, br: "$pill", bc: "$bg4", overflow: "hidden" }}
+              >
+                <Box
+                  css={{
+                    height: "100%",
+                    bc: "$blue9",
+                    br: "$pill",
+                    transition: "width .2s",
+                  }}
+                  style={{
+                    width: `${((isTrimming ? trimProgress : createPost.progress) * 100).toFixed(1)}%`,
+                  }}
+                />
+              </Box>
+            </Box>
+          )}
           <Flex justify={"between"} align={"center"} css={{ mt: "$4" }}>
             <ModalClose asChild>
-              <Button disabled={createPost.isLoading} variant={"red"}>
+              <Button disabled={isBusy} variant={"red"}>
                 Sair
               </Button>
             </ModalClose>
-            <Button type="submit" loading={createPost.isLoading}>
+            <Button type="submit" loading={isBusy}>
               Enviar
             </Button>
           </Flex>

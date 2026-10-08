@@ -12,8 +12,7 @@ import { videoThumbnailUrl } from "@/utils/cloudinary"
 interface UploadVideo {
   game: string
   title: string
-  // thumbnail is only used for the local preview; Cloudinary derives the real one
-  file: { video?: File; thumbnail: string }
+  file: { video?: File }
 }
 
 export const useCreatePost = () => {
