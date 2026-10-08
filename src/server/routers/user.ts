@@ -55,6 +55,12 @@ export const user = router({
           email: true,
           emailVerified: true,
         },
+        include: {
+          accounts: {
+            where: { provider: { in: ["osu", "twitch"] } },
+            select: { provider: true, providerAccountId: true },
+          },
+        },
       })
 
       if (!user) {
@@ -64,33 +70,14 @@ export const user = router({
         })
       }
 
-      const osuAccount = await ctx.prisma.account.findMany({
-        select: {
-          providerAccountId: true,
-        },
-        where: {
-          provider: "osu",
-          AND: {
-            userId: user.id,
-          },
-        },
-      })
-
-      const twitchAccount = await ctx.prisma.account.findMany({
-        where: {
-          provider: "twitch",
-          AND: {
-            userId: user.id,
-          },
-        },
-      })
+      const { accounts, ...rest } = user
+      const osuAccount = accounts.find((account) => account.provider === "osu")
+      const twitchAccount = accounts.find((account) => account.provider === "twitch")
 
       return {
-        ...user,
-        ...(osuAccount[0] && { osuAccountId: osuAccount[0].providerAccountId }),
-        ...(twitchAccount[0] && {
-          twitchAccountId: twitchAccount[0].providerAccountId,
-        }),
+        ...rest,
+        ...(osuAccount && { osuAccountId: osuAccount.providerAccountId }),
+        ...(twitchAccount && { twitchAccountId: twitchAccount.providerAccountId }),
       }
     }),
   search: procedure

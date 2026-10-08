@@ -1,4 +1,5 @@
 import React, { ReactNode, useState } from "react"
+import { videoThumbnailUrl } from "@/utils/cloudinary"
 import Link from "next/link"
 import Image from "next/image"
 import { useSession } from "next-auth/react"
@@ -175,7 +176,15 @@ export const UserHoverCard = ({ user, children, onClickOnUser }: IUserHoverCard)
                         },
                       }}
                     >
-                      <Image src={post.thumbnailUrl} alt="" fill sizes="" />
+                      <Image
+                        src={videoThumbnailUrl(
+                          post.videoUrl,
+                          "so_0,w_480,h_270,c_fill,q_auto,f_auto"
+                        )}
+                        alt=""
+                        fill
+                        sizes=""
+                      />
                     </Box>
                   </Link>
                 </Box>

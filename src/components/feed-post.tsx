@@ -23,6 +23,7 @@ import { Heading } from "@/styles/heading"
 import { Modal, ModalTrigger, ModalContent, ModalClose } from "@/styles/modal"
 import { ProfileIcon } from "@/styles/profile-icon"
 import { Video } from "@/styles/video"
+import { videoThumbnailUrl } from "@/utils/cloudinary"
 import { diffBetweenDates } from "@/utils/diff-between-dates"
 import { downloadVideo } from "@/utils/download-video"
 import { Post } from "@/types/types"
@@ -50,7 +51,12 @@ export const FeedPost = forwardRef<
       <Flex justify={"between"}>
         <UserHoverCard user={post.user}>
           <Flex align={"center"} gap={"2"} css={{ us: "none" }}>
-            <ProfileIcon css={{ size: 36 }} src={post.user.image} userId={post.user.id} alt="" />
+            <ProfileIcon
+              css={{ size: 36 }}
+              src={post.user.image}
+              userId={post.user.id}
+              alt=""
+            />
             <Box>
               <Text weight={600} size={{ "@initial": "3", "@bp2": "5" }}>
                 {post.user.name}
@@ -191,7 +197,7 @@ export const FeedPost = forwardRef<
         )}
       </Flex>
 
-      <Video videoUrl={post.videoUrl} thumbnailUrl={post.thumbnailUrl} />
+      <Video videoUrl={post.videoUrl} thumbnailUrl={videoThumbnailUrl(post.videoUrl)} />
 
       <FeedPostComments post={post} />
     </Box>
