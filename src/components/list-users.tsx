@@ -51,7 +51,7 @@ export const ListUsers = ({
             <Box>
               <UserHoverCard onClickOnUser={onClickOnUser} user={user}>
                 <Flex align={"center"} gap={"3"}>
-                  <ProfileIcon css={{ size: "44px" }} src={user.image} alt="" />
+                  <ProfileIcon css={{ size: "44px" }} src={user.image} userId={user.id} alt="" />
                   <Text weight={600} size={"5"}>
                     {user.name}
                   </Text>

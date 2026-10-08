@@ -2,9 +2,10 @@ import { LikedPost, Post, postSchema } from "@/types/types"
 import { authenticatedProcedure, procedure, router } from "@/server/trpc"
 import { TRPCError } from "@trpc/server"
 import { z } from "zod"
-import { infiniteQuery } from "@/server/commons"
+import { infiniteQuery, postInclude } from "@/server/commons"
 import axios from "@/server/axios"
 import crypto from "crypto"
+import { isDerivedThumbnail } from "@/utils/cloudinary"
 
 export const posts = router({
   feed: router({
@@ -27,12 +28,7 @@ export const posts = router({
             where: {
               ...(input.game && { game: input.game }),
             },
-            include: {
-              user: {
-                omit: { email: true, emailVerified: true },
-              },
-              likedBy: true,
-            },
+            include: postInclude(ctx.session),
           }),
           {
             limit: input.limit,
@@ -70,15 +66,7 @@ export const posts = router({
                 },
               }),
             },
-            include: {
-              user: {
-                omit: {
-                  email: true,
-                  emailVerified: true,
-                },
-              },
-              likedBy: true,
-            },
+            include: postInclude(ctx.session),
           }),
           { limit: input.limit, session: ctx.session, cursor: input.cursor }
         )
@@ -86,8 +74,6 @@ export const posts = router({
     search: procedure
       .input(z.object({ q: z.string(), cursor: z.number().optional() }))
       .query(async ({ ctx, input }) => {
-        console.log(ctx.session)
-
         const response = (await ctx.prisma.post.aggregateRaw({
           pipeline: [
             {
@@ -251,7 +237,9 @@ export const posts = router({
       }
 
       await deleteFromCloudinary(post.videoUrl, "video")
-      await deleteFromCloudinary(post.thumbnailUrl, "image")
+      if (!isDerivedThumbnail(post.thumbnailUrl)) {
+        await deleteFromCloudinary(post.thumbnailUrl, "image")
+      }
     }),
   byId: procedure
     .input(z.object({ postId: z.string().uuid() }))
@@ -260,15 +248,7 @@ export const posts = router({
         where: {
           id: input.postId,
         },
-        include: {
-          user: {
-            omit: {
-              email: true,
-              emailVerified: true,
-            },
-          },
-          likedBy: true,
-        },
+        include: postInclude(ctx.session),
       })
 
       if (!post) {
@@ -278,12 +258,11 @@ export const posts = router({
         })
       }
 
+      const { _count, ...rest } = post
+
       return {
-        ...post,
-        user: {
-          ...post.user,
-        },
-        likes: post.likedBy.length,
+        ...rest,
+        likes: _count.likedBy,
         isLiked: post.likedBy.some((like) => like.userId === ctx.session?.user.id),
       }
     }),

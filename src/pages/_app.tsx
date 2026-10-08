@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app"
-import { Session } from "next-auth/core/types"
+import type { Session } from "next-auth"
 import { SessionProvider } from "next-auth/react"
 import { DefaultSeo } from "next-seo"
 import { ogimage } from "@/assets"
@@ -18,7 +18,7 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
         disableTransitionOnChange
         attribute="class"
         value={{ dark: "dark-theme", light: lightTheme.className }}
-        defaultTheme="system"
+        defaultTheme="dark"
       >
         <DefaultSeo
           title="Show Maker"

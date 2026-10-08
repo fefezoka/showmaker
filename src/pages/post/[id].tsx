@@ -16,6 +16,7 @@ import { FeedPost } from "@/components/feed-post"
 import { Flex } from "@/styles/flex"
 import { Text } from "@/styles/text"
 import { blitz } from "@/assets"
+import { videoThumbnailUrl } from "@/utils/cloudinary"
 
 interface Props {
   dehydratedState: any
@@ -74,7 +75,7 @@ export default function Post({ id }: Props) {
         <NextSeo
           title={post.title || ""}
           openGraph={{
-            images: [{ url: post.thumbnailUrl }],
+            images: [{ url: videoThumbnailUrl(post.videoUrl) }],
             siteName: "",
             description: "",
             videos: [{ url: post.videoUrl }],

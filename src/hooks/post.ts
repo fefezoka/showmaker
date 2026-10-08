@@ -7,10 +7,12 @@ import { PostPagination } from "@/types/types"
 import { signIn, useSession } from "next-auth/react"
 import { ReactQueryOptions, RouterInputs } from "@/server/trpc"
 import { produce } from "immer"
+import { videoThumbnailUrl } from "@/utils/cloudinary"
 
 interface UploadVideo {
   game: string
   title: string
+  // thumbnail is only used for the local preview; Cloudinary derives the real one
   file: { video?: File; thumbnail: string }
 }
 
@@ -43,25 +45,6 @@ export const useCreatePost = () => {
 
   const uploadToCloudinary = async ({ file }: Pick<UploadVideo, "file">) => {
     const uploadId = Date.now()
-
-    const uploadThumbnail = async () => {
-      const formData = new FormData()
-      formData.append("cloud_name", "dlgkvfmky")
-      formData.append("file", file.thumbnail)
-      formData.append("upload_preset", "gjfsvh53")
-
-      const { data } = await axios.post(
-        "https://api.cloudinary.com/v1_1/dlgkvfmky/upload",
-        formData,
-        {
-          headers: {
-            "X-Unique-Upload-Id": String(uploadId),
-          },
-        }
-      )
-
-      return data
-    }
 
     const uploadVideo = async () => {
       const video = file.video!
@@ -103,19 +86,19 @@ export const useCreatePost = () => {
       return await uploadChunk()
     }
 
-    return await Promise.all([uploadVideo(), uploadThumbnail()])
+    return await uploadVideo()
   }
 
   const mutateAsync = async ({ game, title, file }: UploadVideo) => {
     setIsLoading(true)
 
     try {
-      const [videoData, thumbData] = await uploadToCloudinary({ file })
+      const videoData = await uploadToCloudinary({ file })
 
       const post = await createPostMutation.mutateAsync({
         game,
         title,
-        thumbnailUrl: thumbData.secure_url,
+        thumbnailUrl: videoThumbnailUrl(videoData.secure_url),
         videoUrl: videoData.secure_url,
       })
 

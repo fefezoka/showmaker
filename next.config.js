@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
+    // Remote images already come small/compressed (Cloudinary q_auto,f_auto,
+    // Discord avatars); re-optimizing them on the server only adds latency.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',

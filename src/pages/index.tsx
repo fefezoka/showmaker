@@ -1,4 +1,9 @@
+import { GetServerSideProps } from "next"
 import { NextSeo } from "next-seo"
+import { createServerSideHelpers } from "@trpc/react-query/server"
+import superjson from "superjson"
+import { appRouter } from "@/server/routers/_app"
+import { createContext } from "@/server/context"
 import { useState } from "react"
 import { trpc } from "@/utils/trpc"
 import { Main } from "@/components/main"
@@ -11,6 +16,27 @@ import { gameOptions } from "@/components/create-post"
 
 const feedOptions = [{ label: "Todos", value: "all" }, ...gameOptions] as const
 type feed = (typeof feedOptions)[number]
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  // Client-side navigations already have the feed cached
+  if (ctx.req.url?.startsWith("/_next")) {
+    return { props: {} }
+  }
+
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: await createContext({ req: ctx.req, res: ctx.res }),
+    transformer: superjson,
+  })
+
+  await helpers.posts.feed.home.prefetchInfinite({})
+
+  return {
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
+  }
+}
 
 export default function Timeline() {
   const [feed, setFeed] = useState<feed>(feedOptions[0])

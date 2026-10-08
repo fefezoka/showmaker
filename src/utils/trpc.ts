@@ -22,7 +22,7 @@ export const trpc = createTRPCNext<AppRouter>({
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
             refetchOnMount: false,
-            staleTime: Infinity,
+            staleTime: 2 * 60 * 1000,
           },
         },
       },

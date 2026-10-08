@@ -56,6 +56,9 @@ model Follows {
   followerId  String
   following   User   @relation("following", fields: [followingId], references: [id])
   followingId String
+
+  @@index([followerId])
+  @@index([followingId])
 }
 
 model Post {
@@ -70,25 +73,34 @@ model Post {
   createdAt      DateTime      @default(now())
   likedBy        LikedPost[]
   postComments   PostComment[]
+
+  @@index([createdAt])
+  @@index([game, createdAt])
+  @@index([userId, createdAt])
 }
 
 model LikedPost {
   id        String    @id @default(uuid()) @map("_id")
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String    @unique
+  userId    String
   post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String    @unique
+  postId    String
   createdAt DateTime? @default(now())
+
+  @@index([postId, userId])
+  @@index([userId])
 }
 
 model PostComment {
   id        String   @id @default(uuid()) @map("_id")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
+  userId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String   @unique
+  postId    String
   message   String
   createdAt DateTime @default(now())
+
+  @@index([postId, createdAt])
 }
 
 model VerificationToken {

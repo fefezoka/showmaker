@@ -2,15 +2,35 @@ import Image from "next/image"
 import React, { forwardRef, useState } from "react"
 import { CSS } from "stitches.config"
 import { Box } from "@/styles/box"
+import { trpc } from "@/utils/trpc"
 
 interface ProfileIconProps extends React.ComponentProps<typeof Image> {
   src: string
   css?: CSS
+  userId?: string
 }
 
 export const ProfileIcon = forwardRef<HTMLImageElement, ProfileIconProps>(
-  ({ src, css, ...props }: ProfileIconProps, forwardedRef) => {
+  ({ src, css, userId, ...props }: ProfileIconProps, forwardedRef) => {
     const [error, setError] = useState(false)
+    const [refreshedSrc, setRefreshedSrc] = useState<string | null>(null)
+    const utils = trpc.useUtils()
+    const refreshImage = trpc.user.refreshImage.useMutation({
+      onSuccess: (image) => {
+        if (image) {
+          setRefreshedSrc(image)
+          setError(false)
+          utils.invalidate()
+        }
+      },
+    })
+
+    const handleError = () => {
+      setError(true)
+      if (userId && !refreshedSrc && !refreshImage.isPending) {
+        refreshImage.mutate({ userId })
+      }
+    }
 
     return (
       <Box
@@ -25,11 +45,12 @@ export const ProfileIcon = forwardRef<HTMLImageElement, ProfileIconProps>(
       >
         <Image
           ref={forwardedRef}
-          src={!error ? src : "https://cdn.discordapp.com/embed/avatars/0.png"}
+          src={!error ? refreshedSrc ?? src : "https://cdn.discordapp.com/embed/avatars/0.png"}
+          sizes="96px"
           {...props}
           fill
           alt=""
-          onError={() => setError(true)}
+          onError={handleError}
         />
       </Box>
     )
