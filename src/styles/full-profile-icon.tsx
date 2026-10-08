@@ -7,6 +7,7 @@ import { ProfileIcon } from "@/styles/profile-icon"
 interface IFullProfileIcon {
   src: string
   css?: CSS
+  userId?: string
 }
 
 const Fade = keyframes({
@@ -42,7 +43,7 @@ export const Overlay = styled(Dialog.Overlay, {
   animation: `300ms ${Fade}`,
 })
 
-export const FullProfileIcon = ({ src, css }: IFullProfileIcon) => {
+export const FullProfileIcon = ({ src, css, userId }: IFullProfileIcon) => {
   const profileIconRef = useRef<HTMLImageElement>(null)
   const [open, setOpen] = useState(false)
 
@@ -62,6 +63,7 @@ export const FullProfileIcon = ({ src, css }: IFullProfileIcon) => {
         <ProfileIcon
           ref={profileIconRef}
           src={src}
+          userId={userId}
           css={{ size: "$7", cursor: "pointer", ...css }}
           alt=""
         />

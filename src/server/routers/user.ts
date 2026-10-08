@@ -5,8 +5,45 @@ import { ManyFriendshipStatus, User } from "@/types/types"
 import { OsuProfile } from "next-auth/providers/osu"
 import { authenticatedProcedure, procedure, router } from "@/server/trpc"
 import { auth } from "@/server/routers/auth"
+import { fetchDiscordAvatar } from "@/server/discord-avatar"
+
+const REFRESH_IMAGE_COOLDOWN = 10 * 60 * 1000
+const lastImageRefresh = new Map<string, number>()
 
 export const user = router({
+  refreshImage: procedure
+    .input(z.object({ userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const last = lastImageRefresh.get(input.userId)
+      if (last && Date.now() - last < REFRESH_IMAGE_COOLDOWN) {
+        return null
+      }
+      lastImageRefresh.set(input.userId, Date.now())
+
+      const account = await ctx.prisma.account.findFirst({
+        where: { userId: input.userId, provider: "discord" },
+        select: { providerAccountId: true },
+      })
+
+      if (!account) {
+        return null
+      }
+
+      const image = await fetchDiscordAvatar(account.providerAccountId).catch(
+        () => null
+      )
+
+      if (!image) {
+        return null
+      }
+
+      await ctx.prisma.user.update({
+        where: { id: input.userId },
+        data: { image },
+      })
+
+      return image
+    }),
   profile: procedure
     .input(z.object({ name: z.string() }))
     .query(async ({ ctx, input }) => {

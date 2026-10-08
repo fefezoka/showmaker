@@ -67,7 +67,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
           }}
         >
           <Link href={`/${session.user.name}`} prefetch={false}>
-            <ProfileIcon src={session.user.image} css={{ size: "$8" }} alt="" />
+            <ProfileIcon src={session.user.image} userId={session.user.id} css={{ size: "$8" }} alt="" />
           </Link>
           <Input radius={"2"} css={{ p: "$3" }} placeholder="Faça um comentário" />
           <Button type="submit" css={{ minWidth: "72px" }}>
@@ -91,7 +91,7 @@ export const FeedPostComments = ({ post }: IFeedPostComments) => {
           >
             <Flex align={"center"} gap={"3"}>
               <UserHoverCard user={comment.user}>
-                <ProfileIcon src={comment.user.image} alt="" />
+                <ProfileIcon src={comment.user.image} userId={comment.user.id} alt="" />
               </UserHoverCard>
               <Flex
                 gap={{ "@bp2": "3" }}

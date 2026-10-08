@@ -102,7 +102,7 @@ export const Header = () => {
                   },
                 }}
               >
-                <ProfileIcon src={session.user.image as string} alt="" />
+                <ProfileIcon src={session.user.image as string} userId={session.user.id} alt="" />
                 {isDesktop && (
                   <Text weight={600} size={"4"}>
                     {session.user.name.slice(0, 10)}

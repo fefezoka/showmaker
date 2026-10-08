@@ -92,6 +92,7 @@ export default function Profile() {
             <Flex gap={{ "@initial": "3", "@bp2": "5" }} align="center">
               <FullProfileIcon
                 src={user.image}
+                userId={user.id}
                 css={{ size: 84, "@bp2": { size: 144 } }}
               />
               <Box>

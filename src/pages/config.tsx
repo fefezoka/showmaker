@@ -1,6 +1,10 @@
 import React from "react"
 import { GetServerSideProps } from "next"
-import { getSession, signIn } from "next-auth/react"
+import { signIn } from "next-auth/react"
+import { createServerSideHelpers } from "@trpc/react-query/server"
+import superjson from "superjson"
+import { appRouter } from "@/server/routers/_app"
+import { createContext } from "@/server/context"
 import { IoAddCircle, IoLogoTwitch, IoHelp, IoCheckmarkCircle } from "react-icons/io5"
 import { SiOsu } from "react-icons/si"
 import { NextSeo } from "next-seo"
@@ -32,9 +36,9 @@ const providers: { name: providers; logo: IconType; bc: string }[] = [
 ]
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession({ ctx: ctx })
+  const context = await createContext({ req: ctx.req, res: ctx.res })
 
-  if (!session) {
+  if (!context.session) {
     return {
       redirect: {
         destination: "/",
@@ -43,8 +47,18 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     }
   }
 
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: context,
+    transformer: superjson,
+  })
+
+  await helpers.auth.accounts.prefetch()
+
   return {
-    props: {},
+    props: {
+      trpcState: helpers.dehydrate(),
+    },
   }
 }
 

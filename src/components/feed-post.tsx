@@ -50,7 +50,7 @@ export const FeedPost = forwardRef<
       <Flex justify={"between"}>
         <UserHoverCard user={post.user}>
           <Flex align={"center"} gap={"2"} css={{ us: "none" }}>
-            <ProfileIcon css={{ size: 36 }} src={post.user.image} alt="" />
+            <ProfileIcon css={{ size: 36 }} src={post.user.image} userId={post.user.id} alt="" />
             <Box>
               <Text weight={600} size={{ "@initial": "3", "@bp2": "5" }}>
                 {post.user.name}
