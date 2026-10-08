@@ -18,7 +18,7 @@ const MyApp = ({ Component, pageProps }: AppProps<{ session: Session }>) => {
         disableTransitionOnChange
         attribute="class"
         value={{ dark: "dark-theme", light: lightTheme.className }}
-        defaultTheme="system"
+        defaultTheme="dark"
       >
         <DefaultSeo
           title="Show Maker"
